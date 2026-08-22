@@ -1,1303 +1,962 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>AliNagheli English</title>
 
-<!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
-*{
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
+*{box-sizing:border-box}
 body{
-    margin:0;
-    padding:0 0 85px 0;
-    font-family:Tahoma,Arial,sans-serif;
-    background:#f4f8ff;
-    color:#172033;
+margin:0;
+padding:0 0 80px;
+font-family:Tahoma,Arial,sans-serif;
+background:#f3f8ff;
+color:#172033
 }
-
-button,
-input,
-textarea,
-select{
-    font-family:inherit;
-}
-
-button{
-    border:0;
-    cursor:pointer;
-}
-
-a{
-    text-decoration:none;
-}
-
+button,input,select,textarea{font-family:inherit}
+button{border:0;cursor:pointer}
 .header{
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
-    color:white;
-    padding:28px 20px;
-    border-radius:0 0 30px 30px;
-    box-shadow:0 5px 20px rgba(37,99,235,.20);
+background:linear-gradient(135deg,#2563eb,#1d4ed8);
+color:white;
+padding:25px 18px;
+border-radius:0 0 28px 28px
 }
-
-.header small{
-    opacity:.85;
-}
-
-.header h1{
-    margin:8px 0;
-    font-size:27px;
-}
-
-.header p{
-    margin:0;
-    opacity:.9;
-}
-
-.container{
-    width:100%;
-    max-width:720px;
-    margin:auto;
-    padding:15px;
-}
-
-.page{
-    display:none;
-}
-
-.page.active{
-    display:block;
-}
-
+.header h1{margin:8px 0}
+.container{max-width:700px;margin:auto;padding:15px}
+.page{display:none}
+.page.active{display:block}
 .card{
-    background:white;
-    margin:13px 0;
-    padding:18px;
-    border-radius:20px;
-    box-shadow:0 5px 20px rgba(37,99,235,.08);
+background:white;
+padding:18px;
+margin:12px 0;
+border-radius:20px;
+box-shadow:0 4px 18px rgba(0,0,0,.07)
 }
-
-.card h2{
-    color:#1d4ed8;
-    margin-top:0;
-}
-
-.hero{
-    text-align:center;
-    padding:28px 18px;
-}
-
-.hero-icon{
-    font-size:60px;
-    margin-bottom:10px;
-}
-
-.feature-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-}
-
-.feature-btn{
-    background:#eff6ff;
-    color:#1d4ed8;
-    padding:20px 8px;
-    border-radius:17px;
-    font-size:14px;
-    transition:.2s;
-}
-
-.feature-btn:active{
-    transform:scale(.97);
-}
-
+h2{color:#1d4ed8}
 .btn{
-    width:100%;
-    padding:14px;
-    margin:6px 0;
-    border-radius:13px;
-    color:white;
-    background:#2563eb;
-    font-size:15px;
-    font-weight:bold;
+display:block;
+width:100%;
+padding:14px;
+margin:8px 0;
+border-radius:13px;
+background:#2563eb;
+color:white;
+font-weight:bold
 }
-
-.btn:active{
-    transform:scale(.98);
+.btn.green{background:#16a34a}
+.btn.orange{background:#ea580c}
+.btn.light{
+background:#dbeafe;
+color:#1d4ed8
 }
-
-.btn-green{
-    background:#16a34a;
+input,select,textarea{
+width:100%;
+padding:13px;
+margin:6px 0 12px;
+border:1px solid #d5ddeb;
+border-radius:12px;
+background:white
 }
-
-.btn-orange{
-    background:#ea580c;
-}
-
-.btn-red{
-    background:#dc2626;
-}
-
-.btn-gray{
-    background:#64748b;
-}
-
-.btn-light{
-    background:#dbeafe;
-    color:#1d4ed8;
-}
-
-input,
-textarea,
-select{
-    width:100%;
-    border:1px solid #d7deeb;
-    border-radius:12px;
-    padding:13px;
-    margin:6px 0 10px;
-    background:white;
-    font-size:14px;
-    outline:none;
-}
-
-input:focus,
-textarea:focus,
-select:focus{
-    border-color:#2563eb;
-    box-shadow:0 0 0 3px rgba(37,99,235,.10);
-}
-
-textarea{
-    min-height:110px;
-    resize:vertical;
-}
-
+textarea{min-height:120px}
 label{
-    display:block;
-    margin-top:8px;
-    font-size:13px;
-    font-weight:bold;
-    color:#334155;
+display:block;
+font-size:13px;
+font-weight:bold;
+margin-top:8px
 }
-
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px
+}
+.feature{
+padding:20px 5px;
+border-radius:16px;
+background:#eff6ff;
+color:#1d4ed8;
+font-size:14px
+}
 .word{
-    text-align:center;
-    font-size:34px;
-    font-weight:bold;
-    color:#2563eb;
-    direction:ltr;
+font-size:35px;
+font-weight:bold;
+color:#2563eb;
+text-align:center;
+direction:ltr
 }
-
 .example{
-    background:#f8fafc;
-    padding:14px;
-    border-radius:13px;
-    margin:12px 0;
-    direction:ltr;
-    text-align:left;
-    line-height:1.9;
+background:#f8fafc;
+padding:14px;
+border-radius:12px;
+direction:ltr;
+text-align:left;
+line-height:1.8
 }
-
-.ltr{
-    direction:ltr;
-    text-align:left;
-}
-
 .success{
-    background:#dcfce7;
-    color:#166534;
-    padding:13px;
-    border-radius:12px;
-    margin-top:10px;
-    line-height:1.8;
+background:#dcfce7;
+color:#166534;
+padding:13px;
+border-radius:12px;
+margin-top:10px
 }
-
 .error{
-    background:#fee2e2;
-    color:#991b1b;
-    padding:13px;
-    border-radius:12px;
-    margin-top:10px;
-    line-height:1.8;
+background:#fee2e2;
+color:#991b1b;
+padding:13px;
+border-radius:12px;
+margin-top:10px
 }
-
 .info{
-    background:#eff6ff;
-    color:#1e40af;
-    padding:13px;
-    border-radius:12px;
-    margin-top:10px;
-    line-height:1.8;
+background:#eff6ff;
+color:#1e40af;
+padding:13px;
+border-radius:12px
 }
-
-.loading{
-    text-align:center;
-    padding:14px;
-    color:#64748b;
-}
-
-.badge{
-    display:inline-block;
-    padding:6px 10px;
-    border-radius:20px;
-    background:#dbeafe;
-    color:#1d4ed8;
-    font-size:11px;
-    margin:3px;
-}
-
 .time{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    padding:14px;
-    margin:8px 0;
-    border-radius:14px;
-    background:#f8fafc;
-    border-right:4px solid #2563eb;
+background:#f8fafc;
+padding:15px;
+border-radius:14px;
+margin:8px 0;
+border-right:4px solid #2563eb;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px
 }
-
-.time .btn{
-    width:auto;
-    min-width:90px;
-    margin:0;
-    padding:10px 12px;
-}
-
-.ranking{
-    display:flex;
-    gap:8px;
-    margin-top:15px;
-}
-
+.time .btn{width:auto;margin:0}
 .rank{
-    flex:1;
-    text-align:center;
-    background:#f8fafc;
-    padding:15px 5px;
-    border-radius:15px;
+background:#f8fafc;
+padding:15px;
+border-radius:15px;
+text-align:center;
+flex:1
 }
-
-.rank .medal{
-    font-size:25px;
+.ranking{display:flex;gap:8px}
+.bottom{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+height:75px;
+background:white;
+box-shadow:0 -4px 18px rgba(0,0,0,.12);
+display:grid;
+grid-template-columns:repeat(5,1fr);
+z-index:1000
 }
-
-.rank b{
-    display:block;
-    margin:7px 0;
-    color:#1d4ed8;
+.nav{
+background:white;
+color:#64748b;
+font-size:10px
 }
-
+.nav.active{
+color:#2563eb;
+font-weight:bold
+}
+.nav span{
+display:block;
+font-size:21px;
+margin-bottom:3px
+}
 .teacher{
-    text-align:center;
+text-align:center
 }
-
-.teacher-icon{
-    font-size:75px;
+.teacherIcon{font-size:65px}
+.ltr{
+direction:ltr;
+text-align:left
 }
-
-hr{
-    border:0;
-    border-top:1px solid #e5e7eb;
-    margin:20px 0;
-}
-
-.small{
-    font-size:11px;
-    color:#64748b;
-}
-
-.bottom-nav{
-    position:fixed;
-    z-index:9999;
-    bottom:0;
-    left:0;
-    right:0;
-    height:78px;
-    background:white;
-    box-shadow:0 -5px 20px rgba(0,0,0,.12);
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-}
-
-.nav-btn{
-    background:white;
-    color:#64748b;
-    font-size:10px;
-    padding:6px 2px;
-}
-
-.nav-btn.active{
-    color:#2563eb;
-    font-weight:bold;
-}
-
-.nav-icon{
-    display:block;
-    font-size:20px;
-    margin-bottom:3px;
-}
-
-.quiz{
-    background:#eff6ff;
-    border-radius:15px;
-    padding:15px;
-    margin-top:15px;
-}
-
-.option{
-    background:white;
-    color:#172033;
-    border:1px solid #dbeafe;
-}
-
-.profile-box{
-    text-align:center;
-    background:linear-gradient(135deg,#eff6ff,#dbeafe);
-    padding:20px;
-    border-radius:18px;
-}
-
-.profile-icon{
-    font-size:55px;
-}
-
-.contact-number{
-    direction:ltr;
-    display:inline-block;
-    font-weight:bold;
-    color:#2563eb;
-}
-
 </style>
-
 </head>
-
 
 <body>
 
-
-<!-- ==================================================
-HEADER
-================================================== -->
-
 <header class="header">
-
-    <small>
-        Personal English Learning System
-    </small>
-
-    <h1>
-        AliNagheli English 👋
-    </h1>
-
-    <p>
-        سیستم جامع آموزش زبان انگلیسی
-    </p>
-
+<small>Personal English Learning System</small>
+<h1>AliNagheli English 👋</h1>
+<p>سیستم جامع آموزش زبان انگلیسی</p>
 </header>
-
 
 <div class="container">
 
-
-<!-- ==================================================
-HOME
-================================================== -->
-
+<!-- HOME -->
 <section id="home" class="page active">
 
-    <div class="card hero">
+<div class="card" style="text-align:center">
+<div style="font-size:55px">📚</div>
+<h2>به سیستم آموزش زبان علی ناقلی خوش آمدید</h2>
+<p>یادگیری زبان را هر روز، ساده و هدفمند ادامه بده.</p>
+</div>
 
-        <div class="hero-icon">
-            📚
-        </div>
+<div class="card">
+<h2>🚀 آموزش‌های امروز</h2>
 
-        <h2>
-            به سیستم آموزش زبان علی ناقلی خوش آمدید
-        </h2>
+<div class="grid">
 
-        <p>
-            یادگیری زبان را هر روز، ساده و هدفمند ادامه بده.
-        </p>
+<button class="feature" onclick="showPage('grammar')">
+📘<br><br>آموزش گرامر
+</button>
 
-    </div>
+<button class="feature" onclick="showPage('vocabulary')">
+📖<br><br>لغت روزانه
+</button>
 
+<button class="feature" onclick="showPage('idiom')">
+💬<br><br>اصطلاح روزانه
+</button>
 
-    <div class="card">
+<button class="feature" onclick="showPage('competition')">
+🏆<br><br>مسابقه روزانه
+</button>
 
-        <h2>
-            🚀 آموزش‌های امروز
-        </h2>
+</div>
+</div>
 
-        <div class="feature-grid">
+<div class="card">
+<h2>⚡ دسترسی سریع</h2>
 
-            <button
-                class="feature-btn"
-                onclick="showPage('grammar')">
+<button class="btn" onclick="showPage('placement')">
+🎯 تعیین سطح
+</button>
 
-                📘
-                <br><br>
-                آموزش گرامر
+<button class="btn green" onclick="showPage('register')">
+📝 ثبت نام کلاس
+</button>
 
-            </button>
+<button class="btn orange" onclick="showPage('freeTimes')">
+🕐 تایم‌های خالی استاد
+</button>
 
-
-            <button
-                class="feature-btn"
-                onclick="showPage('vocabulary')">
-
-                📖
-                <br><br>
-                لغت روزانه
-
-            </button>
-
-
-            <button
-                class="feature-btn"
-                onclick="showPage('idiom')">
-
-                💬
-                <br><br>
-                اصطلاح روزانه
-
-            </button>
-
-
-            <button
-                class="feature-btn"
-                onclick="showPage('competition')">
-
-                🏆
-                <br><br>
-                مسابقه روزانه
-
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <div class="card">
-
-        <h2>
-            ⚡ دسترسی سریع
-        </h2>
-
-
-        <button
-            class="btn"
-            onclick="showPage('placement')">
-
-            📝 تعیین سطح
-
-        </button>
-
-
-        <button
-            class="btn btn-green"
-            onclick="showPage('register')">
-
-            📝 ثبت نام کلاس
-
-        </button>
-
-
-        <button
-            class="btn btn-orange"
-            onclick="showPage('freeTimes')">
-
-            🕐 تایم‌های خالی استاد
-
-        </button>
-
-    </div>
+</div>
 
 </section>
 
 
-
-<!-- ==================================================
-GRAMMAR
-================================================== -->
-
+<!-- GRAMMAR -->
 <section id="grammar" class="page">
 
-    <div class="card">
+<div class="card">
 
-        <h2>
-            📘 آموزش گرامر
-        </h2>
+<h2>📘 آموزش گرامر</h2>
 
-        <h3>
-            Present Simple
-        </h3>
+<h3>Present Simple</h3>
 
-        <p>
-            از زمان حال ساده برای بیان عادت‌ها،
-            برنامه‌های معمول و واقعیت‌ها استفاده می‌کنیم.
-        </p>
+<p>
+از زمان حال ساده برای عادت‌ها، برنامه‌های معمول
+و واقعیت‌ها استفاده می‌کنیم.
+</p>
 
-        <div class="example">
+<div class="example">
+I teach English every day.
+<br><br>
+She studies English.
+</div>
 
-            I teach English every day.
+<h3>ساختار</h3>
 
-            <br><br>
+<p class="ltr">Subject + Verb</p>
 
-            She studies English.
+<button class="btn" onclick="grammarQuiz()">
+🧠 شروع تمرین
+</button>
 
-        </div>
+<div id="grammarResult"></div>
 
-        <h3>
-            ساختار
-        </h3>
-
-        <p class="ltr">
-            Subject + Verb
-        </p>
-
-        <button
-            class="btn"
-            onclick="startGrammarQuiz()">
-
-            🧠 شروع تمرین
-
-        </button>
-
-        <div id="grammarQuiz"></div>
-
-    </div>
+</div>
 
 </section>
 
 
-
-<!-- ==================================================
-VOCABULARY
-================================================== -->
-
+<!-- VOCABULARY -->
 <section id="vocabulary" class="page">
 
-    <div class="card">
+<div class="card">
 
-        <h2>
-            📖 لغت روزانه
-        </h2>
+<h2>📖 لغت روزانه</h2>
 
-        <div class="word">
-            ACHIEVE
-        </div>
+<div class="word">ACHIEVE</div>
 
-        <p style="text-align:center">
+<p style="text-align:center">
+به دست آوردن — موفق شدن
+</p>
 
-            به دست آوردن — موفق شدن
+<div class="example">
+I want to achieve my goals.
+<br><br>
+من می‌خواهم به اهدافم برسم.
+</div>
 
-        </p>
+<button class="btn" onclick="lessonDone('لغت')">
+✅ انجام شد
+</button>
 
-        <div class="example">
-
-            I want to achieve my goals.
-
-            <br><br>
-
-            من می‌خواهم به اهدافم برسم.
-
-        </div>
-
-        <button
-            class="btn"
-            onclick="completeLesson('vocabulary')">
-
-            ✅ انجام شد
-
-        </button>
-
-    </div>
+</div>
 
 </section>
 
 
-
-<!-- ==================================================
-IDIOM
-================================================== -->
-
+<!-- IDIOM -->
 <section id="idiom" class="page">
 
-    <div class="card">
+<div class="card">
 
-        <h2>
-            💬 اصطلاح روزانه
-        </h2>
+<h2>💬 اصطلاح روزانه</h2>
 
-        <h2 class="ltr">
-            Break a leg!
-        </h2>
+<h2 class="ltr">Break a leg!</h2>
 
-        <p>
-            یعنی:
-            موفق باشی!
-            / برات آرزوی موفقیت دارم!
-        </p>
+<p>یعنی: موفق باشی! / برات آرزوی موفقیت دارم!</p>
 
-        <div class="example">
+<div class="example">
+You have an exam tomorrow?
+<br>
+Break a leg!
+</div>
 
-            You have an exam tomorrow?
+<button class="btn" onclick="lessonDone('اصطلاح')">
+✅ یاد گرفتم
+</button>
 
-            <br>
-
-            Break a leg!
-
-        </div>
-
-        <button
-            class="btn"
-            onclick="completeLesson('idiom')">
-
-            ✅ یاد گرفتم
-
-        </button>
-
-    </div>
+</div>
 
 </section>
 
 
-
-<!-- ==================================================
-COMPETITION
-================================================== -->
-
+<!-- COMPETITION -->
 <section id="competition" class="page">
 
-    <div class="card">
+<div class="card">
 
-        <h2>
-            🏆 مسابقه روزانه
-        </h2>
+<h2>🏆 مسابقه روزانه</h2>
 
-        <p>
-            با انجام تمرین‌های روزانه امتیاز بگیر
-            و در جدول برترین‌ها قرار بگیر.
-        </p>
+<p>
+با انجام تمرین‌های روزانه امتیاز بگیر و
+در جدول برترین‌ها قرار بگیر.
+</p>
 
+<div class="ranking">
 
-        <div class="ranking">
+<div class="rank">
+🥇
+<br>
+<b>علی</b>
+<br>
+120 XP
+</div>
 
-            <div class="rank">
+<div class="rank">
+🥈
+<br>
+<b>سارا</b>
+<br>
+110 XP
+</div>
 
-                <div class="medal">
-                    🥇
-                </div>
+<div class="rank">
+🥉
+<br>
+<b>مینا</b>
+<br>
+95 XP
+</div>
 
-                <b>
-                    علی
-                </b>
+</div>
 
-                <span>
-                    120 XP
-                </span>
+<hr>
 
-            </div>
+<h3 class="ltr">
+Which sentence is correct?
+</h3>
 
+<button class="btn light" onclick="quizAnswer(false)">
+She go to school.
+</button>
 
-            <div class="rank">
+<button class="btn light" onclick="quizAnswer(true)">
+She goes to school.
+</button>
 
-                <div class="medal">
-                    🥈
-                </div>
+<button class="btn light" onclick="quizAnswer(false)">
+She going school.
+</button>
 
-                <b>
-                    سارا
-                </b>
+<div id="quizResult"></div>
 
-                <span>
-                    110 XP
-                </span>
-
-            </div>
-
-
-            <div class="rank">
-
-                <div class="medal">
-                    🥉
-                </div>
-
-                <b>
-                    مینا
-                </b>
-
-                <span>
-                    95 XP
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <hr>
-
-
-        <div class="quiz">
-
-            <h3>
-                Which sentence is correct?
-            </h3>
-
-            <button
-                class="btn option"
-                onclick="answerQuiz(this,false)">
-
-                She go to school.
-
-            </button>
-
-
-            <button
-                class="btn option"
-                onclick="answerQuiz(this,true)">
-
-                She goes to school.
-
-            </button>
-
-
-            <button
-                class="btn option"
-                onclick="answerQuiz(this,false)">
-
-                She going school.
-
-            </button>
-
-
-            <p id="quizResult"></p>
-
-        </div>
-
-    </div>
+</div>
 
 </section>
 
 
-
-<!-- ==================================================
-PLACEMENT
-================================================== -->
-
+<!-- PLACEMENT -->
 <section id="placement" class="page">
 
-    <div class="card">
+<div class="card">
 
-        <h2>
-            📝 تعیین سطح
-        </h2>
+<h2>🎯 تعیین سطح</h2>
 
-        <p>
-            هر زمان خواستی می‌توانی تعیین سطح خودت را انجام بدهی.
-        </p>
+<p>
+هر زمان خواستی می‌توانی تعیین سطح بدهی.
+</p>
 
+<h3 class="ltr">
+I _____ English every day.
+</h3>
 
-        <div id="placementQuiz">
+<button class="btn light" onclick="placement(true)">
+study
+</button>
 
-            <h3>
-                Question 1
-            </h3>
+<button class="btn light" onclick="placement(false)">
+studies
+</button>
 
-            <p class="ltr">
-                I _____ English every day.
-            </p>
+<button class="btn light" onclick="placement(false)">
+studying
+</button>
 
+<div id="placementResult"></div>
 
-            <button
-                class="btn option"
-                onclick="placementAnswer(true)">
-
-                study
-
-            </button>
-
-
-            <button
-                class="btn option"
-                onclick="placementAnswer(false)">
-
-                studies
-
-            </button>
-
-
-            <button
-                class="btn option"
-                onclick="placementAnswer(false)">
-
-                studying
-
-            </button>
-
-        </div>
-
-
-        <div id="placementResult"></div>
-
-    </div>
+</div>
 
 </section>
 
 
-
-<!-- ==================================================
-FREE TIMES
-================================================== -->
-
+<!-- FREE TIMES -->
 <section id="freeTimes" class="page">
 
-    <div class="card">
+<div class="card">
 
-        <h2>
-            🕐 تایم‌های خالی استاد
-        </h2>
+<h2>🕐 تایم‌های خالی استاد</h2>
 
-        <p>
-            یکی از زمان‌های آزاد را انتخاب کنید
-            و برای ثبت‌نام با استاد تماس بگیرید.
-        </p>
+<p>
+یکی از زمان‌های آزاد را انتخاب کنید و برای ثبت‌نام
+با استاد تماس بگیرید.
+</p>
 
+<div class="time">
+<div>
+<b>شنبه</b>
+<br>
+17:00 تا 18:00
+</div>
 
-        <div class="time">
+<a href="tel:09141892768">
+<button class="btn green">📞 تماس</button>
+</a>
+</div>
 
-            <div>
+<div class="time">
+<div>
+<b>یکشنبه</b>
+<br>
+18:00 تا 19:00
+</div>
 
-                <b>
-                    شنبه
-                </b>
+<a href="tel:09141892768">
+<button class="btn green">📞 تماس</button>
+</a>
+</div>
 
-                <br>
+<div class="time">
+<div>
+<b>سه‌شنبه</b>
+<br>
+16:00 تا 17:00
+</div>
 
-                17:00 تا 18:00
+<a href="tel:09141892768">
+<button class="btn green">📞 تماس</button>
+</a>
+</div>
 
-            </div>
-
-
-            <a href="tel:09141892768">
-
-                <button class="btn btn-green">
-
-                    📞 تماس
-
-                </button>
-
-            </a>
-
-        </div>
-
-
-        <div class="time">
-
-            <div>
-
-                <b>
-                    یکشنبه
-                </b>
-
-                <br>
-
-                18:00 تا 19:00
-
-            </div>
-
-
-            <a href="tel:09141892768">
-
-                <button class="btn btn-green">
-
-                    📞 تماس
-
-                </button>
-
-            </a>
-
-        </div>
-
-
-        <div class="time">
-
-            <div>
-
-                <b>
-                    سه‌شنبه
-                </b>
-
-                <br>
-
-                16:00 تا 17:00
-
-            </div>
-
-
-            <a href="tel:09141892768">
-
-                <button class="btn btn-green">
-
-                    📞 تماس
-
-                </button>
-
-            </a>
-
-        </div>
-
-    </div>
+</div>
 
 </section>
 
 
-
-<!-- ==================================================
-REGISTER
-================================================== -->
-
+<!-- REGISTER -->
 <section id="register" class="page">
 
-    <div class="card">
+<div class="card">
 
-        <h2>
-            📝 ثبت نام کلاس
-        </h2>
+<h2>📝 ثبت نام کلاس</h2>
 
-        <p>
-            اطلاعات خود را وارد کنید تا درخواست ثبت‌نام شما
-            در سیستم ثبت شود.
-        </p>
+<p>
+اطلاعات خود را وارد کنید تا درخواست شما در سیستم ذخیره شود.
+</p>
 
+<label>نام</label>
+<input id="firstName" placeholder="نام">
 
-        <label>
-            نام
-        </label>
+<label>نام خانوادگی</label>
+<input id="lastName" placeholder="نام خانوادگی">
 
-        <input
-            id="regFirstName"
-            type="text"
-            autocomplete="given-name"
-            placeholder="نام">
+<label>شماره تلفن</label>
+<input id="phone" type="tel" placeholder="شماره تلفن">
 
+<label>سطح زبان</label>
 
-        <label>
-            نام خانوادگی
-        </label>
+<select id="level">
 
-        <input
-            id="regLastName"
-            type="text"
-            autocomplete="family-name"
-            placeholder="نام خانوادگی">
+<option value="beginner">مبتدی</option>
+<option value="elementary">Elementary</option>
+<option value="intermediate">Intermediate</option>
+<option value="upper-intermediate">Upper-Intermediate</option>
+<option value="advanced">Advanced</option>
+<option value="unknown">نمی‌دانم</option>
 
+</select>
 
-        <label>
-            شماره تلفن
-        </label>
+<button id="registerBtn" class="btn" onclick="registerStudent()">
+💾 ثبت درخواست
+</button>
 
-        <input
-            id="regPhone"
-            type="tel"
-            inputmode="tel"
-            autocomplete="tel"
-            placeholder="شماره تلفن">
+<div id="registerResult"></div>
 
-
-        <label>
-            سطح زبان
-        </label>
-
-        <select id="regLevel">
-
-            <option value="beginner">
-                مبتدی
-            </option>
-
-            <option value="elementary">
-                Elementary
-            </option>
-
-            <option value="intermediate">
-                Intermediate
-            </option>
-
-            <option value="upper-intermediate">
-                Upper-Intermediate
-            </option>
-
-            <option value="advanced">
-                Advanced
-            </option>
-
-            <option value="unknown">
-                نمی‌دانم
-            </option>
-
-        </select>
-
-
-        <button
-            id="registerButton"
-            class="btn"
-            onclick="registerStudent()">
-
-            💾 ثبت درخواست
-
-        </button>
-
-
-        <div id="registerResult"></div>
-
-    </div>
+</div>
 
 </section>
 
 
-
-<!-- ==================================================
-TEACHER
-================================================== -->
-
+<!-- TEACHER -->
 <section id="teacher" class="page">
 
-    <div class="card teacher">
+<div class="card teacher">
 
-        <div class="teacher-icon">
-            👨‍🏫
-        </div>
+<div class="teacherIcon">👨‍🏫</div>
 
-        <h2>
-            آشنایی با استاد
-        </h2>
+<h2>آشنایی با استاد</h2>
 
-        <h3>
-            علی ناقلی
-        </h3>
+<h3>علی ناقلی</h3>
 
-        <p>
-            مدرس زبان انگلیسی
-        </p>
+<p>مدرس زبان انگلیسی</p>
 
+<hr>
 
-        <hr>
+<h3>🇮🇷 فارسی</h3>
 
+<p>🎓 کارشناس ارشد آموزش زبان انگلیسی</p>
 
-        <h3>
-            🇮🇷 فارسی
-        </h3>
+<p>بیش از <b>۲۰ سال سابقه تدریس</b></p>
 
-        <p>
-            🎓 کارشناس ارشد آموزش زبان انگلیسی
-        </p>
+<p>🌍 مدرس دوره‌های بین‌المللی</p>
 
-        <p>
-            بیش از
-            <b>
-                ۲۰ سال سابقه تدریس زبان انگلیسی
-            </b>
-        </p>
+<p>TOEFL • IELTS • PTE</p>
 
-        <p>
-            🌍 مدرس دوره‌های بین‌المللی
-        </p>
+<p>MCHE • MSRT • KET • PET</p>
 
-        <p>
-            TOEFL • IELTS • PTE
-        </p>
+<p>🎓 مدرس TTC تربیت مدرس زبان انگلیسی</p>
 
-        <p>
-            MCHE • MSRT • KET • PET
-        </p>
+<p>📞 09141892768</p>
 
-        <p>
-            🎓 مدرس دوره‌های TTC تربیت مدرس زبان انگلیسی
-        </p>
+<p>📧 Ali.Nagheli5000@gmail.com</p>
 
-        <p>
-            📞
-            <a
-                class="contact-number"
-                href="tel:09141892768">
+<hr>
 
-                09141892768
+<h3>🇬🇧 English</h3>
 
-            </a>
-        </p>
+<p>🎓 M.A. in Teaching English as a Foreign Language (TEFL)</p>
 
-        <p>
-            📧
-            Ali.Nagheli5000@gmail.com
-        </p>
+<p>More than <b>20 years of English teaching experience</b></p>
 
+<p>🌍 International English Exam Instructor</p>
 
-        <hr>
+<p>TOEFL • IELTS • PTE</p>
 
+<p>MCHE • MSRT • KET • PET</p>
 
-        <h3>
-            🇬🇧 English
-        </h3>
+<p>🎓 English Teacher Training Course (TTC) Instructor</p>
 
-        <p>
-            🎓 M.A. in Teaching English as a Foreign Language (TEFL)
-        </p>
+<p>📞 09141892768</p>
 
-        <p>
-            More than
-            <b>
-                20 years of English teaching experience
-            </b>
-        </p>
+<p>📧 Ali.Nagheli5000@gmail.com</p>
 
-        <p>
-            🌍 International English Exam Instructor
-        </p>
-
-        <p>
-            TOEFL • IELTS • PTE
-        </p>
-
-        <p>
-            MCHE • MSRT • KET • PET
-        </p>
-
-        <p>
-            🎓 English Teacher Training Course (TTC) Instructor
-        </p>
-
-        <p>
-            📞
-            <span class="contact-number">
-                09141892768
-            </span>
-        </p>
-
-        <p>
-            📧
-            Ali.Nagheli5000@gmail.com
-        </p>
-
-    </div>
+</div>
 
 </section>
 
 
-
-<!-- ==================================================
-CONSULTATION
-================================================== -->
-
+<!-- CONSULTATION -->
 <section id="consultation" class="page">
 
-    <div class="card">
+<div class="card">
 
-        <h2>
-            💬 مشاوره
-        </h2>
+<h2>💬 مشاوره</h2>
 
-        <p>
-            برای انتخاب سطح، برنامه‌ریزی یادگیری،
-            انتخاب کلاس یا هر سؤال آموزشی
-            می‌توانید با استاد در ارتباط باشید.
-        </p>
+<p>
+برای انتخاب سطح، برنامه‌ریزی یادگیری،
+انتخاب کلاس یا هر سؤال آموزشی با استاد مشورت کنید.
+</p>
 
+<a href="tel:09141892768">
+<button class="btn green">
+📞 تماس با استاد
+</button>
+</a>
 
-        <a href="tel:09141892768">
+<a href="mailto:Ali.Nagheli5000@gmail.com">
+<button class="btn light">
+📧 ارسال ایمیل
+</button>
+</a>
 
-            <button class="btn btn-green">
-
-                📞 تماس با استاد
-
-            </button>
-
-        </a>
-
-
-        <a href="mailto:Ali.Nagheli5000@gmail.com">
-
-            <button class="btn btn-light">
-
-                📧 ارسال ایمیل
-
-            </button>
-
-        </a>
-
-    </div>
+</div>
 
 </section>
 
 
-
-<!-- ==================================================
-FEEDBACK
-================================================== -->
-
+<!-- FEEDBACK -->
 <section id="feedback" class="page">
 
-    <div class="card">
+<div class="card">
 
-        <h2>
-            💡 انتقادات و پیشنهادات
-        </h2>
+<h2>💡 انتقادات و پیشنهادات</h2>
 
-        <p>
-            نظر، پیشنهاد یا انتقاد خود را با ما در میان بگذارید.
-        </p>
+<p>نظر یا پیشنهاد خود را با ما در میان بگذارید.</p>
 
+<textarea id="feedbackText"
+placeholder="نظر خود را بنویسید..."></textarea>
 
-        <textarea
-            id="feedbackText"
-            placeholder="نظر خود را بنویسید..."></textarea>
+<button class="btn" onclick="sendFeedback()">
+📤 ارسال
+</button>
 
+<div id="feedbackResult"></div>
 
-        <button
-            class="btn"
-            onclick="sendFeedback()">
-
-            📤 ارسال نظر
-
-        </button>
-
-
-        <div id="feedbackResult"></div>
-
-    </div>
+</div>
 
 </section>
 
+</div>
 
 
-<!-- ==================================================
-BOTTOM NAVIGATION
-================================================== -->
+<!-- BOTTOM NAV -->
 
-<nav class="bottom-nav">
+<nav class="bottom">
+
+<button class="nav active"
+data-page="home"
+onclick="showPage('home')">
+
+<span>🏠</span>
+خانه
+
+</button>
+
+<button class="nav"
+data-page="grammar"
+onclick="showPage('grammar')">
+
+<span>📚</span>
+آموزش
+
+</button>
+
+<button class="nav"
+data-page="register"
+onclick="showPage('register')">
+
+<span>📝</span>
+ثبت نام
+
+</button>
+
+<button class="nav"
+data-page="teacher"
+onclick="showPage('teacher')">
+
+<span>👨‍🏫</span>
+استاد
+
+</button>
+
+<button class="nav"
+data-page="consultation"
+onclick="showPage('consultation')">
+
+<span>💬</span>
+مشاوره
+
+</button>
+
+</nav>
 
 
-    <button
-        class="nav-btn active"
-        data-page="home"
-        onclick="showPage('home')">
+<script>
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showPage(id){
+
+document.querySelectorAll(".page")
+.forEach(function(page){
+page.classList.remove("active");
+});
+
+var selected=document.getElementById(id);
+
+if(selected){
+selected.classList.add("active");
+}
+
+document.querySelectorAll(".nav")
+.forEach(function(btn){
+
+btn.classList.remove("active");
+
+if(btn.dataset.page===id){
+btn.classList.add("active");
+}
+
+});
+
+window.scrollTo(0,0);
+
+}
+
+
+/* =========================
+   GRAMMAR
+========================= */
+
+function grammarQuiz(){
+
+document.getElementById("grammarResult").innerHTML=
+
+'<div class="info">She _____ English every day.</div>'+
+'<button class="btn light" onclick="grammarAnswer(false)">study</button>'+
+'<button class="btn light" onclick="grammarAnswer(true)">studies</button>'+
+'<button class="btn light" onclick="grammarAnswer(false)">studying</button>';
+
+}
+
+function grammarAnswer(correct){
+
+if(correct){
+
+document.getElementById("grammarResult").innerHTML=
+'<div class="success">✅ Correct! +10 XP</div>';
+
+}else{
+
+document.getElementById("grammarResult").innerHTML=
+'<div class="error">❌ پاسخ اشتباه است.</div>';
+
+}
+
+}
+
+
+/* =========================
+   QUIZ
+========================= */
+
+function quizAnswer(correct){
+
+if(correct){
+
+document.getElementById("quizResult").innerHTML=
+'<div class="success">✅ پاسخ صحیح است! +10 XP</div>';
+
+}else{
+
+document.getElementById("quizResult").innerHTML=
+'<div class="error">❌ پاسخ اشتباه است.</div>';
+
+}
+
+}
+
+
+/* =========================
+   PLACEMENT
+========================= */
+
+function placement(correct){
+
+if(correct){
+
+document.getElementById("placementResult").innerHTML=
+'<div class="success">🎉 پاسخ صحیح بود! برای تعیین سطح دقیق، در نسخه بعدی سوالات بیشتری اضافه می‌کنیم.</div>';
+
+}else{
+
+document.getElementById("placementResult").innerHTML=
+'<div class="error">❌ پاسخ اشتباه بود.</div>';
+
+}
+
+}
+
+
+/* =========================
+   LESSON
+========================= */
+
+function lessonDone(type){
+
+alert("✅ "+type+" امروز انجام شد!");
+
+}
+
+
+/* =========================
+   SUPABASE
+========================= */
+
+var SUPABASE_URL=
+"https://asodzcdntjkujgebznzd.supabase.co";
+
+var SUPABASE_KEY=
+"sb_publishable_lgffYBFD6CVLDEs2EngDdA_nbXnXDCY";
+
+var db=
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+/* =========================
+   REGISTER
+========================= */
+
+async function registerStudent(){
+
+var firstName=
+document.getElementById("firstName").value.trim();
+
+var lastName=
+document.getElementById("lastName").value.trim();
+
+var phone=
+document.getElementById("phone").value.trim();
+
+var level=
+document.getElementById("level").value;
+
+var result=
+document.getElementById("registerResult");
+
+var btn=
+document.getElementById("registerBtn");
+
+
+if(!firstName||!lastName||!phone){
+
+result.innerHTML=
+'<div class="error">⚠️ لطفاً نام، نام خانوادگی و شماره تلفن را وارد کنید.</div>';
+
+return;
+
+}
+
+
+btn.disabled=true;
+btn.innerText="⏳ در حال ثبت...";
+
+result.innerHTML=
+'<div class="info">⏳ در حال اتصال به سرور...</div>';
+
+
+try{
+
+var response=
+await db
+.from("students")
+.insert({
+
+first_name:firstName,
+last_name:lastName,
+phone:phone,
+level:level
+
+})
+.select()
+.single();
+
+
+if(response.error){
+
+console.error(response.error);
+
+result.innerHTML=
+'<div class="error">❌ ثبت‌نام انجام نشد.<br><br>'+
+response.error.message+
+'</div>';
+
+return;
+
+}
+
+
+result.innerHTML=
+'<div class="success">🎉 ثبت‌نام با موفقیت انجام شد!<br>اطلاعات شما در دیتابیس ذخیره شد. ✅</div>';
+
+
+document.getElementById("firstName").value="";
+document.getElementById("lastName").value="";
+document.getElementById("phone").value="";
+
+
+}catch(error){
+
+console.error(error);
+
+result.innerHTML=
+'<div class="error">❌ خطا در ارتباط با Supabase.<br><br>'+
+error.message+
+'</div>';
+
+}finally{
+
+btn.disabled=false;
+btn.innerText="💾 ثبت درخواست";
+
+}
+
+}
+
+
+/* =========================
+   FEEDBACK
+========================= */
+
+function sendFeedback(){
+
+var text=
+document.getElementById("feedbackText").value.trim();
+
+var result=
+document.getElementById("feedbackResult");
+
+if(!text){
+
+result.innerHTML=
+'<div class="error">⚠️ لطفاً متن نظر خود را وارد کنید.</div>';
+
+return;
+
+}
+
+result.innerHTML=
+'<div class="success">✅ ممنون! نظر شما دریافت شد.</div>';
+
+document.getElementById("feedbackText").value="";
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+showPage("home");
+
+</script>
+
+</body>
+    </html>
