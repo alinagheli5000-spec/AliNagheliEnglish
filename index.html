@@ -2,11 +2,8 @@
 <html lang="fa" dir="rtl">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>AliNagheli English</title>
 
@@ -27,10 +24,7 @@ background:#f3f8ff;
 color:#172033;
 }
 
-button,
-input,
-select,
-textarea{
+button,input,select{
 font-family:inherit;
 }
 
@@ -40,7 +34,7 @@ cursor:pointer;
 }
 
 button:disabled{
-opacity:.55;
+opacity:.6;
 cursor:not-allowed;
 }
 
@@ -113,9 +107,7 @@ background:#dbeafe;
 color:#1d4ed8;
 }
 
-input,
-select,
-textarea{
+input,select{
 width:100%;
 padding:13px;
 margin:6px 0 12px;
@@ -176,11 +168,20 @@ color:#991b1b;
 padding:13px;
 border-radius:12px;
 margin-top:10px;
+word-break:break-word;
 }
 
 .info{
 background:#eff6ff;
 color:#1e40af;
+padding:13px;
+border-radius:12px;
+margin-top:10px;
+}
+
+.warning{
+background:#fef3c7;
+color:#92400e;
 padding:13px;
 border-radius:12px;
 margin-top:10px;
@@ -249,17 +250,55 @@ background:#ede9fe;
 color:#5b21b6;
 }
 
-.student-actions{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:7px;
+.course{
+background:#fff;
+border:2px solid #e5e7eb;
+padding:16px;
+border-radius:17px;
+margin:10px 0;
+}
+
+.course-title{
+font-size:17px;
+font-weight:bold;
+color:#1d4ed8;
+}
+
+.course-category{
+display:inline-block;
+font-size:11px;
+background:#eff6ff;
+color:#1d4ed8;
+padding:5px 8px;
+border-radius:8px;
+margin:7px 0;
+}
+
+.course-description{
+font-size:13px;
+line-height:1.8;
+color:#475569;
+}
+
+.my-course{
+border-right:5px solid #16a34a;
+background:#f8fafc;
+padding:15px;
+border-radius:15px;
+margin:10px 0;
+}
+
+.progress{
+height:9px;
+background:#e5e7eb;
+border-radius:20px;
+overflow:hidden;
 margin-top:10px;
 }
 
-.student-actions button{
-padding:9px;
-border-radius:9px;
-font-size:11px;
+.progress-bar{
+height:100%;
+background:#16a34a;
 }
 
 .empty{
@@ -293,54 +332,41 @@ width:auto;
 margin:0;
 }
 
-.course{
-background:#fff;
-border:1px solid #e2e8f0;
+.auth-box{
+max-width:500px;
+margin:20px auto;
+}
+
+.password-wrap{
+position:relative;
+}
+
+.password-wrap input{
+padding-left:55px;
+}
+
+.show-password{
+position:absolute;
+left:8px;
+top:8px;
+width:42px;
+height:42px;
+background:#eff6ff;
+border-radius:10px;
+color:#1d4ed8;
+}
+
+.user-header{
+background:linear-gradient(135deg,#eff6ff,#dbeafe);
+padding:18px;
 border-radius:18px;
-padding:16px;
-margin:10px 0;
-box-shadow:0 3px 10px rgba(0,0,0,.05);
+margin-bottom:12px;
 }
 
-.course-icon{
-font-size:38px;
-}
-
-.course-title{
-font-size:18px;
+.user-name{
+font-size:20px;
 font-weight:bold;
 color:#1d4ed8;
-margin:8px 0;
-}
-
-.course-description{
-font-size:13px;
-color:#64748b;
-line-height:1.8;
-}
-
-.course-category{
-display:inline-block;
-padding:5px 9px;
-border-radius:8px;
-font-size:10px;
-background:#eff6ff;
-color:#2563eb;
-margin-top:5px;
-}
-
-.progress{
-height:9px;
-background:#e2e8f0;
-border-radius:20px;
-overflow:hidden;
-margin:10px 0;
-}
-
-.progress-bar{
-height:100%;
-background:#2563eb;
-border-radius:20px;
 }
 
 .bottom{
@@ -373,8 +399,20 @@ font-size:21px;
 margin-bottom:3px;
 }
 
-</style>
+.student-actions{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:7px;
+margin-top:10px;
+}
 
+.student-actions button{
+padding:9px;
+border-radius:9px;
+font-size:11px;
+}
+
+</style>
 </head>
 
 
@@ -401,9 +439,7 @@ AliNagheli English 👋
 <div class="container">
 
 
-<!-- ==================================================
-HOME
-================================================== -->
+<!-- ================= HOME ================= -->
 
 <section id="home" class="page active">
 
@@ -424,6 +460,9 @@ HOME
 </div>
 
 
+<div id="homeUserBox"></div>
+
+
 <div class="card">
 
 <h2>
@@ -432,8 +471,7 @@ HOME
 
 <div class="grid">
 
-<button
-class="feature"
+<button class="feature"
 onclick="showPage('grammar')">
 
 📘
@@ -443,8 +481,7 @@ onclick="showPage('grammar')">
 </button>
 
 
-<button
-class="feature"
+<button class="feature"
 onclick="showPage('vocabulary')">
 
 📖
@@ -454,8 +491,7 @@ onclick="showPage('vocabulary')">
 </button>
 
 
-<button
-class="feature"
+<button class="feature"
 onclick="showPage('idiom')">
 
 💬
@@ -465,8 +501,7 @@ onclick="showPage('idiom')">
 </button>
 
 
-<button
-class="feature"
+<button class="feature"
 onclick="showPage('competition')">
 
 🏆
@@ -486,7 +521,6 @@ onclick="showPage('competition')">
 ⚡ دسترسی سریع
 </h2>
 
-
 <button
 class="btn"
 onclick="showPage('placement')">
@@ -498,9 +532,9 @@ onclick="showPage('placement')">
 
 <button
 class="btn green"
-onclick="showPage('register')">
+onclick="openRegisterOrDashboard()">
 
-📝 ثبت نام کلاس
+📝 ثبت نام
 
 </button>
 
@@ -513,23 +547,13 @@ onclick="showPage('freeTimes')">
 
 </button>
 
-
-<button
-class="btn"
-onclick="showPage('studentLogin')">
-
-🎓 ورود دانش‌آموز
-
-</button>
-
 </div>
 
 </section>
 
 
-<!-- ==================================================
-GRAMMAR
-================================================== -->
+
+<!-- ================= GRAMMAR ================= -->
 
 <section id="grammar" class="page">
 
@@ -544,8 +568,8 @@ Present Simple
 </h3>
 
 <p>
-از زمان حال ساده برای عادت‌ها،
-برنامه‌های معمول و واقعیت‌ها استفاده می‌کنیم.
+از زمان حال ساده برای عادت‌ها، برنامه‌های معمول
+و واقعیت‌ها استفاده می‌کنیم.
 </p>
 
 <div class="example">
@@ -581,9 +605,8 @@ onclick="grammarQuiz()">
 </section>
 
 
-<!-- ==================================================
-VOCABULARY
-================================================== -->
+
+<!-- ================= VOCABULARY ================= -->
 
 <section id="vocabulary" class="page">
 
@@ -598,9 +621,7 @@ ACHIEVE
 </div>
 
 <p style="text-align:center">
-
 به دست آوردن — موفق شدن
-
 </p>
 
 <div class="example">
@@ -626,9 +647,8 @@ onclick="lessonDone('لغت')">
 </section>
 
 
-<!-- ==================================================
-IDIOM
-================================================== -->
+
+<!-- ================= IDIOM ================= -->
 
 <section id="idiom" class="page">
 
@@ -669,9 +689,8 @@ onclick="lessonDone('اصطلاح')">
 </section>
 
 
-<!-- ==================================================
-COMPETITION
-================================================== -->
+
+<!-- ================= COMPETITION ================= -->
 
 <section id="competition" class="page">
 
@@ -685,7 +704,6 @@ COMPETITION
 Which sentence is correct?
 </h3>
 
-
 <button
 class="btn light"
 onclick="quizAnswer(false)">
@@ -693,7 +711,6 @@ onclick="quizAnswer(false)">
 She go to school.
 
 </button>
-
 
 <button
 class="btn light"
@@ -703,7 +720,6 @@ She goes to school.
 
 </button>
 
-
 <button
 class="btn light"
 onclick="quizAnswer(false)">
@@ -712,7 +728,6 @@ She going school.
 
 </button>
 
-
 <div id="quizResult"></div>
 
 </div>
@@ -720,9 +735,8 @@ She going school.
 </section>
 
 
-<!-- ==================================================
-PLACEMENT
-================================================== -->
+
+<!-- ================= PLACEMENT ================= -->
 
 <section id="placement" class="page">
 
@@ -732,14 +746,9 @@ PLACEMENT
 🎯 تعیین سطح
 </h2>
 
-<p>
-یک سؤال نمونه برای شروع تعیین سطح.
-</p>
-
 <h3>
 I _____ English every day.
 </h3>
-
 
 <button
 class="btn light"
@@ -749,7 +758,6 @@ study
 
 </button>
 
-
 <button
 class="btn light"
 onclick="placementAnswer(false)">
@@ -757,7 +765,6 @@ onclick="placementAnswer(false)">
 studies
 
 </button>
-
 
 <button
 class="btn light"
@@ -767,7 +774,6 @@ studying
 
 </button>
 
-
 <div id="placementResult"></div>
 
 </div>
@@ -775,9 +781,8 @@ studying
 </section>
 
 
-<!-- ==================================================
-FREE TIMES
-================================================== -->
+
+<!-- ================= FREE TIMES ================= -->
 
 <section id="freeTimes" class="page">
 
@@ -805,9 +810,7 @@ FREE TIMES
 <a href="tel:09141892768">
 
 <button class="btn green">
-
 📞 تماس
-
 </button>
 
 </a>
@@ -832,9 +835,7 @@ FREE TIMES
 <a href="tel:09141892768">
 
 <button class="btn green">
-
 📞 تماس
-
 </button>
 
 </a>
@@ -859,9 +860,7 @@ FREE TIMES
 <a href="tel:09141892768">
 
 <button class="btn green">
-
 📞 تماس
-
 </button>
 
 </a>
@@ -873,20 +872,19 @@ FREE TIMES
 </section>
 
 
-<!-- ==================================================
-REGISTER
-================================================== -->
+
+<!-- ================= REGISTER ================= -->
 
 <section id="register" class="page">
 
-<div class="card">
+<div class="card auth-box">
 
 <h2>
-📝 ثبت نام کلاس
+📝 ثبت‌نام دانش‌آموز
 </h2>
 
 <p>
-اطلاعات خود را وارد کنید تا درخواست شما در سیستم ذخیره شود.
+اطلاعات خود را وارد کنید.
 </p>
 
 
@@ -895,7 +893,7 @@ REGISTER
 </label>
 
 <input
-id="firstName"
+id="registerFirstName"
 placeholder="نام"
 >
 
@@ -905,19 +903,19 @@ placeholder="نام"
 </label>
 
 <input
-id="lastName"
+id="registerLastName"
 placeholder="نام خانوادگی"
 >
 
 
 <label>
-شماره تلفن
+شماره موبایل
 </label>
 
 <input
-id="phone"
+id="registerPhone"
 type="tel"
-placeholder="شماره تلفن"
+placeholder="0912xxxxxxx"
 >
 
 
@@ -925,7 +923,7 @@ placeholder="شماره تلفن"
 سطح زبان
 </label>
 
-<select id="level">
+<select id="registerLevel">
 
 <option value="beginner">
 مبتدی
@@ -954,12 +952,69 @@ Advanced
 </select>
 
 
+<label>
+رمز عبور
+</label>
+
+<div class="password-wrap">
+
+<input
+id="registerPassword"
+type="password"
+placeholder="حداقل 6 کاراکتر"
+>
+
+<button
+type="button"
+class="show-password"
+onclick="togglePassword('registerPassword',this)">
+
+👁️
+
+</button>
+
+</div>
+
+
+<label>
+تکرار رمز عبور
+</label>
+
+<div class="password-wrap">
+
+<input
+id="registerPassword2"
+type="password"
+placeholder="تکرار رمز عبور"
+>
+
+<button
+type="button"
+class="show-password"
+onclick="togglePassword('registerPassword2',this)">
+
+👁️
+
+</button>
+
+</div>
+
+
 <button
 id="registerBtn"
 class="btn"
 onclick="registerStudent()">
 
-💾 ثبت درخواست
+💾 ایجاد حساب و ثبت درخواست
+
+</button>
+
+
+<button
+class="btn light"
+onclick="showPage('login')">
+
+🔐 قبلاً ثبت‌نام کرده‌ام
 
 </button>
 
@@ -971,40 +1026,72 @@ onclick="registerStudent()">
 </section>
 
 
-<!-- ==================================================
-STUDENT LOGIN
-================================================== -->
 
-<section id="studentLogin" class="page">
+<!-- ================= LOGIN ================= -->
 
-<div class="card">
+<section id="login" class="page">
+
+<div class="card auth-box">
 
 <h2>
-🎓 ورود دانش‌آموز
+🔐 ورود دانش‌آموز
 </h2>
 
 <p>
-پس از تأیید ثبت‌نام توسط مدیر،
-با شماره تلفن وارد شوید.
+با شماره موبایل و رمز عبور وارد شوید.
 </p>
 
 
 <label>
-شماره تلفن
+شماره موبایل
 </label>
 
 <input
 id="loginPhone"
 type="tel"
-placeholder="شماره تلفن"
+placeholder="0912xxxxxxx"
 >
 
 
+<label>
+رمز عبور
+</label>
+
+<div class="password-wrap">
+
+<input
+id="loginPassword"
+type="password"
+placeholder="رمز عبور"
+>
+
 <button
+type="button"
+class="show-password"
+onclick="togglePassword('loginPassword',this)">
+
+👁️
+
+</button>
+
+</div>
+
+
+<button
+id="loginBtn"
 class="btn"
-onclick="studentLogin()">
+onclick="loginStudent()">
 
 🔐 ورود
+
+</button>
+
+
+<button
+class="btn light"
+onclick="showPage('register')">
+
+📝 هنوز ثبت‌نام نکرده‌ام
 
 </button>
 
@@ -1016,70 +1103,65 @@ onclick="studentLogin()">
 </section>
 
 
-<!-- ==================================================
-STUDENT COURSES
-================================================== -->
 
-<section id="studentCourses" class="page">
+<!-- ================= STUDENT DASHBOARD ================= -->
+
+<section id="studentDashboard" class="page">
+
+<div id="studentHeader"></div>
+
 
 <div class="card">
 
 <h2>
-🎓 پنل آموزشی من
+🎓 پنل دانش‌آموز
 </h2>
 
 
-<div id="studentWelcome">
-</div>
+<button
+class="btn"
+onclick="showPage('courses')">
+
+📚 انتخاب دوره
+
+</button>
+
+
+<button
+class="btn green"
+onclick="showPage('myCourses')">
+
+🎓 دوره‌های من
+
+</button>
 
 
 <button
 class="btn orange"
-onclick="openCourseSelection()">
+onclick="showPage('placement')">
 
-➕ انتخاب دوره جدید
+🎯 تعیین سطح
 
 </button>
 
 
 <button
-class="btn gray"
-onclick="studentLogout()">
+class="btn red"
+onclick="logoutStudent()">
 
-🚪 خروج
+🚪 خروج از حساب
 
 </button>
-
-</div>
-
-
-<div class="card">
-
-<h2>
-📚 دوره‌های من
-</h2>
-
-
-<div id="myCourses">
-
-<div class="empty">
-
-هنوز دوره‌ای انتخاب نکرده‌اید.
-
-</div>
-
-</div>
 
 </div>
 
 </section>
 
 
-<!-- ==================================================
-COURSE SELECTION
-================================================== -->
 
-<section id="courseSelection" class="page">
+<!-- ================= COURSES ================= -->
+
+<section id="courses" class="page">
 
 <div class="card">
 
@@ -1087,19 +1169,14 @@ COURSE SELECTION
 📚 انتخاب دوره
 </h2>
 
-<div class="info">
-
-دوره موردنظر خود را انتخاب کنید.
-
-</div>
-
+<p>
+دوره مورد نظر خود را انتخاب کنید.
+</p>
 
 <div id="coursesList">
 
-<div class="empty">
-
+<div class="info">
 ⏳ در حال دریافت دوره‌ها...
-
 </div>
 
 </div>
@@ -1109,9 +1186,32 @@ COURSE SELECTION
 </section>
 
 
-<!-- ==================================================
-TEACHER
-================================================== -->
+
+<!-- ================= MY COURSES ================= -->
+
+<section id="myCourses" class="page">
+
+<div class="card">
+
+<h2>
+🎓 دوره‌های من
+</h2>
+
+<div id="myCoursesList">
+
+<div class="info">
+⏳ در حال دریافت اطلاعات...
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= TEACHER ================= -->
 
 <section id="teacher" class="page">
 
@@ -1168,28 +1268,26 @@ MCHE • MSRT • KET • PET
 </section>
 
 
-<!-- ==================================================
-ADMIN
-================================================== -->
+
+<!-- ================= ADMIN ================= -->
 
 <section id="admin" class="page">
 
 <div class="card">
 
 <h2>
-👨‍🏫 پنل مدیریت استاد
+👨‍🏫 پنل مدیریت
 </h2>
 
 <p>
-مدیریت دانش‌آموزان ثبت‌شده
+مدیریت دانش‌آموزان
 </p>
-
 
 <button
 class="btn"
 onclick="loadStudents()">
 
-🔄 بروزرسانی اطلاعات
+🔄 بروزرسانی
 
 </button>
 
@@ -1199,12 +1297,10 @@ onclick="loadStudents()">
 <div class="card">
 
 <h2>
-📊 آمار دانش‌آموزان
+📊 آمار
 </h2>
 
-
 <div class="stats">
-
 
 <div class="stat">
 
@@ -1216,7 +1312,7 @@ id="totalCount">
 
 </div>
 
-کل دانش‌آموزان
+کل
 
 </div>
 
@@ -1231,7 +1327,7 @@ id="waitingCount">
 
 </div>
 
-در صف انتظار
+در انتظار
 
 </div>
 
@@ -1246,7 +1342,7 @@ id="registeredCount">
 
 </div>
 
-ثبت‌نام شده
+تأیید شده
 
 </div>
 
@@ -1273,33 +1369,13 @@ id="graduateCount">
 <div class="card">
 
 <h2>
-🔎 جستجوی دانش‌آموز
+👩‍🎓 دانش‌آموزان
 </h2>
-
-
-<input
-id="studentSearch"
-placeholder="نام، نام خانوادگی یا شماره تلفن..."
-oninput="filterStudents()"
->
-
-</div>
-
-
-<div class="card">
-
-<h2>
-👩‍🎓 لیست دانش‌آموزان
-</h2>
-
 
 <div id="studentsList">
 
 <div class="empty">
-
-برای دریافت اطلاعات روی
-«بروزرسانی اطلاعات» بزنید.
-
+برای دریافت اطلاعات روی بروزرسانی بزنید.
 </div>
 
 </div>
@@ -1312,12 +1388,10 @@ oninput="filterStudents()"
 </div>
 
 
-<!-- ==================================================
-BOTTOM NAV
-================================================== -->
+
+<!-- ================= NAV ================= -->
 
 <nav class="bottom">
-
 
 <button
 class="nav active"
@@ -1350,7 +1424,7 @@ onclick="showPage('grammar')">
 <button
 class="nav"
 data-page="register"
-onclick="showPage('register')">
+onclick="openRegisterOrDashboard()">
 
 <span>
 📝
@@ -1377,26 +1451,27 @@ onclick="showPage('teacher')">
 
 <button
 class="nav"
-data-page="admin"
-onclick="openAdmin()">
+data-page="login"
+onclick="openLoginOrDashboard()">
 
 <span>
-📊
+👤
 </span>
 
-مدیریت
+حساب
 
 </button>
 
 </nav>
 
 
+
 <script>
 
 
-/* ==================================================
-SUPABASE
-================================================== */
+/* ==========================================
+   SUPABASE
+========================================== */
 
 const SUPABASE_URL =
 "https://kapzyedzjecnfxevjisq.supabase.co";
@@ -1411,18 +1486,93 @@ SUPABASE_KEY
 );
 
 
-/* ==================================================
-GLOBAL
-================================================== */
+/* ==========================================
+   GLOBAL
+========================================== */
 
-let allStudents = [];
+let currentUser = null;
 
 let currentStudent = null;
 
+let allStudents = [];
 
-/* ==================================================
-NAVIGATION
-================================================== */
+
+/* ==========================================
+   HELPERS
+========================================== */
+
+function normalizePhone(phone){
+
+return String(phone || "")
+.replace(/\s+/g,"")
+.replace(/-/g,"")
+.trim();
+
+}
+
+
+function makeSystemEmail(phone){
+
+return normalizePhone(phone) +
+"@alinagheli.local";
+
+}
+
+
+function escapeHtml(text){
+
+return String(text ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+function togglePassword(id,button){
+
+const input =
+document.getElementById(id);
+
+if(input.type === "password"){
+
+input.type = "text";
+
+button.innerText = "🙈";
+
+}else{
+
+input.type = "password";
+
+button.innerText = "👁️";
+
+}
+
+}
+
+
+function showMessage(id,type,message){
+
+const element =
+document.getElementById(id);
+
+if(!element) return;
+
+element.innerHTML =
+'<div class="' +
+type +
+'">' +
+message +
+'</div>';
+
+}
+
+
+/* ==========================================
+   NAVIGATION
+========================================== */
 
 function showPage(id){
 
@@ -1438,7 +1588,6 @@ page.classList.remove("active");
 const page =
 document.getElementById(id);
 
-
 if(page){
 
 page.classList.add("active");
@@ -1448,14 +1597,13 @@ page.classList.add("active");
 
 document
 .querySelectorAll(".nav")
-.forEach(function(btn){
+.forEach(function(button){
 
-btn.classList.remove("active");
+button.classList.remove("active");
 
+if(button.dataset.page === id){
 
-if(btn.dataset.page === id){
-
-btn.classList.add("active");
+button.classList.add("active");
 
 }
 
@@ -1464,406 +1612,686 @@ btn.classList.add("active");
 
 window.scrollTo(0,0);
 
+
+if(id === "courses"){
+
+loadCourses();
+
 }
 
 
-/* ==================================================
-ADMIN
-================================================== */
+if(id === "myCourses"){
 
-function openAdmin(){
+loadMyCourses();
 
-showPage("admin");
+}
+
+
+if(id === "studentDashboard"){
+
+renderStudentDashboard();
+
+}
+
+
+if(id === "admin"){
 
 loadStudents();
 
 }
 
+}
 
-/* ==================================================
-REGISTER
-================================================== */
+
+function openRegisterOrDashboard(){
+
+if(currentUser){
+
+showPage("studentDashboard");
+
+}else{
+
+showPage("register");
+
+}
+
+}
+
+
+function openLoginOrDashboard(){
+
+if(currentUser){
+
+showPage("studentDashboard");
+
+}else{
+
+showPage("login");
+
+}
+
+}
+
+
+/* ==========================================
+   REGISTER
+========================================== */
 
 async function registerStudent(){
 
 const firstName =
 document
-.getElementById("firstName")
+.getElementById("registerFirstName")
 .value
 .trim();
-
 
 const lastName =
 document
-.getElementById("lastName")
+.getElementById("registerLastName")
 .value
 .trim();
-
 
 const phone =
+normalizePhone(
 document
-.getElementById("phone")
+.getElementById("registerPhone")
 .value
-.trim();
-
+);
 
 const level =
 document
-.getElementById("level")
+.getElementById("registerLevel")
 .value;
 
+const password =
+document
+.getElementById("registerPassword")
+.value;
 
-const result =
-document.getElementById("registerResult");
-
+const password2 =
+document
+.getElementById("registerPassword2")
+.value;
 
 const button =
 document.getElementById("registerBtn");
 
 
-if(!firstName || !lastName){
+if(
+!firstName ||
+!lastName ||
+!phone
+){
 
-result.innerHTML =
-'<div class="error">'+
-'⚠️ لطفاً نام و نام خانوادگی را وارد کنید.'+
-'</div>';
-
-return;
-
-}
-
-
-if(!phone){
-
-result.innerHTML =
-'<div class="error">'+
-'⚠️ لطفاً شماره تلفن را وارد کنید.'+
-'</div>';
+showMessage(
+"registerResult",
+"error",
+"⚠️ لطفاً نام، نام خانوادگی و شماره موبایل را وارد کنید."
+);
 
 return;
 
 }
 
 
-button.disabled=true;
+if(phone.length < 10){
 
-button.innerText=
+showMessage(
+"registerResult",
+"error",
+"⚠️ شماره موبایل صحیح نیست."
+);
+
+return;
+
+}
+
+
+if(password.length < 6){
+
+showMessage(
+"registerResult",
+"error",
+"⚠️ رمز عبور باید حداقل ۶ کاراکتر باشد."
+);
+
+return;
+
+}
+
+
+if(password !== password2){
+
+showMessage(
+"registerResult",
+"error",
+"⚠️ رمز عبور و تکرار آن یکسان نیست."
+);
+
+return;
+
+}
+
+
+button.disabled = true;
+
+button.innerText =
 "⏳ در حال ثبت...";
 
 
-result.innerHTML =
-'<div class="info">'+
-"⏳ در حال اتصال به سرور..."+
-"</div>";
-
-
-try{
-
-
-const response =
-await db
-.from("students")
-.insert({
-
-first_name:firstName,
-last_name:lastName,
-phone:phone,
-level:level,
-status:"waiting"
-
-});
-
-
-if(response.error){
-
-console.error(response.error);
-
-
-result.innerHTML =
-'<div class="error">'+
-"❌ ثبت‌نام انجام نشد."+
-"<br><br>"+
-escapeHtml(
-response.error.message
-)+
-"</div>";
-
-
-return;
-
-}
-
-
-result.innerHTML =
-'<div class="success">'+
-"🎉 ثبت‌نام با موفقیت انجام شد!"+
-"<br><br>"+
-"درخواست شما برای تأیید مدیر ارسال شد. ✅"+
-"</div>";
-
-
-document
-.getElementById("firstName")
-.value="";
-
-
-document
-.getElementById("lastName")
-.value="";
-
-
-document
-.getElementById("phone")
-.value="";
-
-
-}catch(error){
-
-console.error(error);
-
-
-result.innerHTML =
-'<div class="error">'+
-"❌ خطا در ارتباط با سرور."+
-"<br><br>"+
-escapeHtml(error.message)+
-"</div>";
-
-
-}finally{
-
-button.disabled=false;
-
-button.innerText=
-"💾 ثبت درخواست";
-
-}
-
-}
-
-
-/* ==================================================
-STUDENT LOGIN
-================================================== */
-
-async function studentLogin(){
-
-const phone =
-document
-.getElementById("loginPhone")
-.value
-.trim();
-
-
-const result =
-document
-.getElementById("loginResult");
-
-
-if(!phone){
-
-result.innerHTML =
-'<div class="error">'+
-"⚠️ لطفاً شماره تلفن را وارد کنید."+
-"</div>";
-
-return;
-
-}
-
-
-result.innerHTML =
-'<div class="info">'+
-"⏳ در حال بررسی اطلاعات..."+
-"</div>";
+showMessage(
+"registerResult",
+"info",
+"⏳ در حال ایجاد حساب..."
+);
 
 
 try{
 
 
 /*
-مهم:
-اینجا دیگر از maybeSingle استفاده نمی‌کنیم.
-حتی اگر چند رکورد با یک شماره وجود داشته باشد،
-فقط آخرین رکورد را می‌گیریم.
+اول بررسی می‌کنیم
+این شماره قبلاً در students هست یا نه.
 */
 
-const response =
+const existing =
 await db
 .from("students")
-.select("*")
+.select("id")
 .eq("phone",phone)
-.order("id",{ascending:false})
 .limit(1);
 
 
-if(response.error){
+if(existing.error){
 
-console.error(response.error);
-
-
-result.innerHTML =
-'<div class="error">'+
-"❌ خطا در ورود."+
-"<br><br>"+
-escapeHtml(
-response.error.message
-)+
-"</div>";
-
-
-return;
+throw existing.error;
 
 }
 
 
 if(
-!response.data ||
-response.data.length===0
+existing.data &&
+existing.data.length > 0
 ){
 
-result.innerHTML =
-'<div class="error">'+
-"❌ دانش‌آموزی با این شماره پیدا نشد."+
-"</div>";
-
-
-return;
-
-}
-
-
-const student =
-response.data[0];
-
-
-if(student.status !== "registered"){
-
-result.innerHTML =
-'<div class="info">'+
-"⏳ ثبت‌نام شما هنوز توسط مدیر تأیید نشده است."+
-"<br><br>"+
-"وضعیت فعلی: "+
-escapeHtml(
-getStatusText(student.status)
-)+
-"</div>";
-
+showMessage(
+"registerResult",
+"error",
+"❌ این شماره موبایل قبلاً ثبت شده است.<br><br>اگر قبلاً حساب ساخته‌اید، از بخش «ورود» وارد شوید."
+);
 
 return;
 
 }
 
+
+/*
+ساخت حساب Supabase Auth
+*/
+
+const signUp =
+await db.auth.signUp({
+
+email:
+makeSystemEmail(phone),
+
+password:
+password,
+
+options:{
+
+data:{
+
+first_name:
+firstName,
+
+last_name:
+lastName,
+
+phone:
+phone
+
+}
+
+}
+
+});
+
+
+if(signUp.error){
+
+throw signUp.error;
+
+}
+
+
+const user =
+signUp.data.user;
+
+
+if(!user){
+
+throw new Error(
+"کاربر ایجاد نشد."
+);
+
+}
+
+
+/*
+ثبت دانش‌آموز
+*/
+
+const insert =
+await db
+.from("students")
+.insert({
+
+first_name:
+firstName,
+
+last_name:
+lastName,
+
+phone:
+phone,
+
+level:
+level,
+
+status:
+"waiting",
+
+auth_user_id:
+user.id
+
+})
+.select()
+.single();
+
+
+if(insert.error){
+
+/*
+اگر ذخیره student شکست خورد،
+حساب Auth را پاک نمی‌کنیم چون کاربر عادی
+اجازه حذف حساب Auth را ندارد.
+*/
+
+throw insert.error;
+
+}
+
+
+if(signUp.data.session){
+
+currentUser =
+signUp.data.session.user;
 
 currentStudent =
-student;
+insert.data;
+
+}
 
 
-localStorage.setItem(
-"currentStudentId",
-String(student.id)
+showMessage(
+"registerResult",
+"success",
+"🎉 ثبت‌نام با موفقیت انجام شد!<br><br>درخواست شما برای تأیید مدیر ارسال شد.<br><br>پس از تأیید مدیر، می‌توانید وارد حساب شوید و دوره خود را انتخاب کنید. ✅"
 );
 
 
 document
-.getElementById("studentWelcome")
-.innerHTML =
+.getElementById("registerFirstName")
+.value = "";
 
-'<div class="success">'+
+document
+.getElementById("registerLastName")
+.value = "";
 
-"سلام "+
-escapeHtml(
-student.first_name || ""
-)+
-" عزیز 👋"+
+document
+.getElementById("registerPhone")
+.value = "";
 
-"<br><br>"+
+document
+.getElementById("registerPassword")
+.value = "";
 
-"به پنل آموزشی خودت خوش آمدی."+
-
-"</div>";
-
-
-showPage(
-"studentCourses"
-);
-
-
-await loadMyCourses();
+document
+.getElementById("registerPassword2")
+.value = "";
 
 
 }catch(error){
 
 console.error(error);
 
-
-result.innerHTML =
-'<div class="error">'+
-"❌ خطا در ارتباط با سرور."+
-"<br><br>"+
-escapeHtml(error.message)+
-"</div>";
-
-}
-
-}
-
-
-/* ==================================================
-LOGOUT
-================================================== */
-
-function studentLogout(){
-
-currentStudent=null;
-
-localStorage.removeItem(
-"currentStudentId"
+showMessage(
+"registerResult",
+"error",
+"❌ ثبت‌نام انجام نشد.<br><br>" +
+escapeHtml(error.message)
 );
 
+}finally{
 
+button.disabled = false;
+
+button.innerText =
+"💾 ایجاد حساب و ثبت درخواست";
+
+}
+
+}
+
+
+/* ==========================================
+   LOGIN
+========================================== */
+
+async function loginStudent(){
+
+const phone =
+normalizePhone(
 document
 .getElementById("loginPhone")
-.value="";
-
-
-showPage("home");
-
-}
-
-
-/* ==================================================
-COURSE SELECTION
-================================================== */
-
-async function openCourseSelection(){
-
-if(!currentStudent){
-
-alert(
-"لطفاً ابتدا وارد حساب دانش‌آموز شوید."
+.value
 );
 
-showPage("studentLogin");
+const password =
+document
+.getElementById("loginPassword")
+.value;
+
+const button =
+document.getElementById("loginBtn");
+
+
+if(!phone || !password){
+
+showMessage(
+"loginResult",
+"error",
+"⚠️ شماره موبایل و رمز عبور را وارد کنید."
+);
 
 return;
 
 }
 
 
-showPage(
-"courseSelection"
+button.disabled = true;
+
+button.innerText =
+"⏳ در حال ورود...";
+
+
+showMessage(
+"loginResult",
+"info",
+"⏳ در حال بررسی اطلاعات..."
 );
 
 
-await loadCourses();
+try{
+
+
+const result =
+await db.auth.signInWithPassword({
+
+email:
+makeSystemEmail(phone),
+
+password:
+password
+
+});
+
+
+if(result.error){
+
+throw result.error;
 
 }
 
 
-/* ==================================================
-LOAD COURSES
-================================================== */
+currentUser =
+result.data.user;
+
+
+const loaded =
+await loadCurrentStudent();
+
+
+if(!loaded){
+
+await db.auth.signOut();
+
+currentUser = null;
+
+throw new Error(
+"پروفایل دانش‌آموز پیدا نشد."
+);
+
+}
+
+
+/*
+اگر هنوز تأیید نشده
+*/
+
+if(
+currentStudent.status === "waiting"
+){
+
+showMessage(
+"loginResult",
+"warning",
+"⏳ ورود انجام شد، اما حساب شما هنوز توسط مدیر تأیید نشده است.<br><br>بعد از تأیید مدیر دوباره وارد شوید."
+);
+
+return;
+
+}
+
+
+showMessage(
+"loginResult",
+"success",
+"🎉 ورود موفق بود!"
+);
+
+
+setTimeout(
+function(){
+
+showPage("studentDashboard");
+
+},
+600
+);
+
+
+}catch(error){
+
+console.error(error);
+
+showMessage(
+"loginResult",
+"error",
+"❌ ورود انجام نشد.<br><br>" +
+escapeHtml(error.message)
+);
+
+}finally{
+
+button.disabled = false;
+
+button.innerText =
+"🔐 ورود";
+
+}
+
+}
+
+
+/* ==========================================
+   LOAD CURRENT STUDENT
+========================================== */
+
+async function loadCurrentStudent(){
+
+if(!currentUser){
+
+return false;
+
+}
+
+
+const result =
+await db
+.from("students")
+.select("*")
+.eq(
+"auth_user_id",
+currentUser.id
+)
+.limit(1);
+
+
+if(
+result.error ||
+!result.data ||
+!result.data.length
+){
+
+return false;
+
+}
+
+
+currentStudent =
+result.data[0];
+
+return true;
+
+}
+
+
+/* ==========================================
+   STUDENT DASHBOARD
+========================================== */
+
+function renderStudentDashboard(){
+
+const box =
+document.getElementById(
+"studentHeader"
+);
+
+
+if(!box){
+
+return;
+
+}
+
+
+if(!currentStudent){
+
+box.innerHTML =
+'<div class="warning">' +
+'اطلاعات دانش‌آموز پیدا نشد.' +
+'</div>';
+
+return;
+
+}
+
+
+let statusText =
+"در صف انتظار";
+
+let statusClass =
+"waiting";
+
+
+if(
+currentStudent.status ===
+"registered"
+){
+
+statusText =
+"تأیید شده";
+
+statusClass =
+"registered";
+
+}
+
+
+if(
+currentStudent.status ===
+"graduate"
+){
+
+statusText =
+"فارغ‌التحصیل";
+
+statusClass =
+"graduate";
+
+}
+
+
+box.innerHTML =
+
+'<div class="user-header">' +
+
+'<div class="user-name">' +
+
+'👋 سلام ' +
+
+escapeHtml(
+currentStudent.first_name
+) +
+
+' ' +
+
+escapeHtml(
+currentStudent.last_name
+) +
+
+'</div>' +
+
+'<div style="margin-top:8px">' +
+
+'📱 ' +
+
+escapeHtml(
+currentStudent.phone || ""
+) +
+
+'</div>' +
+
+'<span class="badge ' +
+
+statusClass +
+
+'">' +
+
+statusText +
+
+'</span>' +
+
+'</div>';
+
+}
+
+
+/* ==========================================
+   COURSES
+========================================== */
 
 async function loadCourses(){
 
@@ -1873,36 +2301,66 @@ document.getElementById(
 );
 
 
+if(!list){
+
+return;
+
+}
+
+
+if(!currentStudent){
+
 list.innerHTML =
-'<div class="info">'+
-"⏳ در حال دریافت دوره‌ها..."+
-"</div>";
+'<div class="warning">' +
+'🔐 ابتدا وارد حساب خود شوید.' +
+'</div>';
+
+return;
+
+}
 
 
-try{
+if(
+currentStudent.status !==
+"registered"
+){
+
+list.innerHTML =
+'<div class="warning">' +
+'⏳ انتخاب دوره پس از تأیید مدیر امکان‌پذیر است.' +
+'</div>';
+
+return;
+
+}
 
 
-const response =
+list.innerHTML =
+'<div class="info">' +
+'⏳ در حال دریافت دوره‌ها...' +
+'</div>';
+
+
+const result =
 await db
 .from("courses")
 .select("*")
-.order("id",{ascending:true});
+.eq("active",true)
+.order("id",{
+ascending:true
+});
 
 
-if(response.error){
-
-console.error(response.error);
-
+if(result.error){
 
 list.innerHTML =
-'<div class="error">'+
-"❌ دریافت دوره‌ها انجام نشد."+
-"<br><br>"+
+'<div class="error">' +
+'❌ دریافت دوره‌ها انجام نشد.' +
+'<br><br>' +
 escapeHtml(
-response.error.message
-)+
-"</div>";
-
+result.error.message
+) +
+'</div>';
 
 return;
 
@@ -1910,118 +2368,112 @@ return;
 
 
 const courses =
-response.data || [];
+result.data || [];
 
 
 if(!courses.length){
 
 list.innerHTML =
-'<div class="empty">'+
-"📚 هنوز دوره‌ای ایجاد نشده است."+
-"</div>";
+'<div class="empty">' +
+'هنوز دوره‌ای ثبت نشده است.' +
+'</div>';
 
 return;
 
 }
 
 
-list.innerHTML="";
+list.innerHTML = "";
 
 
-courses.forEach(
-function(course){
+for(
+const course of courses
+){
+
+const selected =
+await isCourseSelected(
+course.id
+);
 
 
-const html =
+const div =
+document.createElement("div");
 
-'<div class="course">'+
+div.className =
+"course";
 
-'<div class="course-icon">'+
-"📚"+
-"</div>"+
 
-'<div class="course-title">'+
+div.innerHTML =
+
+'<div class="course-title">' +
+
 escapeHtml(
-course.title ||
-"دوره زبان انگلیسی"
-)+
-"</div>"+
+course.title
+) +
 
-'<div class="course-description">'+
-escapeHtml(
-course.description ||
-"دوره آموزشی زبان انگلیسی"
-)+
-"</div>"+
+'</div>' +
 
-'<div class="course-category">'+
+'<div class="course-category">' +
+
 escapeHtml(
 course.category ||
-"English"
-)+
-"</div>"+
+"عمومی"
+) +
 
-'<button class="btn" '+
-'onclick="selectCourse('+
-course.id+
-')">'+
+'</div>' +
 
-"🎓 انتخاب این دوره"+
+'<div class="course-description">' +
 
-"</button>"+
+escapeHtml(
+course.description ||
+""
+) +
 
-"</div>";
+'</div>' +
+
+(
+selected
+
+?
+
+'<button class="btn gray" disabled>' +
+'✅ قبلاً انتخاب شده' +
+'</button>'
+
+:
+
+'<button class="btn" onclick="selectCourse(' +
+course.id +
+')">' +
+'📚 انتخاب این دوره' +
+'</button>'
+
+);
 
 
-list.innerHTML +=
-html;
-
-});
-
-
-
-}catch(error){
-
-console.error(error);
-
-
-list.innerHTML =
-'<div class="error">'+
-"❌ خطا در ارتباط با سرور."+
-"</div>";
+list.appendChild(div);
 
 }
 
 }
 
 
-/* ==================================================
-SELECT COURSE
-================================================== */
+/* ==========================================
+   CHECK COURSE
+========================================== */
 
-async function selectCourse(courseId){
+async function isCourseSelected(
+courseId
+){
 
 if(!currentStudent){
 
-alert(
-"لطفاً وارد حساب دانش‌آموز شوید."
-);
-
-showPage("studentLogin");
-
-return;
+return false;
 
 }
 
 
-try{
-
-
-/*
-اینجا هم از maybeSingle استفاده نمی‌کنیم.
-*/
-
-const check =
+const result =
 await db
 .from("student_courses")
 .select("id")
@@ -2036,12 +2488,32 @@ courseId
 .limit(1);
 
 
-if(check.error){
+return !!(
+result.data &&
+result.data.length
+);
+
+}
+
+
+/* ==========================================
+   SELECT COURSE
+========================================== */
+
+async function selectCourse(
+courseId
+){
+
+if(
+!currentUser ||
+!currentStudent
+){
 
 alert(
-"❌ بررسی دوره انجام نشد:\n"+
-check.error.message
+"لطفاً ابتدا وارد حساب شوید."
 );
+
+showPage("login");
 
 return;
 
@@ -2049,12 +2521,12 @@ return;
 
 
 if(
-check.data &&
-check.data.length>0
+currentStudent.status !==
+"registered"
 ){
 
 alert(
-"این دوره قبلاً به دوره‌های شما اضافه شده است."
+"⏳ انتخاب دوره فقط بعد از تأیید مدیر امکان‌پذیر است."
 );
 
 return;
@@ -2062,7 +2534,24 @@ return;
 }
 
 
-const response =
+const already =
+await isCourseSelected(
+courseId
+);
+
+
+if(already){
+
+alert(
+"این دوره قبلاً انتخاب شده است."
+);
+
+return;
+
+}
+
+
+const result =
 await db
 .from("student_courses")
 .insert({
@@ -2071,19 +2560,19 @@ student_id:
 currentStudent.id,
 
 course_id:
-courseId
+courseId,
+
+progress:
+0
 
 });
 
 
-if(response.error){
-
-console.error(response.error);
-
+if(result.error){
 
 alert(
-"❌ انتخاب دوره انجام نشد:\n"+
-response.error.message
+"❌ انتخاب دوره انجام نشد:\n\n" +
+result.error.message
 );
 
 return;
@@ -2092,197 +2581,240 @@ return;
 
 
 alert(
-"🎉 دوره با موفقیت به دوره‌های شما اضافه شد."
+"🎉 دوره با موفقیت به دوره‌های شما اضافه شد!"
 );
 
 
-await loadMyCourses();
-
-
-showPage(
-"studentCourses"
-);
-
-
-}catch(error){
-
-console.error(error);
-
-
-alert(
-"❌ خطا:\n"+
-error.message
-);
-
-}
+loadCourses();
 
 }
 
 
-/* ==================================================
-MY COURSES
-================================================== */
+/* ==========================================
+   MY COURSES
+========================================== */
 
 async function loadMyCourses(){
 
-if(!currentStudent){
+const list =
+document.getElementById(
+"myCoursesList"
+);
+
+
+if(!list){
 
 return;
 
 }
 
 
-const list =
-document.getElementById(
-"myCourses"
-);
+if(!currentStudent){
+
+list.innerHTML =
+'<div class="warning">' +
+'🔐 ابتدا وارد حساب شوید.' +
+'</div>';
+
+return;
+
+}
 
 
 list.innerHTML =
-'<div class="info">'+
-"⏳ در حال دریافت دوره‌های شما..."+
-"</div>";
+'<div class="info">' +
+'⏳ در حال دریافت دوره‌های شما...' +
+'</div>';
 
 
-try{
-
-
-const response =
+const result =
 await db
 .from("student_courses")
-.select(`
-id,
-course_id,
-courses (
-id,
-title,
-description,
-category
+.select(
+"id,progress,course_id,courses(id,title,description,category)"
 )
-`)
 .eq(
 "student_id",
 currentStudent.id
 )
 .order(
 "id",
-{ascending:false}
+{
+ascending:false
+}
 );
 
 
-if(response.error){
-
-console.error(response.error);
-
+if(result.error){
 
 list.innerHTML =
-'<div class="error">'+
-"❌ دریافت دوره‌های شما انجام نشد."+
-"<br><br>"+
+'<div class="error">' +
+'❌ دریافت دوره‌ها انجام نشد.' +
+'<br><br>' +
 escapeHtml(
-response.error.message
-)+
-"</div>";
-
+result.error.message
+) +
+'</div>';
 
 return;
 
 }
 
 
-const data =
-response.data || [];
+const rows =
+result.data || [];
 
 
-if(!data.length){
+if(!rows.length){
 
 list.innerHTML =
-'<div class="empty">'+
-"📚 هنوز هیچ دوره‌ای انتخاب نکرده‌اید."+
-"</div>";
+'<div class="empty">' +
+
+'📚 هنوز دوره‌ای انتخاب نکرده‌اید.' +
+
+'<br><br>' +
+
+'<button class="btn" onclick="showPage(\'courses\')">' +
+
+'انتخاب دوره' +
+
+'</button>' +
+
+'</div>';
 
 return;
 
 }
 
 
-list.innerHTML="";
+list.innerHTML = "";
 
 
-data.forEach(
-function(item){
+rows.forEach(
+function(row){
 
-
-const course =
-item.courses;
-
-
-if(!course){
+if(!row.courses){
 
 return;
 
 }
 
 
-const html =
+const progress =
+Math.max(
+0,
+Math.min(
+100,
+Number(
+row.progress || 0
+)
+)
+);
 
-'<div class="course">'+
 
-'<div class="course-icon">'+
-"🎓"+
-"</div>"+
+const div =
+document.createElement("div");
 
-'<div class="course-title">'+
+
+div.className =
+"my-course";
+
+
+div.innerHTML =
+
+'<b style="font-size:17px;color:#1d4ed8">' +
+
+'📚 ' +
+
 escapeHtml(
-course.title || ""
-)+
-"</div>"+
+row.courses.title
+) +
 
-'<div class="course-description">'+
+'</b>' +
+
+'<div style="font-size:12px;color:#64748b;margin-top:6px">' +
+
 escapeHtml(
-course.description || ""
-)+
-"</div>"+
+row.courses.category ||
+""
+) +
 
-'<div class="progress">'+
+'</div>' +
 
-'<div class="progress-bar" style="width:0%">'+
+'<div style="margin-top:10px;font-size:12px">' +
 
-"</div>"+
+'پیشرفت: ' +
 
-"</div>"+
+progress +
 
-"<small>"+
-"شروع نشده — 0٪ تکمیل شده"+
-"</small>"+
+'%' +
 
-"</div>";
+'</div>' +
+
+'<div class="progress">' +
+
+'<div class="progress-bar" style="width:' +
+
+progress +
+
+'%"></div>' +
+
+'</div>' +
+
+'<button class="btn light" onclick="openCourse(' +
+
+row.course_id +
+
+')">' +
+
+'🚀 ورود به دوره' +
+
+'</button>';
 
 
-list.innerHTML +=
-html;
-
-});
-
-
-}catch(error){
-
-console.error(error);
-
-
-list.innerHTML =
-'<div class="error">'+
-"❌ خطا در دریافت دوره‌ها."+
-"</div>";
+list.appendChild(div);
 
 }
 
+);
+
 }
 
 
-/* ==================================================
-LOAD STUDENTS
-================================================== */
+function openCourse(id){
+
+alert(
+"🚀 محتوای آموزشی این دوره در مرحله بعد اضافه می‌شود.\n\nشناسه دوره: " +
+id
+);
+
+}
+
+
+/* ==========================================
+   LOGOUT
+========================================== */
+
+async function logoutStudent(){
+
+await db.auth.signOut();
+
+currentUser = null;
+
+currentStudent = null;
+
+alert(
+"👋 با موفقیت از حساب خارج شدید."
+);
+
+showPage("home");
+
+}
+
+
+/* ==========================================
+   ADMIN LOAD
+========================================== */
 
 async function loadStudents(){
 
@@ -2292,39 +2824,41 @@ document.getElementById(
 );
 
 
+if(!list){
+
+return;
+
+}
+
+
 list.innerHTML =
-'<div class="info">'+
-"⏳ در حال دریافت اطلاعات..."+
-"</div>";
+'<div class="info">' +
+'⏳ در حال دریافت اطلاعات...' +
+'</div>';
 
 
-try{
-
-
-const response =
+const result =
 await db
 .from("students")
 .select("*")
 .order(
 "id",
-{ascending:false}
+{
+ascending:false
+}
 );
 
 
-if(response.error){
-
-console.error(response.error);
-
+if(result.error){
 
 list.innerHTML =
-'<div class="error">'+
-"❌ دریافت اطلاعات انجام نشد."+
-"<br><br>"+
+'<div class="error">' +
+'❌ دریافت اطلاعات انجام نشد.' +
+'<br><br>' +
 escapeHtml(
-response.error.message
-)+
-"</div>";
-
+result.error.message
+) +
+'</div>';
 
 return;
 
@@ -2332,7 +2866,7 @@ return;
 
 
 allStudents =
-response.data || [];
+result.data || [];
 
 
 updateStats();
@@ -2341,25 +2875,12 @@ renderStudents(
 allStudents
 );
 
-
-}catch(error){
-
-console.error(error);
-
-
-list.innerHTML =
-'<div class="error">'+
-"❌ خطا در ارتباط با سرور."+
-"</div>";
-
-}
-
 }
 
 
-/* ==================================================
-STATS
-================================================== */
+/* ==========================================
+   STATS
+========================================== */
 
 function updateStats(){
 
@@ -2374,58 +2895,72 @@ function(student){
 return (
 student.status ||
 "waiting"
-)==="waiting";
+) ===
+"waiting";
 
-}).length;
+}
+).length;
 
 
 const registered =
 allStudents.filter(
 function(student){
 
-return student.status ===
-"registered";
+return (
+student.status ===
+"registered"
+);
 
-}).length;
+}
+).length;
 
 
 const graduate =
 allStudents.filter(
 function(student){
 
-return student.status ===
-"graduate";
+return (
+student.status ===
+"graduate"
+);
 
-}).length;
+}
+).length;
 
 
 document
 .getElementById("totalCount")
-.innerText=total;
+.innerText =
+total;
 
 
 document
 .getElementById("waitingCount")
-.innerText=waiting;
+.innerText =
+waiting;
 
 
 document
 .getElementById("registeredCount")
-.innerText=registered;
+.innerText =
+registered;
 
 
 document
 .getElementById("graduateCount")
-.innerText=graduate;
+.innerText =
+graduate;
 
 }
 
 
-/* ==================================================
-RENDER STUDENTS
-================================================== */
+/* ==========================================
+   RENDER STUDENTS
+========================================== */
 
-function renderStudents(students){
+function renderStudents(
+students
+){
 
 const list =
 document.getElementById(
@@ -2436,21 +2971,20 @@ document.getElementById(
 if(!students.length){
 
 list.innerHTML =
-'<div class="empty">'+
-"👩‍🎓 دانش‌آموزی پیدا نشد."+
-"</div>";
+'<div class="empty">' +
+'👩‍🎓 دانش‌آموزی پیدا نشد.' +
+'</div>';
 
 return;
 
 }
 
 
-list.innerHTML="";
+list.innerHTML = "";
 
 
 students.forEach(
 function(student){
-
 
 const status =
 student.status ||
@@ -2460,17 +2994,17 @@ student.status ||
 let statusText =
 "در صف انتظار";
 
-
 let badgeClass =
 "waiting";
 
 
 if(
-status==="registered"
+status ===
+"registered"
 ){
 
 statusText =
-"ثبت‌نام شده";
+"تأیید شده";
 
 badgeClass =
 "registered";
@@ -2479,7 +3013,8 @@ badgeClass =
 
 
 if(
-status==="graduate"
+status ===
+"graduate"
 ){
 
 statusText =
@@ -2491,196 +3026,126 @@ badgeClass =
 }
 
 
-const html =
+const div =
+document.createElement("div");
 
-'<div class="student">'+
+div.className =
+"student";
 
-'<div class="student-name">'+
 
-"👤 "+
+div.innerHTML =
+
+'<div class="student-name">' +
+
+'👤 ' +
+
 escapeHtml(
-student.first_name || ""
-)+
-" "+
+student.first_name ||
+""
+) +
+
+' ' +
+
 escapeHtml(
-student.last_name || ""
-)+
+student.last_name ||
+""
+) +
 
-"</div>"+
+'</div>' +
 
-'<div class="student-info">'+
+'<div class="student-info">' +
 
-"📞 "+
+'📞 ' +
+
 escapeHtml(
 student.phone ||
 "ثبت نشده"
-)+
+) +
 
-"<br>"+
+'<br>' +
 
-"📚 سطح: "+
+'📚 سطح: ' +
+
 escapeHtml(
 student.level ||
 "نامشخص"
-)+
+) +
 
-"<br>"+
+'<br>' +
 
-'<span class="badge '+
-badgeClass+
-'">'+
+'<span class="badge ' +
+badgeClass +
+'">' +
 
-statusText+
+statusText +
 
-"</span>"+
+'</span>' +
 
-"</div>"+
+'</div>' +
 
-'<div class="student-actions">'+
+'<div class="student-actions">' +
 
+'<button class="btn light" onclick="changeStatus(' +
+student.id +
+',\'waiting\')">' +
 
-'<button class="btn light" '+
-'onclick="changeStatus('+
-student.id+
-',\'waiting\')">'+
+'🟡 انتظار' +
 
-"🟡 انتظار"+
+'</button>' +
 
-"</button>"+
+'<button class="btn green" onclick="changeStatus(' +
+student.id +
+',\'registered\')">' +
 
+'🟢 تأیید' +
 
-'<button class="btn green" '+
-'onclick="changeStatus('+
-student.id+
-',\'registered\')">'+
+'</button>' +
 
-"🟢 تأیید"+
+'<button class="btn light" onclick="changeStatus(' +
+student.id +
+',\'graduate\')">' +
 
-"</button>"+
+'🟣 فارغ‌التحصیل' +
 
+'</button>' +
 
-'<button class="btn light" '+
-'onclick="changeStatus('+
-student.id+
-',\'graduate\')">'+
+'<button class="btn red" onclick="deleteStudent(' +
+student.id +
+')">' +
 
-"🟣 فارغ‌التحصیل"+
+'🗑️ حذف' +
 
-"</button>"+
+'</button>' +
 
-
-'<button class="btn red" '+
-'onclick="deleteStudent('+
-student.id+
-')">'+
-
-"🗑️ حذف"+
-
-"</button>"+
+'</div>';
 
 
-"</div>"+
-
-"</div>";
-
-
-list.innerHTML +=
-html;
-
-});
+list.appendChild(div);
 
 }
 
-
-/* ==================================================
-SEARCH
-================================================== */
-
-function filterStudents(){
-
-const search =
-document
-.getElementById(
-"studentSearch"
-)
-.value
-.trim()
-.toLowerCase();
-
-
-if(!search){
-
-renderStudents(
-allStudents
-);
-
-return;
-
-}
-
-
-const filtered =
-allStudents.filter(
-function(student){
-
-
-const first =
-(
-student.first_name ||
-""
-).toLowerCase();
-
-
-const last =
-(
-student.last_name ||
-""
-).toLowerCase();
-
-
-const phone =
-(
-student.phone ||
-""
-).toLowerCase();
-
-
-return
-
-first.includes(search)
-
-||
-
-last.includes(search)
-
-||
-
-phone.includes(search);
-
-});
-
-
-renderStudents(
-filtered
 );
 
 }
 
 
-/* ==================================================
-CHANGE STATUS
-================================================== */
+/* ==========================================
+   CHANGE STATUS
+========================================== */
 
 async function changeStatus(
 id,
 status
 ){
 
-const response =
+const result =
 await db
 .from("students")
 .update({
-status:status
+
+status:
+status
+
 })
 .eq(
 "id",
@@ -2688,11 +3153,11 @@ id
 );
 
 
-if(response.error){
+if(result.error){
 
 alert(
-"❌ تغییر وضعیت انجام نشد:\n"+
-response.error.message
+"❌ تغییر وضعیت انجام نشد:\n\n" +
+result.error.message
 );
 
 return;
@@ -2705,11 +3170,13 @@ await loadStudents();
 }
 
 
-/* ==================================================
-DELETE
-================================================== */
+/* ==========================================
+   DELETE STUDENT
+========================================== */
 
-async function deleteStudent(id){
+async function deleteStudent(
+id
+){
 
 const confirmed =
 confirm(
@@ -2724,7 +3191,7 @@ return;
 }
 
 
-const response =
+const result =
 await db
 .from("students")
 .delete()
@@ -2734,11 +3201,11 @@ id
 );
 
 
-if(response.error){
+if(result.error){
 
 alert(
-"❌ حذف انجام نشد:\n"+
-response.error.message
+"❌ حذف انجام نشد:\n\n" +
+result.error.message
 );
 
 return;
@@ -2751,9 +3218,9 @@ await loadStudents();
 }
 
 
-/* ==================================================
-GRAMMAR
-================================================== */
+/* ==========================================
+   GRAMMAR
+========================================== */
 
 function grammarQuiz(){
 
@@ -2761,283 +3228,189 @@ document
 .getElementById(
 "grammarResult"
 )
-.innerHTML=
+.innerHTML =
 
-'<div class="info">'+
-"She _____ English every day."+
-"</div>"+
+'<div class="info">' +
+'She _____ English every day.' +
+'</div>' +
 
-'<button class="btn light" '+
-'onclick="grammarAnswer(false)">'+
-"study"+
-"</button>"+
+'<button class="btn light" onclick="grammarAnswer(false)">' +
+'study' +
+'</button>' +
 
-'<button class="btn light" '+
-'onclick="grammarAnswer(true)">'+
-"studies"+
-"</button>"+
+'<button class="btn light" onclick="grammarAnswer(true)">' +
+'studies' +
+'</button>' +
 
-'<button class="btn light" '+
-'onclick="grammarAnswer(false)">'+
-"studying"+
-"</button>";
+'<button class="btn light" onclick="grammarAnswer(false)">' +
+'studying' +
+'</button>';
 
 }
 
 
-function grammarAnswer(correct){
+function grammarAnswer(
+correct
+){
 
 document
 .getElementById(
 "grammarResult"
 )
-.innerHTML=
+.innerHTML =
 
 correct
 
 ?
 
-'<div class="success">'+
-"✅ پاسخ صحیح است! +10 XP"+
-"</div>"
+'<div class="success">' +
+'✅ پاسخ صحیح است! +10 XP' +
+'</div>'
 
 :
 
-'<div class="error">'+
-"❌ پاسخ اشتباه است."+
-"</div>";
+'<div class="error">' +
+'❌ پاسخ اشتباه است.' +
+'</div>';
 
 }
 
 
-/* ==================================================
-QUIZ
-================================================== */
+/* ==========================================
+   QUIZ
+========================================== */
 
-function quizAnswer(correct){
+function quizAnswer(
+correct
+){
 
 document
 .getElementById(
 "quizResult"
 )
-.innerHTML=
+.innerHTML =
 
 correct
 
 ?
 
-'<div class="success">'+
-"✅ پاسخ صحیح است! +10 XP"+
-"</div>"
+'<div class="success">' +
+'✅ پاسخ صحیح است! +10 XP' +
+'</div>'
 
 :
 
-'<div class="error">'+
-"❌ پاسخ اشتباه است."+
-"</div>";
+'<div class="error">' +
+'❌ پاسخ اشتباه است.' +
+'</div>';
 
 }
 
 
-/* ==================================================
-PLACEMENT
-================================================== */
+/* ==========================================
+   PLACEMENT
+========================================== */
 
-function placementAnswer(correct){
+function placementAnswer(
+correct
+){
 
 document
 .getElementById(
 "placementResult"
 )
-.innerHTML=
+.innerHTML =
 
 correct
 
 ?
 
-'<div class="success">'+
-"🎉 پاسخ صحیح بود!"+
-"</div>"
+'<div class="success">' +
+'🎉 پاسخ صحیح بود!' +
+'</div>'
 
 :
 
-'<div class="error">'+
-"❌ پاسخ اشتباه بود."+
-"</div>";
+'<div class="error">' +
+'❌ پاسخ اشتباه بود.' +
+'</div>';
 
 }
 
 
-/* ==================================================
-LESSON
-================================================== */
+/* ==========================================
+   LESSON
+========================================== */
 
-function lessonDone(type){
+function lessonDone(
+type
+){
 
 alert(
-"✅ "+
-type+
+"✅ " +
+type +
 " امروز انجام شد!"
 );
 
 }
 
 
-/* ==================================================
-STATUS TEXT
-================================================== */
+/* ==========================================
+   AUTH STATE
+========================================== */
 
-function getStatusText(status){
-
-if(
-status==="registered"
+db.auth.onAuthStateChange(
+async function(
+event,
+session
 ){
 
-return "تأیید شده";
+if(session){
+
+currentUser =
+session.user;
+
+await loadCurrentStudent();
+
+}else{
+
+currentUser = null;
+
+currentStudent = null;
 
 }
 
-
-if(
-status==="graduate"
-){
-
-return "فارغ‌التحصیل";
-
 }
-
-
-return "در صف انتظار";
-
-}
-
-
-/* ==================================================
-ESCAPE HTML
-================================================== */
-
-function escapeHtml(text){
-
-return String(text)
-
-.replace(
-/&/g,
-"&amp;"
-)
-
-.replace(
-/</g,
-"&lt;"
-)
-
-.replace(
-/>/g,
-"&gt;"
-)
-
-.replace(
-/"/g,
-"&quot;"
-)
-
-.replace(
-/'/g,
-"&#039;"
-);
-
-}
-
-
-/* ==================================================
-RESTORE SESSION
-================================================== */
-
-async function restoreStudent(){
-
-const savedId =
-localStorage.getItem(
-"currentStudentId"
 );
 
 
-if(!savedId){
+/* ==========================================
+   START
+========================================== */
 
-return;
-
-}
-
+(async function(){
 
 try{
 
-
-const response =
-await db
-.from("students")
-.select("*")
-.eq(
-"id",
-savedId
-)
-.limit(1);
+const sessionResult =
+await db.auth.getSession();
 
 
 if(
-response.error ||
-!response.data ||
-response.data.length===0
+sessionResult.data &&
+sessionResult.data.session
 ){
 
-localStorage.removeItem(
-"currentStudentId"
-);
-
-return;
-
-}
+currentUser =
+sessionResult
+.data
+.session
+.user;
 
 
-const student =
-response.data[0];
-
-
-if(
-student.status !==
-"registered"
-){
-
-localStorage.removeItem(
-"currentStudentId"
-);
-
-return;
+await loadCurrentStudent();
 
 }
-
-
-currentStudent =
-student;
-
-
-document
-.getElementById(
-"studentWelcome"
-)
-.innerHTML=
-
-'<div class="success">'+
-
-"سلام "+
-escapeHtml(
-student.first_name || ""
-)+
-" عزیز 👋"+
-
-"<br><br>"+
-
-"به پنل آموزشی خودت خوش آمدی."+
-
-"</div>";
-
 
 }catch(error){
 
@@ -3045,18 +3418,13 @@ console.error(error);
 
 }
 
-}
-
-
-/* ==================================================
-START
-================================================== */
 
 showPage("home");
 
-restoreStudent();
+})();
 
 </script>
+
 
 </body>
 
