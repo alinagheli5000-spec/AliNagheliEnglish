@@ -1,1869 +1,899 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#6d28d9">
-
 <title>AliNagheli English</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root{
-  --p:#6d28d9;
-  --p2:#8b5cf6;
-  --bg:#f7f5fb;
-  --card:#fff;
-  --text:#211b2d;
-  --muted:#777080;
-  --border:#e8e1f0;
-  --green:#16a34a;
-  --orange:#ea580c;
-  --blue:#2563eb;
-}
-
+:root{--p:#6d28d9;--bg:#f7f5fb;--c:#fff;--t:#211b2d;--m:#766e82;--b:#e7e1ef}
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Tahoma,Arial,sans-serif;
-}
-
-button,input{
-  font:inherit;
-}
-
-button{
-  border:0;
-  cursor:pointer;
-}
-
-.top{
-  background:linear-gradient(135deg,var(--p),var(--p2));
-  color:white;
-  padding:18px 16px 25px;
-  border-radius:0 0 25px 25px;
-}
-
-.topin{
-  max-width:900px;
-  margin:auto;
-}
-
-.toprow{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.brand{
-  font-size:21px;
-  font-weight:900;
-}
-
-.logout{
-  background:#ffffff25;
-  color:white;
-  padding:8px 12px;
-  border-radius:10px;
-}
-
-.hello{
-  margin-top:25px;
-}
-
-.hello h1{
-  margin:0;
-  font-size:25px;
-}
-
-.hello p{
-  opacity:.85;
-  margin-bottom:0;
-}
-
-.wrap{
-  max-width:900px;
-  margin:auto;
-  padding:15px 12px 100px;
-}
-
-.card{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:17px;
-  margin-bottom:14px;
-  box-shadow:0 6px 22px #32134c0a;
-}
-
-.sectionTitle{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
-}
-
-.sectionTitle h2{
-  margin:0;
-  font-size:18px;
-}
-
-.sectionTitle span{
-  font-size:12px;
-  color:var(--p);
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin-top:-18px;
-  position:relative;
-}
-
-.stat{
-  background:white;
-  border-radius:16px;
-  padding:13px 8px;
-  text-align:center;
-  border:1px solid var(--border);
-  box-shadow:0 5px 18px #32134c12;
-}
-
-.statIcon{
-  font-size:22px;
-}
-
-.stat b{
-  display:block;
-  font-size:18px;
-  margin-top:5px;
-}
-
-.stat small{
-  color:var(--muted);
-  font-size:10px;
-}
-
-.lesson{
-  background:linear-gradient(135deg,#6d28d9,#8b5cf6);
-  color:white;
-  border-radius:18px;
-  padding:18px;
-}
-
-.lessonTag{
-  display:inline-block;
-  background:#ffffff25;
-  padding:5px 9px;
-  border-radius:20px;
-  font-size:11px;
-}
-
-.lesson h2{
-  margin:12px 0 6px;
-}
-
-.lesson p{
-  opacity:.9;
-  font-size:13px;
-}
-
-.progress{
-  height:9px;
-  background:#ffffff35;
-  border-radius:20px;
-  overflow:hidden;
-  margin:15px 0 10px;
-}
-
-.progress div{
-  height:100%;
-  background:white;
-  border-radius:20px;
-}
-
-.start{
-  background:white;
-  color:var(--p);
-  width:100%;
-  padding:12px;
-  border-radius:12px;
-  font-weight:900;
-}
-
-.modules{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-
-.module{
-  background:#faf8fd;
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:15px;
-  text-align:center;
-}
-
-.module .icon{
-  font-size:30px;
-}
-
-.module b{
-  display:block;
-  margin-top:7px;
-}
-
-.module small{
-  color:var(--muted);
-  font-size:11px;
-}
-
-.words{
-  display:flex;
-  gap:9px;
-  overflow-x:auto;
-  padding-bottom:4px;
-}
-
-.word{
-  min-width:145px;
-  background:#faf8fd;
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:14px;
-}
-
-.word b{
-  direction:ltr;
-  display:block;
-  font-size:18px;
-}
-
-.word span{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.xpbar{
-  background:#eee8f7;
-  height:12px;
-  border-radius:20px;
-  overflow:hidden;
-}
-
-.xpbar div{
-  background:linear-gradient(90deg,#6d28d9,#a78bfa);
-  height:100%;
-  width:64%;
-}
-
-.achievement{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:11px 0;
-  border-bottom:1px solid var(--border);
-}
-
-.achievement:last-child{
-  border-bottom:0;
-}
-
-.achievementIcon{
-  width:45px;
-  height:45px;
-  border-radius:13px;
-  background:#ede9fe;
-  display:grid;
-  place-items:center;
-  font-size:23px;
-}
-
-.achievement small{
-  color:var(--muted);
-}
-
-.page{
-  display:none;
-}
-
-.page.active{
-  display:block;
-}
-
-.lessonPage h1{
-  font-size:22px;
-}
-
-.question{
-  background:#faf8fd;
-  padding:18px;
-  border-radius:16px;
-  margin:12px 0;
-}
-
-.option{
-  width:100%;
-  background:white;
-  border:1px solid var(--border);
-  padding:12px;
-  border-radius:12px;
-  margin-top:8px;
-  text-align:right;
-}
-
-.option.correct{
-  background:#dcfce7;
-  border-color:#16a34a;
-}
-
-.option.wrong{
-  background:#fee2e2;
-  border-color:#dc2626;
-}
-
-.bigWord{
-  direction:ltr;
-  text-align:center;
-  font-size:36px;
-  font-weight:900;
-  color:var(--p);
-  padding:25px 0 8px;
-}
-
-.center{
-  text-align:center;
-}
-
-.primary{
-  background:var(--p);
-  color:white;
-  padding:12px 18px;
-  border-radius:12px;
-  font-weight:800;
-}
-
-.secondary{
-  background:#eee8f7;
-  color:#4c3568;
-  padding:12px 18px;
-  border-radius:12px;
-}
-
-.nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  height:66px;
-  background:white;
-  border-top:1px solid var(--border);
-  z-index:20;
-}
-
-.navin{
-  max-width:700px;
-  margin:auto;
-  display:flex;
-  height:100%;
-}
-
-.nav button{
-  flex:1;
-  background:white;
-  color:#777080;
-  font-size:10px;
-}
-
-.nav button span{
-  display:block;
-  font-size:22px;
-  margin-bottom:3px;
-}
-
-.nav button.active{
-  color:var(--p);
-  font-weight:900;
-}
-
-.login{
-  max-width:420px;
-  margin:70px auto;
-}
-
-.logo{
-  width:80px;
-  height:80px;
-  border-radius:25px;
-  background:linear-gradient(135deg,var(--p),var(--p2));
-  color:white;
-  display:grid;
-  place-items:center;
-  margin:0 auto 15px;
-  font-size:28px;
-  font-weight:900;
-}
-
-input{
-  width:100%;
-  padding:13px;
-  border:1px solid var(--border);
-  border-radius:12px;
-  margin:6px 0 12px;
-  outline:none;
-}
-
-.btn{
-  width:100%;
-  padding:13px;
-  border-radius:12px;
-  background:var(--p);
-  color:white;
-  font-weight:800;
-}
-
-.err{
-  background:#fee2e2;
-  color:#991b1b;
-  padding:10px;
-  border-radius:12px;
-  font-size:12px;
-  margin-bottom:10px;
-}
-
+body{margin:0;font-family:Tahoma,Arial;background:var(--bg);color:var(--t)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.top{background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:#fff;padding:16px;position:sticky;top:0;z-index:5}
+.topin,.wrap{max-width:1100px;margin:auto}
+.topin{display:flex;justify-content:space-between;align-items:center}
+.wrap{padding:16px 12px 80px}
+.card{background:#fff;border:1px solid var(--b);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 7px 20px #00000008}
+.login{max-width:450px;margin:35px auto}
+.logo{width:70px;height:70px;border-radius:22px;background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:#fff;display:grid;place-items:center;font-size:25px;font-weight:bold;margin:auto}
+.tabs{display:flex;gap:7px;margin:15px 0}
+.tab,.btn{border:0;border-radius:11px;padding:11px 14px}
+.tab{flex:1;background:#eee8f7;color:#543b70}
+.tab.active,.btn{background:#6d28d9;color:#fff}
+.btn.secondary{background:#eee8f7;color:#543b70}
+.btn.ok{background:#dcfce7;color:#166534}
+.btn.small{padding:7px 10px;font-size:12px}
+label{display:block;font-size:13px;font-weight:bold;margin:9px 0 5px}
+input,select,textarea{width:100%;border:1px solid var(--b);border-radius:11px;padding:11px;background:#fff}
+.row{display:flex;gap:9px;flex-wrap:wrap}
+.row>*{flex:1;min-width:140px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.stat{background:#faf8fd;border:1px solid var(--b);border-radius:14px;padding:14px}
+.stat b{display:block;font-size:24px;margin-top:5px}
+.student{border:1px solid var(--b);border-radius:14px;padding:13px;margin:9px 0}
+.head{display:flex;justify-content:space-between;gap:8px}
+.badge{display:inline-block;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:bold}
+.waiting{background:#fff7ed;color:#9a3412}
+.registered{background:#dcfce7;color:#166534}
+.graduate{background:#ede9fe;color:#5b21b6}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.muted{color:var(--m);font-size:12px}
+.notice{padding:10px;border-radius:10px;margin-bottom:10px}
+.err{background:#fee2e2;color:#991b1b}
+.okmsg{background:#dcfce7;color:#166534}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--b);z-index:6}
+.navin{max-width:700px;margin:auto;display:flex}
+.nav button{flex:1;border:0;background:#fff;padding:10px;color:#6b6175;font-size:11px}
+.nav button.active{color:#6d28d9;font-weight:bold}
+.empty{text-align:center;padding:25px;color:var(--m)}
+h1,h2,h3{margin-top:0}
 @media(max-width:500px){
-  .stats{
-    gap:7px;
-  }
-
-  .modules{
-    gap:8px;
-  }
-
-  .card{
-    padding:14px;
-  }
+.wrap{padding:10px 9px 78px}
+.login{margin:20px auto}
 }
 </style>
 </head>
 
 <body>
-
 <div id="app"></div>
 
 <script>
+const URL='https://kapzyedzjecnfxevjisq.supabase.co';
+const KEY='sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ';
 
-/* =====================================================
-   SUPABASE
-===================================================== */
+const db=supabase.createClient(URL,KEY);
 
-const SUPABASE_URL =
-"https://kapzyedzjecnfxevjisq.supabase.co";
+let user=null;
+let isAdmin=false;
+let me=null;
+let students=[];
+let courses=[];
 
-const SUPABASE_KEY =
-"sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
-
-const {createClient}=supabase;
-
-const db=createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
+const esc=x=>String(x??'').replace(
+    /[&<>"']/g,
+    m=>({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#39;'
+    }[m])
 );
 
+const emailFor=p=>
+    String(p||'').replace(/\D/g,'')+'@alinagheli.com';
 
-/* =====================================================
-   STATE
-===================================================== */
+function msg(t,c='okmsg'){
+    document.querySelector('.notice')?.remove();
 
-let currentUser=null;
-let student=null;
+    let x=document.createElement('div');
+    x.className='notice '+c;
+    x.textContent=t;
 
+    document.querySelector('.wrap')?.prepend(x);
 
-/* =====================================================
-   DEMO LEARNING DATA
-===================================================== */
-
-const lessons=[
-  {
-    id:1,
-    title:"Present Simple",
-    level:"A1",
-    description:"ساختار و کاربرد زمان حال ساده",
-    progress:100
-  },
-  {
-    id:2,
-    title:"Daily Routines",
-    level:"A1",
-    description:"صحبت کردن درباره فعالیت‌های روزانه",
-    progress:70
-  },
-  {
-    id:3,
-    title:"There is / There are",
-    level:"A1",
-    description:"توصیف مکان‌ها و اشیا",
-    progress:35
-  },
-  {
-    id:4,
-    title:"Past Simple",
-    level:"A2",
-    description:"صحبت درباره اتفاقات گذشته",
-    progress:0
-  },
-  {
-    id:5,
-    title:"Future Plans",
-    level:"A2",
-    description:"برنامه‌ها و آینده",
-    progress:0
-  }
-];
-
-
-const words=[
-  ["achieve","به دست آوردن"],
-  ["improve","بهبود دادن"],
-  ["challenge","چالش"],
-  ["confident","با اعتمادبه‌نفس"],
-  ["practice","تمرین کردن"],
-  ["goal","هدف"]
-];
-
-
-/* =====================================================
-   HELPERS
-===================================================== */
-
-function esc(v){
-  return String(v??"")
-  .replace(/[&<>"']/g,m=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-  }[m]));
+    setTimeout(()=>x.remove(),4500);
 }
 
+async function boot(){
 
-function studentEmail(phone){
-  return String(phone||"")
-    .replace(/\D/g,"")
-    +"@alinagheli.com";
+    let {data:{session}}=await db.auth.getSession();
+
+    if(session){
+        user=session.user;
+        await identify();
+    }else{
+        login();
+    }
+
+    db.auth.onAuthStateChange(async(_,s)=>{
+
+        if(s){
+            user=s.user;
+            await identify();
+        }else{
+            user=null;
+            isAdmin=false;
+            me=null;
+            login();
+        }
+
+    });
 }
 
+async function identify(){
 
-/* =====================================================
-   LOGIN
-===================================================== */
+    isAdmin=!!(
+        await db
+        .from('admins')
+        .select('id')
+        .eq('user_id',user.id)
+        .maybeSingle()
+    ).data;
 
-function loginPage(error=""){
+    if(isAdmin){
 
-  document.body.innerHTML=`
+        await adminData();
+        appAdmin();
 
-  <div class="wrap">
+    }else{
 
-    <div class="card login">
+        me=(
+            await db
+            .from('students')
+            .select('*')
+            .eq('auth_user_id',user.id)
+            .maybeSingle()
+        ).data;
 
-      <div class="logo">
-        AN
-      </div>
-
-      <h1 class="center">
-        AliNagheli English
-      </h1>
-
-      <p class="center" style="color:#777080">
-        نرم‌افزار یادگیری زبان انگلیسی
-      </p>
-
-      ${
-        error
-        ? `<div class="err">${esc(error)}</div>`
-        :""
-      }
-
-      <label>
-        شماره تلفن
-      </label>
-
-      <input
-        id="phone"
-        inputmode="tel"
-        placeholder="0914...">
-
-      <label>
-        رمز عبور
-      </label>
-
-      <input
-        id="password"
-        type="password"
-        placeholder="رمز عبور">
-
-      <button
-        class="btn"
-        onclick="login()">
-
-        ورود به برنامه 🚀
-
-      </button>
-
-    </div>
-
-  </div>
-
-  `;
+        appStudent();
+    }
 }
 
+async function adminData(){
 
-async function login(){
+    let a=await db
+        .from('students')
+        .select('*')
+        .order('id',{ascending:false});
 
-  const phone=
-    document.getElementById("phone").value.trim();
+    students=a.data||[];
 
-  const password=
-    document.getElementById("password").value;
+    let c=await db
+        .from('courses')
+        .select('*')
+        .order('id');
 
-  if(!phone||!password){
-    loginPage("شماره تلفن و رمز عبور را وارد کنید.");
-    return;
-  }
+    courses=c.data||[];
+}
 
-  const result=
-    await db.auth.signInWithPassword({
-      email:studentEmail(phone),
-      password
+function login(){
+
+    document.body.innerHTML=`
+    <div class="wrap">
+        <div class="card login">
+
+            <div class="logo">AN</div>
+
+            <h1 style="text-align:center">
+                AliNagheli English
+            </h1>
+
+            <p class="muted" style="text-align:center">
+                سامانه آموزش زبان انگلیسی
+            </p>
+
+            <div class="tabs">
+
+                <button
+                    class="tab active"
+                    id="ts"
+                    onclick="loginForm(0)">
+                    دانش‌آموز
+                </button>
+
+                <button
+                    class="tab"
+                    id="ta"
+                    onclick="loginForm(1)">
+                    مدیر
+                </button>
+
+            </div>
+
+            <div id="lf"></div>
+
+        </div>
+    </div>`;
+
+    loginForm(0);
+}
+
+function loginForm(m){
+
+    document
+    .querySelectorAll('.tab')
+    .forEach(x=>x.classList.remove('active'));
+
+    (
+        m
+        ? document.getElementById('ta')
+        : document.getElementById('ts')
+    ).classList.add('active');
+
+    document.getElementById('lf').innerHTML=m
+
+    ? `
+        <label>ایمیل مدیر</label>
+        <input id="email" type="email">
+
+        <label>رمز عبور</label>
+        <input id="pass" type="password">
+
+        <button
+            class="btn"
+            style="width:100%;margin-top:12px"
+            onclick="adminLogin()">
+            ورود مدیر
+        </button>
+    `
+
+    : `
+        <label>شماره تلفن</label>
+        <input id="phone" inputmode="tel">
+
+        <label>رمز عبور</label>
+        <input id="pass" type="password">
+
+        <button
+            class="btn"
+            style="width:100%;margin-top:12px"
+            onclick="studentLogin()">
+            ورود دانش‌آموز
+        </button>
+
+        <button
+            class="btn secondary"
+            style="width:100%;margin-top:8px"
+            onclick="registerForm()">
+            ثبت‌نام دانش‌آموز جدید
+        </button>
+    `;
+}
+
+async function adminLogin(){
+
+    let e=email.value.trim();
+    let p=pass.value;
+
+    if(!e||!p)
+        return alert('ایمیل و رمز را وارد کنید');
+
+    let r=await db.auth.signInWithPassword({
+        email:e,
+        password:p
     });
 
-  if(result.error){
-    loginPage("شماره تلفن یا رمز عبور اشتباه است.");
-    return;
-  }
+    if(r.error)
+        return alert('ایمیل یا رمز عبور نادرست است');
 
-  currentUser=result.data.user;
+    user=r.data.user;
 
-  await loadStudent();
-
+    await identify();
 }
 
+async function studentLogin(){
 
-/* =====================================================
-   LOAD STUDENT
-===================================================== */
+    let p=phone.value.trim();
+    let pw=pass.value;
 
-async function loadStudent(){
+    if(!p||!pw)
+        return alert('شماره و رمز را وارد کنید');
 
-  const result=
-    await db
-      .from("students")
-      .select("*")
-      .eq("auth_user_id",currentUser.id)
-      .maybeSingle();
+    let r=await db.auth.signInWithPassword({
+        email:emailFor(p),
+        password:pw
+    });
 
-  if(result.error||!result.data){
+    if(r.error)
+        return alert('شماره تلفن یا رمز عبور نادرست است');
 
-    loginPage(
-      "اطلاعات زبان‌آموز پیدا نشد."
+    user=r.data.user;
+
+    await identify();
+}
+
+async function registerForm(){
+
+    await adminData();
+
+    lf.innerHTML=`
+
+    <h3>ثبت‌نام دانش‌آموز</h3>
+
+    <div class="row">
+
+        <div>
+            <label>نام</label>
+            <input id="rf">
+        </div>
+
+        <div>
+            <label>نام خانوادگی</label>
+            <input id="rl">
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div>
+            <label>شماره تلفن</label>
+            <input id="rp">
+        </div>
+
+        <div>
+            <label>رمز عبور</label>
+            <input id="rw" type="password">
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div>
+            <label>پایه / سطح</label>
+            <input id="rv">
+        </div>
+
+        <div>
+
+            <label>دوره</label>
+
+            <select id="rc">
+
+                <option value="">
+                    انتخاب دوره
+                </option>
+
+                ${
+                    courses
+                    .map(c=>`
+                        <option>
+                            ${esc(c.title)}
+                        </option>
+                    `)
+                    .join('')
+                }
+
+            </select>
+
+        </div>
+
+    </div>
+
+    <label>هدف</label>
+    <textarea id="rg"></textarea>
+
+    <button
+        class="btn"
+        style="width:100%;margin-top:10px"
+        onclick="register()">
+        ثبت‌نام
+    </button>
+
+    <button
+        class="btn secondary"
+        style="width:100%;margin-top:8px"
+        onclick="login()">
+        بازگشت
+    </button>
+    `;
+}
+
+async function register(){
+
+    let f=rf.value.trim();
+    let l=rl.value.trim();
+    let p=rp.value.trim();
+    let pw=rw.value;
+
+    if(!f||!l||!p||!pw)
+        return alert('موارد الزامی را کامل کنید');
+
+    let r=await db.auth.signUp({
+        email:emailFor(p),
+        password:pw
+    });
+
+    if(r.error)
+        return alert(r.error.message);
+
+    if(!r.data.user)
+        return alert('حساب ساخته نشد');
+
+    let ins=await db
+        .from('students')
+        .insert({
+            first_name:f,
+            last_name:l,
+            phone:p,
+            level:rv.value.trim(),
+            status:'waiting',
+            auth_user_id:r.data.user.id,
+            password_created:true
+        });
+
+    if(ins.error)
+        return alert(ins.error.message);
+
+    alert(
+        'ثبت‌نام با موفقیت انجام شد و در صف انتظار قرار گرفت.'
     );
 
-    return;
-  }
-
-  student=result.data;
-
-  renderApp();
+    login();
 }
 
+function head(title,sub){
 
-/* =====================================================
-   APP
-===================================================== */
+    return `
+    <div class="top">
 
-function renderApp(){
+        <div class="topin">
 
-  document.body.innerHTML=`
+            <div>
 
-    <div id="homePage" class="page active"></div>
+                <b>${title}</b>
 
-    <div id="lessonsPage" class="page"></div>
+                <div
+                    class="muted"
+                    style="color:#eee">
+                    ${sub||''}
+                </div>
 
-    <div id="practicePage" class="page"></div>
+            </div>
 
-    <div id="profilePage" class="page"></div>
+            <button
+                class="btn secondary small"
+                onclick="logout()">
+                خروج
+            </button>
 
+        </div>
+
+    </div>
+    `;
+}
+
+function nav(){
+
+    return `
     <nav class="nav">
 
-      <div class="navin">
+        <div class="navin">
 
-        <button
-          id="navHome"
-          class="active"
-          onclick="showPage('home')">
+            <button onclick="appAdmin()">
+                📊<br>
+                داشبورد
+            </button>
 
-          <span>🏠</span>
-          خانه
+            <button onclick="studentsPage()">
+                👩‍🎓<br>
+                دانش‌آموزان
+            </button>
 
-        </button>
+            <button onclick="coursesPage()">
+                📚<br>
+                دوره‌ها
+            </button>
 
-        <button
-          id="navLessons"
-          onclick="showPage('lessons')">
-
-          <span>📚</span>
-          درس‌ها
-
-        </button>
-
-        <button
-          id="navPractice"
-          onclick="showPage('practice')">
-
-          <span>🎮</span>
-          تمرین
-
-        </button>
-
-        <button
-          id="navProfile"
-          onclick="showPage('profile')">
-
-          <span>👤</span>
-          پروفایل
-
-        </button>
-
-      </div>
+        </div>
 
     </nav>
-
-  `;
-
-  renderHome();
-  renderLessons();
-  renderPractice();
-  renderProfile();
-
+    `;
 }
 
+function appAdmin(){
 
-/* =====================================================
-   PAGE NAVIGATION
-===================================================== */
+    document.body.innerHTML=
+        head(
+            'AliNagheli English',
+            'پنل مدیریت'
+        )
+        +
+        `
+        <main class="wrap">
+            <div id="content"></div>
+        </main>
+        `
+        +
+        nav();
 
-function showPage(page){
-
-  document
-    .querySelectorAll(".page")
-    .forEach(x=>x.classList.remove("active"));
-
-  document
-    .getElementById(page+"Page")
-    .classList.add("active");
-
-  document
-    .querySelectorAll(".nav button")
-    .forEach(x=>x.classList.remove("active"));
-
-  const nav=
-    document.getElementById(
-      "nav"+
-      page.charAt(0).toUpperCase()+
-      page.slice(1)
-    );
-
-  if(nav)nav.classList.add("active");
-
+    dashboard();
 }
 
-
-/* =====================================================
-   HOME
-===================================================== */
-
-function renderHome(){
-
-  const first=
-    student?.first_name||"دوست من";
-
-  document.getElementById("homePage").innerHTML=`
-
-    <div class="top">
-
-      <div class="topin">
-
-        <div class="toprow">
-
-          <div class="brand">
-            AliNagheli English
-          </div>
-
-          <button
-            class="logout"
-            onclick="logout()">
-
-            خروج
-
-          </button>
-
-        </div>
-
-        <div class="hello">
-
-          <h1>
-            سلام ${esc(first)} 👋
-          </h1>
-
-          <p>
-            آماده‌ای امروز انگلیسی‌ات را قوی‌تر کنی؟
-          </p>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="wrap">
-
-      <div class="stats">
-
-        <div class="stat">
-
-          <div class="statIcon">⭐</div>
-
-          <b>1,240</b>
-
-          <small>XP</small>
-
-        </div>
-
-
-        <div class="stat">
-
-          <div class="statIcon">🔥</div>
-
-          <b>7</b>
-
-          <small>روز پیوسته</small>
-
-        </div>
-
-
-        <div class="stat">
-
-          <div class="statIcon">🏆</div>
-
-          <b>A1</b>
-
-          <small>سطح فعلی</small>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="sectionTitle">
-
-          <h2>
-            🎯 درس امروز
-          </h2>
-
-          <span>
-            15 دقیقه
-          </span>
-
-        </div>
-
-        <div class="lesson">
-
-          <span class="lessonTag">
-            A1 · Lesson 3
-          </span>
-
-          <h2>
-            There is / There are
-          </h2>
-
-          <p>
-            یاد بگیر چطور درباره وجود اشیا و مکان‌ها
-            به زبان انگلیسی صحبت کنی.
-          </p>
-
-          <div class="progress">
-            <div style="width:35%"></div>
-          </div>
-
-          <small>
-            35٪ تکمیل شده
-          </small>
-
-          <br><br>
-
-          <button
-            class="start"
-            onclick="openLesson(3)">
-
-            شروع درس 🚀
-
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="sectionTitle">
-
-          <h2>
-            📖 کلمات امروز
-          </h2>
-
-          <span>
-            مشاهده همه
-          </span>
-
-        </div>
-
-        <div class="words">
-
-          ${words.map(
-            w=>`
-
-            <div class="word">
-
-              <b>${w[0]}</b>
-
-              <span>${w[1]}</span>
-
-            </div>
-
-            `
-          ).join("")}
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="sectionTitle">
-
-          <h2>
-            🧠 مهارت‌های امروز
-          </h2>
-
-        </div>
-
-        <div class="modules">
-
-          <div
-            class="module"
-            onclick="showPage('practice')">
-
-            <div class="icon">🧠</div>
-
-            <b>Grammar</b>
-
-            <small>
-              تمرین گرامر
-            </small>
-
-          </div>
-
-
-          <div
-            class="module"
-            onclick="showPage('practice')">
-
-            <div class="icon">🎧</div>
-
-            <b>Listening</b>
-
-            <small>
-              تقویت شنیداری
-            </small>
-
-          </div>
-
-
-          <div
-            class="module"
-            onclick="showPage('practice')">
-
-            <div class="icon">🗣️</div>
-
-            <b>Speaking</b>
-
-            <small>
-              تمرین مکالمه
-            </small>
-
-          </div>
-
-
-          <div
-            class="module"
-            onclick="showPage('practice')">
-
-            <div class="icon">📝</div>
-
-            <b>Vocabulary</b>
-
-            <small>
-              لغات
-            </small>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="sectionTitle">
-
-          <h2>
-            📈 پیشرفت شما
-          </h2>
-
-          <span>
-            64٪
-          </span>
-
-        </div>
-
-        <div class="xpbar">
-          <div></div>
-        </div>
-
-        <p class="center"
-           style="color:#777080;font-size:12px">
-
-          1,240 از 2,000 XP تا سطح بعد
-
-        </p>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="sectionTitle">
-
-          <h2>
-            🏆 افتخارات
-          </h2>
-
-        </div>
-
-
-        <div class="achievement">
-
-          <div class="achievementIcon">
-            🔥
-          </div>
-
-          <div>
-
-            <b>
-              7 روز پیوسته
-            </b>
-
-            <br>
-
-            <small>
-              هفت روز پشت سر هم تمرین کردی!
-            </small>
-
-          </div>
-
-        </div>
-
-
-        <div class="achievement">
-
-          <div class="achievementIcon">
-            📚
-          </div>
-
-          <div>
-
-            <b>
-              اولین درس
-            </b>
-
-            <br>
-
-            <small>
-              اولین درس خود را کامل کردی.
-            </small>
-
-          </div>
-
-        </div>
-
-
-        <div class="achievement">
-
-          <div class="achievementIcon">
-            ⭐
-          </div>
-
-          <div>
-
-            <b>
-              1000 XP
-            </b>
-
-            <br>
-
-            <small>
-              اولین 1000 امتیاز!
-            </small>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  `;
+function status(s){
+
+    let c=
+        s==='registered'
+        ? 'registered'
+        : s==='graduate'
+        ? 'graduate'
+        : 'waiting';
+
+    let t=
+        s==='registered'
+        ? 'ثبت‌نام شده'
+        : s==='graduate'
+        ? 'فارغ‌التحصیل'
+        : 'در صف انتظار';
+
+    return `
+        <span class="badge ${c}">
+            ${t}
+        </span>
+    `;
 }
 
+function dashboard(){
 
-/* =====================================================
-   LESSONS
-===================================================== */
+    let w=students.filter(
+        s=>s.status==='waiting'
+    ).length;
 
-function renderLessons(){
+    let r=students.filter(
+        s=>s.status==='registered'
+    ).length;
 
-  document.getElementById("lessonsPage").innerHTML=`
+    let g=students.filter(
+        s=>s.status==='graduate'
+    ).length;
 
-    <div class="top">
+    content.innerHTML=`
 
-      <div class="topin">
-
-        <div class="brand">
-          📚 درس‌های من
-        </div>
-
-        <p>
-          مسیر یادگیری انگلیسی شما
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <div class="wrap">
-
-      <div class="card">
+    <div class="card">
 
         <h2>
-          دوره A1
+            داشبورد مدیریت 👋
         </h2>
 
-        <p style="color:#777080;font-size:13px">
-          از پایه شروع کن و قدم‌به‌قدم پیش برو.
-        </p>
+        <div class="grid">
 
-      </div>
+            <div class="stat">
+                کل
+                <b>${students.length}</b>
+            </div>
 
+            <div class="stat">
+                در صف انتظار
+                <b>${w}</b>
+            </div>
 
-      ${lessons.map(
-        lesson=>`
+            <div class="stat">
+                ثبت‌نام شده
+                <b>${r}</b>
+            </div>
 
-        <div class="card">
+            <div class="stat">
+                فارغ‌التحصیل
+                <b>${g}</b>
+            </div>
 
-          <div class="sectionTitle">
+        </div>
 
-            <h2>
-              ${lesson.id}. ${lesson.title}
-            </h2>
+    </div>
 
-            <span>
-              ${lesson.level}
-            </span>
+    <div class="card">
 
-          </div>
+        <h3>
+            ثبت‌نام‌های در انتظار
+        </h3>
 
-          <p style="font-size:13px">
-            ${lesson.description}
-          </p>
+        ${
+            students
+            .filter(s=>s.status==='waiting')
+            .slice(0,10)
+            .map(card)
+            .join('')
+            ||
+            '<div class="empty">موردی نیست.</div>'
+        }
 
-          <div
-            class="progress"
-            style="background:#eee8f7">
+    </div>
+    `;
+}
 
-            <div
-              style="
-                width:${lesson.progress}%;
-                background:#8b5cf6;
-              ">
+function card(s){
+
+    return `
+
+    <div class="student">
+
+        <div class="head">
+
+            <div>
+
+                <b>
+                    ${esc(s.first_name)}
+                    ${esc(s.last_name)}
+                </b>
+
+                <div class="muted">
+                    ${esc(s.phone)}
+                    ·
+                    ${esc(s.level||'-')}
+                </div>
 
             </div>
 
-          </div>
-
-          <p style="font-size:11px;color:#777080">
-
-            ${lesson.progress}% تکمیل شده
-
-          </p>
-
-          ${
-            lesson.progress<100
-
-            ?
-
-            `<button
-              class="primary"
-              onclick="openLesson(${lesson.id})">
-
-              ${lesson.progress===0
-                ?"شروع درس"
-                :"ادامه درس"}
-
-            </button>`
-
-            :
-
-            `<button
-              class="secondary"
-              onclick="openLesson(${lesson.id})">
-
-              مرور درس 🔄
-
-            </button>`
-          }
+            ${status(s.status)}
 
         </div>
-
-        `
-      ).join("")}
-
-    </div>
-
-  `;
-}
-
-
-/* =====================================================
-   LESSON
-===================================================== */
-
-function openLesson(id){
-
-  const lesson=
-    lessons.find(x=>x.id===id);
-
-  if(!lesson)return;
-
-  document.getElementById("lessonsPage").innerHTML=`
-
-    <div class="top">
-
-      <div class="topin">
-
-        <div class="brand">
-          📚 ${lesson.title}
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="wrap">
-
-      <div class="card lessonPage">
-
-        <span
-          style="
-            color:#6d28d9;
-            font-size:12px;
-            font-weight:bold;
-          ">
-
-          ${lesson.level} · Lesson ${lesson.id}
-
-        </span>
-
-        <h1>
-          ${lesson.title}
-        </h1>
-
-        <p>
-          ${lesson.description}
-        </p>
-
-        <div class="divider"></div>
-
-        <h3>
-          مثال
-        </h3>
-
-        <div class="question">
-
-          <b dir="ltr">
-            There is a book on the table.
-          </b>
-
-          <p style="color:#777080">
-            یک کتاب روی میز وجود دارد.
-          </p>
-
-        </div>
-
-        <div class="question">
-
-          <b dir="ltr">
-            There are three students in the class.
-          </b>
-
-          <p style="color:#777080">
-            سه دانش‌آموز در کلاس وجود دارند.
-          </p>
-
-        </div>
-
-        <button
-          class="primary"
-          style="width:100%"
-          onclick="startQuiz(${lesson.id})">
-
-          🧠 شروع تمرین
-
-        </button>
-
-      </div>
-
-    </div>
-
-  `;
-
-  showPage("lessons");
-
-}
-
-
-/* =====================================================
-   QUIZ
-===================================================== */
-
-function startQuiz(id){
-
-  document.getElementById("practicePage").innerHTML=`
-
-    <div class="top">
-
-      <div class="topin">
-
-        <div class="brand">
-          🧠 تمرین درس
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="wrap">
-
-      <div class="card">
-
-        <div class="sectionTitle">
-
-          <h2>
-            سؤال 1 از 5
-          </h2>
-
-          <span>
-            +20 XP
-          </span>
-
-        </div>
-
-        <div class="question">
-
-          <p>
-            گزینه صحیح را انتخاب کن:
-          </p>
-
-          <h2 dir="ltr" class="center">
-            There ___ a book on the table.
-          </h2>
-
-        </div>
-
-
-        <button
-          class="option"
-          onclick="answer(this,false)">
-
-          A) are
-
-        </button>
-
-
-        <button
-          class="option"
-          onclick="answer(this,true)">
-
-          B) is
-
-        </button>
-
-
-        <button
-          class="option"
-          onclick="answer(this,false)">
-
-          C) am
-
-        </button>
-
-
-        <button
-          class="option"
-          onclick="answer(this,false)">
-
-          D) be
-
-        </button>
-
 
         <div
-          id="answerMessage"
-          style="margin-top:15px">
+            class="muted"
+            style="margin-top:7px">
+
+            دوره:
+            ${esc(s.course||s.book||'-')}
+
         </div>
 
-      </div>
+        <div class="actions">
+
+            ${
+                s.status==='waiting'
+                ?
+                `
+                <button
+                    class="btn ok small"
+                    onclick="setStatus(${s.id},'registered')">
+                    تأیید ثبت‌نام
+                </button>
+                `
+                :
+                ''
+            }
+
+            ${
+                s.status==='registered'
+                ?
+                `
+                <button
+                    class="btn secondary small"
+                    onclick="setStatus(${s.id},'graduate')">
+                    فارغ‌التحصیل
+                </button>
+                `
+                :
+                ''
+            }
+
+            <button
+                class="btn secondary small"
+                onclick="setStatus(${s.id},'waiting')">
+                صف انتظار
+            </button>
+
+        </div>
 
     </div>
-
-  `;
-
-  showPage("practice");
-
-}
-
-
-function answer(button,correct){
-
-  document
-    .querySelectorAll(".option")
-    .forEach(x=>x.disabled=true);
-
-  if(correct){
-
-    button.classList.add("correct");
-
-    document.getElementById(
-      "answerMessage"
-    ).innerHTML=`
-
-      <div
-        style="
-          background:#dcfce7;
-          color:#166534;
-          padding:13px;
-          border-radius:12px;
-        ">
-
-        🎉 عالی بود! پاسخ درست است.
-
-        <br><br>
-
-        +20 XP
-
-      </div>
-
     `;
-
-  }else{
-
-    button.classList.add("wrong");
-
-    document.getElementById(
-      "answerMessage"
-    ).innerHTML=`
-
-      <div
-        style="
-          background:#fee2e2;
-          color:#991b1b;
-          padding:13px;
-          border-radius:12px;
-        ">
-
-        ❌ پاسخ درست نیست.
-        دوباره درس را مرور کن.
-
-      </div>
-
-    `;
-
-  }
-
 }
 
+async function studentsPage(){
 
-/* =====================================================
-   PRACTICE
-===================================================== */
+    await adminData();
 
-function renderPractice(){
+    content.innerHTML=`
 
-  document.getElementById("practicePage").innerHTML=`
-
-    <div class="top">
-
-      <div class="topin">
-
-        <div class="brand">
-          🎮 تمرین
-        </div>
-
-        <p>
-          مهارتت را تقویت کن!
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <div class="wrap">
-
-      <div class="card">
-
-        <div class="sectionTitle">
-          <h2>🧠 Grammar</h2>
-        </div>
-
-        <p style="font-size:13px;color:#777080">
-          تمرین‌های گرامری متناسب با سطح شما
-        </p>
-
-        <button
-          class="primary"
-          onclick="startQuiz(3)">
-
-          شروع تمرین
-
-        </button>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="sectionTitle">
-          <h2>📖 Vocabulary</h2>
-        </div>
-
-        <div class="bigWord">
-          achieve
-        </div>
-
-        <p class="center">
-          به دست آوردن / موفق شدن
-        </p>
-
-        <button
-          class="primary"
-          style="width:100%"
-          onclick="nextWord()">
-
-          کلمه بعدی →
-
-        </button>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="sectionTitle">
-          <h2>🎧 Listening</h2>
-        </div>
-
-        <p style="font-size:13px">
-          به فایل صوتی گوش بده و سپس به سؤال‌ها پاسخ بده.
-        </p>
-
-        <button
-          class="secondary"
-          style="width:100%"
-          onclick="alert('بخش Listening در مرحله بعد با فایل‌های صوتی واقعی تکمیل می‌شود.')">
-
-          ▶️ شروع Listening
-
-        </button>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="sectionTitle">
-          <h2>🗣️ Speaking</h2>
-        </div>
-
-        <p style="font-size:13px">
-          با موضوعات مختلف انگلیسی صحبت کن.
-        </p>
-
-        <button
-          class="primary"
-          style="width:100%"
-          onclick="alert('بخش Speaking در مرحله بعد اضافه می‌شود.')">
-
-          🎤 شروع Speaking
-
-        </button>
-
-      </div>
-
-    </div>
-
-  `;
-}
-
-
-let wordIndex=0;
-
-function nextWord(){
-
-  wordIndex=
-    (wordIndex+1)%words.length;
-
-  const word=
-    words[wordIndex];
-
-  const box=
-    document.querySelector(".bigWord");
-
-  if(box){
-
-    box.textContent=
-      word[0];
-
-  }
-
-  const p=
-    box?.parentElement
-      ?.querySelector(
-        "p.center"
-      );
-
-  if(p){
-
-    p.textContent=
-      word[1];
-
-  }
-
-}
-
-
-/* =====================================================
-   PROFILE
-===================================================== */
-
-function renderProfile(){
-
-  document.getElementById("profilePage").innerHTML=`
-
-    <div class="top">
-
-      <div class="topin">
-
-        <div class="brand">
-          👤 پروفایل
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="wrap">
-
-      <div class="card center">
-
-        <div class="logo">
-          ${(
-            student?.first_name?.[0]||"A"
-          ).toUpperCase()}
-        </div>
+    <div class="card">
 
         <h2>
-          ${esc(student?.first_name)}
-          ${esc(student?.last_name)}
+            مدیریت دانش‌آموزان
         </h2>
 
-        <p style="color:#777080">
-          ${esc(student?.phone)}
-        </p>
+        <input
+            id="search"
+            placeholder="جستجوی نام یا شماره"
+            oninput="filter()">
 
-      </div>
-
-
-      <div class="card">
-
-        <div class="sectionTitle">
-          <h2>📊 اطلاعات یادگیری</h2>
-        </div>
-
-        <div class="stats" style="margin:0">
-
-          <div class="stat">
-
-            <div class="statIcon">
-              ⭐
-            </div>
-
-            <b>
-              1,240
-            </b>
-
-            <small>
-              XP
-            </small>
-
-          </div>
-
-
-          <div class="stat">
-
-            <div class="statIcon">
-              📚
-            </div>
-
-            <b>
-              3
-            </b>
-
-            <small>
-              درس
-            </small>
-
-          </div>
-
-
-          <div class="stat">
-
-            <div class="statIcon">
-              🔥
-            </div>
-
-            <b>
-              7
-            </b>
-
-            <small>
-              روز
-            </small>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>
-          🎯 هدف یادگیری
-        </h3>
-
-        <p style="color:#777080">
-          هدف شما در نسخه بعدی از اطلاعات ثبت‌نام
-          دریافت و در این بخش نمایش داده خواهد شد.
-        </p>
-
-      </div>
-
-
-      <button
-        class="btn"
-        onclick="logout()">
-
-        🚪 خروج از حساب
-
-      </button>
+        <div id="list"></div>
 
     </div>
+    `;
 
-  `;
-
+    filter();
 }
 
+function filter(){
 
-/* =====================================================
-   LOGOUT
-===================================================== */
+    let q=(search.value||'').toLowerCase();
+
+    list.innerHTML=
+
+        students
+
+        .filter(s=>
+            `${s.first_name} ${s.last_name} ${s.phone} ${s.level}`
+            .toLowerCase()
+            .includes(q)
+        )
+
+        .map(card)
+        .join('')
+
+        ||
+
+        '<div class="empty">موردی پیدا نشد.</div>';
+}
+
+async function setStatus(id,s){
+
+    let r=await db
+        .from('students')
+        .update({
+            status:s
+        })
+        .eq('id',id);
+
+    if(r.error)
+        return alert(r.error.message);
+
+    await adminData();
+
+    dashboard();
+
+    msg(
+        'وضعیت با موفقیت تغییر کرد.'
+    );
+}
+
+function coursesPage(){
+
+    content.innerHTML=`
+
+    <div class="card">
+
+        <h2>
+            دوره‌ها 📚
+        </h2>
+
+        ${
+            courses
+
+            .map(c=>`
+
+                <div class="student">
+
+                    <b>
+                        ${esc(c.title)}
+                    </b>
+
+                    <div class="muted">
+
+                        ${esc(c.category||'')}
+                        ·
+                        ${
+                            c.active===false
+                            ? 'غیرفعال'
+                            : 'فعال'
+                        }
+
+                    </div>
+
+                </div>
+
+            `)
+
+            .join('')
+        }
+
+    </div>
+    `;
+}
+
+function appStudent(){
+
+    document.body.innerHTML=
+
+        head(
+            'AliNagheli English',
+            'حساب دانش‌آموز'
+        )
+
+        +
+
+        `
+        <main class="wrap">
+
+            <div class="card">
+
+                <h2>
+                    سلام
+                    ${esc(me?.first_name||'دانش‌آموز')}
+                    👋
+                </h2>
+
+                <p>
+                    وضعیت ثبت‌نام:
+                    ${status(me?.status)}
+                </p>
+
+                <div class="grid">
+
+                    <div class="stat">
+
+                        نام
+
+                        <b>
+                            ${esc(
+                                (me?.first_name||'-')
+                                +
+                                ' '
+                                +
+                                (me?.last_name||'')
+                            )}
+                        </b>
+
+                    </div>
+
+                    <div class="stat">
+
+                        پایه
+
+                        <b>
+                            ${esc(me?.level||'-')}
+                        </b>
+
+                    </div>
+
+                    <div class="stat">
+
+                        شماره
+
+                        <b>
+                            ${esc(me?.phone||'-')}
+                        </b>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <h3>
+                    وضعیت ثبت‌نام
+                </h3>
+
+                <p class="muted">
+
+                    در صورت «در صف انتظار»،
+                    مدیر پس از بررسی ثبت‌نام
+                    شما را تأیید می‌کند.
+
+                </p>
+
+            </div>
+
+        </main>
+        `;
+}
 
 async function logout(){
 
-  await db.auth.signOut();
-
-  currentUser=null;
-  student=null;
-
-  loginPage();
+    await db.auth.signOut();
 
 }
 
-
-/* =====================================================
-   START
-===================================================== */
-
-(async function(){
-
-  const result=
-    await db.auth.getSession();
-
-  if(result.data.session){
-
-    currentUser=
-      result.data.session.user;
-
-    await loadStudent();
-
-  }else{
-
-    loginPage();
-
-  }
-
-})();
+boot();
 
 </script>
-
 </body>
 </html>
