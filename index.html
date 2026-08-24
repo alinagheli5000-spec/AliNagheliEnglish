@@ -1,1292 +1,2605 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
-  <title>AliNagheli English</title>
+<title>AliNagheli English</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta name="theme-color" content="#6c3bd1">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Tahoma, Arial, sans-serif;
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root{
+    --primary:#6c3bd1;
+    --primary2:#8b5cf6;
+    --background:#f7f5fc;
+    --text:#29243a;
+    --muted:#77718a;
+    --card:#ffffff;
+    --line:#ebe7f4;
+    --success:#159447;
+    --warning:#9b7300;
+    --danger:#c62828;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:var(--background);
+    color:var(--text);
+    font-family:
+        Tahoma,
+        Arial,
+        sans-serif;
+}
+
+.app{
+    max-width:560px;
+    margin:auto;
+    min-height:100vh;
+}
+
+/* HEADER */
+
+header{
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary2)
+        );
+
+    color:white;
+
+    padding:22px 20px 34px;
+
+    border-radius:
+        0 0 30px 30px;
+}
+
+.head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.brand{
+    font-size:25px;
+    font-weight:800;
+}
+
+.sub{
+    font-size:11px;
+    opacity:.85;
+    margin-top:4px;
+}
+
+.userhead{
+    display:none;
+    text-align:left;
+    font-size:12px;
+}
+
+.content{
+    padding:18px;
+}
+
+/* CARDS */
+
+.card{
+    background:var(--card);
+
+    border-radius:22px;
+
+    padding:20px;
+
+    margin-bottom:16px;
+
+    box-shadow:
+        0 8px 28px #3f2b6812;
+}
+
+.title{
+    font-size:19px;
+    font-weight:800;
+
+    color:#4e2b9e;
+
+    margin-bottom:15px;
+}
+
+/* HERO */
+
+.hero h1{
+    font-size:26px;
+    line-height:1.65;
+
+    margin:0;
+
+    color:#45218d;
+}
+
+.hero p{
+    line-height:2;
+
+    color:var(--muted);
+
+    font-size:14px;
+}
+
+/* GRID */
+
+.grid{
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:11px;
+}
+
+.feature,
+.course{
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:17px;
+
+    padding:14px;
+
+    background:#fff;
+}
+
+.feature b{
+    display:block;
+
+    font-size:13px;
+
+    margin:
+        5px 0;
+}
+
+.feature span{
+    font-size:11px;
+
+    color:var(--muted);
+}
+
+.ico{
+    font-size:27px;
+}
+
+/* FORMS */
+
+.field{
+    margin-bottom:13px;
+}
+
+.field label{
+    display:block;
+
+    font-size:12px;
+
+    color:#5e586d;
+
+    margin-bottom:6px;
+}
+
+.field input,
+.field select{
+
+    width:100%;
+
+    border:
+        1px solid
+        #ddd7e9;
+
+    border-radius:13px;
+
+    padding:13px;
+
+    font-family:inherit;
+
+    font-size:13px;
+
+    outline:none;
+
+    background:#fff;
+}
+
+.field input:focus,
+.field select:focus{
+
+    border-color:
+        var(--primary);
+
+    box-shadow:
+        0 0 0 3px
+        #6c3bd11a;
+}
+
+/* BUTTONS */
+
+button{
+    font-family:inherit;
+}
+
+.btn{
+
+    width:100%;
+
+    border:0;
+
+    border-radius:13px;
+
+    padding:13px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.primary{
+
+    background:
+        var(--primary);
+
+    color:white;
+}
+
+.secondary{
+
+    background:
+        #eee8ff;
+
+    color:#5c2bb0;
+
+    margin-top:9px;
+}
+
+.danger{
+
+    background:#ffebeb;
+
+    color:var(--danger);
+}
+
+.back{
+
+    margin-bottom:12px;
+
+    color:var(--primary);
+
+    background:none;
+
+    border:0;
+
+    cursor:pointer;
+
+    font-size:12px;
+}
+
+/* ALERT */
+
+.alert{
+
+    display:none;
+
+    border-radius:13px;
+
+    padding:12px 14px;
+
+    font-size:12px;
+
+    line-height:1.9;
+
+    margin-bottom:14px;
+}
+
+.alert.success{
+
+    background:#e8f8ee;
+
+    color:#146d35;
+}
+
+.alert.error{
+
+    background:#ffebeb;
+
+    color:#a51d1d;
+}
+
+.alert.warning{
+
+    background:#fff5d8;
+
+    color:#765d00;
+}
+
+/* STATUS */
+
+.status{
+
+    display:inline-block;
+
+    padding:
+        6px 12px;
+
+    border-radius:30px;
+
+    font-size:11px;
+
+    margin-top:8px;
+}
+
+.status.waiting{
+
+    background:#fff2c9;
+
+    color:#806400;
+}
+
+.status.registered{
+
+    background:#dcf7e7;
+
+    color:#14723a;
+}
+
+/* PROFILE */
+
+.center{
+    text-align:center;
+}
+
+.avatar{
+
+    width:72px;
+    height:72px;
+
+    border-radius:50%;
+
+    background:#eee7ff;
+
+    color:var(--primary);
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:30px;
+
+    margin:
+        0 auto 10px;
+}
+
+.name{
+
+    font-size:21px;
+
+    font-weight:800;
+}
+
+.info{
+    margin-top:12px;
+}
+
+.row{
+
+    display:flex;
+
+    justify-content:
+        space-between;
+
+    border-bottom:
+        1px solid
+        var(--line);
+
+    padding:11px 0;
+
+    font-size:12px;
+}
+
+.row span{
+    color:var(--muted);
+}
+
+/* COURSE */
+
+.course{
+
+    position:relative;
+
+    cursor:pointer;
+
+    transition:.15s;
+}
+
+.course.selected{
+
+    border:
+        2px solid
+        var(--primary);
+
+    background:#f7f2ff;
+}
+
+.course .check{
+
+    position:absolute;
+
+    left:8px;
+    top:8px;
+
+    width:23px;
+    height:23px;
+
+    border-radius:50%;
+
+    background:
+        var(--primary);
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:12px;
+}
+
+.course h3{
+
+    font-size:13px;
+
+    line-height:1.6;
+
+    margin:
+        5px 0;
+}
+
+.course small{
+
+    color:var(--muted);
+
+    font-size:10px;
+}
+
+.course p{
+
+    font-size:10px;
+
+    color:#777;
+
+    line-height:1.7;
+}
+
+/* LOADING */
+
+.loading{
+
+    text-align:center;
+
+    color:var(--primary);
+
+    padding:25px;
+
+    font-size:13px;
+}
+
+.spinner{
+
+    width:28px;
+    height:28px;
+
+    border:
+        3px solid
+        #e9e3f5;
+
+    border-top-color:
+        var(--primary);
+
+    border-radius:50%;
+
+    animation:
+        spin .8s linear infinite;
+
+    margin:
+        0 auto 9px;
+}
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
     }
 
-    body {
-      background: #f5f3ff;
-      color: #24213a;
-      min-height: 100vh;
-    }
+}
 
-    .container {
-      width: 100%;
-      max-width: 480px;
-      margin: auto;
-      padding: 20px;
-    }
+/* EMPTY */
 
-    .logo {
-      text-align: center;
-      margin: 25px 0;
-    }
+.empty{
 
-    .logo h1 {
-      color: #6c35d9;
-      font-size: 30px;
-    }
+    text-align:center;
 
-    .logo p {
-      color: #777;
-      margin-top: 8px;
-    }
+    color:var(--muted);
 
-    .card {
-      background: white;
-      border-radius: 22px;
-      padding: 24px;
-      box-shadow: 0 8px 30px rgba(80, 50, 150, .10);
-      margin-bottom: 20px;
-    }
+    padding:25px;
 
-    h2 {
-      margin-bottom: 20px;
-      color: #4e27a8;
-    }
+    font-size:12px;
+}
 
-    h3 {
-      margin-bottom: 10px;
-    }
+/* NAV */
 
-    input,
-    select {
-      width: 100%;
-      padding: 14px;
-      margin-bottom: 14px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      font-size: 15px;
-      outline: none;
-      background: white;
-    }
+.nav{
 
-    input:focus,
-    select:focus {
-      border-color: #7b4be0;
-    }
+    position:sticky;
 
-    button {
-      width: 100%;
-      border: none;
-      padding: 14px;
-      border-radius: 12px;
-      background: #6c35d9;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 8px;
-    }
+    bottom:0;
 
-    button:hover {
-      background: #5724bd;
-    }
+    background:white;
 
-    button.secondary {
-      background: #eee9ff;
-      color: #5c32bb;
-    }
+    border-top:
+        1px solid
+        var(--line);
 
-    button.danger {
-      background: #e53935;
-    }
+    display:flex;
 
-    .hidden {
-      display: none !important;
-    }
+    gap:7px;
 
-    .message {
-      padding: 13px;
-      border-radius: 12px;
-      margin-bottom: 15px;
-      display: none;
-      line-height: 1.8;
-    }
+    padding:9px;
 
-    .success {
-      background: #e9f8ef;
-      color: #19733a;
-    }
+    z-index:20;
+}
 
-    .error {
-      background: #ffecec;
-      color: #b42318;
-    }
+.nav button{
 
-    .warning {
-      background: #fff7df;
-      color: #8a6500;
-    }
+    flex:1;
 
-    .profile {
-      text-align: center;
-    }
+    border:0;
 
-    .avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: #eee6ff;
-      color: #6c35d9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 15px;
-      font-size: 32px;
-    }
+    background:white;
 
-    .student-name {
-      font-size: 23px;
-      font-weight: bold;
-    }
+    border-radius:12px;
 
-    .status {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 7px 14px;
-      border-radius: 30px;
-      font-size: 13px;
-    }
+    padding:8px;
 
-    .status.waiting {
-      background: #fff3cd;
-      color: #856404;
-    }
+    color:#888;
 
-    .status.registered {
-      background: #d9f7e5;
-      color: #18713b;
-    }
+    font-size:10px;
 
-    .course-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+    cursor:pointer;
+}
 
-    .course {
-      border: 1px solid #e4ddf7;
-      border-radius: 16px;
-      padding: 15px;
-      cursor: pointer;
-      transition: .2s;
-      background: #fff;
-    }
+.nav button.active{
 
-    .course:hover {
-      border-color: #7b4be0;
-      transform: translateY(-2px);
-    }
+    background:#eee8ff;
 
-    .course.selected {
-      border: 2px solid #6c35d9;
-      background: #f4efff;
-    }
+    color:#5d2bb1;
+}
 
-    .course-icon {
-      font-size: 30px;
-      margin-bottom: 8px;
-    }
+.nav i{
 
-    .course-title {
-      font-weight: bold;
-      font-size: 14px;
-      line-height: 1.6;
-    }
+    display:block;
 
-    .course-category {
-      color: #888;
-      font-size: 11px;
-      margin-top: 5px;
-    }
+    font-style:normal;
 
-    .empty {
-      text-align: center;
-      color: #888;
-      padding: 25px;
-    }
+    font-size:20px;
 
-    .divider {
-      text-align: center;
-      margin: 18px 0;
-      color: #aaa;
-      font-size: 13px;
-    }
+    margin-bottom:3px;
+}
 
-    .link-button {
-      background: none;
-      color: #6c35d9;
-      padding: 5px;
-      margin: 0;
-    }
+.hidden{
+    display:none !important;
+}
 
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-      font-size: 14px;
-    }
-
-    .info-row:last-child {
-      border-bottom: none;
-    }
-
-    .loading {
-      text-align: center;
-      padding: 30px;
-      color: #6c35d9;
-    }
-  </style>
+</style>
 </head>
+
 
 <body>
 
-<div class="container">
-
-  <!-- LOGO -->
-  <div class="logo">
-    <h1>AliNagheli</h1>
-    <p>سامانه آموزش زبان انگلیسی</p>
-  </div>
-
-  <!-- MESSAGE -->
-  <div id="message" class="message"></div>
-
-  <!-- LOGIN -->
-  <section id="loginSection" class="card">
-
-    <h2>🔐 ورود دانش‌آموز</h2>
-
-    <input
-      id="loginPhone"
-      type="tel"
-      placeholder="شماره موبایل"
-      inputmode="numeric"
-    >
-
-    <input
-      id="loginPassword"
-      type="password"
-      placeholder="رمز عبور"
-    >
-
-    <button onclick="login()">
-      ورود به حساب
-    </button>
-
-    <div class="divider">
-      حساب ندارید؟
-    </div>
-
-    <button class="secondary" onclick="showRegister()">
-      ثبت‌نام دانش‌آموز
-    </button>
-
-  </section>
+<div class="app">
 
 
-  <!-- REGISTER -->
-  <section id="registerSection" class="card hidden">
+<header>
 
-    <h2>📝 ثبت‌نام</h2>
+    <div class="head">
 
-    <input
-      id="firstName"
-      type="text"
-      placeholder="نام"
-    >
+        <div>
 
-    <input
-      id="lastName"
-      type="text"
-      placeholder="نام خانوادگی"
-    >
+            <div class="brand">
+                AliNagheli
+            </div>
 
-    <input
-      id="registerPhone"
-      type="tel"
-      placeholder="شماره موبایل"
-      inputmode="numeric"
-    >
+            <div class="sub">
+                English Learning Platform
+            </div>
 
-    <select id="level">
-      <option value="">سطح زبان خود را انتخاب کنید</option>
-      <option value="beginner">مبتدی</option>
-      <option value="elementary">مقدماتی</option>
-      <option value="intermediate">متوسط</option>
-      <option value="upper-intermediate">متوسط رو به بالا</option>
-      <option value="advanced">پیشرفته</option>
-    </select>
-
-    <input
-      id="registerPassword"
-      type="password"
-      placeholder="رمز عبور"
-    >
-
-    <input
-      id="registerPassword2"
-      type="password"
-      placeholder="تکرار رمز عبور"
-    >
-
-    <button onclick="registerStudent()">
-      ایجاد حساب
-    </button>
-
-    <button class="secondary" onclick="showLogin()">
-      بازگشت به ورود
-    </button>
-
-  </section>
+        </div>
 
 
-  <!-- WAITING -->
-  <section id="waitingSection" class="card hidden">
+        <div
+            id="userHead"
+            class="userhead">
 
-    <div class="profile">
+            <b id="userHeadName"></b>
 
-      <div class="avatar">⏳</div>
+            <br>
 
-      <h2>ثبت‌نام شما دریافت شد</h2>
+            دانش‌آموز
 
-      <p style="line-height:2; color:#666;">
-        اطلاعات شما با موفقیت ثبت شده است.
-        <br>
-        حساب شما در حال حاضر در انتظار تأیید مدیر است.
-      </p>
-
-      <div class="status waiting">
-        🟡 در انتظار تأیید
-      </div>
-
-      <button class="secondary" onclick="logout()">
-        خروج
-      </button>
+        </div>
 
     </div>
 
-  </section>
+</header>
 
 
-  <!-- DASHBOARD -->
-  <section id="dashboardSection" class="hidden">
+<main class="content">
 
-    <!-- PROFILE -->
-    <div class="card profile">
 
-      <div class="avatar">
-        👤
-      </div>
+<div
+    id="alert"
+    class="alert">
+</div>
 
-      <div id="studentName" class="student-name">
-        دانش‌آموز
-      </div>
 
-      <div id="studentStatus" class="status registered">
-        🟢 ثبت‌نام شده
-      </div>
+<!-- HOME -->
+
+<section id="home">
+
+    <div class="card hero">
+
+        <h1>
+            انگلیسی را حرفه‌ای یاد بگیر 🚀
+        </h1>
+
+        <p>
+            به سامانه آموزشی AliNagheli خوش آمدید.
+            مسیر یادگیری خودت را انتخاب کن و قدم‌به‌قدم پیش برو.
+        </p>
+
+
+        <button
+            class="btn primary"
+            onclick="page('register')">
+
+            شروع یادگیری
+
+        </button>
+
+
+        <button
+            class="btn secondary"
+            onclick="page('login')">
+
+            ورود به حساب
+
+        </button>
 
     </div>
 
 
-    <!-- PROFILE INFO -->
     <div class="card">
 
-      <h2>👤 پروفایل من</h2>
+        <div class="title">
+            چرا AliNagheli؟
+        </div>
 
-      <div class="info-row">
-        <span>نام</span>
-        <strong id="profileFirstName">-</strong>
-      </div>
 
-      <div class="info-row">
-        <span>نام خانوادگی</span>
-        <strong id="profileLastName">-</strong>
-      </div>
+        <div class="grid">
 
-      <div class="info-row">
-        <span>شماره موبایل</span>
-        <strong id="profilePhone">-</strong>
-      </div>
+            <div class="feature">
 
-      <div class="info-row">
-        <span>سطح زبان</span>
-        <strong id="profileLevel">-</strong>
-      </div>
+                <div class="ico">
+                    📚
+                </div>
+
+                <b>
+                    دوره‌های متنوع
+                </b>
+
+                <span>
+                    از پایه تا آزمون‌های بین‌المللی
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="ico">
+                    🎯
+                </div>
+
+                <b>
+                    مسیر هدفمند
+                </b>
+
+                <span>
+                    متناسب با هدف یادگیری
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="ico">
+                    🧠
+                </div>
+
+                <b>
+                    یادگیری اصولی
+                </b>
+
+                <span>
+                    لغت، گرامر و مهارت‌ها
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="ico">
+                    🏆
+                </div>
+
+                <b>
+                    آمادگی آزمون
+                </b>
+
+                <span>
+                    IELTS، TOEFL، PTE و بیشتر
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- REGISTER -->
+
+<section
+    id="register"
+    class="hidden">
+
+    <div class="card">
+
+        <button
+            class="back"
+            onclick="page('home')">
+
+            ← بازگشت
+
+        </button>
+
+
+        <div class="title">
+            📝 ثبت‌نام دانش‌آموز
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                نام
+            </label>
+
+            <input
+                id="rf"
+                placeholder="نام">
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                نام خانوادگی
+            </label>
+
+            <input
+                id="rl"
+                placeholder="نام خانوادگی">
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                شماره موبایل
+            </label>
+
+            <input
+                id="rp"
+                inputmode="tel"
+                placeholder="09123456789">
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                سطح زبان
+            </label>
+
+            <select id="rlevel">
+
+                <option value="">
+                    انتخاب سطح
+                </option>
+
+                <option value="beginner">
+                    مبتدی
+                </option>
+
+                <option value="elementary">
+                    مقدماتی
+                </option>
+
+                <option value="intermediate">
+                    متوسط
+                </option>
+
+                <option value="upper-intermediate">
+                    متوسط رو به بالا
+                </option>
+
+                <option value="advanced">
+                    پیشرفته
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                رمز عبور
+            </label>
+
+            <input
+                id="rpass"
+                type="password"
+                placeholder="حداقل ۶ کاراکتر">
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                تکرار رمز عبور
+            </label>
+
+            <input
+                id="rpass2"
+                type="password"
+                placeholder="تکرار رمز">
+
+        </div>
+
+
+        <button
+            class="btn primary"
+            onclick="register()">
+
+            ثبت‌نام
+
+        </button>
+
+
+        <button
+            class="btn secondary"
+            onclick="page('login')">
+
+            قبلاً ثبت‌نام کرده‌ام
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- LOGIN -->
+
+<section
+    id="login"
+    class="hidden">
+
+    <div class="card">
+
+        <button
+            class="back"
+            onclick="page('home')">
+
+            ← بازگشت
+
+        </button>
+
+
+        <div class="title">
+            🔐 ورود به حساب
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                شماره موبایل
+            </label>
+
+            <input
+                id="lp"
+                inputmode="tel"
+                placeholder="09123456789">
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                رمز عبور
+            </label>
+
+            <input
+                id="lpass"
+                type="password"
+                placeholder="رمز عبور">
+
+        </div>
+
+
+        <button
+            class="btn primary"
+            onclick="login()">
+
+            ورود
+
+        </button>
+
+
+        <button
+            class="btn secondary"
+            onclick="page('register')">
+
+            ثبت‌نام جدید
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- WAITING -->
+
+<section
+    id="waiting"
+    class="hidden">
+
+    <div class="card center">
+
+        <div style="font-size:55px">
+            ⏳
+        </div>
+
+
+        <div class="title">
+            در انتظار تأیید مدیر
+        </div>
+
+
+        <p
+            style="
+            font-size:13px;
+            line-height:2;
+            color:#777">
+
+            ثبت‌نام شما با موفقیت انجام شده است.
+            پس از تأیید مدیر، امکان ورود به بخش آموزشی فعال می‌شود.
+
+        </p>
+
+
+        <span
+            class="status waiting">
+
+            🟡 در انتظار تأیید
+
+        </span>
+
+
+        <button
+            class="btn secondary"
+            onclick="logout()">
+
+            خروج
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- DASHBOARD -->
+
+<section
+    id="dashboard"
+    class="hidden">
+
+
+    <div class="card center">
+
+        <div class="avatar">
+            👤
+        </div>
+
+
+        <div
+            id="dashName"
+            class="name">
+
+            -
+
+        </div>
+
+
+        <span
+            class="status registered">
+
+            🟢 ثبت‌نام شده
+
+        </span>
+
+    </div>
+
+
+    <!-- PROFILE -->
+
+    <div id="profileSection">
+
+        <div class="card">
+
+            <div class="title">
+                👤 پروفایل من
+            </div>
+
+
+            <div class="info">
+
+
+                <div class="row">
+
+                    <span>
+                        نام
+                    </span>
+
+                    <b id="pf">
+                        -
+                    </b>
+
+                </div>
+
+
+                <div class="row">
+
+                    <span>
+                        نام خانوادگی
+                    </span>
+
+                    <b id="pl">
+                        -
+                    </b>
+
+                </div>
+
+
+                <div class="row">
+
+                    <span>
+                        موبایل
+                    </span>
+
+                    <b id="pp">
+                        -
+                    </b>
+
+                </div>
+
+
+                <div class="row">
+
+                    <span>
+                        سطح زبان
+                    </span>
+
+                    <b id="plevel">
+                        -
+                    </b>
+
+                </div>
+
+
+            </div>
+
+        </div>
 
     </div>
 
 
     <!-- COURSES -->
-    <div class="card">
 
-      <h2>📚 دوره‌های آموزشی</h2>
+    <div
+        id="coursesSection"
+        class="hidden">
 
-      <p style="color:#777; margin-bottom:18px; line-height:1.8;">
-        دوره‌های موردنظر خود را انتخاب کنید.
-      </p>
+        <div class="card">
 
-      <div id="courseList" class="course-grid">
-        <div class="loading">
-          در حال دریافت دوره‌ها...
+            <div class="title">
+                📚 دوره‌های آموزشی
+            </div>
+
+
+            <p
+                style="
+                font-size:12px;
+                color:#777;
+                line-height:1.8">
+
+                برای اضافه کردن دوره به پروفایل،
+                روی آن بزن.
+
+            </p>
+
+
+            <div
+                id="courses"
+                class="grid">
+
+            </div>
+
         </div>
-      </div>
 
     </div>
 
 
-    <!-- LOGOUT -->
     <div class="card">
-      <button class="danger" onclick="logout()">
-        خروج از حساب
-      </button>
+
+        <button
+            class="btn danger"
+            onclick="logout()">
+
+            🚪 خروج از حساب
+
+        </button>
+
     </div>
 
-  </section>
+
+</section>
+
+
+</main>
+
+
+<!-- NAV -->
+
+<nav
+    id="nav"
+    class="nav hidden">
+
+
+    <button
+        id="nprofile"
+        class="active"
+        onclick="dashSection('profile')">
+
+        <i>
+            👤
+        </i>
+
+        پروفایل
+
+    </button>
+
+
+    <button
+        id="ncourses"
+        onclick="dashSection('courses')">
+
+        <i>
+            📚
+        </i>
+
+        دوره‌ها
+
+    </button>
+
+
+</nav>
+
 
 </div>
 
 
 <script>
 
-  /* =========================
-     SUPABASE
-  ========================= */
+/* =====================================================
+   SUPABASE
+===================================================== */
 
-  const SUPABASE_URL =
+const SUPABASE_URL =
     "https://kapzyedzjecnfxevjisq.supabase.co";
 
-  const SUPABASE_KEY =
+
+const SUPABASE_KEY =
     "sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
 
-  const { createClient } = supabase;
 
-  const db = createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+const {
+    createClient
+} = window.supabase;
 
 
-  let currentStudent = null;
-
-
-  /* =========================
-     HELPERS
-  ========================= */
-
-  function showMessage(text, type = "success") {
-
-    const box = document.getElementById("message");
-
-    box.className = "message " + type;
-
-    box.innerHTML = text;
-
-    box.style.display = "block";
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  }
-
-
-  function hideMessage() {
-
-    const box = document.getElementById("message");
-
-    box.style.display = "none";
-  }
-
-
-  function normalizePhone(phone) {
-
-    phone = phone.trim();
-
-    phone = phone.replace(/\s+/g, "");
-
-    if (phone.startsWith("+98")) {
-      phone = "0" + phone.substring(3);
-    }
-
-    if (phone.startsWith("98")) {
-      phone = "0" + phone.substring(2);
-    }
-
-    return phone;
-  }
-
-
-  function authEmail(phone) {
-
-    return normalizePhone(phone) + "@alinagheli.com";
-  }
-
-
-  function showLogin() {
-
-    hideMessage();
-
-    document
-      .getElementById("registerSection")
-      .classList.add("hidden");
-
-    document
-      .getElementById("loginSection")
-      .classList.remove("hidden");
-  }
-
-
-  function showRegister() {
-
-    hideMessage();
-
-    document
-      .getElementById("loginSection")
-      .classList.add("hidden");
-
-    document
-      .getElementById("registerSection")
-      .classList.remove("hidden");
-  }
-
-
-  function hideAllSections() {
-
-    document
-      .getElementById("loginSection")
-      .classList.add("hidden");
-
-    document
-      .getElementById("registerSection")
-      .classList.add("hidden");
-
-    document
-      .getElementById("waitingSection")
-      .classList.add("hidden");
-
-    document
-      .getElementById("dashboardSection")
-      .classList.add("hidden");
-  }
-
-
-  /* =========================
-     REGISTER
-  ========================= */
-
-  async function registerStudent() {
-
-    hideMessage();
-
-    const firstName =
-      document.getElementById("firstName").value.trim();
-
-    const lastName =
-      document.getElementById("lastName").value.trim();
-
-    const phone =
-      normalizePhone(
-        document.getElementById("registerPhone").value
-      );
-
-    const level =
-      document.getElementById("level").value;
-
-    const password =
-      document.getElementById("registerPassword").value;
-
-    const password2 =
-      document.getElementById("registerPassword2").value;
-
-
-    if (!firstName || !lastName || !phone || !level || !password) {
-
-      showMessage(
-        "لطفاً همه اطلاعات را کامل کنید.",
-        "error"
-      );
-
-      return;
-    }
-
-
-    if (!/^09\d{9}$/.test(phone)) {
-
-      showMessage(
-        "شماره موبایل معتبر نیست.",
-        "error"
-      );
-
-      return;
-    }
-
-
-    if (password.length < 6) {
-
-      showMessage(
-        "رمز عبور باید حداقل ۶ کاراکتر باشد.",
-        "error"
-      );
-
-      return;
-    }
-
-
-    if (password !== password2) {
-
-      showMessage(
-        "رمز عبور و تکرار آن یکسان نیست.",
-        "error"
-      );
-
-      return;
-    }
-
-
-    try {
-
-      /* Check existing student */
-
-      const { data: existingStudent, error: checkError } =
-        await db
-          .from("students")
-          .select("id, status")
-          .eq("phone", phone)
-          .maybeSingle();
-
-
-      if (checkError) {
-        throw checkError;
-      }
-
-
-      if (existingStudent) {
-
-        showMessage(
-          "این شماره موبایل قبلاً ثبت شده است.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      /* Create Supabase Auth account */
-
-      const email = authEmail(phone);
-
-      const {
-        data: authData,
-        error: authError
-      } = await db.auth.signUp({
-
-        email: email,
-
-        password: password
-
-      });
-
-
-      if (authError) {
-        throw authError;
-      }
-
-
-      if (!authData.user) {
-
-        throw new Error(
-          "حساب کاربری ایجاد نشد."
-        );
-
-      }
-
-
-      /* Insert student */
-
-      const {
-        data: student,
-        error: studentError
-      } = await db
-        .from("students")
-        .insert({
-
-          first_name: firstName,
-
-          last_name: lastName,
-
-          phone: phone,
-
-          level: level,
-
-          status: "waiting",
-
-          auth_user_id: authData.user.id,
-
-          password_created: true
-
-        })
-        .select()
-        .single();
-
-
-      if (studentError) {
-
-        /* Rollback is not possible from client side */
-
-        throw studentError;
-
-      }
-
-
-      currentStudent = student;
-
-
-      hideAllSections();
-
-      document
-        .getElementById("waitingSection")
-        .classList.remove("hidden");
-
-
-      showMessage(
-        "ثبت‌نام شما با موفقیت انجام شد و در انتظار تأیید مدیر است.",
-        "success"
-      );
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      showMessage(
-        "خطا در ثبت‌نام: " +
-        (error.message || "خطای نامشخص"),
-        "error"
-      );
-
-    }
-
-  }
-
-
-  /* =========================
-     LOGIN
-  ========================= */
-
-  async function login() {
-
-    hideMessage();
-
-    const phone =
-      normalizePhone(
-        document.getElementById("loginPhone").value
-      );
-
-    const password =
-      document.getElementById("loginPassword").value;
-
-
-    if (!phone || !password) {
-
-      showMessage(
-        "شماره موبایل و رمز عبور را وارد کنید.",
-        "error"
-      );
-
-      return;
-    }
-
-
-    try {
-
-      const email = authEmail(phone);
-
-
-      const {
-        data,
-        error
-      } = await db.auth.signInWithPassword({
-
-        email: email,
-
-        password: password
-
-      });
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      await loadStudent();
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      showMessage(
-        "شماره موبایل یا رمز عبور اشتباه است.",
-        "error"
-      );
-
-    }
-
-  }
-
-
-  /* =========================
-     LOAD STUDENT
-  ========================= */
-
-  async function loadStudent() {
-
-    const {
-      data: {
-        user
-      }
-    } = await db.auth.getUser();
-
-
-    if (!user) {
-
-      showLogin();
-
-      return;
-
-    }
-
-
-    const {
-      data: student,
-      error
-    } = await db
-      .from("students")
-      .select("*")
-      .eq("auth_user_id", user.id)
-      .maybeSingle();
-
-
-    if (error) {
-
-      console.error(error);
-
-      showMessage(
-        "خطا در دریافت اطلاعات دانش‌آموز.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    if (!student) {
-
-      showMessage(
-        "اطلاعات دانش‌آموز پیدا نشد.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    currentStudent = student;
-
-
-    if (student.status === "waiting") {
-
-      hideAllSections();
-
-      document
-        .getElementById("waitingSection")
-        .classList.remove("hidden");
-
-      return;
-
-    }
-
-
-    if (student.status === "registered") {
-
-      await showDashboard();
-
-      return;
-
-    }
-
-
-    showMessage(
-      "وضعیت حساب شما مشخص نیست.",
-      "warning"
+const sb =
+    createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
     );
 
-  }
+
+let student = null;
 
 
-  /* =========================
-     DASHBOARD
-  ========================= */
+/* =====================================================
+   PAGE
+===================================================== */
 
-  async function showDashboard() {
+const sections = [
+    "home",
+    "register",
+    "login",
+    "waiting",
+    "dashboard"
+];
 
-    hideAllSections();
+
+function page(id){
+
+    sections.forEach(
+        x => {
+
+            document
+                .getElementById(x)
+                .classList
+                .add("hidden");
+
+        }
+    );
+
 
     document
-      .getElementById("dashboardSection")
-      .classList.remove("hidden");
+        .getElementById(id)
+        .classList
+        .remove("hidden");
 
 
-    document.getElementById("studentName").textContent =
-      currentStudent.first_name +
-      " " +
-      currentStudent.last_name;
+    clearAlert();
 
 
-    document.getElementById("profileFirstName").textContent =
-      currentStudent.first_name;
+    window.scrollTo(
+        0,
+        0
+    );
+
+}
 
 
-    document.getElementById("profileLastName").textContent =
-      currentStudent.last_name;
+/* =====================================================
+   ALERT
+===================================================== */
+
+function alertMsg(
+    msg,
+    type = "success"
+){
+
+    const a =
+        document
+        .getElementById("alert");
 
 
-    document.getElementById("profilePhone").textContent =
-      currentStudent.phone;
+    a.className =
+        "alert " + type;
 
 
-    document.getElementById("profileLevel").textContent =
-      translateLevel(currentStudent.level);
+    a.innerHTML =
+        msg;
 
 
-    await loadCourses();
+    a.style.display =
+        "block";
 
-  }
-
-
-  /* =========================
-     LEVEL
-  ========================= */
-
-  function translateLevel(level) {
-
-    const levels = {
-
-      beginner: "مبتدی",
-
-      elementary: "مقدماتی",
-
-      intermediate: "متوسط",
-
-      "upper-intermediate": "متوسط رو به بالا",
-
-      advanced: "پیشرفته"
-
-    };
-
-    return levels[level] || level || "-";
-
-  }
+}
 
 
-  /* =========================
-     COURSES
-  ========================= */
+function clearAlert(){
 
-  async function loadCourses() {
+    document
+        .getElementById("alert")
+        .style.display =
+        "none";
 
-    const list =
-      document.getElementById("courseList");
-
-
-    list.innerHTML =
-      '<div class="loading">در حال دریافت دوره‌ها...</div>';
+}
 
 
-    const {
-      data: courses,
-      error: courseError
-    } = await db
-      .from("courses")
-      .select("*")
-      .eq("active", true)
-      .order("created_at", {
-        ascending: true
-      });
+/* =====================================================
+   PHONE
+===================================================== */
 
+function phone(value){
 
-    if (courseError) {
-
-      console.error(courseError);
-
-      list.innerHTML =
-        '<div class="empty">خطا در دریافت دوره‌ها.</div>';
-
-      return;
-
-    }
-
-
-    if (!courses || courses.length === 0) {
-
-      list.innerHTML =
-        '<div class="empty">هنوز دوره‌ای فعال نشده است.</div>';
-
-      return;
-
-    }
-
-
-    /* Get student's courses */
-
-    const {
-      data: selectedCourses,
-      error: selectedError
-    } = await db
-      .from("student_courses")
-      .select("course_id")
-      .eq("student_id", currentStudent.id);
-
-
-    if (selectedError) {
-
-      console.error(selectedError);
-
-    }
-
-
-    const selectedIds =
-      new Set(
-        (selectedCourses || [])
-          .map(item => item.course_id)
-      );
-
-
-    list.innerHTML = "";
-
-
-    courses.forEach(course => {
-
-      const div =
-        document.createElement("div");
-
-
-      div.className =
-        "course" +
-        (selectedIds.has(course.id)
-          ? " selected"
-          : "");
-
-
-      div.onclick = () =>
-        toggleCourse(
-          course,
-          div,
-          selectedIds
+    let v =
+        String(value || "")
+        .replace(
+            /\s|-/g,
+            ""
         );
 
 
-      div.innerHTML = `
+    if(
+        v.startsWith("+98")
+    ){
 
-        <div class="course-icon">
-          ${course.icon || "📚"}
-        </div>
-
-        <div class="course-title">
-          ${escapeHtml(course.title)}
-        </div>
-
-        <div class="course-category">
-          ${escapeHtml(course.category || "")}
-        </div>
-
-      `;
-
-
-      list.appendChild(div);
-
-    });
-
-  }
-
-
-  /* =========================
-     TOGGLE COURSE
-  ========================= */
-
-  async function toggleCourse(
-    course,
-    element,
-    selectedIds
-  ) {
-
-    if (selectedIds.has(course.id)) {
-
-      showMessage(
-        "این دوره قبلاً برای شما ثبت شده است.",
-        "warning"
-      );
-
-      return;
+        v =
+            "0" +
+            v.slice(3);
 
     }
 
 
-    try {
+    if(
+        v.startsWith("98")
+    ){
 
-      const {
-        error
-      } = await db
-        .from("student_courses")
-        .insert({
+        v =
+            "0" +
+            v.slice(2);
 
-          student_id: currentStudent.id,
-
-          course_id: course.id
-
-        });
+    }
 
 
-      if (error) {
+    return v;
 
-        if (
-          error.code === "23505"
-        ) {
+}
 
-          showMessage(
-            "این دوره قبلاً انتخاب شده است.",
-            "warning"
-          );
 
-          return;
+/* =====================================================
+   AUTH EMAIL
+===================================================== */
+
+function authEmail(
+    value
+){
+
+    return (
+        phone(value) +
+        "@alinagheli.com"
+    );
+
+}
+
+
+/* =====================================================
+   HTML ESCAPE
+===================================================== */
+
+function esc(value){
+
+    return String(
+        value ??
+        ""
+    )
+    .replace(
+        /[&<>"']/g,
+        m => ({
+
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;",
+            "'":"&#039;"
+
+        }[m])
+    );
+
+}
+
+
+/* =====================================================
+   REGISTER
+===================================================== */
+
+async function register(){
+
+    clearAlert();
+
+
+    const first_name =
+        document
+        .getElementById("rf")
+        .value
+        .trim();
+
+
+    const last_name =
+        document
+        .getElementById("rl")
+        .value
+        .trim();
+
+
+    const p =
+        phone(
+            document
+            .getElementById("rp")
+            .value
+        );
+
+
+    const level =
+        document
+        .getElementById("rlevel")
+        .value;
+
+
+    const pass =
+        document
+        .getElementById("rpass")
+        .value;
+
+
+    const pass2 =
+        document
+        .getElementById("rpass2")
+        .value;
+
+
+    if(
+        !first_name ||
+        !last_name ||
+        !p ||
+        !level ||
+        !pass ||
+        !pass2
+    ){
+
+        return alertMsg(
+            "لطفاً تمام اطلاعات را وارد کنید.",
+            "error"
+        );
+
+    }
+
+
+    if(
+        !/^09\d{9}$/.test(p)
+    ){
+
+        return alertMsg(
+            "شماره موبایل معتبر نیست.",
+            "error"
+        );
+
+    }
+
+
+    if(
+        pass.length < 6
+    ){
+
+        return alertMsg(
+            "رمز عبور باید حداقل ۶ کاراکتر باشد.",
+            "error"
+        );
+
+    }
+
+
+    if(
+        pass !== pass2
+    ){
+
+        return alertMsg(
+            "تکرار رمز عبور صحیح نیست.",
+            "error"
+        );
+
+    }
+
+
+    try{
+
+
+        /*
+         * Check existing student
+         */
+
+        const {
+            data:old,
+            error:oe
+        } =
+            await sb
+            .from("students")
+            .select(
+                "id,status"
+            )
+            .eq(
+                "phone",
+                p
+            )
+            .maybeSingle();
+
+
+        if(oe)
+            throw oe;
+
+
+        if(old){
+
+            return alertMsg(
+                old.status === "registered"
+                ?
+                "این دانش‌آموز قبلاً تأیید شده است."
+                :
+                "این شماره قبلاً ثبت‌نام کرده و در انتظار تأیید است.",
+                "warning"
+            );
 
         }
 
-        throw error;
 
-      }
+        /*
+         * Create Auth User
+         */
+
+        const {
+            data:authData,
+            error:authError
+        } =
+            await sb
+            .auth
+            .signUp({
+
+                email:
+                    authEmail(p),
+
+                password:
+                    pass,
+
+                options:{
+
+                    data:{
+
+                        first_name,
+
+                        last_name,
+
+                        phone:p
+
+                    }
+
+                }
+
+            });
 
 
-      element.classList.add("selected");
-
-      selectedIds.add(course.id);
-
-
-      showMessage(
-        "دوره «" +
-        escapeHtml(course.title) +
-        "» با موفقیت به پروفایل شما اضافه شد.",
-        "success"
-      );
+        if(authError)
+            throw authError;
 
 
-    } catch (error) {
+        if(
+            !authData.user
+        ){
 
-      console.error(error);
+            throw new Error(
+                "حساب کاربری ساخته نشد."
+            );
 
-      showMessage(
-        "خطا در ثبت دوره.",
-        "error"
-      );
+        }
+
+
+        /*
+         * Create Student
+         */
+
+        const {
+            data:s,
+            error:studentError
+        } =
+            await sb
+            .from("students")
+            .insert({
+
+                first_name,
+
+                last_name,
+
+                phone:p,
+
+                level,
+
+                status:
+                    "waiting",
+
+                auth_user_id:
+                    authData.user.id,
+
+                password_created:
+                    true
+
+            })
+            .select()
+            .single();
+
+
+        if(studentError)
+            throw studentError;
+
+
+        student =
+            s;
+
+
+        updateHead();
+
+
+        page(
+            "waiting"
+        );
+
+
+        alertMsg(
+            "ثبت‌نام با موفقیت انجام شد. حساب شما در انتظار تأیید مدیر است.",
+            "success"
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            error
+        );
+
+
+        alertMsg(
+            "خطا در ثبت‌نام:<br>" +
+            esc(
+                error.message ||
+                "خطای نامشخص"
+            ),
+            "error"
+        );
 
     }
 
-  }
+}
 
 
-  /* =========================
-     ESCAPE HTML
-  ========================= */
+/* =====================================================
+   LOGIN
+===================================================== */
 
-  function escapeHtml(value) {
+async function login(){
 
-    if (value === null || value === undefined) {
-      return "";
+    clearAlert();
+
+
+    const p =
+        phone(
+            document
+            .getElementById("lp")
+            .value
+        );
+
+
+    const pass =
+        document
+        .getElementById("lpass")
+        .value;
+
+
+    if(
+        !/^09\d{9}$/.test(p)
+        ||
+        !pass
+    ){
+
+        return alertMsg(
+            "شماره موبایل و رمز عبور را صحیح وارد کنید.",
+            "error"
+        );
+
     }
 
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
 
-  }
+    try{
 
 
-  /* =========================
-     LOGOUT
-  ========================= */
+        const {
+            error
+        } =
+            await sb
+            .auth
+            .signInWithPassword({
 
-  async function logout() {
+                email:
+                    authEmail(p),
 
-    await db.auth.signOut();
+                password:
+                    pass
 
-    currentStudent = null;
-
-    hideAllSections();
-
-    document
-      .getElementById("loginSection")
-      .classList.remove("hidden");
-
-    showMessage(
-      "با موفقیت خارج شدید.",
-      "success"
-    );
-
-  }
+            });
 
 
-  /* =========================
-     INITIALIZATION
-  ========================= */
+        if(error)
+            throw error;
 
-  async function init() {
+
+        await loadStudent();
+
+
+    }
+    catch(error){
+
+        console.error(
+            error
+        );
+
+
+        alertMsg(
+            "ورود انجام نشد. شماره موبایل یا رمز عبور را بررسی کنید.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD STUDENT
+===================================================== */
+
+async function loadStudent(){
 
     const {
-      data: {
-        session
-      }
-    } = await db.auth.getSession();
+        data:{
+            user
+        }
+    } =
+        await sb
+        .auth
+        .getUser();
 
 
-    if (session) {
+    if(!user){
 
-      await loadStudent();
+        page(
+            "login"
+        );
 
-    } else {
-
-      hideAllSections();
-
-      document
-        .getElementById("loginSection")
-        .classList.remove("hidden");
+        return;
 
     }
 
-  }
+
+    const {
+        data:s,
+        error
+    } =
+        await sb
+        .from("students")
+        .select("*")
+        .eq(
+            "auth_user_id",
+            user.id
+        )
+        .maybeSingle();
 
 
-  init();
+    if(error)
+        throw error;
+
+
+    if(!s){
+
+        return alertMsg(
+            "حساب ورود وجود دارد اما رکورد دانش‌آموز پیدا نشد.",
+            "error"
+        );
+
+    }
+
+
+    student =
+        s;
+
+
+    updateHead();
+
+
+    if(
+        s.status ===
+        "waiting"
+    ){
+
+        document
+            .getElementById("nav")
+            .classList
+            .add("hidden");
+
+
+        page(
+            "waiting"
+        );
+
+
+        return;
+
+    }
+
+
+    if(
+        s.status ===
+        "registered"
+    ){
+
+        openDashboard();
+
+        return;
+
+    }
+
+
+    alertMsg(
+        "وضعیت حساب مشخص نیست.",
+        "warning"
+    );
+
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+function updateHead(){
+
+    const h =
+        document
+        .getElementById("userHead");
+
+
+    const n =
+        document
+        .getElementById("userHeadName");
+
+
+    if(student){
+
+        h.style.display =
+            "block";
+
+
+        n.textContent =
+            student.first_name;
+
+    }
+    else{
+
+        h.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function openDashboard(){
+
+    page(
+        "dashboard"
+    );
+
+
+    document
+        .getElementById("nav")
+        .classList
+        .remove("hidden");
+
+
+    document
+        .getElementById("dashName")
+        .textContent =
+            student.first_name +
+            " " +
+            student.last_name;
+
+
+    document
+        .getElementById("pf")
+        .textContent =
+            student.first_name;
+
+
+    document
+        .getElementById("pl")
+        .textContent =
+            student.last_name;
+
+
+    document
+        .getElementById("pp")
+        .textContent =
+            student.phone;
+
+
+    document
+        .getElementById("plevel")
+        .textContent =
+            levelName(
+                student.level
+            );
+
+
+    dashSection(
+        "profile"
+    );
+
+}
+
+
+/* =====================================================
+   DASHBOARD NAV
+===================================================== */
+
+function dashSection(
+    section
+){
+
+    const profile =
+        document
+        .getElementById(
+            "profileSection"
+        );
+
+
+    const courses =
+        document
+        .getElementById(
+            "coursesSection"
+        );
+
+
+    const np =
+        document
+        .getElementById(
+            "nprofile"
+        );
+
+
+    const nc =
+        document
+        .getElementById(
+            "ncourses"
+        );
+
+
+    profile
+        .classList
+        .toggle(
+            "hidden",
+            section !== "profile"
+        );
+
+
+    courses
+        .classList
+        .toggle(
+            "hidden",
+            section !== "courses"
+        );
+
+
+    np
+        .classList
+        .toggle(
+            "active",
+            section === "profile"
+        );
+
+
+    nc
+        .classList
+        .toggle(
+            "active",
+            section === "courses"
+        );
+
+
+    if(
+        section === "courses"
+    ){
+
+        loadCourses();
+
+    }
+
+}
+
+
+/* =====================================================
+   LEVEL
+===================================================== */
+
+function levelName(
+    value
+){
+
+    const levels = {
+
+        beginner:
+            "مبتدی",
+
+        elementary:
+            "مقدماتی",
+
+        intermediate:
+            "متوسط",
+
+        "upper-intermediate":
+            "متوسط رو به بالا",
+
+        advanced:
+            "پیشرفته"
+
+    };
+
+
+    return (
+        levels[value] ||
+        value ||
+        "-"
+    );
+
+}
+
+
+/* =====================================================
+   LOAD COURSES
+===================================================== */
+
+async function loadCourses(){
+
+    const box =
+        document
+        .getElementById(
+            "courses"
+        );
+
+
+    box.innerHTML = `
+
+        <div
+            class="loading"
+            style="grid-column:1/-1">
+
+            <div class="spinner"></div>
+
+            در حال دریافت دوره‌ها...
+
+        </div>
+
+    `;
+
+
+    try{
+
+
+        /*
+         * Get courses
+         */
+
+        const {
+            data:cs,
+            error:ce
+        } =
+            await sb
+            .from("courses")
+            .select(
+                "id,title,category,description,icon,active"
+            )
+            .eq(
+                "active",
+                true
+            )
+            .order(
+                "created_at",
+                {
+                    ascending:true
+                }
+            );
+
+
+        if(ce)
+            throw ce;
+
+
+        /*
+         * Get selected courses
+         */
+
+        const {
+            data:sc,
+            error:se
+        } =
+            await sb
+            .from("student_courses")
+            .select(
+                "course_id"
+            )
+            .eq(
+                "student_id",
+                student.id
+            );
+
+
+        if(se)
+            throw se;
+
+
+        const selected =
+            new Set(
+                (sc || [])
+                .map(
+                    x =>
+                        x.course_id
+                )
+            );
+
+
+        if(
+            !cs ||
+            cs.length === 0
+        ){
+
+            box.innerHTML = `
+
+                <div
+                    class="empty"
+                    style="grid-column:1/-1">
+
+                    هنوز دوره فعالی ثبت نشده است.
+
+                </div>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        box.innerHTML =
+            "";
+
+
+        cs.forEach(
+            course => {
+
+
+                const d =
+                    document
+                    .createElement(
+                        "div"
+                    );
+
+
+                d.className =
+                    "course";
+
+
+                if(
+                    selected.has(
+                        course.id
+                    )
+                ){
+
+                    d.classList
+                        .add(
+                            "selected"
+                        );
+
+                }
+
+
+                d.innerHTML =
+
+                    (
+                        selected.has(
+                            course.id
+                        )
+                        ?
+                        `<div class="check">
+                            ✓
+                        </div>`
+                        :
+                        ""
+                    )
+
+                    +
+
+                    `<div class="ico">
+                        ${
+                            esc(
+                                course.icon ||
+                                "📚"
+                            )
+                        }
+                    </div>
+
+                    <h3>
+                        ${
+                            esc(
+                                course.title
+                            )
+                        }
+                    </h3>
+
+                    <small>
+                        ${
+                            esc(
+                                course.category ||
+                                ""
+                            )
+                        }
+                    </small>
+
+                    ${
+                        course.description
+                        ?
+                        `
+                        <p>
+                            ${
+                                esc(
+                                    course.description
+                                )
+                            }
+                        </p>
+                        `
+                        :
+                        ""
+                    }
+                    `;
+
+
+                d.onclick =
+                    () =>
+                        addCourse(
+                            course,
+                            d,
+                            selected
+                        );
+
+
+                box.appendChild(
+                    d
+                );
+
+            }
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            error
+        );
+
+
+        box.innerHTML = `
+
+            <div
+                class="empty"
+                style="grid-column:1/-1">
+
+                خطا در دریافت دوره‌ها.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   ADD COURSE
+===================================================== */
+
+async function addCourse(
+    course,
+    element,
+    selected
+){
+
+    if(
+        selected.has(
+            course.id
+        )
+    ){
+
+        alertMsg(
+            "این دوره قبلاً در پروفایل شما ثبت شده است.",
+            "warning"
+        );
+
+
+        return;
+
+    }
+
+
+    try{
+
+
+        const {
+            error
+        } =
+            await sb
+            .from("student_courses")
+            .insert({
+
+                student_id:
+                    student.id,
+
+                course_id:
+                    course.id
+
+            });
+
+
+        if(error)
+            throw error;
+
+
+        selected.add(
+            course.id
+        );
+
+
+        element
+            .classList
+            .add(
+                "selected"
+            );
+
+
+        const check =
+            document
+            .createElement(
+                "div"
+            );
+
+
+        check.className =
+            "check";
+
+
+        check.textContent =
+            "✓";
+
+
+        element.prepend(
+            check
+        );
+
+
+        alertMsg(
+            "دوره «" +
+            esc(
+                course.title
+            ) +
+            "» با موفقیت اضافه شد.",
+            "success"
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            error
+        );
+
+
+        alertMsg(
+            error.code ===
+            "23505"
+            ?
+            "این دوره قبلاً ثبت شده است."
+            :
+            "ثبت دوره انجام نشد.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+async function logout(){
+
+    await sb
+        .auth
+        .signOut();
+
+
+    student =
+        null;
+
+
+    updateHead();
+
+
+    document
+        .getElementById("nav")
+        .classList
+        .add("hidden");
+
+
+    page(
+        "home"
+    );
+
+
+    alertMsg(
+        "با موفقیت از حساب خارج شدید.",
+        "success"
+    );
+
+}
+
+
+/* =====================================================
+   AUTH STATE
+===================================================== */
+
+sb.auth
+    .onAuthStateChange(
+        (
+            event
+        ) => {
+
+            if(
+                event ===
+                "SIGNED_OUT"
+            ){
+
+                student =
+                    null;
+
+
+                updateHead();
+
+
+                document
+                    .getElementById(
+                        "nav"
+                    )
+                    .classList
+                    .add(
+                        "hidden"
+                    );
+
+
+                page(
+                    "home"
+                );
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+(async function(){
+
+    try{
+
+        const {
+            data:{
+                session
+            }
+        } =
+            await sb
+            .auth
+            .getSession();
+
+
+        if(session){
+
+            await loadStudent();
+
+        }
+        else{
+
+            page(
+                "home"
+            );
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            error
+        );
+
+
+        page(
+            "home"
+        );
+
+    }
+
+})();
 
 </script>
 
