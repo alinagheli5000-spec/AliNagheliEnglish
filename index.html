@@ -1,4995 +1,1367 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1,viewport-fit=cover">
-
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#6d28d9">
-
 <title>AliNagheli English</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
-
-:root{
-  --primary:#6d28d9;
-  --primary2:#8b5cf6;
-
-  --bg:#f7f5fb;
-  --card:#fff;
-  --text:#211b2d;
-  --muted:#766e82;
-  --border:#e7e1ef;
-
-  --success:#15803d;
-  --successBg:#dcfce7;
-
-  --danger:#b91c1c;
-  --dangerBg:#fee2e2;
-
-  --warning:#9a3412;
-  --warningBg:#fff7ed;
-
-  --graduate:#5b21b6;
-  --graduateBg:#ede9fe;
-}
-
-*{
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:
-    Tahoma,
-    Arial,
-    sans-serif;
-}
-
-button,
-input,
-select,
-textarea{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-  border:0;
-}
-
-.top{
-  background:
-    linear-gradient(
-      135deg,
-      var(--primary),
-      var(--primary2)
-    );
-
-  color:white;
-
-  padding:18px 16px;
-
-  position:sticky;
-  top:0;
-
-  z-index:10;
-
-  box-shadow:
-    0 4px 18px #4c1d9530;
-}
-
-.toprow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  gap:10px;
-
-  max-width:1100px;
-  margin:auto;
-}
-
-.brand{
-  font-size:22px;
-  font-weight:900;
-}
-
-.sub{
-  font-size:12px;
-  opacity:.85;
-  margin-top:4px;
-}
-
-.wrap{
-  max-width:1100px;
-  margin:auto;
-
-  padding:
-    18px 14px 100px;
-}
-
-.card{
-  background:var(--card);
-
-  border:
-    1px solid var(--border);
-
-  border-radius:18px;
-
-  padding:18px;
-
-  box-shadow:
-    0 8px 24px #2b18380b;
-
-  margin-bottom:14px;
-}
-
-.login{
-  max-width:460px;
-  margin:50px auto;
-}
-
-.logo{
-  width:76px;
-  height:76px;
-
-  border-radius:24px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--primary),
-      var(--primary2)
-    );
-
-  color:white;
-
-  display:grid;
-  place-items:center;
-
-  font-size:27px;
-  font-weight:900;
-
-  margin:
-    0 auto 14px;
-}
-
-h1,
-h2,
-h3{
-  margin:
-    0 0 12px;
-}
-
-.muted{
-  color:var(--muted);
-  font-size:13px;
-}
-
-.tabs{
-  display:flex;
-  gap:8px;
-  margin-bottom:14px;
-}
-
-.tab{
-  flex:1;
-
-  padding:11px;
-
-  border-radius:12px;
-
-  background:#f0ebf8;
-  color:#5b4b70;
-}
-
-.tab.active{
-  background:var(--primary);
-  color:white;
-}
-
-label{
-  display:block;
-
-  font-size:13px;
-  font-weight:700;
-
-  margin:
-    10px 0 6px;
-}
-
-input,
-select,
-textarea{
-  width:100%;
-
-  padding:12px;
-
-  border:
-    1px solid var(--border);
-
-  border-radius:12px;
-
-  background:white;
-
-  outline:none;
-}
-
-input:focus,
-select:focus,
-textarea:focus{
-  border-color:var(--primary);
-}
-
-.btn{
-  background:var(--primary);
-  color:white;
-
-  padding:
-    12px 16px;
-
-  border-radius:12px;
-
-  font-weight:700;
-}
-
-.btn.secondary{
-  background:#eee8f7;
-  color:#4c3568;
-}
-
-.btn.ok{
-  background:var(--successBg);
-  color:#166534;
-}
-
-.btn.danger{
-  background:var(--dangerBg);
-  color:#991b1b;
-}
-
-.btn.warning{
-  background:var(--warningBg);
-  color:#9a3412;
-}
-
-.btn.small{
-  padding:
-    8px 11px;
-
-  font-size:12px;
-}
-
-.btn.full{
-  width:100%;
-}
-
-.row{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.row>*{
-  flex:1;
-  min-width:140px;
-}
-
-.grid{
-  display:grid;
-
-  grid-template-columns:
-    repeat(
-      auto-fit,
-      minmax(180px,1fr)
-    );
-
-  gap:12px;
-}
-
-.stat{
-  padding:16px;
-
-  border-radius:16px;
-
-  background:#faf8fd;
-
-  border:
-    1px solid var(--border);
-}
-
-.stat b{
-  font-size:25px;
-
-  display:block;
-
-  margin-top:5px;
-}
-
-.badge{
-  display:inline-block;
-
-  padding:
-    5px 9px;
-
-  border-radius:999px;
-
-  font-size:11px;
-  font-weight:700;
-}
-
-.waiting{
-  background:var(--warningBg);
-  color:var(--warning);
-}
-
-.registered{
-  background:var(--successBg);
-  color:#166534;
-}
-
-.graduate{
-  background:var(--graduateBg);
-  color:var(--graduate);
-}
-
-.student{
-  border:
-    1px solid var(--border);
-
-  border-radius:15px;
-
-  padding:14px;
-
-  margin:
-    10px 0;
-
-  background:#fff;
-}
-
-.studenthead{
-  display:flex;
-
-  justify-content:space-between;
-
-  gap:8px;
-
-  align-items:flex-start;
-}
-
-.actions{
-  display:flex;
-
-  gap:7px;
-
-  flex-wrap:wrap;
-
-  margin-top:12px;
-}
-
-.nav{
-  position:fixed;
-
-  bottom:0;
-  left:0;
-  right:0;
-
-  background:white;
-
-  border-top:
-    1px solid var(--border);
-
-  z-index:20;
-}
-
-.navin{
-  max-width:700px;
-
-  margin:auto;
-
-  display:flex;
-}
-
-.nav button{
-  flex:1;
-
-  background:white;
-
-  padding:
-    10px 3px;
-
-  color:#6b6175;
-
-  font-size:10px;
-}
-
-.nav button.active{
-  color:var(--primary);
-  font-weight:800;
-}
-
-.notice{
-  padding:
-    11px 13px;
-
-  border-radius:12px;
-
-  margin:
-    10px 0;
-
-  font-size:13px;
-}
-
-.notice.err{
-  background:var(--dangerBg);
-  color:#991b1b;
-}
-
-.notice.ok{
-  background:var(--successBg);
-  color:#166534;
-}
-
-.notice.info{
-  background:#ede9fe;
-  color:#5b21b6;
-}
-
-.modal{
-  position:fixed;
-
-  inset:0;
-
-  background:#160b255c;
-
-  display:grid;
-
-  place-items:center;
-
-  padding:15px;
-
-  z-index:30;
-}
-
-.modalbox{
-  width:min(600px,100%);
-
-  max-height:90vh;
-
-  overflow:auto;
-
-  background:white;
-
-  border-radius:20px;
-
-  padding:18px;
-}
-
-.empty{
-  text-align:center;
-
-  padding:30px;
-
-  color:var(--muted);
-}
-
-.filterbar{
-  display:flex;
-
-  gap:7px;
-
-  overflow-x:auto;
-
-  padding-bottom:5px;
-
-  margin:
-    12px 0;
-}
-
-.filter{
-  white-space:nowrap;
-
-  background:#f0ebf8;
-
-  color:#5b4b70;
-
-  padding:
-    9px 13px;
-
-  border-radius:999px;
-
-  font-size:12px;
-}
-
-.filter.active{
-  background:var(--primary);
-  color:white;
-}
-
-.adminTitle{
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
-
-  gap:10px;
-
-  flex-wrap:wrap;
-}
-
-.dangerText{
-  color:var(--danger);
-
-  font-size:12px;
-
-  margin-top:7px;
-}
-
-.infoLine{
-  font-size:12px;
-
-  color:var(--muted);
-
-  margin-top:5px;
-}
-
-.divider{
-  height:1px;
-
-  background:var(--border);
-
-  margin:
-    15px 0;
-}
-
-/* =========================
-   HOME
-========================= */
-
-.hero{
-  background:
-    linear-gradient(
-      135deg,
-      #6d28d9,
-      #8b5cf6
-    );
-
-  color:white;
-
-  border-radius:20px;
-
-  padding:22px;
-
-  margin-bottom:14px;
-}
-
-.hero h2{
-  font-size:24px;
-}
-
-.progress{
-  width:100%;
-
-  height:12px;
-
-  background:#ede9fe;
-
-  border-radius:999px;
-
-  overflow:hidden;
-
-  margin-top:10px;
-}
-
-.progressbar{
-  height:100%;
-
-  background:
-    linear-gradient(
-      90deg,
-      #8b5cf6,
-      #6d28d9
-    );
-
-  border-radius:999px;
-
-  transition:.3s;
-}
-
-/* =========================
-   MENU
-========================= */
-
-.menuGrid{
-  display:grid;
-
-  grid-template-columns:
-    repeat(
-      2,
-      1fr
-    );
-
-  gap:10px;
-}
-
-.menuItem{
-  background:white;
-
-  border:
-    1px solid var(--border);
-
-  border-radius:17px;
-
-  padding:18px 10px;
-
-  text-align:center;
-
-  color:var(--text);
-
-  box-shadow:
-    0 5px 16px #2b18380a;
-}
-
-.menuIcon{
-  font-size:30px;
-
-  margin-bottom:8px;
-}
-
-.menuTitle{
-  font-weight:800;
-
-  font-size:13px;
-}
-
-.menuSub{
-  font-size:10px;
-
-  color:var(--muted);
-
-  margin-top:4px;
-}
-
-/* =========================
-   TEACHER
-========================= */
-
-.teacherBox{
-  text-align:center;
-
-  padding:10px;
-}
-
-.teacherAvatar{
-  width:95px;
-  height:95px;
-
-  border-radius:50%;
-
-  margin:auto;
-
-  display:grid;
-  place-items:center;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--primary),
-      var(--primary2)
-    );
-
-  color:white;
-
-  font-size:32px;
-
-  font-weight:900;
-}
-
-.contactBtn{
-  display:block;
-
-  text-decoration:none;
-
-  margin-top:9px;
-
-  padding:13px;
-
-  border-radius:13px;
-
-  background:#f5f1fb;
-
-  color:#4c3568;
-
-  font-weight:700;
-}
-
-/* =========================
-   LEVEL TEST
-========================= */
-
-.quizQuestion{
-  font-size:18px;
-
-  font-weight:800;
-
-  line-height:1.8;
-
-  margin-bottom:18px;
-}
-
-.option{
-  width:100%;
-
-  text-align:right;
-
-  background:#faf8fd;
-
-  border:
-    1px solid var(--border);
-
-  padding:13px;
-
-  border-radius:13px;
-
-  margin:
-    8px 0;
-
-  transition:.2s;
-}
-
-.option:hover{
-  border-color:var(--primary);
-}
-
-.option.correct{
-  background:var(--successBg);
-
-  border-color:#86efac;
-
-  color:#166534;
-}
-
-.option.wrong{
-  background:var(--dangerBg);
-
-  border-color:#fca5a5;
-
-  color:#991b1b;
-}
-
-.feedback{
-  padding:13px;
-
-  border-radius:13px;
-
-  margin-top:12px;
-
-  font-weight:700;
-}
-
-.feedback.correct{
-  background:var(--successBg);
-
-  color:#166534;
-}
-
-.feedback.wrong{
-  background:var(--dangerBg);
-
-  color:#991b1b;
-}
-
-/* =========================
-   DAILY QUIZ
-========================= */
-
-.quizHeader{
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
-
-  gap:10px;
-
-  margin-bottom:14px;
-}
-
-.quizScore{
-  background:#ede9fe;
-
-  color:#5b21b6;
-
-  padding:8px 12px;
-
-  border-radius:999px;
-
-  font-size:12px;
-
-  font-weight:800;
-}
-
-.rankCard{
-  border:
-    1px solid var(--border);
-
-  border-radius:16px;
-
-  padding:14px;
-
-  margin-top:9px;
-
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
-}
-
-.rank1{
-  background:#fff7ed;
-}
-
-.rank2{
-  background:#f8fafc;
-}
-
-.rank3{
-  background:#fefce8;
-}
-
-.myRank{
-  border:
-    2px solid var(--primary);
-}
-
-/* =========================
-   COURSE
-========================= */
-
-.courseCard{
-  padding:17px;
-
-  border:
-    1px solid var(--border);
-
-  border-radius:16px;
-
-  margin-bottom:10px;
-
-  background:#fff;
-}
-
-.courseIcon{
-  font-size:28px;
-}
-
-/* =========================
-   ADMIN
-========================= */
-
-.adminPanel{
-  background:#fff;
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:500px){
-
-  .login{
-    margin:25px auto;
-  }
-
-  .top{
-    padding:14px;
-  }
-
-  .wrap{
-    padding:
-      12px 10px 90px;
-  }
-
-  .card{
-    padding:14px;
-  }
-
-  .brand{
-    font-size:19px;
-  }
-
-  .studenthead{
-    flex-direction:column;
-  }
-
-  .menuGrid{
-    grid-template-columns:
-      repeat(
-        2,
-        1fr
-      );
-  }
-
-}
-
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#f6f3ff;color:#21182f;font-family:Tahoma,Arial,sans-serif}
+button,input,textarea,select{font:inherit}
+button{border:0;cursor:pointer}
+.app{max-width:900px;margin:auto;min-height:100vh;background:#fff;box-shadow:0 0 30px #0001}
+header{background:linear-gradient(135deg,#5b21b6,#9333ea);color:#fff;padding:27px 20px 35px;border-radius:0 0 30px 30px}
+header h1{margin:0;font-size:29px}
+header p{margin:7px 0 0;opacity:.9}
+main{padding:16px 15px 100px}
+.page{display:none}.page.active{display:block}
+.card{background:#fff;border:1px solid #eee7ff;border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 5px 20px #5420a00d}
+.hero{background:linear-gradient(135deg,#faf7ff,#eee7ff)}
+h2{color:#5b21b6;margin:5px 0 15px}
+h3{color:#4c1d95}
+.btn{background:#6d28d9;color:#fff;padding:12px 17px;border-radius:13px;margin:4px 0}
+.btn.secondary{background:#ede9fe;color:#5b21b6}
+.btn.danger{background:#fee2e2;color:#b91c1c}
+.full{width:100%}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:650px){.grid{grid-template-columns:repeat(3,1fr)}}
+.tile{background:#faf8ff;border:1px solid #e8defd;border-radius:18px;padding:18px 10px;text-align:center}
+.tile .icon{font-size:30px}.tile b{display:block;margin:7px 0}
+.small{font-size:13px;color:#777;line-height:1.9}
+.badge{display:inline-block;background:#ede9fe;color:#5b21b6;padding:5px 9px;border-radius:20px;font-size:12px;margin:3px}
+.profile{display:flex;align-items:center;gap:15px}
+.avatar{width:82px;height:82px;border-radius:50%;background:#6d28d9;color:white;display:grid;place-items:center;font-size:30px;font-weight:bold}
+.english{direction:ltr;text-align:left;font-family:Georgia,serif}
+.script{font-family:"Brush Script MT","Segoe Script",cursive;font-size:25px;direction:ltr;text-align:left}
+input,textarea,select{width:100%;padding:12px;border:1px solid #ddd3f5;border-radius:12px;margin:6px 0;background:#fff;outline:none}
+textarea{min-height:120px;resize:vertical}
+.lesson{background:#fcfbff;border:1px solid #eee7ff;border-radius:15px;padding:13px;margin:8px 0}
+.success{background:#ecfdf5;color:#047857;padding:12px;border-radius:12px;margin-top:10px}
+.warning{background:#fff7ed;color:#c2410c;padding:12px;border-radius:12px}
+.back{margin-bottom:10px}
+.stat{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee}
+.student{position:relative}
+.student-actions{display:flex;gap:5px;flex-wrap:wrap}
+nav{position:fixed;bottom:0;left:0;right:0;max-width:900px;margin:auto;background:#fff;border-top:1px solid #eee;display:grid;grid-template-columns:repeat(4,1fr);padding:6px;z-index:100}
+nav button{background:none;color:#777;font-size:12px;padding:7px}
+nav button.active{color:#6d28d9;font-weight:bold}
+.empty{text-align:center;color:#888;padding:25px}
+hr{border:0;border-top:1px solid #eee;margin:15px 0}
 </style>
 </head>
 
 <body>
 
-<div id="app"></div>
+<div class="app">
+
+<header>
+<h1>AliNagheli</h1>
+<p>آموزش زبان انگلیسی با علی ناقلی</p>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="page active">
+
+<div class="card hero">
+<h2>یادگیری زبان، ساده و هدفمند 🚀</h2>
+<p>
+اینجا می‌توانی زبان‌آموزان را مدیریت کنی، دوره‌های آموزشی را ببینی،
+برای پایه‌های هفتم تا دوازدهم درس بخوانی و مستقیماً با استاد مشاوره داشته باشی.
+</p>
+
+<button class="btn" onclick="showPage('teacher')">👨‍🏫 معرفی استاد</button>
+<button class="btn secondary" onclick="showPage('courses')">📚 دوره‌های هفتم تا دوازدهم</button>
+</div>
+
+<div class="grid">
+
+<div class="tile" onclick="showPage('students')">
+<div class="icon">👩‍🎓</div>
+<b>مدیریت زبان‌آموزان</b>
+<small>ثبت و مدیریت دانش‌آموزان</small>
+</div>
+
+<div class="tile" onclick="showPage('courses')">
+<div class="icon">📚</div>
+<b>دوره‌ها</b>
+<small>هفتم تا دوازدهم</small>
+</div>
+
+<div class="tile" onclick="showPage('teacher')">
+<div class="icon">👨‍🏫</div>
+<b>استاد</b>
+<small>معرفی و سوابق</small>
+</div>
+
+<div class="tile" onclick="showPage('consult')">
+<div class="icon">💬</div>
+<b>مشاوره</b>
+<small>پرسش از استاد</small>
+</div>
+
+<div class="tile" onclick="showPage('test')">
+<div class="icon">📝</div>
+<b>تعیین سطح</b>
+<small>آزمون کوتاه</small>
+</div>
+
+<div class="tile" onclick="showPage('settings')">
+<div class="icon">⚙️</div>
+<b>تنظیمات</b>
+<small>اطلاعات برنامه</small>
+</div>
+
+</div>
+
+<div class="card">
+<h3>📊 وضعیت برنامه</h3>
+<div class="stat"><span>زبان‌آموزان</span><b id="homeStudents">0</b></div>
+<div class="stat"><span>سؤالات مشاوره</span><b id="homeQuestions">0</b></div>
+</div>
+
+</section>
+
+
+<!-- TEACHER -->
+<section id="teacher" class="page">
+
+<button class="btn secondary back" onclick="showPage('home')">← بازگشت</button>
+
+<div class="card">
+
+<div class="profile">
+<div class="avatar">A</div>
+
+<div>
+<h2>علی ناقلی</h2>
+<span class="badge">MA in TEFL</span>
+<span class="badge">20+ Years Experience</span>
+</div>
+</div>
+
+<hr>
+
+<h3>👨‍🏫 معرفی استاد</h3>
+
+<p>
+علی ناقلی، مدرس زبان انگلیسی و متخصص آموزش زبان،
+با بیش از <b>۲۰ سال سابقه تدریس زبان انگلیسی، مکالمه،
+تربیت زبان‌آموز و تربیت مدرسان زبان انگلیسی</b>،
+در مسیر یادگیری زبان همراه زبان‌آموزان است.
+</p>
+
+<p>
+تمرکز اصلی در آموزش، ایجاد توانایی واقعی در برقراری ارتباط،
+تقویت مکالمه، گسترش دایره واژگان، آموزش گرامر کاربردی
+و آماده‌سازی زبان‌آموز برای آزمون‌های مختلف است.
+</p>
+
+<h3 class="english">About the Teacher</h3>
+
+<p class="english">
+Ali Nagheli is an experienced English language teacher
+and an MA in TEFL with more than
+<b>20 years of experience in teaching English,
+conversation, developing language learners,
+and training English language teachers.</b>
+</p>
+
+<p class="english">
+His teaching philosophy is based on practical communication,
+personalized learning, structured practice,
+and helping students become confident and independent
+English users.
+</p>
+
+<h3 class="script">
+20+ Years of Teaching English
+</h3>
+
+<div>
+<span class="badge">English Conversation</span>
+<span class="badge">General English</span>
+<span class="badge">IELTS</span>
+<span class="badge">TOEFL</span>
+<span class="badge">Teacher Training</span>
+<span class="badge">Vocabulary</span>
+<span class="badge">Grammar</span>
+</div>
+
+<br>
+
+<button class="btn full" onclick="showPage('consult')">
+💬 انجام مشاوره با استاد
+</button>
+
+</div>
+</section>
+
+
+<!-- CONSULTATION -->
+<section id="consult" class="page">
+
+<button class="btn secondary back" onclick="showPage('teacher')">← بازگشت</button>
+
+<div class="card">
+
+<h2>💬 مشاوره با استاد</h2>
+
+<p class="small">
+سؤال خود را بنویسید تا استاد آن را بررسی کرده و پاسخ دهد.
+</p>
+
+<input id="consultName" placeholder="نام و نام خانوادگی">
+
+<input id="consultPhone" placeholder="شماره تماس">
+
+<select id="consultLevel">
+<option>سطح زبان خود را انتخاب کنید</option>
+<option>مبتدی</option>
+<option>متوسط</option>
+<option>متوسط رو به بالا</option>
+<option>پیشرفته</option>
+<option>نمی‌دانم</option>
+</select>
+
+<textarea id="consultQuestion" placeholder="سؤال خود را برای استاد بنویسید..."></textarea>
+
+<button class="btn full" onclick="sendQuestion()">
+📨 ارسال سؤال
+</button>
+
+<div id="consultMessage"></div>
+
+</div>
+
+<div class="card">
+
+<h3>📬 سؤالات و پاسخ‌های استاد</h3>
+
+<div id="consultList"></div>
+
+</div>
+
+</section>
+
+
+<!-- COURSES -->
+<section id="courses" class="page">
+
+<button class="btn secondary back" onclick="showPage('home')">← بازگشت</button>
+
+<div class="card hero">
+<h2>📚 دوره‌های زبان انگلیسی مدارس</h2>
+
+<p>
+محتوای آموزشی زبان انگلیسی پایه‌های هفتم تا دوازدهم
+در سه بخش اصلی:
+</p>
+
+<div>
+<span class="badge">📘 Grammar</span>
+<span class="badge">🔤 Vocabulary</span>
+<span class="badge">📝 Test</span>
+</div>
+</div>
+
+<div id="gradeList" class="grid"></div>
+
+</section>
+
+
+<!-- GRADE -->
+<section id="grade" class="page">
+
+<button class="btn secondary back" onclick="showPage('courses')">
+← بازگشت به پایه‌ها
+</button>
+
+<div id="gradeContent"></div>
+
+</section>
+
+
+<!-- STUDENTS -->
+<section id="students" class="page">
+
+<button class="btn secondary back" onclick="showPage('home')">
+← بازگشت
+</button>
+
+<div class="card">
+
+<h2>👩‍🎓 مدیریت زبان‌آموزان</h2>
+
+<input id="sFirst" placeholder="نام">
+
+<input id="sLast" placeholder="نام خانوادگی">
+
+<input id="sPhone" placeholder="شماره تماس">
+
+<select id="sStatus">
+<option value="waiting">در صف انتظار</option>
+<option value="registered">ثبت‌نام شده</option>
+<option value="graduate">فارغ‌التحصیل شده</option>
+</select>
+
+<select id="sBook">
+<option>انتخاب کتاب</option>
+<option>Family and Friends</option>
+<option>American English File</option>
+<option>English File</option>
+<option>Solutions</option>
+<option>کتاب مدرسه</option>
+<option>سایر</option>
+</select>
+
+<input id="sPrice" type="number" placeholder="شهریه هر جلسه">
+
+<input id="sDay" placeholder="روز کلاس">
+
+<input id="sStart" type="time">
+
+<input id="sEnd" type="time">
+
+<input id="sGoal" placeholder="هدف زبان‌آموز">
+
+<button class="btn full" onclick="addStudent()">
+➕ ثبت زبان‌آموز
+</button>
+
+</div>
+
+<div class="card">
+
+<h3>زبان‌آموزان ثبت‌شده</h3>
+
+<input id="studentSearch" placeholder="🔎 جستجوی نام..." oninput="renderStudents()">
+
+<div id="studentList"></div>
+
+</div>
+
+</section>
+
+
+<!-- TEST -->
+<section id="test" class="page">
+
+<button class="btn secondary back" onclick="showPage('home')">
+← بازگشت
+</button>
+
+<div class="card">
+
+<h2>📝 آزمون کوتاه تعیین سطح</h2>
+
+<div id="quiz"></div>
+
+<button class="btn full" onclick="calculateQuiz()">
+محاسبه نتیجه
+</button>
+
+<div id="quizResult"></div>
+
+</div>
+
+</section>
+
+
+<!-- SETTINGS -->
+<section id="settings" class="page">
+
+<button class="btn secondary back" onclick="showPage('home')">
+← بازگشت
+</button>
+
+<div class="card">
+
+<h2>⚙️ تنظیمات</h2>
+
+<button class="btn full" onclick="exportData()">
+📦 خروجی گرفتن از اطلاعات
+</button>
+
+<br>
+
+<button class="btn danger full" onclick="clearAllData()">
+🗑 حذف تمام اطلاعات
+</button>
+
+</div>
+
+<div class="card">
+
+<h3>درباره برنامه</h3>
+
+<p>
+AliNagheli English
+</p>
+
+<p class="small">
+سامانه مدیریت و آموزش زبان انگلیسی
+برای زبان‌آموزان و مدرس زبان انگلیسی.
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+
+<nav>
+
+<button id="navHome" onclick="showPage('home')">
+🏠<br>خانه
+</button>
+
+<button id="navCourses" onclick="showPage('courses')">
+📚<br>دوره‌ها
+</button>
+
+<button id="navTeacher" onclick="showPage('teacher')">
+👨‍🏫<br>استاد
+</button>
+
+<button id="navConsult" onclick="showPage('consult')">
+💬<br>مشاوره
+</button>
+
+</nav>
+
+</div>
+
 
 <script>
 
-/* =====================================================
-   SUPABASE
-===================================================== */
+/* =========================
+   PAGE NAVIGATION
+========================= */
 
-const SUPABASE_URL =
-"https://kapzyedzjecnfxevjisq.supabase.co";
+function showPage(page){
 
-const SUPABASE_KEY =
-"sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
+document.querySelectorAll(".page")
+.forEach(function(x){
+x.classList.remove("active");
+});
 
-const {
-  createClient
-} = supabase;
+var target=document.getElementById(page);
 
-const db =
-  createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+if(target){
+target.classList.add("active");
+}
+
+document.querySelectorAll("nav button")
+.forEach(function(x){
+x.classList.remove("active");
+});
+
+var navMap={
+home:"navHome",
+courses:"navCourses",
+teacher:"navTeacher",
+consult:"navConsult"
+};
+
+if(navMap[page]){
+document.getElementById(navMap[page])
+.classList.add("active");
+}
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+if(page==="students"){
+renderStudents();
+}
+
+if(page==="consult"){
+renderConsultations();
+}
+
+}
 
 
-/* =====================================================
-   STATE
-===================================================== */
+/* =========================
+   SCHOOL COURSES
+========================= */
 
-const state = {
+var grades={
 
-  user:null,
+7:{
+title:"پایه هفتم",
+grammar:[
+"am / is / are",
+"Personal Pronouns",
+"Possessive Adjectives",
+"There is / There are",
+"Simple Present",
+"Question Words"
+],
+vocab:[
+"معرفی خود",
+"خانواده",
+"مدرسه",
+"کشورها و ملیت‌ها",
+"اعداد",
+"روزها و ماه‌ها"
+]
+},
 
-  profile:null,
+8:{
+title:"پایه هشتم",
+grammar:[
+"Simple Present",
+"Adverbs of Frequency",
+"Can / Can't",
+"Question Words",
+"Object Pronouns",
+"Present Continuous"
+],
+vocab:[
+"فعالیت‌های روزانه",
+"ورزش",
+"مشاغل",
+"توانایی‌ها",
+"سرگرمی‌ها",
+"زندگی روزمره"
+]
+},
 
-  isAdmin:false,
+9:{
+title:"پایه نهم",
+grammar:[
+"Simple Past",
+"Past Time Expressions",
+"Present Continuous",
+"Comparative Adjectives",
+"Superlative Adjectives",
+"Future with will"
+],
+vocab:[
+"سفر",
+"خرید",
+"آب و هوا",
+"تجربه‌های روزمره",
+"شهر و کشور",
+"برنامه‌های آینده"
+]
+},
 
-  students:[],
+10:{
+title:"پایه دهم",
+grammar:[
+"Present Perfect",
+"Past Continuous",
+"Modals",
+"Gerunds",
+"Infinitives",
+"Passive Voice"
+],
+vocab:[
+"سلامت",
+"محیط زیست",
+"تکنولوژی",
+"سبک زندگی",
+"آموزش",
+"جامعه"
+]
+},
 
-  courses:[],
+11:{
+title:"پایه یازدهم",
+grammar:[
+"Passive Voice",
+"Relative Clauses",
+"Conditionals",
+"Reported Speech",
+"Perfect Tenses",
+"Modal Verbs"
+],
+vocab:[
+"علم",
+"فرهنگ",
+"ارتباطات",
+"جامعه",
+"تکنولوژی",
+"محیط زیست"
+]
+},
 
-  loginMode:"student",
-
-  adminFilter:"all",
-
-  search:"",
-
-  currentSection:"home",
-
-  levelIndex:0,
-
-  levelScore:0,
-
-  levelAnswered:false,
-
-  dailyIndex:0,
-
-  dailyScore:0,
-
-  dailyAnswered:false,
-
-  dailyQuestions:[],
-
-  dailyFinished:false
+12:{
+title:"پایه دوازدهم",
+grammar:[
+"Advanced Tenses",
+"Passive Structures",
+"Conditional Sentences",
+"Reported Speech",
+"Relative Clauses",
+"Reading & Cloze Test"
+],
+vocab:[
+"آمادگی کنکور",
+"Academic Vocabulary",
+"Reading Vocabulary",
+"واژگان پرتکرار",
+"آزمون‌های مدرسه",
+"مهارت Reading"
+]
+}
 
 };
 
 
-/* =====================================================
-   HELPERS
-===================================================== */
+/* =========================
+   RENDER GRADES
+========================= */
 
-function esc(value){
+function renderGrades(){
 
-  return String(value ?? "")
-    .replace(
-      /[&<>"']/g,
-      function(m){
+var container=
+document.getElementById("gradeList");
 
-        return {
-          "&":"&amp;",
-          "<":"&lt;",
-          ">":"&gt;",
-          '"':"&quot;",
-          "'":"&#039;"
-        }[m];
+if(!container)return;
 
-      }
-    );
+container.innerHTML="";
 
-}
+Object.keys(grades).forEach(function(key){
 
+var g=grades[key];
 
-function notice(
-  text,
-  type="info"
-){
+var div=document.createElement("div");
 
-  const old =
-    document.getElementById(
-      "notice"
-    );
+div.className="tile";
 
-  if(old){
-    old.remove();
-  }
+div.innerHTML=
+'<div class="icon">🎓</div>'+
+'<b>'+g.title+'</b>'+
+'<small>گرامر • لغت • آزمون</small>';
 
-  const box =
-    document.createElement(
-      "div"
-    );
+div.onclick=function(){
+openGrade(key);
+};
 
-  box.id="notice";
+container.appendChild(div);
 
-  box.className =
-    "notice " + type;
-
-  box.textContent=text;
-
-  const wrap =
-    document.querySelector(
-      ".wrap"
-    );
-
-  if(wrap){
-    wrap.prepend(box);
-  }
-
-  setTimeout(
-    function(){
-
-      if(box){
-        box.remove();
-      }
-
-    },
-    5000
-  );
+});
 
 }
 
 
-function studentEmail(phone){
+/* =========================
+   OPEN GRADE
+========================= */
 
-  return String(phone || "")
-    .replace(/\D/g,"")
-    + "@alinagheli.com";
+function openGrade(key){
 
-}
+var g=grades[key];
 
+var html="";
 
-/* =====================================================
-   BOOT
-===================================================== */
-
-async function boot(){
-
-  const result =
-    await db.auth.getSession();
-
-  const session =
-    result.data.session;
-
-  if(session){
-
-    state.user =
-      session.user;
-
-    await loadIdentity();
-
-  }else{
-
-    renderLogin();
-
-  }
-
-  db.auth.onAuthStateChange(
-    async function(
-      event,
-      session
-    ){
-
-      if(session){
-
-        state.user =
-          session.user;
-
-        await loadIdentity();
-
-      }else{
-
-        state.user=null;
-
-        state.profile=null;
-
-        state.isAdmin=false;
-
-        renderLogin();
-
-      }
-
-    }
-  );
-
-}
+html+=
+'<div class="card hero">'+
+'<h2>🎓 '+g.title+'</h2>'+
+'<p>دوره کامل زبان انگلیسی متناسب با برنامه آموزشی این پایه.</p>'+
+'</div>';
 
 
-/* =====================================================
-   IDENTITY
-===================================================== */
+/* GRAMMAR */
 
-async function loadIdentity(){
+html+=
+'<div class="card">'+
+'<h3>📘 Grammar | گرامر</h3>';
 
-  state.isAdmin=false;
+g.grammar.forEach(function(item,index){
 
-  state.profile=null;
+html+=
+'<div class="lesson">'+
+'<b>'+(
+index+1
+)+'. '+item+'</b>'+
+'<p class="small">'+
+'آموزش '+item+
+' همراه با مثال و تمرین‌های کاربردی.'+
+'</p>'+
+'<div class="english">'+
+'Example: This lesson helps students understand and use '+item+' in context.'+
+'</div>'+
+'</div>';
 
-  if(!state.user){
+});
 
-    renderLogin();
+html+="</div>";
 
-    return;
 
-  }
+/* VOCABULARY */
 
-  const adminResult =
-    await db
-      .from("admins")
-      .select("id,user_id")
-      .eq(
-        "user_id",
-        state.user.id
-      )
-      .maybeSingle();
+html+=
+'<div class="card">'+
+'<h3>🔤 Vocabulary | لغات</h3>';
 
-  if(adminResult.data){
+g.vocab.forEach(function(v){
 
-    state.isAdmin=true;
+html+=
+'<div class="lesson">'+
+'<b>'+v+'</b>'+
+'<p class="small">واژگان مهم این مبحث را یاد بگیر و در جمله استفاده کن.</p>'+
+'<input placeholder="یک جمله انگلیسی با این واژه بنویس">'+
+'</div>';
 
-    await loadAdminData();
+});
 
-    renderApp();
+html+="</div>";
 
-    return;
 
-  }
+/* TEST */
 
-  const studentResult =
-    await db
-      .from("students")
-      .select("*")
-      .eq(
-        "auth_user_id",
-        state.user.id
-      )
-      .maybeSingle();
+html+=
+'<div class="card">'+
+'<h3>📝 Test | آزمون</h3>'+
+'<div class="lesson">'+
+'<b>1. Choose the correct answer:</b>'+
+'<p class="english">She ___ to school every day.</p>'+
+'<label><input type="radio" name="gradeTest1"> go</label>'+
+'<label><input type="radio" name="gradeTest1"> goes</label>'+
+'<label><input type="radio" name="gradeTest1"> going</label>'+
+'</div>'+
+'<div class="lesson">'+
+'<b>2. Complete the sentence:</b>'+
+'<p class="english">They ___ playing football now.</p>'+
+'<input placeholder="Your answer">'+
+'</div>'+
+'<div class="lesson">'+
+'<b>3. Translate:</b>'+
+'<p>من هر روز انگلیسی مطالعه می‌کنم.</p>'+
+'<input placeholder="English translation">'+
+'</div>'+
+'<button class="btn full" onclick="alert(\'پاسخ‌های شما ثبت شد ✅\')">'+
+'ثبت پاسخ آزمون'+
+'</button>'+
+'</div>';
 
-  state.profile =
-    studentResult.data || null;
 
-  renderApp();
+document.getElementById("gradeContent").innerHTML=html;
+
+showPage("grade");
 
 }
 
 
-/* =====================================================
-   COURSES
-===================================================== */
+/* =========================
+   CONSULTATION
+========================= */
 
-async function loadCourses(){
+function getConsultations(){
 
-  const result =
-    await db
-      .from("courses")
-      .select("*")
-      .order("id");
-
-  if(!result.error){
-
-    state.courses =
-      result.data || [];
-
-  }
+return JSON.parse(
+localStorage.getItem("ali_consultations")||"[]"
+);
 
 }
 
 
-/* =====================================================
-   ADMIN DATA
-===================================================== */
+function sendQuestion(){
 
-async function loadAdminData(){
+var name=
+document.getElementById("consultName")
+.value.trim();
 
-  await loadCourses();
+var phone=
+document.getElementById("consultPhone")
+.value.trim();
 
-  const result =
-    await db
-      .from("students")
-      .select("*")
-      .order(
-        "id",
-        {
-          ascending:false
-        }
-      );
+var level=
+document.getElementById("consultLevel")
+.value;
 
-  if(!result.error){
+var question=
+document.getElementById("consultQuestion")
+.value.trim();
 
-    state.students =
-      result.data || [];
+if(!question){
 
-  }else{
+alert("لطفاً سؤال خود را وارد کنید.");
 
-    state.students=[];
+return;
 
-    console.error(
-      result.error
-    );
+}
 
-  }
+var list=getConsultations();
+
+list.unshift({
+
+id:Date.now(),
+
+name:name||"زبان‌آموز",
+
+phone:phone,
+
+level:level,
+
+question:question,
+
+answer:"",
+
+date:new Date().toLocaleString("fa-IR")
+
+});
+
+localStorage.setItem(
+"ali_consultations",
+JSON.stringify(list)
+);
+
+document.getElementById(
+"consultQuestion"
+).value="";
+
+document.getElementById(
+"consultMessage"
+).innerHTML=
+'<div class="success">سؤال شما با موفقیت برای استاد ثبت شد. ✅</div>';
+
+renderConsultations();
+
+updateHomeStats();
 
 }
 
 
-/* =====================================================
-   HEADER
-===================================================== */
+/* =========================
+   CONSULTATION ANSWERS
+========================= */
 
-function header(){
+function renderConsultations(){
 
-  return `
+var box=
+document.getElementById("consultList");
 
-  <div class="top">
+if(!box)return;
 
-    <div class="toprow">
+var list=getConsultations();
 
-      <div>
+if(list.length===0){
 
-        <div class="brand">
-          AliNagheli English
-        </div>
+box.innerHTML=
+'<div class="empty">هنوز سؤالی ثبت نشده است.</div>';
 
-        <div class="sub">
+return;
 
-          ${
-            state.isAdmin
-              ? "پنل مدیریت"
-              : "پنل زبان‌آموز"
-          }
+}
 
-        </div>
+box.innerHTML="";
 
-      </div>
+list.forEach(function(item,index){
 
-      <button
-        class="btn secondary small"
-        onclick="logout()">
+var div=
+document.createElement("div");
 
-        خروج
+div.className="lesson";
 
-      </button>
+var answerHTML="";
 
-    </div>
+if(item.answer){
 
-  </div>
+answerHTML=
+'<div class="success">'+
+'<b>پاسخ استاد:</b><br>'+
+escapeHTML(item.answer)+
+'</div>';
 
-  `;
+}else{
+
+answerHTML=
+'<textarea id="answer_'+index+'" placeholder="پاسخ استاد را بنویسید..."></textarea>'+
+'<button class="btn secondary" onclick="answerQuestion('+index+')">'+
+'ثبت پاسخ استاد'+
+'</button>';
+
+}
+
+div.innerHTML=
+'<b>'+escapeHTML(item.name)+'</b>'+
+'<div class="small">'+
+escapeHTML(item.level)+
+' • '+
+escapeHTML(item.date)+
+'</div>'+
+'<p>'+escapeHTML(item.question)+'</p>'+
+answerHTML;
+
+box.appendChild(div);
+
+});
 
 }
 
 
-/* =====================================================
-   LOGIN
-===================================================== */
+function answerQuestion(index){
 
-function renderLogin(){
+var list=getConsultations();
 
-  document.body.innerHTML=`
+var input=
+document.getElementById(
+"answer_"+index
+);
 
-  <div class="wrap">
+if(!input)return;
 
-    <div class="card login">
+var answer=input.value.trim();
 
-      <div class="logo">
-        AN
-      </div>
+if(!answer){
 
-      <h1 style="text-align:center">
-        AliNagheli English
-      </h1>
+alert("پاسخ استاد را وارد کنید.");
 
-      <p
-        class="muted"
-        style="text-align:center">
+return;
 
-        سامانه آموزش زبان انگلیسی
+}
 
-      </p>
+list[index].answer=answer;
 
-      <div class="tabs">
+localStorage.setItem(
+"ali_consultations",
+JSON.stringify(list)
+);
 
-        <button
-          class="tab ${
-            state.loginMode==="student"
-              ? "active"
-              : ""
-          }"
-          onclick="setLoginMode('student')">
+renderConsultations();
 
-          زبان‌آموز
-
-        </button>
-
-        <button
-          class="tab ${
-            state.loginMode==="admin"
-              ? "active"
-              : ""
-          }"
-          onclick="setLoginMode('admin')">
-
-          مدیریت
-
-        </button>
-
-      </div>
-
-      <div id="loginForm"></div>
-
-    </div>
-
-  </div>
-
-  `;
-
-  renderLoginForm();
+updateHomeStats();
 
 }
 
 
-function setLoginMode(mode){
+function escapeHTML(text){
 
-  state.loginMode=mode;
-
-  renderLogin();
-
-}
-
-
-function renderLoginForm(){
-
-  const box =
-    document.getElementById(
-      "loginForm"
-    );
-
-  if(state.loginMode==="admin"){
-
-    box.innerHTML=`
-
-      <label>
-        ایمیل مدیر
-      </label>
-
-      <input
-        id="email"
-        type="email"
-        placeholder="ایمیل مدیر">
-
-      <label>
-        رمز عبور
-      </label>
-
-      <input
-        id="password"
-        type="password"
-        placeholder="رمز عبور">
-
-      <button
-        class="btn full"
-        style="margin-top:14px"
-        onclick="loginAdmin()">
-
-        ورود به پنل مدیریت
-
-      </button>
-
-    `;
-
-  }else{
-
-    box.innerHTML=`
-
-      <label>
-        شماره تلفن
-      </label>
-
-      <input
-        id="phone"
-        inputmode="tel"
-        placeholder="0914...">
-
-      <label>
-        رمز عبور
-      </label>
-
-      <input
-        id="password"
-        type="password"
-        placeholder="رمز عبور">
-
-      <button
-        class="btn full"
-        style="margin-top:14px"
-        onclick="loginStudent()">
-
-        ورود زبان‌آموز
-
-      </button>
-
-      <button
-        class="btn secondary full"
-        style="margin-top:8px"
-        onclick="showRegister()">
-
-        ثبت‌نام زبان‌آموز جدید
-
-      </button>
-
-    `;
-
-  }
+return String(text)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 
 }
 
 
-/* =====================================================
-   ADMIN LOGIN
-===================================================== */
+/* =========================
+   STUDENTS
+========================= */
 
-async function loginAdmin(){
+function getStudents(){
 
-  const email =
-    document
-      .getElementById("email")
-      .value
-      .trim();
-
-  const password =
-    document
-      .getElementById("password")
-      .value;
-
-  if(!email || !password){
-
-    notice(
-      "ایمیل و رمز عبور را وارد کنید.",
-      "err"
-    );
-
-    return;
-
-  }
-
-  const result =
-    await db.auth.signInWithPassword({
-
-      email:email,
-
-      password:password
-
-    });
-
-  if(result.error){
-
-    notice(
-      "ایمیل یا رمز عبور مدیر صحیح نیست.",
-      "err"
-    );
-
-    return;
-
-  }
-
-  state.user =
-    result.data.user;
-
-  await loadIdentity();
+return JSON.parse(
+localStorage.getItem("ali_students")||"[]"
+);
 
 }
 
 
-/* =====================================================
-   STUDENT LOGIN
-===================================================== */
+function addStudent(){
 
-async function loginStudent(){
+var first=
+document.getElementById("sFirst")
+.value.trim();
 
-  const phone =
-    document
-      .getElementById("phone")
-      .value
-      .trim();
+var last=
+document.getElementById("sLast")
+.value.trim();
 
-  const password =
-    document
-      .getElementById("password")
-      .value;
+if(!first||!last){
 
-  if(!phone || !password){
+alert("نام و نام خانوادگی را وارد کنید.");
 
-    notice(
-      "شماره تلفن و رمز عبور را وارد کنید.",
-      "err"
-    );
+return;
 
-    return;
+}
 
-  }
+var students=getStudents();
 
-  const result =
-    await db.auth.signInWithPassword({
+students.push({
 
-      email:
-        studentEmail(phone),
+id:Date.now(),
 
-      password:password
+first:first,
 
-    });
+last:last,
 
-  if(result.error){
+phone:document.getElementById("sPhone").value,
 
-    notice(
-      "شماره تلفن یا رمز عبور نادرست است.",
-      "err"
-    );
+status:document.getElementById("sStatus").value,
 
-    return;
+book:document.getElementById("sBook").value,
 
-  }
+price:document.getElementById("sPrice").value,
 
-  state.user =
-    result.data.user;
+day:document.getElementById("sDay").value,
 
-  await loadIdentity();
+start:document.getElementById("sStart").value,
+
+end:document.getElementById("sEnd").value,
+
+goal:document.getElementById("sGoal").value
+
+});
+
+localStorage.setItem(
+"ali_students",
+JSON.stringify(students)
+);
+
+document.getElementById("sFirst").value="";
+document.getElementById("sLast").value="";
+document.getElementById("sPhone").value="";
+document.getElementById("sPrice").value="";
+document.getElementById("sDay").value="";
+document.getElementById("sStart").value="";
+document.getElementById("sEnd").value="";
+document.getElementById("sGoal").value="";
+
+renderStudents();
+
+updateHomeStats();
+
+alert("زبان‌آموز با موفقیت ثبت شد ✅");
 
 }
 
 
-/* =====================================================
-   REGISTER
-===================================================== */
+function renderStudents(){
 
-function showRegister(){
+var box=
+document.getElementById("studentList");
 
-  document
-    .getElementById("loginForm")
-    .innerHTML=`
+if(!box)return;
 
-      <h3>
-        ثبت‌نام زبان‌آموز جدید
-      </h3>
+var students=getStudents();
 
-      <div class="row">
+var search=
+(document.getElementById("studentSearch")||{}).value||"";
 
-        <div>
+search=search.toLowerCase();
 
-          <label>
-            نام
-          </label>
+students=
+students.filter(function(s){
 
-          <input id="r_first">
+return (
+(s.first+" "+s.last)
+.toLowerCase()
+.includes(search)
+);
 
-        </div>
+});
 
-        <div>
 
-          <label>
-            نام خانوادگی
-          </label>
+if(students.length===0){
 
-          <input id="r_last">
+box.innerHTML=
+'<div class="empty">هنوز زبان‌آموزی ثبت نشده است.</div>';
 
-        </div>
-
-      </div>
-
-      <label>
-        شماره تلفن
-      </label>
-
-      <input
-        id="r_phone"
-        inputmode="tel"
-        placeholder="0914...">
-
-      <label>
-        رمز عبور
-      </label>
-
-      <input
-        id="r_pass"
-        type="password">
-
-      <label>
-        پایه / سطح
-      </label>
-
-      <input
-        id="r_level"
-        placeholder="مثلاً پایه نهم">
-
-      <label>
-        دوره
-      </label>
-
-      <select id="r_course">
-
-        <option value="">
-          انتخاب دوره
-        </option>
-
-      </select>
-
-      <label>
-        هدف
-      </label>
-
-      <textarea
-        id="r_goal"
-        rows="3"
-        placeholder="هدف شما از یادگیری زبان">
-      </textarea>
-
-      <button
-        class="btn full"
-        style="margin-top:12px"
-        onclick="registerStudent()">
-
-        ثبت‌نام
-
-      </button>
-
-      <button
-        class="btn secondary full"
-        style="margin-top:8px"
-        onclick="renderLogin()">
-
-        بازگشت
-
-      </button>
-
-  `;
-
-  loadCourses()
-    .then(
-      function(){
-
-        const select =
-          document.getElementById(
-            "r_course"
-          );
-
-        if(!select)return;
-
-        select.innerHTML =
-          `<option value="">
-             انتخاب دوره
-           </option>`
-          +
-          state.courses
-            .map(
-              function(course){
-
-                return `
-                  <option value="${esc(course.title)}">
-                    ${esc(course.title)}
-                  </option>
-                `;
-
-              }
-            )
-            .join("");
-
-      }
-    );
+return;
 
 }
 
 
-/* =====================================================
-   REGISTER STUDENT
-===================================================== */
+box.innerHTML="";
 
-async function registerStudent(){
+students.forEach(function(s){
 
-  const first =
-    document
-      .getElementById("r_first")
-      .value
-      .trim();
+var statusText={
+waiting:"در صف انتظار",
+registered:"ثبت‌نام شده",
+graduate:"فارغ‌التحصیل شده"
+};
 
-  const last =
-    document
-      .getElementById("r_last")
-      .value
-      .trim();
+var div=document.createElement("div");
 
-  const phone =
-    document
-      .getElementById("r_phone")
-      .value
-      .trim();
+div.className="card student";
 
-  const pass =
-    document
-      .getElementById("r_pass")
-      .value;
+div.innerHTML=
+'<h3>'+escapeHTML(s.first+" "+s.last)+'</h3>'+
+'<span class="badge">'+
+(statusText[s.status]||s.status)+
+'</span>'+
+'<p class="small">'+
+'📞 '+escapeHTML(s.phone||"—")+
+'<br>📚 '+escapeHTML(s.book||"—")+
+'<br>📅 '+escapeHTML(s.day||"—")+
+' '+escapeHTML(s.start||"")+
+' تا '+
+escapeHTML(s.end||"")+
+'<br>🎯 '+escapeHTML(s.goal||"—")+
+'</p>'+
+'<div class="student-actions">'+
+'<button class="btn danger" onclick="deleteStudent('+s.id+')">حذف</button>'+
+'</div>';
 
-  if(
-    !first ||
-    !last ||
-    !phone ||
-    !pass
-  ){
+box.appendChild(div);
 
-    notice(
-      "نام، نام خانوادگی، شماره تلفن و رمز عبور الزامی است.",
-      "err"
-    );
-
-    return;
-
-  }
-
-  if(pass.length < 6){
-
-    notice(
-      "رمز عبور باید حداقل ۶ کاراکتر باشد.",
-      "err"
-    );
-
-    return;
-
-  }
-
-  const email =
-    studentEmail(phone);
-
-  const auth =
-    await db.auth.signUp({
-
-      email:email,
-
-      password:pass,
-
-      options:{
-
-        data:{
-
-          first_name:first,
-
-          last_name:last,
-
-          phone:phone
-
-        }
-
-      }
-
-    });
-
-  if(auth.error){
-
-    notice(
-      auth.error.message,
-      "err"
-    );
-
-    return;
-
-  }
-
-  if(!auth.data.user){
-
-    notice(
-      "حساب کاربری ساخته نشد.",
-      "err"
-    );
-
-    return;
-
-  }
-
-  const payload={
-
-    first_name:first,
-
-    last_name:last,
-
-    phone:phone,
-
-    level:
-      document
-        .getElementById("r_level")
-        .value
-        .trim(),
-
-    status:"waiting",
-
-    auth_user_id:
-      auth.data.user.id,
-
-    password_created:true
-
-  };
-
-  const insert =
-    await db
-      .from("students")
-      .insert(payload);
-
-  if(insert.error){
-
-    notice(
-      "حساب ساخته شد اما ذخیره اطلاعات زبان‌آموز خطا داد: "
-      +
-      insert.error.message,
-      "err"
-    );
-
-    return;
-
-  }
-
-  notice(
-    "ثبت‌نام با موفقیت انجام شد. پس از تأیید مدیر می‌توانید وارد نرم‌افزار شوید.",
-    "ok"
-  );
-
-  setTimeout(
-    function(){
-
-      renderLogin();
-
-    },
-    1500
-  );
+});
 
 }
 
 
-/* =====================================================
-   APP
-===================================================== */
+function deleteStudent(id){
 
-function renderApp(){
+if(!confirm("این زبان‌آموز حذف شود؟"))return;
 
-  document.body.innerHTML =
-    header()
-    +
-    `<main class="wrap">
-      <div id="content"></div>
-    </main>`
-    +
-    (
-      state.isAdmin
-        ? adminNav()
-        : studentNav()
-    );
+var list=getStudents();
 
-  if(state.isAdmin){
+list=list.filter(function(s){
+return s.id!==id;
+});
 
-    renderAdmin();
+localStorage.setItem(
+"ali_students",
+JSON.stringify(list)
+);
 
-  }else{
+renderStudents();
 
-    renderStudent();
-
-  }
+updateHomeStats();
 
 }
 
 
-/* =====================================================
-   STUDENT NAV
-===================================================== */
+/* =========================
+   QUIZ
+========================= */
 
-function studentNav(){
+var quizData=[
 
-  return `
+{
+q:"She ___ a teacher.",
+a:["am","is","are"],
+correct:1
+},
 
-  <nav class="nav">
+{
+q:"They ___ football every Friday.",
+a:["play","plays","playing"],
+correct:0
+},
 
-    <div class="navin">
+{
+q:"I ___ my homework yesterday.",
+a:["do","does","did"],
+correct:2
+},
 
-      <button
-        onclick="showSection('home')">
+{
+q:"He has ___ his book.",
+a:["lose","lost","losing"],
+correct:1
+},
 
-        🏠<br>
-        خانه
-
-      </button>
-
-      <button
-        onclick="showSection('teacher')">
-
-        👨‍🏫<br>
-        استاد
-
-      </button>
-
-      <button
-        onclick="showSection('courses')">
-
-        📚<br>
-        دوره‌ها
-
-      </button>
-
-      <button
-        onclick="showSection('level')">
-
-        🎯<br>
-        تعیین سطح
-
-      </button>
-
-      <button
-        onclick="showSection('daily')">
-
-        🏆<br>
-        مسابقه
-
-      </button>
-
-    </div>
-
-  </nav>
-
-  `;
-
+{
+q:"If I study, I ___ pass.",
+a:["will","would","did"],
+correct:0
 }
-
-
-/* =====================================================
-   STUDENT SECTIONS
-===================================================== */
-
-function showSection(section){
-
-  state.currentSection =
-    section;
-
-  if(section==="home"){
-
-    renderStudent();
-
-  }
-
-  if(section==="teacher"){
-
-    renderTeacher();
-
-  }
-
-  if(section==="courses"){
-
-    renderStudentCourses();
-
-  }
-
-  if(section==="level"){
-
-    startLevelTest();
-
-  }
-
-  if(section==="daily"){
-
-    startDailyQuiz();
-
-  }
-
-}
-
-
-/* =====================================================
-   HOME
-===================================================== */
-
-function renderStudent(){
-
-  const s =
-    state.profile;
-
-  if(!s){
-
-    document
-      .getElementById("content")
-      .innerHTML=`
-
-        <div class="card">
-
-          <h2>
-            حساب شما پیدا نشد
-          </h2>
-
-          <p class="muted">
-
-            حساب Auth وجود دارد اما پروفایل
-            زبان‌آموز در جدول students پیدا نشد.
-
-          </p>
-
-        </div>
-
-      `;
-
-    return;
-
-  }
-
-  let progress=0;
-
-  if(s.status==="waiting"){
-
-    progress=15;
-
-  }
-
-  if(s.status==="registered"){
-
-    progress=35;
-
-  }
-
-  if(s.status==="graduate"){
-
-    progress=100;
-
-  }
-
-  document
-    .getElementById("content")
-    .innerHTML=`
-
-      <div class="hero">
-
-        <h2>
-          سلام ${esc(s.first_name)} 👋
-        </h2>
-
-        <p>
-          به AliNagheli English خوش آمدید.
-        </p>
-
-        <div style="margin-top:18px">
-
-          میزان پیشرفت اولیه
-
-          <div class="progress">
-
-            <div
-              class="progressbar"
-              style="width:${progress}%">
-            </div>
-
-          </div>
-
-          <small>
-            ${progress}٪
-          </small>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>
-          وضعیت حساب
-        </h3>
-
-        <div class="grid">
-
-          <div class="stat">
-
-            وضعیت
-
-            <b>
-              ${statusBadge(s.status)}
-            </b>
-
-          </div>
-
-          <div class="stat">
-
-            سطح
-
-            <b>
-              ${esc(s.level || "-")}
-            </b>
-
-          </div>
-
-          <div class="stat">
-
-            شماره تلفن
-
-            <b style="font-size:17px">
-              ${esc(s.phone)}
-            </b>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>
-          امکانات آموزشی
-        </h3>
-
-        <div class="menuGrid">
-
-          <button
-            class="menuItem"
-            onclick="showSection('teacher')">
-
-            <div class="menuIcon">
-              👨‍🏫
-            </div>
-
-            <div class="menuTitle">
-              آشنایی با استاد
-            </div>
-
-            <div class="menuSub">
-              درباره استاد
-            </div>
-
-          </button>
-
-
-          <button
-            class="menuItem"
-            onclick="showSection('courses')">
-
-            <div class="menuIcon">
-              📚
-            </div>
-
-            <div class="menuTitle">
-              دوره‌ها
-            </div>
-
-            <div class="menuSub">
-              مشاهده دوره‌ها
-            </div>
-
-          </button>
-
-
-          <button
-            class="menuItem"
-            onclick="showSection('level')">
-
-            <div class="menuIcon">
-              🎯
-            </div>
-
-            <div class="menuTitle">
-              تعیین سطح
-            </div>
-
-            <div class="menuSub">
-              سنجش زبان
-            </div>
-
-          </button>
-
-
-          <button
-            class="menuItem"
-            onclick="showSection('daily')">
-
-            <div class="menuIcon">
-              🏆
-            </div>
-
-            <div class="menuTitle">
-              مسابقه روزانه
-            </div>
-
-            <div class="menuSub">
-              رقابت روزانه
-            </div>
-
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>
-          وضعیت ثبت‌نام
-        </h3>
-
-        <p>
-
-          ${
-            s.status==="waiting"
-              ?
-              "ثبت‌نام شما در صف بررسی مدیریت قرار دارد. ⏳"
-              :
-              s.status==="registered"
-                ?
-                "ثبت‌نام شما تأیید شده است. خوش آمدید! 🎉"
-                :
-                "وضعیت شما: فارغ‌التحصیل 🎓"
-          }
-
-        </p>
-
-      </div>
-
-  `;
-
-}
-
-
-/* =====================================================
-   TEACHER
-===================================================== */
-
-function renderTeacher(){
-
-  document
-    .getElementById("content")
-    .innerHTML=`
-
-      <div class="card">
-
-        <div class="teacherBox">
-
-          <div class="teacherAvatar">
-            AN
-          </div>
-
-          <h2 style="margin-top:15px">
-            علی ناقلی
-          </h2>
-
-          <p class="muted">
-            مدرس زبان انگلیسی
-          </p>
-
-          <p>
-            کارشناس ارشد آموزش زبان انگلیسی
-          </p>
-
-          <p class="muted">
-            مدرس دوره‌های IELTS، TOEFL،
-            PTE، TTC و دوره‌های عمومی زبان
-          </p>
-
-        </div>
-
-
-        <div class="divider"></div>
-
-        <h3>
-          ارتباط با استاد
-        </h3>
-
-
-        <a
-          class="contactBtn"
-          href="tel:09141892768">
-
-          📞
-          تماس با استاد
-
-          <br>
-
-          <small>
-            09141892768
-          </small>
-
-        </a>
-
-
-        <a
-          class="contactBtn"
-          href="mailto:ali.nagheli5000@gmail.com">
-
-          ✉️
-          ارسال ایمیل
-
-          <br>
-
-          <small>
-            ali.nagheli5000@gmail.com
-          </small>
-
-        </a>
-
-      </div>
-
-  `;
-
-}
-
-
-/* =====================================================
-   COURSES
-===================================================== */
-
-async function renderStudentCourses(){
-
-  await loadCourses();
-
-  document
-    .getElementById("content")
-    .innerHTML=`
-
-      <div class="card">
-
-        <h2>
-          دوره‌های آموزشی 📚
-        </h2>
-
-        <p class="muted">
-          دوره‌های ارائه‌شده توسط AliNagheli English
-        </p>
-
-        ${
-          state.courses.length
-
-            ?
-
-            state.courses
-              .map(
-                function(course){
-
-                  return `
-
-                    <div class="courseCard">
-
-                      <div class="courseIcon">
-                        📚
-                      </div>
-
-                      <h3>
-                        ${esc(course.title)}
-                      </h3>
-
-                      <div class="infoLine">
-                        ${esc(course.category || "")}
-                      </div>
-
-                      ${
-                        course.active===false
-                          ?
-                          `<span class="badge waiting">
-                             غیرفعال
-                           </span>`
-                          :
-                          `<span class="badge registered">
-                             فعال
-                           </span>`
-                      }
-
-                    </div>
-
-                  `;
-
-                }
-              )
-              .join("")
-
-            :
-
-            `
-              <div class="empty">
-                در حال حاضر دوره‌ای ثبت نشده است.
-              </div>
-            `
-        }
-
-      </div>
-
-  `;
-
-}
-
-
-/* =====================================================
-   LEVEL TEST QUESTIONS
-   20 QUESTIONS
-===================================================== */
-
-const levelQuestions=[
-
-  {
-    q:"Choose the correct answer: She ___ a student.",
-    options:["am","is","are","be"],
-    answer:1,
-    explanation:"با فاعل She از فعل is استفاده می‌کنیم."
-  },
-
-  {
-    q:"What is the opposite of 'big'?",
-    options:["small","long","fast","high"],
-    answer:0,
-    explanation:"متضاد big کلمه small است."
-  },
-
-  {
-    q:"I ___ coffee every morning.",
-    options:["drink","drinks","drinking","drank"],
-    answer:0,
-    explanation:"برای I در زمان حال ساده فعل بدون s می‌آید."
-  },
-
-  {
-    q:"Which word means 'خوشحال'?",
-    options:["angry","happy","tired","hungry"],
-    answer:1,
-    explanation:"Happy یعنی خوشحال."
-  },
-
-  {
-    q:"They ___ football yesterday.",
-    options:["play","plays","played","playing"],
-    answer:2,
-    explanation:"Yesterday نشانه گذشته است؛ بنابراین played."
-  },
-
-  {
-    q:"There ___ two books on the table.",
-    options:["is","are","am","be"],
-    answer:1,
-    explanation:"چون two books جمع است، از are استفاده می‌کنیم."
-  },
-
-  {
-    q:"Choose the correct word: I have ___ apple.",
-    options:["a","an","the","some"],
-    answer:1,
-    explanation:"قبل از صدای مصوت در apple از an استفاده می‌کنیم."
-  },
-
-  {
-    q:"My brother is ___ than me.",
-    options:["tall","taller","tallest","more tall"],
-    answer:1,
-    explanation:"برای مقایسه دو نفر از comparative یعنی taller استفاده می‌کنیم."
-  },
-
-  {
-    q:"What does 'borrow' mean?",
-    options:[
-      "قرض گرفتن",
-      "فروختن",
-      "پیدا کردن",
-      "ساختن"
-    ],
-    answer:0,
-    explanation:"Borrow یعنی چیزی را موقتاً از کسی گرفتن."
-  },
-
-  {
-    q:"If it rains, we ___ at home.",
-    options:["stay","will stay","stayed","staying"],
-    answer:1,
-    explanation:"در First Conditional، بخش نتیجه معمولاً will + verb است."
-  },
-
-  {
-    q:"I have lived here ___ 2019.",
-    options:["for","since","from","during"],
-    answer:1,
-    explanation:"Since برای یک نقطه شروع مشخص در زمان استفاده می‌شود."
-  },
-
-  {
-    q:"She has ___ finished her homework.",
-    options:["yet","already","ever","never"],
-    answer:1,
-    explanation:"Already برای کاری که زودتر از انتظار انجام شده به کار می‌رود."
-  },
-
-  {
-    q:"Which word is closest in meaning to 'rapid'?",
-    options:["slow","quick","weak","late"],
-    answer:1,
-    explanation:"Rapid یعنی سریع؛ quick نزدیک‌ترین گزینه است."
-  },
-
-  {
-    q:"If I ___ more money, I would buy a car.",
-    options:["have","had","will have","am having"],
-    answer:1,
-    explanation:"این ساختار Second Conditional است: If + past simple."
-  },
-
-  {
-    q:"The book ___ by millions of people every year.",
-    options:[
-      "reads",
-      "is read",
-      "read",
-      "is reading"
-    ],
-    answer:1,
-    explanation:"این جمله مجهول است: is + past participle."
-  },
-
-  {
-    q:"By the time we arrived, the movie ___.",
-    options:[
-      "starts",
-      "has started",
-      "had started",
-      "starting"
-    ],
-    answer:2,
-    explanation:"یک اتفاق قبل از اتفاق دیگری در گذشته؛ Past Perfect."
-  },
-
-  {
-    q:"What does 'reluctant' mean?",
-    options:[
-      "مشتاق",
-      "بی‌میل",
-      "عصبانی",
-      "مطمئن"
-    ],
-    answer:1,
-    explanation:"Reluctant یعنی بی‌میل یا مردد برای انجام کاری."
-  },
-
-  {
-    q:"Had I known about the problem, I ___ you.",
-    options:[
-      "would tell",
-      "will tell",
-      "would have told",
-      "told"
-    ],
-    answer:2,
-    explanation:"این Third Conditional است: would have + past participle."
-  },
-
-  {
-    q:"The manager insisted that he ___ immediately.",
-    options:[
-      "leaves",
-      "left",
-      "leave",
-      "leaving"
-    ],
-    answer:2,
-    explanation:"بعد از insist that در ساختار رسمی از subjunctive یعنی leave استفاده می‌شود."
-  },
-
-  {
-    q:"Which word best completes the sentence? His argument was completely ___; it had no logical basis.",
-    options:[
-      "coherent",
-      "arbitrary",
-      "fragile",
-      "convincing"
-    ],
-    answer:1,
-    explanation:"Arbitrary در اینجا به معنای بدون مبنای منطقی است."
-  }
 
 ];
 
 
-/* =====================================================
-   START LEVEL TEST
-===================================================== */
+function renderQuiz(){
 
-function startLevelTest(){
+var box=document.getElementById("quiz");
 
-  state.levelIndex=0;
+if(!box)return;
 
-  state.levelScore=0;
+box.innerHTML="";
 
-  state.levelAnswered=false;
+quizData.forEach(function(item,index){
 
-  renderLevelQuestion();
+var div=document.createElement("div");
 
-}
+div.className="lesson";
 
+var html=
+"<b>"+(index+1)+". "+item.q+"</b><br>";
 
-/* =====================================================
-   LEVEL QUESTION
-===================================================== */
+item.a.forEach(function(answer,a){
 
-function renderLevelQuestion(){
+html+=
+'<label>'+
+'<input type="radio" name="quiz'+index+'" value="'+a+'">'+
+' '+answer+
+'</label><br>';
 
-  const i =
-    state.levelIndex;
+});
 
-  const q =
-    levelQuestions[i];
+div.innerHTML=html;
 
-  if(!q){
+box.appendChild(div);
 
-    finishLevelTest();
-
-    return;
-
-  }
-
-  const percent =
-    Math.round(
-      ((i) /
-      levelQuestions.length)
-      *100
-    );
-
-  document
-    .getElementById("content")
-    .innerHTML=`
-
-      <div class="card">
-
-        <div class="quizHeader">
-
-          <div>
-
-            <h2>
-              تعیین سطح 🎯
-            </h2>
-
-            <div class="muted">
-              سؤال ${i+1}
-              از
-              ${levelQuestions.length}
-            </div>
-
-          </div>
-
-          <div class="quizScore">
-
-            امتیاز:
-            ${state.levelScore}
-
-          </div>
-
-        </div>
-
-
-        <div class="progress">
-
-          <div
-            class="progressbar"
-            style="width:${percent}%">
-          </div>
-
-        </div>
-
-
-        <div
-          class="quizQuestion"
-          style="margin-top:20px">
-
-          ${esc(q.q)}
-
-        </div>
-
-
-        <div id="levelOptions">
-
-          ${
-            q.options
-              .map(
-                function(option,index){
-
-                  return `
-
-                    <button
-                      class="option"
-                      onclick="answerLevel(${index})">
-
-                      ${String.fromCharCode(65+index)}.
-                      ${esc(option)}
-
-                    </button>
-
-                  `;
-
-                }
-              )
-              .join("")
-          }
-
-        </div>
-
-        <div id="levelFeedback"></div>
-
-      </div>
-
-  `;
+});
 
 }
 
 
-/* =====================================================
-   ANSWER LEVEL
-===================================================== */
+function calculateQuiz(){
 
-function answerLevel(index){
+var score=0;
 
-  if(state.levelAnswered){
-    return;
-  }
+quizData.forEach(function(item,index){
 
-  state.levelAnswered=true;
+var selected=
+document.querySelector(
+'input[name="quiz'+index+'"]:checked'
+);
 
-  const q =
-    levelQuestions[
-      state.levelIndex
-    ];
+if(selected&&
+Number(selected.value)===item.correct){
 
-  const options =
-    document.querySelectorAll(
-      "#levelOptions .option"
-    );
+score++;
 
-  options.forEach(
-    function(btn,i){
+}
 
-      btn.disabled=true;
+});
 
-      if(i===q.answer){
+var level;
 
-        btn.classList.add(
-          "correct"
-        );
+if(score<=1){
+level="مبتدی";
+}else if(score<=3){
+level="متوسط";
+}else{
+level="متوسط رو به بالا / پیشرفته";
+}
 
-      }
-
-      if(
-        i===index &&
-        i!==q.answer
-      ){
-
-        btn.classList.add(
-          "wrong"
-        );
-
-      }
-
-    }
-  );
-
-  const correct =
-    index===q.answer;
-
-  if(correct){
-
-    state.levelScore++;
-
-  }
-
-  document
-    .getElementById(
-      "levelFeedback"
-    )
-    .innerHTML=`
-
-      <div class="feedback ${
-        correct
-          ? "correct"
-          : "wrong"
-      }">
-
-        ${
-          correct
-            ? "✅ پاسخ شما درست است!"
-            : "❌ پاسخ شما نادرست است."
-        }
-
-        <div
-          style="font-weight:normal;margin-top:7px">
-
-          ${esc(q.explanation)}
-
-        </div>
-
-      </div>
-
-
-      <button
-        class="btn full"
-        style="margin-top:12px"
-        onclick="nextLevelQuestion()">
-
-        ${
-          state.levelIndex <
-          levelQuestions.length-1
-            ? "سؤال بعدی ➜"
-            : "مشاهده نتیجه 🎯"
-        }
-
-      </button>
-
-  `;
+document.getElementById(
+"quizResult"
+).innerHTML=
+'<div class="success">'+
+'امتیاز شما: <b>'+score+
+' از '+quizData.length+
+'</b><br>'+
+'سطح تقریبی: <b>'+level+
+'</b>'+
+'</div>';
 
 }
 
 
-/* =====================================================
-   NEXT LEVEL QUESTION
-===================================================== */
+/* =========================
+   HOME STATS
+========================= */
 
-function nextLevelQuestion(){
+function updateHomeStats(){
 
-  state.levelIndex++;
+var students=
+getStudents();
 
-  state.levelAnswered=false;
+var consultations=
+getConsultations();
 
-  renderLevelQuestion();
+var s=document.getElementById(
+"homeStudents"
+);
 
-}
+var q=document.getElementById(
+"homeQuestions"
+);
 
+if(s)s.textContent=students.length;
 
-/* =====================================================
-   LEVEL RESULT
-===================================================== */
-
-function finishLevelTest(){
-
-  const total =
-    levelQuestions.length;
-
-  const score =
-    state.levelScore;
-
-  let level="";
-
-  let message="";
-
-  if(score<=5){
-
-    level="A1";
-
-    message=
-      "شروع بسیار خوبی است. پیشنهاد می‌کنیم یادگیری را از مباحث پایه آغاز کنید.";
-
-  }else if(score<=9){
-
-    level="A2";
-
-    message=
-      "پایه زبان شما مناسب است و می‌توانید روی گسترش واژگان و گرامر کار کنید.";
-
-  }else if(score<=13){
-
-    level="B1";
-
-    message=
-      "سطح متوسط دارید و می‌توانید وارد مباحث جدی‌تر شوید.";
-
-  }else if(score<=17){
-
-    level="B2";
-
-    message=
-      "سطح خوبی دارید و در محدوده Upper-Intermediate قرار می‌گیرید.";
-
-  }else{
-
-    level="C1";
-
-    message=
-      "عملکرد بسیار خوبی داشتید و به سطح پیشرفته نزدیک هستید.";
-
-  }
-
-  document
-    .getElementById("content")
-    .innerHTML=`
-
-      <div class="card">
-
-        <div style="text-align:center">
-
-          <div
-            style="font-size:55px">
-            🎯
-          </div>
-
-          <h2>
-            نتیجه تعیین سطح
-          </h2>
-
-          <div
-            style="
-              font-size:42px;
-              font-weight:900;
-              color:var(--primary)
-            ">
-
-            ${score}
-            /
-            ${total}
-
-          </div>
-
-          <p>
-            سطح تقریبی شما:
-          </p>
-
-          <div
-            style="
-              font-size:34px;
-              font-weight:900
-            ">
-
-            ${level}
-
-          </div>
-
-          <p class="muted">
-            ${message}
-          </p>
-
-          <button
-            class="btn"
-            onclick="showSection('home')">
-
-            بازگشت به خانه
-
-          </button>
-
-        </div>
-
-      </div>
-
-  `;
+if(q)q.textContent=consultations.length;
 
 }
 
 
-/* =====================================================
-   DAILY QUIZ
-===================================================== */
+/* =========================
+   EXPORT
+========================= */
 
-/*
-  سؤال‌ها بر اساس روز انتخاب می‌شوند.
-  با تغییر تاریخ، مجموعه سؤال تغییر می‌کند.
-*/
+function exportData(){
 
-const dailyQuestionBank=[
+var data={
 
-  {
-    q:"Choose: I ___ to school every day.",
-    options:["go","goes","going","went"],
-    answer:0
-  },
+students:getStudents(),
 
-  {
-    q:"What does 'huge' mean?",
-    options:["very small","very large","very fast","very old"],
-    answer:1
-  },
+consultations:getConsultations(),
 
-  {
-    q:"She ___ TV now.",
-    options:["watches","watched","is watching","watch"],
-    answer:2
-  },
+exportDate:new Date().toISOString()
 
-  {
-    q:"The opposite of 'ancient' is:",
-    options:["modern","old","historic","early"],
-    answer:0
-  },
+};
 
-  {
-    q:"We ___ dinner when he called.",
-    options:["have","had","were having","are having"],
-    answer:2
-  },
+var blob=new Blob(
+[
+JSON.stringify(data,null,2)
+],
+{
+type:"application/json"
+}
+);
 
-  {
-    q:"Choose the correct form: He ___ his homework already.",
-    options:["finished","has finished","finish","finishing"],
-    answer:1
-  },
+var url=
+URL.createObjectURL(blob);
 
-  {
-    q:"What does 'accurate' mean?",
-    options:["exact","slow","cheap","difficult"],
-    answer:0
-  },
+var a=document.createElement("a");
 
-  {
-    q:"If I were you, I ___ apologize.",
-    options:["will","would","can","am"],
-    answer:1
-  },
+a.href=url;
 
-  {
-    q:"She is interested ___ science.",
-    options:["on","at","in","for"],
-    answer:2
-  },
+a.download=
+"AliNagheli_Backup.json";
 
-  {
-    q:"Which is correct?",
-    options:[
-      "There is many people.",
-      "There are many people.",
-      "There many people.",
-      "There be many people."
-    ],
-    answer:1
-  },
+a.click();
 
-  {
-    q:"What does 'purchase' mean?",
-    options:["buy","sell","break","repair"],
-    answer:0
-  },
-
-  {
-    q:"I have known him ___ five years.",
-    options:["since","for","from","during"],
-    answer:1
-  },
-
-  {
-    q:"By next year, she ___ her degree.",
-    options:[
-      "finishes",
-      "finished",
-      "will have finished",
-      "finishing"
-    ],
-    answer:2
-  },
-
-  {
-    q:"What does 'reliable' mean?",
-    options:[
-      "expensive",
-      "dependable",
-      "dangerous",
-      "temporary"
-    ],
-    answer:1
-  },
-
-  {
-    q:"Neither Ali nor his friends ___ ready.",
-    options:["is","are","was","be"],
-    answer:1
-  },
-
-  {
-    q:"If I had studied harder, I ___ the exam.",
-    options:[
-      "pass",
-      "would pass",
-      "would have passed",
-      "will pass"
-    ],
-    answer:2
-  },
-
-  {
-    q:"What is the closest meaning of 'rapid'?",
-    options:[
-      "quick",
-      "weak",
-      "quiet",
-      "late"
-    ],
-    answer:0
-  },
-
-  {
-    q:"The letter ___ yesterday.",
-    options:[
-      "sent",
-      "was sent",
-      "is sending",
-      "has send"
-    ],
-    answer:1
-  },
-
-  {
-    q:"He denied ___ the money.",
-    options:[
-      "take",
-      "to take",
-      "taking",
-      "took"
-    ],
-    answer:2
-  },
-
-  {
-    q:"What does 'substantial' mean?",
-    options:[
-      "very small",
-      "considerable",
-      "uncertain",
-      "temporary"
-    ],
-    answer:1
-  },
-
-  {
-    q:"She suggested that he ___ earlier.",
-    options:[
-      "leave",
-      "leaves",
-      "left",
-      "leaving"
-    ],
-    answer:0
-  },
-
-  {
-    q:"The meeting was postponed ___ Monday.",
-    options:["until","during","since","among"],
-    answer:0
-  },
-
-  {
-    q:"What does 'reluctant' mean?",
-    options:[
-      "unwilling",
-      "excited",
-      "certain",
-      "successful"
-    ],
-    answer:0
-  },
-
-  {
-    q:"Had I known, I ___ you.",
-    options:[
-      "tell",
-      "would tell",
-      "would have told",
-      "told"
-    ],
-    answer:2
-  },
-
-  {
-    q:"Which sentence is grammatically correct?",
-    options:[
-      "He suggested me to go.",
-      "He suggested that I go.",
-      "He suggested me go.",
-      "He suggested I to go."
-    ],
-    answer:1
-  },
-
-  {
-    q:"What does 'inevitable' mean?",
-    options:[
-      "avoidable",
-      "certain to happen",
-      "unlikely",
-      "temporary"
-    ],
-    answer:1
-  },
-
-  {
-    q:"No sooner had he arrived ___ the phone rang.",
-    options:["when","than","then","that"],
-    answer:1
-  },
-
-  {
-    q:"She is used to ___ early.",
-    options:[
-      "wake",
-      "waking",
-      "woke",
-      "be wake"
-    ],
-    answer:1
-  },
-
-  {
-    q:"What does 'ambiguous' mean?",
-    options:[
-      "clear",
-      "having more than one possible meaning",
-      "false",
-      "short"
-    ],
-    answer:1
-  },
-
-  {
-    q:"The project needs ___ before publication.",
-    options:[
-      "to revise",
-      "revising",
-      "revision",
-      "revised"
-    ],
-    answer:2
-  },
-
-  {
-    q:"Were I in your position, I ___ the offer.",
-    options:[
-      "accept",
-      "accepted",
-      "would accept",
-      "will accept"
-    ],
-    answer:2
-  },
-
-  {
-    q:"What does 'comprehensive' mean?",
-    options:[
-      "limited",
-      "complete and including many details",
-      "unclear",
-      "incorrect"
-    ],
-    answer:1
-  },
-
-  {
-    q:"Despite ___ tired, he continued working.",
-    options:[
-      "be",
-      "being",
-      "was",
-      "to be"
-    ],
-    answer:1
-  },
-
-  {
-    q:"The evidence was insufficient ___ a conviction.",
-    options:[
-      "for",
-      "to",
-      "with",
-      "at"
-    ],
-    answer:0
-  },
-
-  {
-    q:"What does 'meticulous' mean?",
-    options:[
-      "careless",
-      "very careful and precise",
-      "fast",
-      "uncertain"
-    ],
-    answer:1
-  },
-
-  {
-    q:"It is essential that every student ___ on time.",
-    options:[
-      "arrives",
-      "arrive",
-      "arrived",
-      "arriving"
-    ],
-    answer:1
-  },
-
-  {
-    q:"Hardly had we sat down ___ the lesson began.",
-    options:[
-      "than",
-      "when",
-      "that",
-      "then"
-    ],
-    answer:1
-  },
-
-  {
-    q:"What does 'coherent' mean?",
-    options:[
-      "logical and well organized",
-      "expensive",
-      "uncertain",
-      "short"
-    ],
-    answer:0
-  },
-
-  {
-    q:"He would rather ___ at home.",
-    options:[
-      "stay",
-      "stays",
-      "staying",
-      "stayed"
-    ],
-    answer:0
-  }
-
-];
-
-
-/* =====================================================
-   DAILY SEED
-===================================================== */
-
-function dailySeed(){
-
-  const date =
-    new Date();
-
-  const key =
-    date.getFullYear()*10000
-    +
-    (date.getMonth()+1)*100
-    +
-    date.getDate();
-
-  return key;
+URL.revokeObjectURL(url);
 
 }
 
 
-function createDailyQuestions(){
+/* =========================
+   DELETE ALL
+========================= */
 
-  const bank =
-    [...dailyQuestionBank];
+function clearAllData(){
 
-  let seed =
-    dailySeed();
+if(!confirm(
+"تمام اطلاعات زبان‌آموزان و مشاوره‌ها حذف شود؟"
+))return;
 
-  function random(){
+localStorage.removeItem(
+"ali_students"
+);
 
-    seed =
-      (seed * 9301 + 49297)
-      % 233280;
+localStorage.removeItem(
+"ali_consultations"
+);
 
-    return seed / 233280;
+renderStudents();
 
-  }
+renderConsultations();
 
-  for(
-    let i=bank.length-1;
-    i>0;
-    i--
-  ){
+updateHomeStats();
 
-    const j =
-      Math.floor(
-        random()*(i+1)
-      );
-
-    [
-      bank[i],
-      bank[j]
-    ]=[
-      bank[j],
-      bank[i]
-    ];
-
-  }
-
-  return bank.slice(0,15);
+alert("اطلاعات حذف شد.");
 
 }
 
 
-/* =====================================================
-   START DAILY QUIZ
-===================================================== */
-
-async function startDailyQuiz(){
-
-  state.dailyQuestions =
-    createDailyQuestions();
-
-  state.dailyIndex=0;
-
-  state.dailyScore=0;
-
-  state.dailyAnswered=false;
-
-  state.dailyFinished=false;
-
-  renderDailyQuestion();
-
-}
-
-
-/* =====================================================
-   DAILY QUESTION
-===================================================== */
-
-function renderDailyQuestion(){
-
-  if(state.dailyFinished){
-
-    renderDailyRanking();
-
-    return;
-
-  }
-
-  const i =
-    state.dailyIndex;
-
-  const q =
-    state.dailyQuestions[i];
-
-  document
-    .getElementById("content")
-    .innerHTML=`
-
-      <div class="card">
-
-        <div class="quizHeader">
-
-          <div>
-
-            <h2>
-              مسابقه روزانه 🏆
-            </h2>
-
-            <div class="muted">
-
-              سؤال
-              ${i+1}
-              از
-              15
-
-            </div>
-
-          </div>
-
-          <div class="quizScore">
-
-            ${state.dailyScore}
-            امتیاز
-
-          </div>
-
-        </div>
-
-
-        <div class="progress">
-
-          <div
-            class="progressbar"
-            style="
-              width:${
-                ((i)/15)*100
-              }%
-            ">
-          </div>
-
-        </div>
-
-
-        <div
-          class="quizQuestion"
-          style="margin-top:20px">
-
-          ${esc(q.q)}
-
-        </div>
-
-
-        <div id="dailyOptions">
-
-          ${
-            q.options
-              .map(
-                function(option,index){
-
-                  return `
-
-                    <button
-                      class="option"
-                      onclick="answerDaily(${index})">
-
-                      ${String.fromCharCode(65+index)}.
-                      ${esc(option)}
-
-                    </button>
-
-                  `;
-
-                }
-              )
-              .join("")
-          }
-
-        </div>
-
-
-        <div id="dailyFeedback"></div>
-
-      </div>
-
-  `;
-
-}
-
-
-/* =====================================================
-   ANSWER DAILY
-===================================================== */
-
-function answerDaily(index){
-
-  if(state.dailyAnswered){
-
-    return;
-
-  }
-
-  state.dailyAnswered=true;
-
-  const q =
-    state.dailyQuestions[
-      state.dailyIndex
-    ];
-
-  const options =
-    document.querySelectorAll(
-      "#dailyOptions .option"
-    );
-
-  options.forEach(
-    function(btn,i){
-
-      btn.disabled=true;
-
-      if(i===q.answer){
-
-        btn.classList.add(
-          "correct"
-        );
-
-      }
-
-      if(
-        i===index &&
-        i!==q.answer
-      ){
-
-        btn.classList.add(
-          "wrong"
-        );
-
-      }
-
-    }
-  );
-
-  const correct =
-    index===q.answer;
-
-  if(correct){
-
-    state.dailyScore++;
-
-  }
-
-  document
-    .getElementById(
-      "dailyFeedback"
-    )
-    .innerHTML=`
-
-      <div class="feedback ${
-        correct
-          ? "correct"
-          : "wrong"
-      }">
-
-        ${
-          correct
-            ? "✅ درست!"
-            : "❌ نادرست!"
-        }
-
-      </div>
-
-      <button
-        class="btn full"
-        style="margin-top:12px"
-        onclick="nextDailyQuestion()">
-
-        ${
-          state.dailyIndex<14
-            ? "سؤال بعدی ➜"
-            : "ثبت نتیجه 🏆"
-        }
-
-      </button>
-
-  `;
-
-}
-
-
-/* =====================================================
-   NEXT DAILY
-===================================================== */
-
-async function nextDailyQuestion(){
-
-  if(state.dailyIndex<14){
-
-    state.dailyIndex++;
-
-    state.dailyAnswered=false;
-
-    renderDailyQuestion();
-
-  }else{
-
-    state.dailyFinished=true;
-
-    await saveDailyResult();
-
-    renderDailyRanking();
-
-  }
-
-}
-
-
-/* =====================================================
-   SAVE DAILY RESULT
-===================================================== */
-
-async function saveDailyResult(){
-
-  if(!state.user){
-
-    return;
-
-  }
-
-  const result =
-    await db
-      .from("daily_quiz_results")
-      .upsert(
-        {
-
-          user_id:
-            state.user.id,
-
-          student_id:
-            state.profile?.id || null,
-
-          quiz_date:
-            new Date()
-              .toISOString()
-              .slice(0,10),
-
-          score:
-            state.dailyScore,
-
-          total:15
-
-        },
-        {
-
-          onConflict:
-            "user_id,quiz_date"
-
-        }
-      );
-
-  if(result.error){
-
-    console.error(
-      result.error
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   DAILY RANKING
-===================================================== */
-
-async function renderDailyRanking(){
-
-  const today =
-    new Date()
-      .toISOString()
-      .slice(0,10);
-
-  let results=[];
-
-  const result =
-    await db
-      .from("daily_quiz_results")
-      .select(
-        "user_id,student_id,score,total,students(first_name,last_name)"
-      )
-      .eq(
-        "quiz_date",
-        today
-      )
-      .order(
-        "score",
-        {
-          ascending:false
-        }
-      )
-      .limit(100);
-
-  if(!result.error){
-
-    results =
-      result.data || [];
-
-  }
-
-
-  /*
-    در صورتی که رابطه students در Supabase
-    وجود نداشته باشد، دوباره اطلاعات را از
-    students می‌گیریم.
-  */
-
-  if(
-    result.error &&
-    state.isAdmin===false
-  ){
-
-    const fallback =
-      await db
-        .from("daily_quiz_results")
-        .select(
-          "user_id,student_id,score,total"
-        )
-        .eq(
-          "quiz_date",
-          today
-        )
-        .order(
-          "score",
-          {
-            ascending:false
-          }
-        );
-
-    if(!fallback.error){
-
-      results =
-        fallback.data || [];
-
-    }
-
-  }
-
-
-  const myUser =
-    state.user?.id;
-
-  const myIndex =
-    results.findIndex(
-      r=>r.user_id===myUser
-    );
-
-
-  function studentName(r){
-
-    if(r.students){
-
-      return (
-        (r.students.first_name || "")
-        +
-        " "
-        +
-        (r.students.last_name || "")
-      ).trim();
-
-    }
-
-    if(
-      r.user_id===myUser &&
-      state.profile
-    ){
-
-      return (
-        state.profile.first_name
-        +
-        " "
-        +
-        state.profile.last_name
-      );
-
-    }
-
-    return "زبان‌آموز";
-
-  }
-
-
-  document
-    .getElementById("content")
-    .innerHTML=`
-
-      <div class="card">
-
-        <div style="text-align:center">
-
-          <div style="font-size:50px">
-            🏆
-          </div>
-
-          <h2>
-            مسابقه امروز تمام شد!
-          </h2>
-
-          <p class="muted">
-            امتیاز شما:
-          </p>
-
-          <div
-            style="
-              font-size:40px;
-              font-weight:900;
-              color:var(--primary)
-            ">
-
-            ${state.dailyScore}
-            / 15
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>
-          🥇 برترین‌های امروز
-        </h3>
-
-        ${
-          results.length
-
-            ?
-
-            results
-              .slice(0,3)
-              .map(
-                function(r,index){
-
-                  const classes=[
-                    "rank1",
-                    "rank2",
-                    "rank3"
-                  ];
-
-                  const medals=[
-                    "🥇",
-                    "🥈",
-                    "🥉"
-                  ];
-
-                  return `
-
-                    <div class="
-                      rankCard
-                      ${classes[index]}
-                      ${
-                        r.user_id===myUser
-                          ? "myRank"
-                          : ""
-                      }
-                    ">
-
-                      <div>
-
-                        <b>
-                          ${medals[index]}
-                          ${index+1}
-                          .
-                          ${esc(studentName(r))}
-                        </b>
-
-                      </div>
-
-                      <strong>
-                        ${r.score}/15
-                      </strong>
-
-                    </div>
-
-                  `;
-
-                }
-              )
-              .join("")
-
-            :
-
-            `
-              <div class="empty">
-                هنوز کسی نتیجه مسابقه را ثبت نکرده است.
-              </div>
-            `
-        }
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>
-          📊 رتبه شما
-        </h3>
-
-        ${
-          myIndex>=0
-
-            ?
-
-            `
-              <div class="rankCard myRank">
-
-                <div>
-
-                  <b>
-                    رتبه ${myIndex+1}
-                  </b>
-
-                  <div class="infoLine">
-                    ${esc(
-                      studentName(
-                        results[myIndex]
-                      )
-                    )}
-                  </div>
-
-                </div>
-
-                <strong>
-                  ${results[myIndex].score}/15
-                </strong>
-
-              </div>
-            `
-
-            :
-
-            `
-              <div class="empty">
-
-                نتیجه شما در جدول ثبت نشده است.
-
-              </div>
-            `
-        }
-
-      </div>
-
-
-      <button
-        class="btn full"
-        onclick="showSection('home')">
-
-        بازگشت به خانه
-
-      </button>
-
-  `;
-
-}
-
-
-/* =====================================================
-   STATUS
-===================================================== */
-
-function statusBadge(status){
-
-  let cls="waiting";
-
-  let text="در صف انتظار";
-
-  if(status==="registered"){
-
-    cls="registered";
-
-    text="ثبت‌نام شده";
-
-  }
-
-  if(status==="graduate"){
-
-    cls="graduate";
-
-    text="فارغ‌التحصیل";
-
-  }
-
-  return `
-
-    <span class="badge ${cls}">
-
-      ${text}
-
-    </span>
-
-  `;
-
-}
-
-
-/* =====================================================
-   ADMIN NAV
-===================================================== */
-
-function adminNav(){
-
-  return `
-
-  <nav class="nav">
-
-    <div class="navin">
-
-      <button
-        onclick="renderAdmin()">
-
-        📊<br>
-        داشبورد
-
-      </button>
-
-      <button
-        onclick="renderAdminStudents()">
-
-        👩‍🎓<br>
-        زبان‌آموزان
-
-      </button>
-
-      <button
-        onclick="renderAdminCourses()">
-
-        📚<br>
-        دوره‌ها
-
-      </button>
-
-      <button
-        onclick="logout()">
-
-        🚪<br>
-        خروج
-
-      </button>
-
-    </div>
-
-  </nav>
-
-  `;
-
-}
-
-
-/* =====================================================
-   ADMIN DASHBOARD
-===================================================== */
-
-function renderAdmin(){
-
-  const students =
-    state.students;
-
-  const waiting =
-    students.filter(
-      s=>s.status==="waiting"
-    ).length;
-
-  const registered =
-    students.filter(
-      s=>s.status==="registered"
-    ).length;
-
-  const graduate =
-    students.filter(
-      s=>s.status==="graduate"
-    ).length;
-
-  document
-    .getElementById("content")
-    .innerHTML=`
-
-      <div class="card">
-
-        <div class="adminTitle">
-
-          <div>
-
-            <h2>
-              داشبورد مدیریت 👨‍💼
-            </h2>
-
-            <p class="muted">
-              مدیریت زبان‌آموزان AliNagheli English
-            </p>
-
-          </div>
-
-          <button
-            class="btn secondary small"
-            onclick="refreshAdmin()">
-
-            🔄 بروزرسانی
-
-          </button>
-
-        </div>
-
-
-        <div class="grid">
-
-          <div class="stat">
-
-            کل زبان‌آموزان
-
-            <b>
-              ${students.length}
-            </b>
-
-          </div>
-
-          <div class="stat">
-
-            در صف انتظار
-
-            <b>
-              ${waiting}
-            </b>
-
-          </div>
-
-          <div class="stat">
-
-            ثبت‌نام شده
-
-            <b>
-              ${registered}
-            </b>
-
-          </div>
-
-          <div class="stat">
-
-            فارغ‌التحصیل
-
-            <b>
-              ${graduate}
-            </b>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="adminTitle">
-
-          <div>
-
-            <h3>
-              درخواست‌های جدید ⏳
-            </h3>
-
-            <p class="muted">
-              درخواست‌هایی که منتظر تأیید شما هستند.
-            </p>
-
-          </div>
-
-          <button
-            class="btn small"
-            onclick="renderAdminStudents('waiting')">
-
-            مشاهده همه
-
-          </button>
-
-        </div>
-
-        ${
-          students
-            .filter(
-              s=>s.status==="waiting"
-            )
-            .slice(0,10)
-            .map(studentCard)
-            .join("")
-          ||
-          '<div class="empty">درخواست جدیدی وجود ندارد 🎉</div>'
-        }
-
-      </div>
-
-  `;
-
-}
-
-
-/* =====================================================
-   REFRESH ADMIN
-===================================================== */
-
-async function refreshAdmin(){
-
-  await loadAdminData();
-
-  renderAdmin();
-
-  notice(
-    "اطلاعات بروزرسانی شد.",
-    "ok"
-  );
-
-}
-
-
-/* =====================================================
-   ADMIN STUDENTS
-===================================================== */
-
-function renderAdminStudents(
-  filter="all"
-){
-
-  state.adminFilter =
-    filter ||
-    state.adminFilter;
-
-  document
-    .getElementById("content")
-    .innerHTML=`
-
-      <div class="card">
-
-        <div class="adminTitle">
-
-          <div>
-
-            <h2>
-              مدیریت زبان‌آموزان
-            </h2>
-
-            <p class="muted">
-              بررسی، تأیید، رد و تغییر وضعیت
-            </p>
-
-          </div>
-
-          <button
-            class="btn secondary small"
-            onclick="refreshStudents()">
-
-            🔄 بروزرسانی
-
-          </button>
-
-        </div>
-
-
-        <input
-          id="q"
-          value="${esc(state.search)}"
-          placeholder="جستجو بر اساس نام، شماره یا پایه..."
-          oninput="
-            state.search=this.value;
-            filterStudents()
-          ">
-
-
-        <div class="filterbar">
-
-          <button
-            class="filter ${
-              state.adminFilter==="all"
-                ? "active"
-                : ""
-            }"
-            onclick="renderAdminStudents('all')">
-
-            همه
-            (${state.students.length})
-
-          </button>
-
-
-          <button
-            class="filter ${
-              state.adminFilter==="waiting"
-                ? "active"
-                : ""
-            }"
-            onclick="renderAdminStudents('waiting')">
-
-            ⏳ در انتظار
-            ${
-              state.students.filter(
-                s=>s.status==="waiting"
-              ).length
-            }
-
-          </button>
-
-
-          <button
-            class="filter ${
-              state.adminFilter==="registered"
-                ? "active"
-                : ""
-            }"
-            onclick="renderAdminStudents('registered')">
-
-            ✅ ثبت‌نام شده
-            ${
-              state.students.filter(
-                s=>s.status==="registered"
-              ).length
-            }
-
-          </button>
-
-
-          <button
-            class="filter ${
-              state.adminFilter==="graduate"
-                ? "active"
-                : ""
-            }"
-            onclick="renderAdminStudents('graduate')">
-
-            🎓 فارغ‌التحصیل
-            ${
-              state.students.filter(
-                s=>s.status==="graduate"
-              ).length
-            }
-
-          </button>
-
-        </div>
-
-
-        <div id="studentList"></div>
-
-      </div>
-
-  `;
-
-  filterStudents();
-
-}
-
-
-/* =====================================================
-   FILTER
-===================================================== */
-
-function filterStudents(){
-
-  const q =
-    (
-      document
-        .getElementById("q")
-        ?.value
-      ||
-      state.search
-      ||
-      ""
-    )
-    .trim()
-    .toLowerCase();
-
-  state.search=q;
-
-  let students =
-    [...state.students];
-
-  if(
-    state.adminFilter!=="all"
-  ){
-
-    students =
-      students.filter(
-        s=>
-          s.status===
-          state.adminFilter
-      );
-
-  }
-
-  if(q){
-
-    students =
-      students.filter(
-        function(s){
-
-          const text =
-            `
-              ${s.first_name}
-              ${s.last_name}
-              ${s.phone}
-              ${s.level}
-            `
-            .toLowerCase();
-
-          return text.includes(q);
-
-        }
-      );
-
-  }
-
-  const list =
-    document.getElementById(
-      "studentList"
-    );
-
-  if(!list)return;
-
-  list.innerHTML =
-    students
-      .map(studentCard)
-      .join("")
-    ||
-    '<div class="empty">موردی پیدا نشد.</div>';
-
-}
-
-
-/* =====================================================
-   STUDENT CARD
-===================================================== */
-
-function studentCard(s){
-
-  const isWaiting =
-    s.status==="waiting";
-
-  const isRegistered =
-    s.status==="registered";
-
-  const isGraduate =
-    s.status==="graduate";
-
-  return `
-
-    <div class="student">
-
-      <div class="studenthead">
-
-        <div>
-
-          <b>
-
-            ${esc(s.first_name)}
-            ${esc(s.last_name)}
-
-          </b>
-
-          <div class="infoLine">
-
-            📱
-            ${esc(s.phone)}
-
-          </div>
-
-          <div class="infoLine">
-
-            📚
-            ${esc(
-              s.level ||
-              "بدون سطح"
-            )}
-
-          </div>
-
-        </div>
-
-        <div>
-
-          ${statusBadge(s.status)}
-
-        </div>
-
-      </div>
-
-
-      <div class="divider"></div>
-
-
-      <div class="actions">
-
-        ${
-          isWaiting
-
-            ?
-
-            `
-
-              <button
-                class="btn ok small"
-                onclick="confirmRegistration(${s.id})">
-
-                ✅ تأیید ثبت‌نام
-
-              </button>
-
-              <button
-                class="btn danger small"
-                onclick="rejectStudent(${s.id})">
-
-                ❌ رد / حذف
-
-              </button>
-
-            `
-
-            :
-
-            ""
-        }
-
-
-        ${
-          isRegistered
-
-            ?
-
-            `
-
-              <button
-                class="btn secondary small"
-                onclick="setStatus(${s.id},'graduate')">
-
-                🎓 فارغ‌التحصیل
-
-              </button>
-
-              <button
-                class="btn secondary small"
-                onclick="setStatus(${s.id},'waiting')">
-
-                ↩ بازگشت به صف
-
-              </button>
-
-            `
-
-            :
-
-            ""
-        }
-
-
-        ${
-          isGraduate
-
-            ?
-
-            `
-
-              <button
-                class="btn secondary small"
-                onclick="setStatus(${s.id},'registered')">
-
-                ↩ فعال‌سازی مجدد
-
-              </button>
-
-            `
-
-            :
-
-            ""
-        }
-
-      </div>
-
-
-      ${
-        isWaiting
-
-          ?
-
-          `
-            <div class="dangerText">
-
-              در صورت رد کردن، درخواست
-              این زبان‌آموز حذف می‌شود.
-
-            </div>
-          `
-
-          :
-
-          ""
-      }
-
-    </div>
-
-  `;
-
-}
-
-
-/* =====================================================
-   CONFIRM
-===================================================== */
-
-async function confirmRegistration(id){
-
-  const student =
-    state.students.find(
-      s=>s.id===id
-    );
-
-  if(!student)return;
-
-  const name =
-    `${student.first_name} ${student.last_name}`;
-
-  const confirmed =
-    confirm(
-      `آیا ثبت‌نام «${name}» را تأیید می‌کنید؟`
-    );
-
-  if(!confirmed)return;
-
-  await setStatus(
-    id,
-    "registered",
-    true
-  );
-
-  notice(
-    "ثبت‌نام زبان‌آموز تأیید شد.",
-    "ok"
-  );
-
-}
-
-
-/* =====================================================
-   REJECT
-===================================================== */
-
-async function rejectStudent(id){
-
-  const student =
-    state.students.find(
-      s=>s.id===id
-    );
-
-  if(!student)return;
-
-  const name =
-    `${student.first_name} ${student.last_name}`;
-
-  const confirmed =
-    confirm(
-      `⚠️ درخواست «${name}» رد شود؟\n\nرکورد این زبان‌آموز از جدول students حذف خواهد شد.`
-    );
-
-  if(!confirmed)return;
-
-  const result =
-    await db
-      .from("students")
-      .delete()
-      .eq(
-        "id",
-        id
-      );
-
-  if(result.error){
-
-    notice(
-      "حذف انجام نشد: "
-      +
-      result.error.message,
-      "err"
-    );
-
-    return;
-
-  }
-
-  state.students =
-    state.students.filter(
-      s=>s.id!==id
-    );
-
-  renderAdminStudents();
-
-  notice(
-    "درخواست ثبت‌نام حذف شد.",
-    "ok"
-  );
-
-}
-
-
-/* =====================================================
-   STATUS
-===================================================== */
-
-async function setStatus(
-  id,
-  status,
-  silent=false
-){
-
-  const result =
-    await db
-      .from("students")
-      .update({
-        status:status
-      })
-      .eq(
-        "id",
-        id
-      );
-
-  if(result.error){
-
-    notice(
-      result.error.message,
-      "err"
-    );
-
-    return false;
-
-  }
-
-  const student =
-    state.students.find(
-      s=>s.id===id
-    );
-
-  if(student){
-
-    student.status =
-      status;
-
-  }
-
-  if(
-    state.adminFilter!=="all"
-  ){
-
-    renderAdminStudents();
-
-  }else{
-
-    renderAdmin();
-
-  }
-
-  if(!silent){
-
-    notice(
-      "وضعیت با موفقیت تغییر کرد.",
-      "ok"
-    );
-
-  }
-
-  return true;
-
-}
-
-
-/* =====================================================
-   REFRESH STUDENTS
-===================================================== */
-
-async function refreshStudents(){
-
-  await loadAdminData();
-
-  renderAdminStudents();
-
-  notice(
-    "لیست زبان‌آموزان بروزرسانی شد.",
-    "ok"
-  );
-
-}
-
-
-/* =====================================================
-   ADMIN COURSES
-===================================================== */
-
-function renderAdminCourses(){
-
-  document
-    .getElementById("content")
-    .innerHTML=`
-
-      <div class="card">
-
-        <div class="adminTitle">
-
-          <div>
-
-            <h2>
-              دوره‌ها 📚
-            </h2>
-
-            <p class="muted">
-              دوره‌های موجود در سامانه
-            </p>
-
-          </div>
-
-          <button
-            class="btn secondary small"
-            onclick="
-              loadCourses()
-              .then(renderAdminCourses)
-            ">
-
-            🔄 بروزرسانی
-
-          </button>
-
-        </div>
-
-
-        ${
-          state.courses.length
-
-            ?
-
-            state.courses
-              .map(
-                function(course){
-
-                  return `
-
-                    <div class="student">
-
-                      <b>
-                        ${esc(course.title)}
-                      </b>
-
-                      <div class="infoLine">
-
-                        ${esc(
-                          course.category || ""
-                        )}
-
-                        ${
-                          course.active===false
-                            ? " · غیرفعال"
-                            : " · فعال"
-                        }
-
-                      </div>
-
-                    </div>
-
-                  `;
-
-                }
-              )
-              .join("")
-
-            :
-
-            `
-              <div class="empty">
-                دوره‌ای پیدا نشد.
-              </div>
-            `
-        }
-
-      </div>
-
-  `;
-
-}
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-async function logout(){
-
-  await db.auth.signOut();
-
-  state.user=null;
-
-  state.profile=null;
-
-  state.isAdmin=false;
-
-  state.students=[];
-
-  renderLogin();
-
-}
-
-
-/* =====================================================
+/* =========================
    START
-===================================================== */
+========================= */
 
-boot();
+renderGrades();
+
+renderQuiz();
+
+renderStudents();
+
+renderConsultations();
+
+updateHomeStats();
+
+document.getElementById(
+"navHome"
+).classList.add("active");
 
 </script>
 
