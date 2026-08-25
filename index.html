@@ -11,6 +11,7 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+
 :root{
  --primary:#6d28d9;
  --primary2:#8b5cf6;
@@ -24,17 +25,30 @@
  --red:#dc2626;
  --blue:#2563eb;
 }
+
 body{
  font-family:Tahoma,Arial,sans-serif;
  background:#f7f5fb;
  color:var(--text);
  min-height:100vh;
 }
-button,input,select,textarea{font-family:inherit}
-button{cursor:pointer}
-.hidden{display:none!important}
 
-.screen{min-height:100vh;padding:20px}
+button,input,select,textarea{
+ font-family:inherit
+}
+
+button{
+ cursor:pointer
+}
+
+.hidden{
+ display:none!important
+}
+
+.screen{
+ min-height:100vh;
+ padding:20px
+}
 
 .login-screen{
  min-height:100vh;
@@ -222,8 +236,14 @@ button{cursor:pointer}
  box-shadow:0 12px 30px #6d28d933;
 }
 
-.welcome h2{margin-bottom:6px}
-.welcome p{opacity:.9;font-size:13px}
+.welcome h2{
+ margin-bottom:6px
+}
+
+.welcome p{
+ opacity:.9;
+ font-size:13px
+}
 
 .stats{
  display:grid;
@@ -334,8 +354,13 @@ button{cursor:pointer}
  margin-bottom:3px;
 }
 
-.page{display:none}
-.page.active{display:block}
+.page{
+ display:none
+}
+
+.page.active{
+ display:block
+}
 
 .badge{
  display:inline-block;
@@ -344,9 +369,20 @@ button{cursor:pointer}
  font-size:11px;
 }
 
-.badge-waiting{background:#fef3c7;color:#92400e}
-.badge-registered{background:#dcfce7;color:#166534}
-.badge-graduate{background:#dbeafe;color:#1e40af}
+.badge-waiting{
+ background:#fef3c7;
+ color:#92400e
+}
+
+.badge-registered{
+ background:#dcfce7;
+ color:#166534
+}
+
+.badge-graduate{
+ background:#dbeafe;
+ color:#1e40af
+}
 
 .student-row{
  display:flex;
@@ -357,10 +393,17 @@ button{cursor:pointer}
  padding:13px 0;
 }
 
-.student-row:last-child{border-bottom:none}
+.student-row:last-child{
+ border-bottom:none
+}
 
-.student-info strong{display:block}
-.student-info small{color:#888}
+.student-info strong{
+ display:block
+}
+
+.student-info small{
+ color:#888
+}
 
 .action-row{
  display:flex;
@@ -405,7 +448,9 @@ button{cursor:pointer}
  color:var(--primary);
 }
 
-.course-card h3{margin:8px 0 5px}
+.course-card h3{
+ margin:8px 0 5px;
+}
 
 .course-card p{
  color:#777;
@@ -432,8 +477,13 @@ button{cursor:pointer}
  color:white;
 }
 
-.lesson{display:none}
-.lesson.active{display:block}
+.lesson{
+ display:none
+}
+
+.lesson.active{
+ display:block
+}
 
 .question{
  padding:15px;
@@ -451,7 +501,9 @@ button{cursor:pointer}
  border-radius:10px;
 }
 
-.teacher{text-align:center}
+.teacher{
+ text-align:center;
+}
 
 .teacher-avatar{
  width:110px;
@@ -513,112 +565,202 @@ textarea.input{
  color:#777;
 }
 
+.admin-question{
+ border-bottom:1px solid #eee;
+ padding:15px 0;
+}
+
+.admin-question:last-child{
+ border-bottom:none;
+}
+
 @media(max-width:500px){
- .stats{gap:7px}
- .stat strong{font-size:20px}
- .grid,.course-grid{grid-template-columns:1fr 1fr}
+
+ .stats{
+  gap:7px
+ }
+
+ .stat strong{
+  font-size:20px
+ }
+
+ .grid,
+ .course-grid{
+  grid-template-columns:1fr 1fr
+ }
 }
 </style>
 </head>
 
 <body>
 
+<!-- =====================================================
+     LOGIN
+===================================================== -->
+
 <section id="loginScreen" class="login-screen">
+
 <div class="login-box">
 
 <div class="logo">AN</div>
-<div class="title">AliNagheli English</div>
-<div class="subtitle">سامانه آموزش زبان انگلیسی</div>
+
+<div class="title">
+AliNagheli English
+</div>
+
+<div class="subtitle">
+سامانه آموزش زبان انگلیسی
+</div>
 
 <div class="role-buttons">
 
-<button id="studentRoleBtn"
-class="role-btn active"
-onclick="selectRole('student')">
+<button
+ id="studentRoleBtn"
+ class="role-btn active"
+ onclick="selectRole('student')">
+
 🎓 زبان‌آموز
+
 </button>
 
-<button id="adminRoleBtn"
-class="role-btn"
-onclick="selectRole('admin')">
+<button
+ id="adminRoleBtn"
+ class="role-btn"
+ onclick="selectRole('admin')">
+
 👨‍🏫 مدیر
+
 </button>
 
 </div>
 
 <div id="loginMessage" class="message"></div>
 
+
+<!-- STUDENT LOGIN -->
+
 <div id="studentLogin">
 
-<input id="studentEmail"
-class="input"
-type="email"
-placeholder="ایمیل زبان‌آموز">
+<input
+ id="studentEmail"
+ class="input"
+ type="email"
+ placeholder="ایمیل زبان‌آموز">
 
-<input id="studentPassword"
-class="input"
-type="password"
-placeholder="رمز عبور">
+<input
+ id="studentPassword"
+ class="input"
+ type="password"
+ placeholder="رمز عبور">
 
-<button class="btn btn-primary"
-onclick="loginStudent()">
+<button
+ class="btn btn-primary"
+ onclick="loginStudent()">
+
 ورود زبان‌آموز
+
 </button>
 
-<button class="btn btn-secondary"
-style="margin-top:9px"
-onclick="showStudentRegister()">
+<button
+ class="btn btn-secondary"
+ style="margin-top:9px"
+ onclick="showStudentRegister()">
+
 ثبت‌نام زبان‌آموز جدید
+
 </button>
 
 </div>
+
+
+<!-- ADMIN LOGIN -->
 
 <div id="adminLogin" class="hidden">
 
-<input id="adminEmail"
-class="input"
-type="email"
-placeholder="ایمیل مدیر">
+<input
+ id="adminEmail"
+ class="input"
+ type="email"
+ placeholder="ایمیل مدیر">
 
-<input id="adminPassword"
-class="input"
-type="password"
-placeholder="رمز عبور مدیر">
+<input
+ id="adminPassword"
+ class="input"
+ type="password"
+ placeholder="رمز عبور مدیر">
 
-<button class="btn btn-primary"
-onclick="loginAdmin()">
+<button
+ class="btn btn-primary"
+ onclick="loginAdmin()">
+
 ورود مدیر
+
 </button>
 
 </div>
 
+
+<!-- STUDENT REGISTER -->
+
 <div id="studentRegister" class="hidden">
 
-<input id="regFirstName" class="input" placeholder="نام">
-<input id="regLastName" class="input" placeholder="نام خانوادگی">
-<input id="regPhone" class="input" placeholder="شماره موبایل">
-<input id="regEmail" class="input" type="email" placeholder="ایمیل">
-<input id="regPassword" class="input" type="password" placeholder="رمز عبور">
+<input
+ id="regFirstName"
+ class="input"
+ placeholder="نام">
+
+<input
+ id="regLastName"
+ class="input"
+ placeholder="نام خانوادگی">
+
+<input
+ id="regPhone"
+ class="input"
+ placeholder="شماره موبایل">
+
+<input
+ id="regEmail"
+ class="input"
+ type="email"
+ placeholder="ایمیل">
+
+<input
+ id="regPassword"
+ class="input"
+ type="password"
+ placeholder="رمز عبور">
 
 <select id="regGrade" class="input">
-<option value="">پایه تحصیلی</option>
+
+<option value="">
+پایه تحصیلی
+</option>
+
 <option>هفتم</option>
 <option>هشتم</option>
 <option>نهم</option>
 <option>دهم</option>
 <option>یازدهم</option>
 <option>دوازدهم</option>
+
 </select>
 
-<button class="btn btn-primary"
-onclick="registerStudent()">
+<button
+ class="btn btn-primary"
+ onclick="registerStudent()">
+
 ایجاد حساب
+
 </button>
 
-<button class="btn btn-secondary"
-style="margin-top:9px"
-onclick="showStudentLogin()">
+<button
+ class="btn btn-secondary"
+ style="margin-top:9px"
+ onclick="showStudentLogin()">
+
 بازگشت به ورود
+
 </button>
 
 </div>
@@ -626,26 +768,44 @@ onclick="showStudentLogin()">
 </div>
 </section>
 
+
+<!-- =====================================================
+     APPLICATION
+===================================================== -->
+
 <div id="app" class="app hidden">
 
 <header class="topbar">
 
 <div class="brand">
+
 AliNagheli
-<small>English Learning System</small>
+
+<small>
+English Learning System
+</small>
+
 </div>
 
-<div id="userAvatar" class="avatar">A</div>
+<div id="userAvatar" class="avatar">
+A
+</div>
 
 </header>
 
+
 <main class="container">
+
+
+<!-- HOME -->
 
 <section id="homePage" class="page active">
 
 <div class="welcome">
 
-<h2 id="welcomeName">سلام 👋</h2>
+<h2 id="welcomeName">
+سلام 👋
+</h2>
 
 <p id="welcomeText">
 به سامانه AliNagheli خوش آمدید.
@@ -653,74 +813,154 @@ AliNagheli
 
 </div>
 
+
 <div id="studentStats" class="stats">
 
 <div class="stat">
-<strong id="statCourses">0</strong>
-<span>دوره‌ها</span>
+
+<strong id="statCourses">
+0
+</strong>
+
+<span>
+دوره‌ها
+</span>
+
 </div>
 
 <div class="stat">
-<strong id="statQuestions">0</strong>
-<span>مشاوره‌ها</span>
+
+<strong id="statQuestions">
+0
+</strong>
+
+<span>
+مشاوره‌ها
+</span>
+
 </div>
 
 <div class="stat">
-<strong id="statStatus">—</strong>
-<span>وضعیت</span>
+
+<strong id="statStatus">
+—
+</strong>
+
+<span>
+وضعیت
+</span>
+
 </div>
 
 </div>
+
 
 <div class="section-title">
 دسترسی سریع
 </div>
 
+
 <div class="grid">
 
-<div class="menu-card"
-onclick="openPage('coursesPage')">
-<div class="menu-icon">📚</div>
-<b>دوره‌های مدرسه</b>
-<small>هفتم تا دوازدهم</small>
+<div
+ class="menu-card"
+ onclick="openPage('coursesPage')">
+
+<div class="menu-icon">
+📚
 </div>
 
-<div class="menu-card"
-onclick="openTeacher()">
-<div class="menu-icon">👨‍🏫</div>
-<b>معرفی استاد</b>
-<small>Ali Nagheli</small>
+<b>
+دوره‌های مدرسه
+</b>
+
+<small>
+هفتم تا دوازدهم
+</small>
+
 </div>
 
-<div class="menu-card"
-onclick="openConsultation()">
-<div class="menu-icon">💬</div>
-<b>مشاوره با استاد</b>
-<small>پرسش و پاسخ</small>
+
+<div
+ class="menu-card"
+ onclick="openTeacher()">
+
+<div class="menu-icon">
+👨‍🏫
 </div>
 
-<div class="menu-card"
-onclick="openPage('profilePage')">
-<div class="menu-icon">👤</div>
-<b>پروفایل من</b>
-<small>اطلاعات زبان‌آموز</small>
+<b>
+معرفی استاد
+</b>
+
+<small>
+Ali Nagheli
+</small>
+
+</div>
+
+
+<div
+ class="menu-card"
+ onclick="openConsultation()">
+
+<div class="menu-icon">
+💬
+</div>
+
+<b>
+مشاوره با استاد
+</b>
+
+<small>
+پرسش و پاسخ
+</small>
+
+</div>
+
+
+<div
+ class="menu-card"
+ onclick="openPage('profilePage')">
+
+<div class="menu-icon">
+👤
+</div>
+
+<b>
+پروفایل من
+</b>
+
+<small>
+اطلاعات زبان‌آموز
+</small>
+
 </div>
 
 </div>
 
 </section>
 
+
+<!-- COURSES -->
+
 <section id="coursesPage" class="page">
 
 <div class="section-title">
-<h2>دوره‌های زبان انگلیسی</h2>
+
+<h2>
+دوره‌های زبان انگلیسی
+</h2>
+
 </div>
 
 <div class="card">
 
 <p style="line-height:2;color:#666">
+
 محتوای زبان انگلیسی مدارس ایران از پایه هفتم تا دوازدهم؛
 شامل گرامر، لغات و آزمون.
+
 </p>
 
 </div>
@@ -729,217 +969,342 @@ onclick="openPage('profilePage')">
 
 </section>
 
+
+<!-- COURSE DETAIL -->
+
 <section id="courseDetailPage" class="page">
 
-<button class="back-btn"
-onclick="openPage('coursesPage')">
+<button
+ class="back-btn"
+ onclick="openPage('coursesPage')">
+
 ← بازگشت
+
 </button>
 
 <div class="card">
 
-<h2 id="courseTitle">پایه هفتم</h2>
+<h2 id="courseTitle">
+پایه هفتم
+</h2>
 
-<p id="courseDescription"
-style="color:#777;margin-top:7px"></p>
+<p
+ id="courseDescription"
+ style="color:#777;margin-top:7px">
+</p>
 
 </div>
+
 
 <div class="lesson-tabs">
 
-<button class="lesson-tab active"
-onclick="lessonTab('grammar',this)">
+<button
+ class="lesson-tab active"
+ onclick="lessonTab('grammar',this)">
+
 📖 گرامر
+
 </button>
 
-<button class="lesson-tab"
-onclick="lessonTab('vocab',this)">
+<button
+ class="lesson-tab"
+ onclick="lessonTab('vocab',this)">
+
 🧠 لغت
+
 </button>
 
-<button class="lesson-tab"
-onclick="lessonTab('exam',this)">
+<button
+ class="lesson-tab"
+ onclick="lessonTab('exam',this)">
+
 📝 آزمون
+
 </button>
 
 </div>
 
-<div id="grammarLesson"
-class="lesson active"></div>
 
-<div id="vocabLesson"
-class="lesson"></div>
+<div
+ id="grammarLesson"
+ class="lesson active">
+</div>
 
-<div id="examLesson"
-class="lesson"></div>
+<div
+ id="vocabLesson"
+ class="lesson">
+</div>
+
+<div
+ id="examLesson"
+ class="lesson">
+</div>
 
 </section>
+
+
+<!-- TEACHER -->
 
 <section id="teacherPage" class="page">
 
 <div class="card teacher">
 
-<div class="teacher-avatar">AN</div>
+<div class="teacher-avatar">
+AN
+</div>
 
-<h2>علی ناقلی</h2>
+<h2>
+علی ناقلی
+</h2>
 
 <p style="color:#777">
 مدرس و مربی زبان انگلیسی
 </p>
 
+
 <div class="teacher-en">
 
-<strong>Ali Nagheli</strong><br>
+<strong>
+Ali Nagheli
+</strong>
+
+<br>
+
 English Language Teacher & Trainer
 
 </div>
 
-<div class="card"
-style="text-align:right;margin-top:20px">
 
-<h3 style="color:#6d28d9;margin-bottom:10px">
+<div
+ class="card"
+ style="text-align:right;margin-top:20px">
+
+<h3
+ style="color:#6d28d9;margin-bottom:10px">
+
 معرفی استاد
+
 </h3>
 
 <p style="line-height:2;color:#555">
 
-علی ناقلی، مدرس زبان انگلیسی و مدرس دوره‌های تخصصی
-زبان با بیش از <strong>۲۰ سال سابقه تدریس</strong> است.
+علی ناقلی، مدرس زبان انگلیسی و مدرس دوره‌های
+تخصصی زبان با بیش از
+<strong>۲۰ سال سابقه تدریس</strong>
+در زمینه آموزش زبان انگلیسی است.
 
-تجربه گسترده در زمینه آموزش مکالمه، تربیت زبان‌آموز
-و تربیت مدرسان زبان انگلیسی، طراحی دوره‌های آموزشی
-و آماده‌سازی زبان‌آموزان برای آزمون‌های مختلف از جمله
+تجربه گسترده در زمینه آموزش مکالمه،
+تربیت زبان‌آموز،
+تربیت مدرسان زبان انگلیسی،
+طراحی دوره‌های آموزشی و آماده‌سازی زبان‌آموزان
+برای آزمون‌های مختلف از جمله
 IELTS، TOEFL و سایر آزمون‌های زبان دارد.
 
 </p>
 
 </div>
 
+
 <div class="teacher-en card">
 
-<h3>About the Teacher</h3>
+<h3>
+About the Teacher
+</h3>
 
 <p>
-Ali Nagheli is an experienced English language teacher
-and teacher trainer with
-<strong>more than 20 years of teaching experience</strong>.
-</p>
 
-<p style="margin-top:10px">
-
-His professional experience includes teaching
-<strong>English conversation</strong>, developing learners'
-communicative competence, training English language
-teachers, designing educational programs and preparing
-students for international and academic English exams.
+Ali Nagheli is an experienced English language
+teacher and teacher trainer with
+<strong>
+more than 20 years of teaching experience.
+</strong>
 
 </p>
 
 <p style="margin-top:10px">
+
+His professional experience includes
+<strong>
+teaching English conversation,
+</strong>
+developing learners' communicative competence,
+training English language teachers,
+designing educational programs,
+and preparing students for academic
+and international English examinations.
+
+</p>
+
+<p style="margin-top:10px">
+
 IELTS • TOEFL • PTE • TTC • Academic English
+
 </p>
 
 </div>
 
-<button class="btn btn-primary"
-onclick="openConsultation()">
+
+<button
+ class="btn btn-primary"
+ onclick="openConsultation()">
+
 💬 انجام مشاوره با استاد
+
 </button>
 
 </div>
 
 </section>
 
+
+<!-- CONSULTATION -->
+
 <section id="consultationPage" class="page">
 
 <div class="section-title">
-<h2>مشاوره با استاد 💬</h2>
+
+<h2>
+مشاوره با استاد 💬
+</h2>
+
 </div>
+
 
 <div class="card">
 
 <p style="line-height:2;color:#666">
 
-سؤال خود را برای استاد بنویسید. سؤال شما در سامانه
-ثبت می‌شود و پاسخ استاد نیز در همین بخش نمایش داده خواهد شد.
+سؤال خود را برای استاد بنویسید.
+سؤال شما در سامانه ثبت می‌شود و پاسخ استاد
+نیز در همین بخش نمایش داده خواهد شد.
 
 </p>
 
-<textarea id="consultationText"
-class="input"
-placeholder="سؤال خود را اینجا بنویسید..."></textarea>
 
-<button class="btn btn-primary"
-onclick="sendConsultation()">
+<textarea
+ id="consultationText"
+ class="input"
+ placeholder="سؤال خود را اینجا بنویسید...">
+</textarea>
+
+
+<button
+ class="btn btn-primary"
+ onclick="sendConsultation()">
+
 ارسال سؤال برای استاد
+
 </button>
 
 </div>
 
+
 <div class="section-title">
-<h3>سؤالات و پاسخ‌های من</h3>
+
+<h3>
+سؤالات و پاسخ‌های من
+</h3>
+
 </div>
 
+
 <div id="consultationsList">
+
 <div class="empty">
 هنوز سؤالی ثبت نکرده‌اید.
 </div>
+
 </div>
 
 </section>
 
+
+<!-- PROFILE -->
+
 <section id="profilePage" class="page">
 
 <div class="section-title">
-<h2>پروفایل من</h2>
+
+<h2>
+پروفایل من
+</h2>
+
 </div>
+
 
 <div class="card">
 
-<input id="profileFirstName"
-class="input"
-placeholder="نام">
+<input
+ id="profileFirstName"
+ class="input"
+ placeholder="نام">
 
-<input id="profileLastName"
-class="input"
-placeholder="نام خانوادگی">
+<input
+ id="profileLastName"
+ class="input"
+ placeholder="نام خانوادگی">
 
-<input id="profilePhone"
-class="input"
-placeholder="شماره موبایل">
+<input
+ id="profilePhone"
+ class="input"
+ placeholder="شماره موبایل">
 
-<select id="profileGrade" class="input">
-<option value="">پایه تحصیلی</option>
+
+<select
+ id="profileGrade"
+ class="input">
+
+<option value="">
+پایه تحصیلی
+</option>
+
 <option>هفتم</option>
 <option>هشتم</option>
 <option>نهم</option>
 <option>دهم</option>
 <option>یازدهم</option>
 <option>دوازدهم</option>
+
 </select>
 
-<div id="profileStatus"
-style="margin-bottom:12px"></div>
 
-<button class="btn btn-primary"
-onclick="saveProfile()">
+<div
+ id="profileStatus"
+ style="margin-bottom:12px">
+</div>
+
+
+<button
+ class="btn btn-primary"
+ onclick="saveProfile()">
+
 ذخیره اطلاعات
+
 </button>
 
 </div>
 
-<button class="btn btn-danger"
-onclick="logout()">
+
+<button
+ class="btn btn-danger"
+ onclick="logout()">
+
 خروج از حساب
+
 </button>
 
 </section>
+
+
+<!-- ADMIN -->
 
 <section id="adminPage" class="page">
 
 <div class="welcome">
 
-<h2>پنل مدیریت 👨‍🏫</h2>
+<h2>
+پنل مدیریت 👨‍🏫
+</h2>
 
 <p>
 مدیریت زبان‌آموزان و مشاوره‌ها
@@ -947,58 +1312,100 @@ onclick="logout()">
 
 </div>
 
+
 <div class="stats">
 
 <div class="stat">
-<strong id="adminStudents">0</strong>
-<span>زبان‌آموز</span>
+
+<strong id="adminStudentsCount">
+0
+</strong>
+
+<span>
+زبان‌آموز
+</span>
+
 </div>
+
 
 <div class="stat">
-<strong id="adminWaiting">0</strong>
-<span>در صف انتظار</span>
+
+<strong id="adminWaiting">
+0
+</strong>
+
+<span>
+در صف انتظار
+</span>
+
 </div>
+
 
 <div class="stat">
-<strong id="adminConsultations">0</strong>
-<span>مشاوره</span>
+
+<strong id="adminConsultationsCount">
+0
+</strong>
+
+<span>
+مشاوره
+</span>
+
 </div>
 
 </div>
+
 
 <div class="section-title">
 
-<h3>زبان‌آموزان</h3>
+<h3>
+زبان‌آموزان
+</h3>
 
-<button class="btn btn-secondary"
-style="width:auto;padding:8px 12px"
-onclick="loadAdminData()">
+<button
+ class="btn btn-secondary"
+ style="width:auto;padding:8px 12px"
+ onclick="loadAdminData()">
+
 🔄
+
 </button>
 
 </div>
 
+
 <div class="card">
 
-<input id="studentSearch"
-class="input"
-placeholder="جستجوی نام یا موبایل..."
-oninput="filterStudents()">
+<input
+ id="studentSearch"
+ class="input"
+ placeholder="جستجوی نام یا موبایل..."
+ oninput="filterStudents()">
+
 
 <div id="studentsList">
+
 <div class="loading">
 در حال دریافت اطلاعات...
 </div>
+
 </div>
 
 </div>
+
 
 <div class="section-title">
-<h3>سؤالات زبان‌آموزان</h3>
+
+<h3>
+سؤالات زبان‌آموزان
+</h3>
+
 </div>
 
-<div id="adminConsultations"
-class="card">
+
+<div
+ id="adminConsultationsBox"
+ class="card">
 
 <div class="loading">
 در حال دریافت...
@@ -1006,41 +1413,65 @@ class="card">
 
 </div>
 
-<button class="btn btn-danger"
-onclick="logout()">
+
+<button
+ class="btn btn-danger"
+ onclick="logout()">
+
 خروج مدیر
+
 </button>
 
 </section>
 
 </main>
 
-<nav id="studentNav" class="bottom-nav">
+
+<!-- STUDENT NAV -->
+
+<nav
+ id="studentNav"
+ class="bottom-nav">
 
 <div class="nav-inner">
 
-<button class="nav-btn active"
-onclick="openPage('homePage')">
+<button
+ class="nav-btn active"
+ onclick="openPage('homePage')">
+
 <div>🏠</div>
 خانه
+
 </button>
 
-<button class="nav-btn"
-onclick="openPage('coursesPage')">
+
+<button
+ class="nav-btn"
+ onclick="openPage('coursesPage')">
+
 <div>📚</div>
 دوره‌ها
+
 </button>
 
-<button class="nav-btn"
-onclick="openConsultation()">
+
+<button
+ class="nav-btn"
+ onclick="openConsultation()">
+
 <div>💬</div>
 مشاوره
+
 </button>
 
-<button class="nav-btn"
-onclick="openPage('profilePage')">
+
+<button
+ class="nav-btn"
+ onclick="openPage('profilePage')">
+
 <div>👤</div>
 پروفایل
+
 </button>
 
 </div>
@@ -1049,10 +1480,11 @@ onclick="openPage('profilePage')">
 
 </div>
 
+
 <script>
 
 /* =========================================================
-SUPABASE
+   SUPABASE
 ========================================================= */
 
 const SUPABASE_URL =
@@ -1069,105 +1501,153 @@ supabase.createClient(
 
 
 /* =========================================================
-GLOBAL
+   ADMIN CONFIG
 ========================================================= */
 
-let currentUser=null;
-let currentProfile=null;
-let currentRole="student";
-let allStudents=[];
+/*
+  این UUID حساب مدیر است.
+  حسابی که با این UUID وارد شود مدیر شناخته می‌شود.
+*/
+
+const ADMIN_USER_ID =
+"5878008d-96f8-4636-9ac4-c79408e39dd8";
 
 
 /* =========================================================
-LOGIN ROLE
+   GLOBAL STATE
+========================================================= */
+
+let currentUser = null;
+let currentProfile = null;
+let currentRole = "student";
+let allStudents = [];
+
+
+/* =========================================================
+   LOGIN ROLE
 ========================================================= */
 
 function selectRole(role){
 
- currentRole=role;
+ currentRole = role;
 
- document.getElementById("studentRoleBtn")
- .classList.toggle("active",role==="student");
+ document
+ .getElementById("studentRoleBtn")
+ .classList
+ .toggle("active",role==="student");
 
- document.getElementById("adminRoleBtn")
- .classList.toggle("active",role==="admin");
+ document
+ .getElementById("adminRoleBtn")
+ .classList
+ .toggle("active",role==="admin");
 
- document.getElementById("studentLogin")
- .classList.toggle("hidden",role!=="student");
+ document
+ .getElementById("studentLogin")
+ .classList
+ .toggle("hidden",role!=="student");
 
- document.getElementById("adminLogin")
- .classList.toggle("hidden",role!=="admin");
+ document
+ .getElementById("adminLogin")
+ .classList
+ .toggle("hidden",role!=="admin");
 
- document.getElementById("studentRegister")
- .classList.add("hidden");
+ document
+ .getElementById("studentRegister")
+ .classList
+ .add("hidden");
 
  clearMessage();
 }
 
+
 function showMessage(text,type="error"){
 
- const el=document.getElementById("loginMessage");
+ const el =
+ document.getElementById("loginMessage");
 
- el.textContent=text;
- el.className="message "+type;
+ el.textContent = text;
+
+ el.className =
+ "message "+type;
 }
+
 
 function clearMessage(){
 
- const el=document.getElementById("loginMessage");
+ const el =
+ document.getElementById("loginMessage");
 
  el.textContent="";
+
  el.className="message";
 }
 
 
 /* =========================================================
-STUDENT REGISTER
+   STUDENT REGISTER
 ========================================================= */
 
 function showStudentRegister(){
 
- document.getElementById("studentLogin")
+ document
+ .getElementById("studentLogin")
  .classList.add("hidden");
 
- document.getElementById("studentRegister")
+ document
+ .getElementById("studentRegister")
  .classList.remove("hidden");
 
  clearMessage();
 }
+
 
 function showStudentLogin(){
 
- document.getElementById("studentRegister")
+ document
+ .getElementById("studentRegister")
  .classList.add("hidden");
 
- document.getElementById("studentLogin")
+ document
+ .getElementById("studentLogin")
  .classList.remove("hidden");
 
  clearMessage();
 }
 
+
 async function registerStudent(){
 
- const firstName=
- document.getElementById("regFirstName").value.trim();
+ const firstName =
+ document.getElementById("regFirstName")
+ .value.trim();
 
- const lastName=
- document.getElementById("regLastName").value.trim();
+ const lastName =
+ document.getElementById("regLastName")
+ .value.trim();
 
- const phone=
- document.getElementById("regPhone").value.trim();
+ const phone =
+ document.getElementById("regPhone")
+ .value.trim();
 
- const email=
- document.getElementById("regEmail").value.trim();
+ const email =
+ document.getElementById("regEmail")
+ .value.trim();
 
- const password=
- document.getElementById("regPassword").value;
+ const password =
+ document.getElementById("regPassword")
+ .value;
 
- const grade=
- document.getElementById("regGrade").value;
+ const grade =
+ document.getElementById("regGrade")
+ .value;
 
- if(!firstName||!lastName||!email||!password){
+
+ if(
+  !firstName ||
+  !lastName ||
+  !email ||
+  !password
+ ){
 
   showMessage(
    "لطفاً اطلاعات اصلی را کامل کنید."
@@ -1176,12 +1656,15 @@ async function registerStudent(){
   return;
  }
 
+
  try{
 
-  const {data,error}=
+  const {data,error} =
   await supabaseClient.auth.signUp({
+
    email,
    password,
+
    options:{
     data:{
      first_name:firstName,
@@ -1190,16 +1673,20 @@ async function registerStudent(){
      grade:grade
     }
    }
+
   });
 
-  if(error)throw error;
+
+  if(error) throw error;
+
 
   if(data.user){
 
-   const {error:studentError}=
+   const {error:studentError} =
    await supabaseClient
    .from("students")
-   .insert({
+   .upsert({
+
     id:data.user.id,
     first_name:firstName,
     last_name:lastName,
@@ -1207,46 +1694,67 @@ async function registerStudent(){
     email:email,
     grade:grade,
     status:"waiting"
+
    });
 
-   if(studentError)
-    throw studentError;
+
+   /*
+     اگر به خاطر RLS نتوانست رکورد students را بسازد،
+     حساب Auth همچنان ساخته شده است.
+   */
+
+   if(studentError){
+
+    console.warn(
+     "Student profile error:",
+     studentError.message
+    );
+
+   }
+
   }
+
 
   showMessage(
    "ثبت‌نام با موفقیت انجام شد. اکنون می‌توانید وارد شوید.",
    "success"
   );
 
+
   setTimeout(
    showStudentLogin,
    1000
   );
 
+
  }catch(err){
 
   showMessage(
-   err.message||"خطا در ثبت‌نام"
+   err.message ||
+   "خطا در ثبت‌نام"
   );
+
  }
+
 }
 
 
 /* =========================================================
-STUDENT LOGIN
+   STUDENT LOGIN
 ========================================================= */
 
 async function loginStudent(){
 
- const email=
+ const email =
  document.getElementById("studentEmail")
  .value.trim();
 
- const password=
+ const password =
  document.getElementById("studentPassword")
  .value;
 
- if(!email||!password){
+
+ if(!email || !password){
 
   showMessage(
    "ایمیل و رمز عبور را وارد کنید."
@@ -1255,50 +1763,61 @@ async function loginStudent(){
   return;
  }
 
+
  try{
 
-  const {data,error}=
+  const {data,error} =
   await supabaseClient.auth
   .signInWithPassword({
+
    email,
    password
+
   });
 
-  if(error)throw error;
+
+  if(error) throw error;
+
 
   currentUser=data.user;
   currentRole="student";
+
 
   await loadStudentProfile();
 
   showApp();
 
+  openPage("homePage");
+
+
  }catch(err){
 
   showMessage(
-   err.message||
+   err.message ||
    "ایمیل یا رمز عبور اشتباه است."
   );
+
  }
+
 }
 
 
 /* =========================================================
-ADMIN LOGIN
-FIXED: auth_user_id
+   ADMIN LOGIN
 ========================================================= */
 
 async function loginAdmin(){
 
- const email=
+ const email =
  document.getElementById("adminEmail")
  .value.trim();
 
- const password=
+ const password =
  document.getElementById("adminPassword")
  .value;
 
- if(!email||!password){
+
+ if(!email || !password){
 
   showMessage(
    "ایمیل و رمز عبور مدیر را وارد کنید."
@@ -1307,208 +1826,338 @@ async function loginAdmin(){
   return;
  }
 
+
  try{
 
-  const {data,error}=
+  /*
+    مرحله اول:
+    ورود واقعی به Supabase Auth
+  */
+
+  const {data,error} =
   await supabaseClient.auth
   .signInWithPassword({
+
    email,
    password
+
   });
 
-  if(error)throw error;
+
+  if(error) throw error;
+
 
   const user=data.user;
 
+
   /*
-   مهم:
-   قبلاً اینجا از id استفاده می‌شد.
-   id جدول admins از نوع bigint است.
-   UUID کاربر Auth باید با auth_user_id
-   مقایسه شود.
+    مرحله دوم:
+    تشخیص حساب مدیر با UUID مشخص
   */
 
-  const {data:admin,error:adminError}=
-  await supabaseClient
-  .from("admins")
-  .select("*")
-  .eq("auth_user_id",user.id)
-  .maybeSingle();
+  if(user.id !== ADMIN_USER_ID){
 
-  if(adminError)throw adminError;
+   /*
+     اگر UUID مدیر نبود، جدول admins را هم بررسی می‌کنیم.
+     بنابراین اگر بعداً ساختار admins اصلاح شود نیز کار می‌کند.
+   */
 
-  if(!admin){
+   const {
+    data:admin,
+    error:adminError
+   } =
+   await supabaseClient
+   .from("admins")
+   .select("*")
+   .eq("id",user.id)
+   .maybeSingle();
 
-   await supabaseClient.auth.signOut();
 
-   showMessage(
-    "این حساب دسترسی مدیر ندارد."
-   );
+   if(adminError){
 
-   return;
+    console.warn(
+     "Admin table check:",
+     adminError.message
+    );
+
+   }
+
+
+   if(!admin){
+
+    await supabaseClient.auth.signOut();
+
+    showMessage(
+     "این حساب دسترسی مدیر ندارد."
+    );
+
+    return;
+
+   }
+
+
+   currentProfile=admin;
+
+  }else{
+
+   /*
+     این همان حساب مدیر اصلی است.
+     حتی اگر رکورد admins در جدول مشکل داشته باشد،
+     حساب با این UUID به عنوان مدیر شناخته می‌شود.
+   */
+
+   currentProfile={
+    id:user.id,
+    email:user.email,
+    first_name:"علی",
+    last_name:"ناقلی",
+    role:"admin"
+   };
+
   }
 
+
   currentUser=user;
-  currentProfile=admin;
   currentRole="admin";
+
 
   showApp();
 
   openPage("adminPage");
 
+
   await loadAdminData();
+
 
  }catch(err){
 
-  console.error("ADMIN LOGIN ERROR:",err);
+  console.error(err);
 
   showMessage(
-   err.message||
+   err.message ||
    "ورود مدیر انجام نشد."
   );
+
  }
+
 }
 
 
 /* =========================================================
-LOAD STUDENT
+   LOAD STUDENT PROFILE
 ========================================================= */
 
 async function loadStudentProfile(){
 
- if(!currentUser)return;
+ if(!currentUser) return;
 
- const {data,error}=
+
+ const {
+  data,
+  error
+ } =
  await supabaseClient
  .from("students")
  .select("*")
  .eq("id",currentUser.id)
  .maybeSingle();
 
+
  if(error){
 
   console.error(error);
-  return;
+
  }
 
- currentProfile=data;
 
- if(data){
+ currentProfile=data || {
 
-  document.getElementById("welcomeName")
-  .textContent=
-  "سلام "+(data.first_name||"")+" 👋";
+  id:currentUser.id,
+  first_name:
+   currentUser.user_metadata?.first_name ||
+   "",
+  last_name:
+   currentUser.user_metadata?.last_name ||
+   "",
+  phone:
+   currentUser.user_metadata?.phone ||
+   "",
+  grade:
+   currentUser.user_metadata?.grade ||
+   "",
+  status:"waiting"
 
-  document.getElementById("profileFirstName")
-  .value=data.first_name||"";
+ };
 
-  document.getElementById("profileLastName")
-  .value=data.last_name||"";
 
-  document.getElementById("profilePhone")
-  .value=data.phone||"";
+ document.getElementById(
+  "welcomeName"
+ ).textContent =
+ "سلام "+
+ (currentProfile.first_name || "")+
+ " 👋";
 
-  document.getElementById("profileGrade")
-  .value=data.grade||"";
 
-  setStatus(data.status);
- }
+ document.getElementById(
+  "profileFirstName"
+ ).value =
+ currentProfile.first_name || "";
+
+
+ document.getElementById(
+  "profileLastName"
+ ).value =
+ currentProfile.last_name || "";
+
+
+ document.getElementById(
+  "profilePhone"
+ ).value =
+ currentProfile.phone || "";
+
+
+ document.getElementById(
+  "profileGrade"
+ ).value =
+ currentProfile.grade || "";
+
+
+ setStatus(
+  currentProfile.status
+ );
+
 
  await loadConsultations();
 }
 
 
 /* =========================================================
-SHOW APP
+   SHOW APP
 ========================================================= */
 
 function showApp(){
 
- document.getElementById("loginScreen")
+ document
+ .getElementById("loginScreen")
  .classList.add("hidden");
 
- document.getElementById("app")
+
+ document
+ .getElementById("app")
  .classList.remove("hidden");
 
- const name=
- currentProfile?.first_name||
- currentUser?.email?.charAt(0)||
+
+ const name =
+ currentProfile?.first_name ||
+ currentUser?.email?.charAt(0) ||
  "A";
 
- document.getElementById("userAvatar")
- .textContent=
+
+ document
+ .getElementById("userAvatar")
+ .textContent =
  name.charAt(0).toUpperCase();
+
 
  if(currentRole==="admin"){
 
-  document.getElementById("studentNav")
+  document
+  .getElementById("studentNav")
   .classList.add("hidden");
 
  }else{
 
-  document.getElementById("studentNav")
+  document
+  .getElementById("studentNav")
   .classList.remove("hidden");
 
   loadStudentStats();
+
  }
+
 }
 
 
 /* =========================================================
-NAVIGATION
+   NAVIGATION
 ========================================================= */
 
 function openPage(pageId){
 
- document.querySelectorAll(".page")
- .forEach(p=>p.classList.remove("active"));
+ document
+ .querySelectorAll(".page")
+ .forEach(p=>
+  p.classList.remove("active")
+ );
 
- const page=
+
+ const page =
  document.getElementById(pageId);
 
- if(page)
-  page.classList.add("active");
 
- document.querySelectorAll(".nav-btn")
- .forEach(btn=>btn.classList.remove("active"));
+ if(page)
+ page.classList.add("active");
+
+
+ document
+ .querySelectorAll(".nav-btn")
+ .forEach(btn=>
+  btn.classList.remove("active")
+ );
+
 
  const mapping={
+
   homePage:0,
   coursesPage:1,
   consultationPage:2,
   profilePage:3
+
  };
+
 
  if(mapping[pageId]!==undefined){
 
-  const buttons=
+  const buttons =
   document.querySelectorAll(".nav-btn");
 
-  if(buttons[mapping[pageId]])
+
+  if(buttons[mapping[pageId]]){
+
    buttons[mapping[pageId]]
    .classList.add("active");
+
+  }
+
  }
+
 
  window.scrollTo({
   top:0,
   behavior:"smooth"
  });
+
 }
 
+
 function openTeacher(){
+
  openPage("teacherPage");
+
 }
+
 
 function openConsultation(){
 
  openPage("consultationPage");
 
  loadConsultations();
+
 }
 
 
 /* =========================================================
-COURSES
+   COURSES
 ========================================================= */
 
 const grades=[
@@ -1557,60 +2206,76 @@ const grades=[
 
 ];
 
+
 function renderCourses(){
 
- const grid=
+ const grid =
  document.getElementById("courseGrid");
 
- grid.innerHTML=
+
+ grid.innerHTML =
  grades.map(g=>`
 
- <div class="course-card"
- onclick="openCourse('${g.id}')">
+ <div
+  class="course-card"
+  onclick="openCourse('${g.id}')">
 
- <div class="grade">
- ${g.id}
- </div>
+  <div class="grade">
+   ${g.id}
+  </div>
 
- <h3>
- ${g.title}
- </h3>
+  <h3>
+   ${g.title}
+  </h3>
 
- <p>
- ${g.en}
- </p>
+  <p>
+   ${g.en}
+  </p>
 
- <p>
- ${g.desc}
- </p>
+  <p>
+   ${g.desc}
+  </p>
 
  </div>
 
  `).join("");
+
 }
+
 
 function openCourse(id){
 
- const g=
+ const g =
  grades.find(x=>x.id===id);
 
- if(!g)return;
 
- document.getElementById("courseTitle")
- .textContent=
+ if(!g) return;
+
+
+ document.getElementById(
+  "courseTitle"
+ ).textContent =
  g.title+" | "+g.en;
 
- document.getElementById("courseDescription")
- .textContent=g.desc;
+
+ document.getElementById(
+  "courseDescription"
+ ).textContent =
+ g.desc;
+
 
  renderCourseContent(id);
 
- openPage("courseDetailPage");
+
+ openPage(
+  "courseDetailPage"
+ );
+
 }
 
 
 /* =========================================================
-COURSE DATA
+   COURSE DATA
 ========================================================= */
 
 const courseData={
@@ -1618,195 +2283,325 @@ const courseData={
  "7":{
 
   grammar:[
-   ["ضمیرهای فاعلی","I, You, He, She, It, We, They"],
-   ["فعل to be","am / is / are"],
-   ["جملات ساده","I am a student. / She is happy."],
-   ["صفات ملکی","my, your, his, her, our, their"]
+
+   ["ضمیرهای فاعلی",
+    "I, You, He, She, It, We, They"],
+
+   ["فعل to be",
+    "am / is / are"],
+
+   ["جملات ساده",
+    "I am a student. / She is happy."],
+
+   ["صفات ملکی",
+    "my, your, his, her, our, their"]
+
   ],
 
   vocab:[
-   "student","teacher","school","book","pen",
-   "class","friend","family","name","country"
+   "student",
+   "teacher",
+   "school",
+   "book",
+   "pen",
+   "class",
+   "friend",
+   "family",
+   "name",
+   "country"
   ],
 
   exam:[
+
    {
     q:"کدام گزینه صحیح است؟",
     options:[
      "He are a student.",
      "He is a student.",
      "He am a student."
-    ]
+    ],
+    answer:1
    },
+
    {
     q:"کدام گزینه به معنی مدرسه است؟",
     options:[
      "teacher",
      "school",
      "student"
-    ]
+    ],
+    answer:1
    }
+
   ]
+
  },
+
 
  "8":{
 
   grammar:[
-   ["Simple Present","I play / She plays"],
-   ["Question Words","What, Where, Who, When"],
-   ["Adverbs of Frequency","always, usually, sometimes, never"],
-   ["Can / Can't","I can swim. / I can't drive."]
+
+   ["Simple Present",
+    "I play / She plays"],
+
+   ["Question Words",
+    "What, Where, Who, When"],
+
+   ["Adverbs of Frequency",
+    "always, usually, sometimes, never"],
+
+   ["Can / Can't",
+    "I can swim. / I can't drive."]
+
   ],
 
   vocab:[
-   "usually","always","sometimes","never",
-   "weekend","sport","music","favorite","healthy"
+   "usually",
+   "always",
+   "sometimes",
+   "never",
+   "weekend",
+   "sport",
+   "music",
+   "favorite",
+   "healthy"
   ],
 
   exam:[
+
    {
     q:"She ___ English every day.",
     options:[
      "study",
      "studies",
      "studying"
-    ]
+    ],
+    answer:1
    },
+
    {
     q:"کدام گزینه صحیح است؟",
     options:[
      "I can swim.",
      "I cans swim.",
      "I can swimming."
-    ]
+    ],
+    answer:0
    }
+
   ]
+
  },
+
 
  "9":{
 
   grammar:[
-   ["Present Continuous","I am studying."],
-   ["Simple Past","I visited my friend."],
-   ["Past of be","was / were"],
-   ["Comparative Adjectives","bigger, smaller, more beautiful"]
+
+   ["Present Continuous",
+    "I am studying."],
+
+   ["Simple Past",
+    "I visited my friend."],
+
+   ["Past of be",
+    "was / were"],
+
+   ["Comparative Adjectives",
+    "bigger, smaller, more beautiful"]
+
   ],
 
   vocab:[
-   "yesterday","tomorrow","visit","travel",
-   "interesting","beautiful","different","important"
+   "yesterday",
+   "tomorrow",
+   "visit",
+   "travel",
+   "interesting",
+   "beautiful",
+   "different",
+   "important"
   ],
 
   exam:[
+
    {
     q:"They ___ playing football now.",
     options:[
      "is",
      "are",
      "am"
-    ]
+    ],
+    answer:1
    },
+
    {
     q:"گذشته go چیست؟",
     options:[
      "goed",
      "went",
      "gone"
-    ]
+    ],
+    answer:1
    }
+
   ]
+
  },
+
 
  "10":{
 
   grammar:[
-   ["Present Perfect","I have finished my homework."],
-   ["Past Continuous","I was studying."],
-   ["Relative Clauses","The man who lives here..."],
-   ["Modal Verbs","must, should, may, might"]
+
+   ["Present Perfect",
+    "I have finished my homework."],
+
+   ["Past Continuous",
+    "I was studying."],
+
+   ["Relative Clauses",
+    "The man who lives here..."],
+
+   ["Modal Verbs",
+    "must, should, may, might"]
+
   ],
 
   vocab:[
-   "experience","education","environment",
-   "technology","achievement","communicate"
+   "experience",
+   "education",
+   "environment",
+   "technology",
+   "achievement",
+   "communicate"
   ],
 
   exam:[
+
    {
     q:"I have ___ my homework.",
     options:[
      "finish",
      "finished",
      "finishing"
-    ]
+    ],
+    answer:1
    }
+
   ]
+
  },
+
 
  "11":{
 
   grammar:[
-   ["Passive Voice","English is spoken worldwide."],
-   ["Conditionals","If I study, I will pass."],
-   ["Reported Speech","He said that he was tired."],
-   ["Gerunds & Infinitives","I enjoy reading."]
+
+   ["Passive Voice",
+    "English is spoken worldwide."],
+
+   ["Conditionals",
+    "If I study, I will pass."],
+
+   ["Reported Speech",
+    "He said that he was tired."],
+
+   ["Gerunds & Infinitives",
+    "I enjoy reading."]
+
   ],
 
   vocab:[
-   "knowledge","research","development",
-   "society","culture","communication","career"
+   "knowledge",
+   "research",
+   "development",
+   "society",
+   "culture",
+   "communication",
+   "career"
   ],
 
   exam:[
+
    {
     q:"English ___ worldwide.",
     options:[
      "speaks",
      "is spoken",
      "spoken"
-    ]
+    ],
+    answer:1
    }
+
   ]
+
  },
+
 
  "12":{
 
   grammar:[
-   ["Advanced Tenses","Perfect and Continuous forms"],
-   ["Advanced Conditionals","If I had studied..."],
-   ["Passive Structures","It is believed that..."],
-   ["Academic English","Formal structures and vocabulary"]
+
+   ["Advanced Tenses",
+    "Perfect and Continuous forms"],
+
+   ["Advanced Conditionals",
+    "If I had studied..."],
+
+   ["Passive Structures",
+    "It is believed that..."],
+
+   ["Academic English",
+    "Formal structures and vocabulary"]
+
   ],
 
   vocab:[
-   "academic","career","opportunity",
-   "responsibility","consequence","achievement",
-   "analysis","research"
+   "academic",
+   "career",
+   "opportunity",
+   "responsibility",
+   "consequence",
+   "achievement",
+   "analysis",
+   "research"
   ],
 
   exam:[
+
    {
     q:"If I had studied harder, I ___ the exam.",
     options:[
      "pass",
      "would pass",
      "would have passed"
-    ]
+    ],
+    answer:2
    }
+
   ]
+
  }
 
 };
 
 
+/* =========================================================
+   COURSE RENDER
+========================================================= */
+
 function renderCourseContent(id){
 
- const data=
- courseData[id]||
+ const data =
+ courseData[id] ||
  courseData["7"];
 
- document.getElementById("grammarLesson")
- .innerHTML=`
+
+ document.getElementById(
+  "grammarLesson"
+ ).innerHTML=`
 
  <div class="card">
 
@@ -1819,15 +2614,14 @@ function renderCourseContent(id){
  <div class="question">
 
  <strong>
- ${item[0]}
+ ${escapeHtml(item[0])}
  </strong>
 
- <p style="
- margin-top:8px;
- color:#666;
- line-height:1.8
- ">
- ${item[1]}
+ <p
+ style="margin-top:8px;color:#666;line-height:1.8">
+
+ ${escapeHtml(item[1])}
+
  </p>
 
  </div>
@@ -1837,8 +2631,10 @@ function renderCourseContent(id){
  </div>
  `;
 
- document.getElementById("vocabLesson")
- .innerHTML=`
+
+ document.getElementById(
+  "vocabLesson"
+ ).innerHTML=`
 
  <div class="card">
 
@@ -1850,16 +2646,18 @@ function renderCourseContent(id){
 
  ${data.vocab.map(v=>`
 
- <div style="
+ <div
+ style="
  background:#f5f3ff;
  padding:14px;
  border-radius:13px;
  text-align:center;
  direction:ltr;
  font-weight:bold;
- color:#6d28d9
- ">
- ${v}
+ color:#6d28d9">
+
+ ${escapeHtml(v)}
+
  </div>
 
  `).join("")}
@@ -1869,8 +2667,10 @@ function renderCourseContent(id){
  </div>
  `;
 
- document.getElementById("examLesson")
- .innerHTML=`
+
+ document.getElementById(
+  "examLesson"
+ ).innerHTML=`
 
  <div class="card">
 
@@ -1883,7 +2683,7 @@ function renderCourseContent(id){
  <div class="question">
 
  <strong>
- ${i+1}. ${q.q}
+ ${i+1}. ${escapeHtml(q.q)}
  </strong>
 
  ${q.options.map((o,j)=>`
@@ -1891,11 +2691,11 @@ function renderCourseContent(id){
  <label class="option">
 
  <input
- type="radio"
- name="question${i}"
- value="${j}">
+  type="radio"
+  name="question${i}"
+  value="${j}">
 
- ${o}
+ ${escapeHtml(o)}
 
  </label>
 
@@ -1905,158 +2705,193 @@ function renderCourseContent(id){
 
  `).join("")}
 
+
  <button
- class="btn btn-primary"
- onclick="checkExam('${id}')">
+  class="btn btn-primary"
+  onclick="checkExam('${id}')">
 
  بررسی پاسخ‌ها
 
  </button>
 
+
  <div
- id="examResult"
- style="margin-top:12px;font-weight:bold">
+  id="examResult"
+  style="margin-top:12px;font-weight:bold">
  </div>
 
  </div>
  `;
+
 }
 
 
 function checkExam(id){
 
- const data=
- courseData[id]||
+ const data =
+ courseData[id] ||
  courseData["7"];
+
 
  let score=0;
 
+
  data.exam.forEach((q,i)=>{
 
-  const selected=
+  const selected =
   document.querySelector(
    `input[name="question${i}"]:checked`
   );
 
-  if(selected){
 
-   if(
-    (id==="7"&&i===0&&selected.value==="1")||
-    (id==="7"&&i===1&&selected.value==="1")||
-    (id==="8"&&i===0&&selected.value==="1")||
-    (id==="8"&&i===1&&selected.value==="0")||
-    (id==="9"&&i===0&&selected.value==="1")||
-    (id==="9"&&i===1&&selected.value==="1")||
-    (id==="10"&&i===0&&selected.value==="1")||
-    (id==="11"&&i===0&&selected.value==="1")||
-    (id==="12"&&i===0&&selected.value==="2")
-   ){
+  if(
+   selected &&
+   Number(selected.value)===q.answer
+  ){
 
-    score++;
-   }
+   score++;
+
   }
+
  });
 
- const result=
+
+ const result =
  document.getElementById("examResult");
 
- result.textContent=
+
+ result.textContent =
  `نتیجه: ${score} از ${data.exam.length}`;
 
- result.style.color=
+
+ result.style.color =
  score===data.exam.length
  ? "#16a34a"
  : "#6d28d9";
+
 }
 
 
 function lessonTab(tab,button){
 
- document.querySelectorAll(".lesson")
+ document
+ .querySelectorAll(".lesson")
  .forEach(x=>
   x.classList.remove("active")
  );
 
- document.querySelectorAll(".lesson-tab")
+
+ document
+ .querySelectorAll(".lesson-tab")
  .forEach(x=>
   x.classList.remove("active")
  );
 
- document.getElementById(tab+"Lesson")
+
+ document
+ .getElementById(tab+"Lesson")
  .classList.add("active");
 
+
  button.classList.add("active");
+
 }
 
 
 /* =========================================================
-PROFILE
+   PROFILE
 ========================================================= */
 
 function setStatus(status){
 
- const el=
+ const el =
  document.getElementById("profileStatus");
+
 
  let text="—";
  let cls="";
+
 
  if(status==="waiting"){
 
   text="در صف انتظار";
   cls="badge-waiting";
 
- }else if(status==="registered"){
+ }
+
+ else if(status==="registered"){
 
   text="ثبت‌نام شده";
   cls="badge-registered";
 
- }else if(status==="graduate"){
+ }
+
+ else if(
+  status==="graduate" ||
+  status==="graduated"
+ ){
 
   text="فارغ‌التحصیل";
   cls="badge-graduate";
+
  }
 
- el.innerHTML=
+
+ el.innerHTML =
  `<span class="badge ${cls}">
  ${text}
  </span>`;
 
- document.getElementById("statStatus")
- .textContent=text;
+
+ document.getElementById(
+  "statStatus"
+ ).textContent=text;
+
 }
 
 
 async function saveProfile(){
 
- if(!currentUser)return;
+ if(!currentUser) return;
 
- const firstName=
- document.getElementById("profileFirstName")
- .value.trim();
 
- const lastName=
- document.getElementById("profileLastName")
- .value.trim();
+ const firstName =
+ document.getElementById(
+  "profileFirstName"
+ ).value.trim();
 
- const phone=
- document.getElementById("profilePhone")
- .value.trim();
 
- const grade=
- document.getElementById("profileGrade")
- .value;
+ const lastName =
+ document.getElementById(
+  "profileLastName"
+ ).value.trim();
 
- const {error}=
+
+ const phone =
+ document.getElementById(
+  "profilePhone"
+ ).value.trim();
+
+
+ const grade =
+ document.getElementById(
+  "profileGrade"
+ ).value;
+
+
+ const {error} =
  await supabaseClient
  .from("students")
  .update({
+
   first_name:firstName,
   last_name:lastName,
   phone:phone,
   grade:grade
+
  })
  .eq("id",currentUser.id);
+
 
  if(error){
 
@@ -2066,25 +2901,31 @@ async function saveProfile(){
   );
 
   return;
+
  }
+
 
  currentProfile.first_name=firstName;
  currentProfile.last_name=lastName;
  currentProfile.phone=phone;
  currentProfile.grade=grade;
 
- document.getElementById("welcomeName")
- .textContent=
+
+ document.getElementById(
+  "welcomeName"
+ ).textContent =
  "سلام "+firstName+" 👋";
+
 
  alert(
   "اطلاعات با موفقیت ذخیره شد."
  );
+
 }
 
 
 /* =========================================================
-CONSULTATION
+   CONSULTATION
 ========================================================= */
 
 async function sendConsultation(){
@@ -2096,11 +2937,15 @@ async function sendConsultation(){
   );
 
   return;
+
  }
 
- const text=
- document.getElementById("consultationText")
- .value.trim();
+
+ const text =
+ document.getElementById(
+  "consultationText"
+ ).value.trim();
+
 
  if(!text){
 
@@ -2109,16 +2954,21 @@ async function sendConsultation(){
   );
 
   return;
+
  }
 
- const {error}=
+
+ const {error} =
  await supabaseClient
  .from("consultations")
  .insert({
+
   student_id:currentUser.id,
   question:text,
   status:"pending"
+
  });
+
 
  if(error){
 
@@ -2128,64 +2978,94 @@ async function sendConsultation(){
   );
 
   return;
+
  }
 
- document.getElementById("consultationText")
- .value="";
+
+ document.getElementById(
+  "consultationText"
+ ).value="";
+
 
  alert(
   "سؤال شما برای استاد ارسال شد. ✅"
  );
 
+
  await loadConsultations();
+
 }
 
 
 async function loadConsultations(){
 
  if(
-  !currentUser||
+  !currentUser ||
   currentRole!=="student"
  )
  return;
 
- const {data,error}=
+
+ const {
+  data,
+  error
+ } =
  await supabaseClient
  .from("consultations")
  .select("*")
- .eq("student_id",currentUser.id)
- .order("created_at",{ascending:false});
+ .eq(
+  "student_id",
+  currentUser.id
+ )
+ .order(
+  "created_at",
+  {ascending:false}
+ );
 
- const list=
- document.getElementById("consultationsList");
+
+ const list =
+ document.getElementById(
+  "consultationsList"
+ );
+
 
  if(error){
 
-  list.innerHTML=
+  list.innerHTML =
   `<div class="empty">
   خطا در دریافت مشاوره‌ها
   </div>`;
 
   return;
+
  }
 
- if(!data||!data.length){
 
-  list.innerHTML=
+ if(
+  !data ||
+  !data.length
+ ){
+
+  list.innerHTML =
   `<div class="empty">
   هنوز سؤالی ثبت نکرده‌اید.
   </div>`;
 
-  document.getElementById("statQuestions")
-  .textContent="0";
+  document.getElementById(
+   "statQuestions"
+  ).textContent="0";
 
   return;
+
  }
 
- document.getElementById("statQuestions")
- .textContent=data.length;
 
- list.innerHTML=
+ document.getElementById(
+  "statQuestions"
+ ).textContent=data.length;
+
+
+ list.innerHTML =
  data.map(item=>`
 
  <div class="consult-question">
@@ -2194,120 +3074,199 @@ async function loadConsultations(){
  سؤال من
  </strong>
 
- <p style="
- margin-top:7px;
- line-height:1.9
- ">
+ <p
+ style="margin-top:7px;line-height:1.9">
+
  ${escapeHtml(item.question)}
+
  </p>
+
 
  ${
- item.answer
- ?
- `<div class="answer">
+  item.answer
+  ?
 
- <strong>
- پاسخ استاد:
- </strong>
+  `<div class="answer">
 
- <p style="
- margin-top:6px;
- line-height:1.9
- ">
- ${escapeHtml(item.answer)}
- </p>
+   <strong>
+   پاسخ استاد:
+   </strong>
 
- </div>`
- :
- `<div style="
- margin-top:8px;
- color:#999;
- font-size:12px
- ">
- ⏳ در انتظار پاسخ استاد
- </div>`
+   <p
+   style="margin-top:6px;line-height:1.9">
+
+   ${escapeHtml(item.answer)}
+
+   </p>
+
+   </div>`
+
+  :
+
+  `<div
+   style="margin-top:8px;color:#999;font-size:12px">
+
+   ⏳ در انتظار پاسخ استاد
+
+   </div>`
  }
 
  </div>
 
  `).join("");
+
 }
 
 
 /* =========================================================
-STUDENT STATS
+   STUDENT STATS
 ========================================================= */
 
 function loadStudentStats(){
 
- document.getElementById("statCourses")
- .textContent="6";
+ document.getElementById(
+  "statCourses"
+ ).textContent="6";
 
- if(currentProfile)
-  setStatus(currentProfile.status);
+
+ if(currentProfile){
+
+  setStatus(
+   currentProfile.status
+  );
+
+ }
+
 }
 
 
 /* =========================================================
-ADMIN DATA
+   ADMIN DATA
 ========================================================= */
 
 async function loadAdminData(){
 
- const {data,error}=
+ /*
+   ابتدا مطمئن می‌شویم کاربر مدیر است.
+ */
+
+ if(
+  !currentUser ||
+  currentUser.id!==ADMIN_USER_ID
+ ){
+
+  /*
+    امکان مدیر بودن از جدول admins
+  */
+
+  const {
+   data:admin
+  } =
+  await supabaseClient
+  .from("admins")
+  .select("*")
+  .eq(
+   "id",
+   currentUser?.id
+  )
+  .maybeSingle();
+
+
+  if(!admin){
+
+   console.error(
+    "Admin authorization failed."
+   );
+
+   return;
+
+  }
+
+ }
+
+
+ const {
+  data,
+  error
+ } =
  await supabaseClient
  .from("students")
  .select("*")
- .order("created_at",{ascending:false});
+ .order(
+  "created_at",
+  {ascending:false}
+ );
+
 
  if(error){
 
-  document.getElementById("studentsList")
-  .innerHTML=
+  document.getElementById(
+   "studentsList"
+  ).innerHTML =
   `<div class="empty">
 
-  خطا در دریافت زبان‌آموزان:<br>
+  خطا در دریافت زبان‌آموزان:
+
+  <br>
 
   ${escapeHtml(error.message)}
 
   </div>`;
 
   return;
+
  }
 
- allStudents=data||[];
 
- document.getElementById("adminStudents")
- .textContent=allStudents.length;
+ allStudents =
+ data || [];
 
- document.getElementById("adminWaiting")
- .textContent=
+
+ document.getElementById(
+  "adminStudentsCount"
+ ).textContent =
+ allStudents.length;
+
+
+ document.getElementById(
+  "adminWaiting"
+ ).textContent =
  allStudents.filter(
   x=>x.status==="waiting"
  ).length;
 
- renderStudents(allStudents);
+
+ renderStudents(
+  allStudents
+ );
+
 
  await loadAdminConsultations();
+
 }
 
 
 function renderStudents(list){
 
- const box=
- document.getElementById("studentsList");
+ const box =
+ document.getElementById(
+  "studentsList"
+ );
+
 
  if(!list.length){
 
-  box.innerHTML=
+  box.innerHTML =
   `<div class="empty">
   زبان‌آموزی پیدا نشد.
   </div>`;
 
   return;
+
  }
 
- box.innerHTML=
+
+ box.innerHTML =
  list.map(s=>`
 
  <div class="student-row">
@@ -2317,7 +3276,8 @@ function renderStudents(list){
  <strong>
 
  ${escapeHtml(
-  (s.first_name||"")+" "+
+  (s.first_name||"")+
+  " "+
   (s.last_name||"")
  )}
 
@@ -2335,9 +3295,11 @@ function renderStudents(list){
 
  </div>
 
+
  <div>
 
  ${statusBadge(s.status)}
+
 
  <div class="action-row">
 
@@ -2351,6 +3313,7 @@ function renderStudents(list){
  ثبت‌نام
 
  </button>
+
 
  <button
  style="background:#dbeafe"
@@ -2370,50 +3333,67 @@ function renderStudents(list){
  </div>
 
  `).join("");
+
 }
 
 
 function filterStudents(){
 
- const q=
- document.getElementById("studentSearch")
- .value.trim()
- .toLowerCase();
+ const q =
+ document.getElementById(
+  "studentSearch"
+ ).value.trim().toLowerCase();
 
- const filtered=
+
+ const filtered =
  allStudents.filter(s=>{
 
-  const text=
-  `${s.first_name||""} ${
-   s.last_name||""
-  } ${s.phone||""}`
+  const text =
+  `${s.first_name||""}
+   ${s.last_name||""}
+   ${s.phone||""}`
   .toLowerCase();
 
+
   return text.includes(q);
+
  });
 
+
  renderStudents(filtered);
+
 }
 
 
 function statusBadge(status){
 
  if(status==="registered")
-  return `
-  <span class="badge badge-registered">
-  ثبت‌نام شده
-  </span>`;
 
- if(status==="graduate")
-  return `
-  <span class="badge badge-graduate">
-  فارغ‌التحصیل
-  </span>`;
+ return `
+ <span class="badge badge-registered">
+ ثبت‌نام شده
+ </span>
+ `;
+
+
+ if(
+  status==="graduate" ||
+  status==="graduated"
+ )
+
+ return `
+ <span class="badge badge-graduate">
+ فارغ‌التحصیل
+ </span>
+ `;
+
 
  return `
  <span class="badge badge-waiting">
  در صف انتظار
- </span>`;
+ </span>
+ `;
+
 }
 
 
@@ -2422,29 +3402,45 @@ async function changeStudentStatus(
  status
 ){
 
- const {error}=
+ const {error} =
  await supabaseClient
  .from("students")
- .update({status})
- .eq("id",id);
+ .update({
+  status:status
+ })
+ .eq(
+  "id",
+  id
+ );
+
 
  if(error){
 
-  alert(error.message);
+  alert(
+   "خطا:\n"+
+   error.message
+  );
+
   return;
+
  }
 
+
  await loadAdminData();
+
 }
 
 
 /* =========================================================
-ADMIN CONSULTATIONS
+   ADMIN CONSULTATIONS
 ========================================================= */
 
 async function loadAdminConsultations(){
 
- const {data,error}=
+ const {
+  data,
+  error
+ } =
  await supabaseClient
  .from("consultations")
  .select(`
@@ -2454,129 +3450,145 @@ async function loadAdminConsultations(){
    last_name
   )
  `)
- .order("created_at",{ascending:false});
-
- const box=
- document.getElementById(
-  "adminConsultations"
+ .order(
+  "created_at",
+  {ascending:false}
  );
+
+
+ const box =
+ document.getElementById(
+  "adminConsultationsBox"
+ );
+
 
  if(error){
 
-  box.innerHTML=
+  box.innerHTML =
   `<div class="empty">
-  خطا در دریافت مشاوره‌ها
+
+  خطا در دریافت مشاوره‌ها:
+
+  <br>
+
+  ${escapeHtml(error.message)}
+
   </div>`;
 
   return;
+
  }
 
- const list=data||[];
+
+ const list =
+ data || [];
+
 
  document.getElementById(
-  "adminConsultations"
- ).innerHTML=
- list.length
- ?
+  "adminConsultationsCount"
+ ).textContent =
+ list.length;
+
+
+ if(!list.length){
+
+  box.innerHTML =
+  `<div class="empty">
+  مشاوره‌ای ثبت نشده است.
+  </div>`;
+
+  return;
+
+ }
+
+
+ box.innerHTML =
  list.map(c=>`
 
- <div style="
- border-bottom:1px solid #eee;
- padding:14px 0
- ">
+ <div class="admin-question">
 
  <strong>
 
  ${escapeHtml(
-  (c.students?.first_name||"")+" "+
+  (c.students?.first_name||"")+
+  " "+
   (c.students?.last_name||"")
  )}
 
  </strong>
 
- <p style="
- margin-top:8px;
- line-height:1.8
- ">
+
+ <p
+ style="margin-top:8px;line-height:1.8">
 
  ${escapeHtml(c.question)}
 
  </p>
 
+
  ${
- c.answer
- ?
- `<div class="answer">
+  c.answer
 
- <strong>
- پاسخ ثبت شده:
- </strong>
+  ?
 
- <p>
- ${escapeHtml(c.answer)}
- </p>
+  `<div class="answer">
 
- </div>`
- :
- `<div style="margin-top:10px">
+  <strong>
+  پاسخ ثبت شده:
+  </strong>
 
- <textarea
- id="answer-${c.id}"
- class="input"
- placeholder="پاسخ استاد..."
- style="min-height:80px">
- </textarea>
+  <p style="margin-top:6px">
 
- <button
- class="btn btn-primary"
- onclick="answerConsultation('${c.id}')">
+  ${escapeHtml(c.answer)}
 
- ارسال پاسخ
+  </p>
 
- </button>
+  </div>`
 
- </div>`
+  :
+
+  `<div style="margin-top:10px">
+
+  <textarea
+   id="answer-${c.id}"
+   class="input"
+   placeholder="پاسخ استاد..."
+   style="min-height:80px"></textarea>
+
+
+  <button
+   class="btn btn-primary"
+   onclick="answerConsultation('${c.id}')">
+
+   ارسال پاسخ
+
+  </button>
+
+  </div>`
+
  }
 
  </div>
 
- `).join("")
- :
- `<div class="empty">
- مشاوره‌ای ثبت نشده است.
- </div>`;
+ `).join("");
 
- document.getElementById(
-  "adminConsultations"
- ).dataset.count=list.length;
-
- const count=
- list.filter(x=>!x.answer).length;
-
- document.getElementById(
-  "adminConsultations"
- ).setAttribute(
-  "data-unanswered",
-  count
- );
-
- document.getElementById(
-  "adminConsultations"
- ).previousElementSibling;
 }
 
 
 async function answerConsultation(id){
 
- const input=
+ const input =
  document.getElementById(
   "answer-"+id
  );
 
- if(!input)return;
 
- const answer=
+ if(!input) return;
+
+
+ const answer =
  input.value.trim();
+
 
  if(!answer){
 
@@ -2585,181 +3597,258 @@ async function answerConsultation(id){
   );
 
   return;
+
  }
 
- const {error}=
+
+ const {error} =
  await supabaseClient
  .from("consultations")
  .update({
+
   answer:answer,
   status:"answered"
+
  })
- .eq("id",id);
+ .eq(
+  "id",
+  id
+ );
+
 
  if(error){
 
-  alert(error.message);
+  alert(
+   "خطا:\n"+
+   error.message
+  );
+
   return;
+
  }
+
 
  alert(
   "پاسخ با موفقیت ثبت شد. ✅"
  );
 
+
  await loadAdminConsultations();
+
 }
 
 
 /* =========================================================
-LOGOUT
+   LOGOUT
 ========================================================= */
 
 async function logout(){
 
  await supabaseClient.auth.signOut();
 
+
  currentUser=null;
  currentProfile=null;
  currentRole="student";
 
- document.getElementById("app")
+
+ document
+ .getElementById("app")
  .classList.add("hidden");
 
- document.getElementById("loginScreen")
+
+ document
+ .getElementById("loginScreen")
  .classList.remove("hidden");
 
+
  selectRole("student");
+
 
  document.getElementById(
   "studentEmail"
  ).value="";
 
+
  document.getElementById(
   "studentPassword"
  ).value="";
+
 
  document.getElementById(
   "adminEmail"
  ).value="";
 
+
  document.getElementById(
   "adminPassword"
  ).value="";
+
 }
 
 
 /* =========================================================
-HELPER
+   HTML SECURITY HELPER
 ========================================================= */
 
 function escapeHtml(value){
 
- return String(value??"")
+ return String(value ?? "")
  .replace(/&/g,"&amp;")
  .replace(/</g,"&lt;")
  .replace(/>/g,"&gt;")
  .replace(/"/g,"&quot;")
  .replace(/'/g,"&#039;");
+
 }
 
 
 /* =========================================================
-INIT
-IMPORTANT:
-admin lookup uses auth_user_id
+   INITIALIZATION
 ========================================================= */
 
 async function init(){
 
  renderCourses();
 
+
  try{
 
-  const {data,error}=
+  const {
+   data
+  } =
   await supabaseClient.auth
   .getSession();
 
-  if(error){
-   console.error(error);
-   return;
-  }
 
-  if(data.session){
+  if(
+   data &&
+   data.session
+  ){
 
-   currentUser=
+   currentUser =
    data.session.user;
 
+
    /*
-    اصلاح اصلی اینجاست:
-    قبلاً .eq("id",currentUser.id)
-    بود.
-    حالا UUID احراز هویت با
-    auth_user_id مقایسه می‌شود.
+     ابتدا UUID مدیر را بررسی می‌کنیم.
    */
 
-   const {data:admin,error:adminError}=
-   await supabaseClient
-   .from("admins")
-   .select("*")
-   .eq(
-    "auth_user_id",
-    currentUser.id
-   )
-   .maybeSingle();
-
-   if(adminError){
-
-    console.error(
-     "ADMIN SESSION CHECK:",
-     adminError
-    );
-
-   }
-
-   if(admin){
+   if(
+    currentUser.id===
+    ADMIN_USER_ID
+   ){
 
     currentRole="admin";
-    currentProfile=admin;
+
+    currentProfile={
+     id:currentUser.id,
+     email:currentUser.email,
+     first_name:"علی",
+     last_name:"ناقلی",
+     role:"admin"
+    };
+
 
     showApp();
 
-    openPage("adminPage");
+    openPage(
+     "adminPage"
+    );
+
 
     await loadAdminData();
 
-   }else{
-
-    currentRole="student";
-
-    await loadStudentProfile();
-
-    showApp();
-
-    openPage("homePage");
    }
+
+   else{
+
+    /*
+      اگر مدیر اصلی نبود،
+      جدول admins را بررسی می‌کنیم.
+    */
+
+    const {
+     data:admin
+    } =
+    await supabaseClient
+    .from("admins")
+    .select("*")
+    .eq(
+     "id",
+     currentUser.id
+    )
+    .maybeSingle();
+
+
+    if(admin){
+
+     currentRole="admin";
+     currentProfile=admin;
+
+     showApp();
+
+     openPage(
+      "adminPage"
+     );
+
+     await loadAdminData();
+
+    }
+
+    else{
+
+     currentRole="student";
+
+     await loadStudentProfile();
+
+     showApp();
+
+     openPage(
+      "homePage"
+     );
+
+    }
+
+   }
+
   }
 
- }catch(err){
+
+ }catch(error){
 
   console.error(
-   "INIT ERROR:",
-   err
+   "Initialization error:",
+   error
   );
+
  }
 
- supabaseClient.auth
- .onAuthStateChange(
-  (event,session)=>{
+}
 
-   if(event==="SIGNED_OUT"){
 
-    currentUser=null;
-    currentProfile=null;
-   }
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient.auth
+.onAuthStateChange(
+ (event,session)=>{
+
+  if(
+   event==="SIGNED_OUT"
+  ){
+
+   currentUser=null;
+   currentProfile=null;
 
   }
- );
-}
+
+ }
+);
+
+
+/* START */
 
 init();
 
