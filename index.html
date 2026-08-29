@@ -9,75 +9,159 @@
 
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;padding:0}
+html,body{margin:0;padding:0;min-height:100%;background:#f5f3ff}
 body{
 font-family:Tahoma,Arial,sans-serif;
-background:#f5f3ff;
 color:#171717;
-padding-bottom:82px
+padding-bottom:86px;
+overflow-x:hidden
 }
 button,input,select{font-family:inherit}
-button{cursor:pointer}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .hidden{display:none!important}
+button:disabled{cursor:not-allowed}
+
 .header{
-background:linear-gradient(135deg,#4c1d95,#7c3aed);
+background:linear-gradient(135deg,#4c1d95,#6d28d9,#8b5cf6);
 color:#fff;padding:15px;position:sticky;top:0;z-index:100;
-box-shadow:0 3px 15px #0002
+box-shadow:0 3px 18px #0003
 }
 .headerIn{
 max-width:1100px;margin:auto;display:flex;
 justify-content:space-between;align-items:center
 }
 .logo{font-size:20px;font-weight:bold}
+
 .container{max-width:1100px;margin:auto;padding:15px}
+
 .card{
 background:#fff;border-radius:22px;padding:20px;margin-bottom:15px;
-box-shadow:0 5px 25px #0000000d
+box-shadow:0 7px 28px #0000000d;border:1px solid #eeeaff
 }
+
 .hero{
-background:linear-gradient(135deg,#312e81,#7c3aed);
-color:#fff;border-radius:24px;padding:25px;margin-bottom:15px
+position:relative;
+overflow:hidden;
+background:
+radial-gradient(circle at 15% 20%,#ffffff45 0 4%,transparent 5%),
+radial-gradient(circle at 85% 70%,#ffffff30 0 7%,transparent 8%),
+linear-gradient(135deg,#1e1b4b,#4c1d95 42%,#7c3aed 72%,#a855f7);
+color:#fff;border-radius:28px;padding:28px;margin-bottom:18px;
+box-shadow:0 18px 45px #4c1d9560;
+transform:translateZ(0)
 }
+.hero:before,.hero:after{
+content:"";position:absolute;border-radius:50%;
+background:#ffffff12;filter:blur(1px);pointer-events:none
+}
+.hero:before{width:180px;height:180px;right:-65px;top:-70px}
+.hero:after{width:130px;height:130px;left:-45px;bottom:-55px}
+.hero>*{position:relative;z-index:2}
+
+.hero3d{
+display:flex;align-items:center;gap:18px;
+perspective:800px
+}
+.heroCube{
+width:78px;height:78px;flex:none;
+display:flex;align-items:center;justify-content:center;
+font-size:42px;
+background:linear-gradient(145deg,#ffffff55,#ffffff12);
+border:1px solid #ffffff55;
+border-radius:22px;
+box-shadow:
+inset 0 1px #fff7,
+0 18px 35px #0003;
+transform:rotateY(-12deg) rotateX(8deg);
+text-shadow:0 5px 10px #0004
+}
+
 .grid{
 display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px
 }
 .item{
 background:#fff;border:1px solid #e5e7eb;border-radius:20px;
-padding:18px;transition:.2s
+padding:18px;transition:.2s;
+box-shadow:0 3px 14px #00000008
 }
-.item:hover{transform:translateY(-2px);box-shadow:0 8px 25px #6d28d933}
+.item:hover{transform:translateY(-3px);box-shadow:0 10px 28px #6d28d933}
 .icon{font-size:40px}
 .btn{
-background:#6d28d9;color:#fff;border:0;border-radius:13px;
-padding:12px 16px;font-weight:bold
+background:linear-gradient(135deg,#6d28d9,#7c3aed);
+color:#fff;border:0;border-radius:13px;
+padding:12px 16px;font-weight:bold;
+box-shadow:0 5px 13px #6d28d933
 }
+.btn:active{transform:scale(.98)}
 .btn.full{width:100%}
-.secondary{background:#ede9fe;color:#5b21b6}
-.success{background:#dcfce7;color:#166534}
-.danger{background:#fee2e2;color:#991b1b}
+.secondary{background:#ede9fe;color:#5b21b6;box-shadow:none}
+.success{background:#dcfce7;color:#166534;box-shadow:none}
+.danger{background:#fee2e2;color:#991b1b;box-shadow:none}
+
+label{
+display:block;font-weight:bold;margin:12px 0 6px
+}
+input,select{
+width:100%;padding:13px;border:1px solid #ddd6fe;
+border-radius:13px;background:#fff;outline:none;font-size:14px
+}
+input:focus,select:focus{
+border-color:#7c3aed;box-shadow:0 0 0 3px #7c3aed18
+}
+
 .login{
-min-height:100vh;background:linear-gradient(135deg,#2e1065,#7c3aed,#a855f7);
-display:flex;justify-content:center;align-items:center;padding:20px
+min-height:100vh;
+background:
+radial-gradient(circle at 15% 15%,#ffffff18 0 5%,transparent 6%),
+radial-gradient(circle at 85% 80%,#ffffff15 0 8%,transparent 9%),
+linear-gradient(135deg,#1e0a3c,#4c1d95,#7c3aed,#a855f7);
+display:flex;justify-content:center;align-items:center;padding:20px;
+position:relative;overflow:hidden
 }
+.login:before,.login:after{
+content:"";position:absolute;border-radius:50%;
+background:#ffffff0b
+}
+.login:before{width:350px;height:350px;right:-150px;top:-150px}
+.login:after{width:300px;height:300px;left:-140px;bottom:-130px}
+
 .loginCard{
-background:#fff;width:min(430px,100%);padding:25px;border-radius:28px;
-box-shadow:0 20px 60px #0004
+position:relative;z-index:2;
+background:#fffffff7;backdrop-filter:blur(15px);
+width:min(430px,100%);padding:27px;border-radius:30px;
+box-shadow:0 25px 80px #0005;border:1px solid #ffffff80
 }
+.loginLogo{
+width:82px;height:82px;margin:auto;
+display:flex;align-items:center;justify-content:center;
+font-size:48px;border-radius:25px;
+background:linear-gradient(145deg,#ede9fe,#fff);
+box-shadow:0 15px 30px #4c1d9533;
+transform:rotate(-3deg)
+}
+
 .tabs{display:flex;gap:8px;margin:18px 0}
 .tab{
 flex:1;border:0;border-radius:12px;padding:12px;background:#f3f4f6
 }
 .tab.active{background:#ede9fe;color:#6d28d9;font-weight:bold}
+
 .bottom{
-position:fixed;bottom:0;left:0;right:0;height:78px;background:#fff;
-border-top:1px solid #ddd;z-index:200;box-shadow:0 -3px 15px #0000000d
+position:fixed;bottom:0;left:0;right:0;height:82px;background:#fff;
+border-top:1px solid #ddd;z-index:200;box-shadow:0 -5px 20px #00000012
 }
 .bottomIn{max-width:700px;height:100%;margin:auto;display:flex}
 .nav{
-flex:1;border:0;background:#fff;padding:7px 2px;color:#777;font-size:11px
+flex:1;border:0;background:#fff;padding:7px 2px;color:#777;font-size:11px;
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+gap:2px
 }
-.nav b{display:block;font-size:21px;margin-bottom:3px}
+.nav b{
+display:block;font-size:23px;line-height:1;
+font-family:"Segoe UI Emoji","Noto Color Emoji",sans-serif
+}
 .nav.active{color:#6d28d9;font-weight:bold}
+
 .lessonGrid{
 display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px
 }
@@ -87,12 +171,14 @@ padding:17px;cursor:pointer
 }
 .lesson:hover{background:#f3efff}
 .lessonNo{font-size:30px;color:#6d28d9;font-weight:bold}
+
 .tabs2{display:flex;gap:7px;overflow:auto;margin-bottom:15px}
 .tab2{
 padding:11px 15px;border:0;border-radius:12px;background:#eee;white-space:nowrap
 }
 .tab2.active{background:#6d28d9;color:#fff}
 .sec{display:none}.sec.active{display:block}
+
 .wordGrid{
 display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px
 }
@@ -102,6 +188,7 @@ padding:13px;text-align:center;cursor:pointer
 }
 .en{direction:ltr;color:#5b21b6;font-weight:bold}
 .fa{font-size:11px;color:#777;margin-top:5px}
+
 .grammar{
 border:1px solid #e9e5ff;background:#faf9ff;padding:17px;
 border-radius:17px;margin-bottom:12px;line-height:2
@@ -110,22 +197,34 @@ border-radius:17px;margin-bottom:12px;line-height:2
 direction:ltr;text-align:left;background:#fff;border-radius:10px;
 padding:11px;font-family:Arial,sans-serif
 }
+
 .option{
 display:block;width:100%;text-align:right;background:#fff;
-border:1px solid #ddd6fe;border-radius:13px;padding:13px;margin:7px 0
+border:1px solid #ddd6fe;border-radius:13px;padding:13px;margin:7px 0;
+transition:.15s
 }
-.option.correct{background:#dcfce7;border-color:#22c55e}
-.option.wrong{background:#fee2e2;border-color:#ef4444}
+.option:hover:not(:disabled){
+background:#faf5ff;border-color:#8b5cf6
+}
+.option.correct{background:#dcfce7;border-color:#22c55e;color:#166534}
+.option.wrong{background:#fee2e2;border-color:#ef4444;color:#991b1b}
 .feedback{text-align:center;border-radius:15px;padding:13px;margin-top:10px;font-weight:bold}
 .ok{background:#dcfce7;color:#166534}
 .bad{background:#fee2e2;color:#991b1b}
+
 .progress{height:8px;background:#eee;border-radius:99px;overflow:hidden;margin:12px 0}
-.progress i{display:block;height:100%;background:#7c3aed;transition:.3s}
+.progress i{
+display:block;height:100%;
+background:linear-gradient(90deg,#6d28d9,#a855f7);
+transition:.3s
+}
 .score{font-size:55px;color:#6d28d9;font-weight:bold;text-align:center}
+
 .adminRow{
 border:1px solid #e5e7eb;border-radius:16px;padding:14px;margin:9px 0
 }
 .muted{font-size:12px;color:#777;line-height:1.9}
+
 .teacher{
 display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px
 }
@@ -141,7 +240,7 @@ padding:15px;text-align:center
 .levelBar{
 height:12px;background:#eee;border-radius:99px;overflow:hidden;margin:10px 0
 }
-.levelBar i{display:block;height:100%;background:#7c3aed}
+.levelBar i{display:block;height:100%;background:linear-gradient(90deg,#6d28d9,#a855f7)}
 .badge{
 display:inline-block;padding:8px 12px;margin:4px;border-radius:20px;
 background:#ede9fe;color:#5b21b6;font-size:12px
@@ -150,21 +249,51 @@ background:#ede9fe;color:#5b21b6;font-size:12px
 padding:13px;border-radius:13px;background:#fff7ed;color:#9a3412;
 font-size:13px;line-height:1.8;margin-bottom:12px
 }
+.loading{
+min-height:100vh;display:flex;align-items:center;justify-content:center;
+background:#f5f3ff;color:#6d28d9;font-size:18px;font-weight:bold
+}
+.spinner{
+width:35px;height:35px;border:4px solid #ddd6fe;
+border-top-color:#6d28d9;border-radius:50%;
+animation:spin .8s linear infinite;margin:auto
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
 @media(max-width:600px){
-.container{padding:10px}.card{padding:16px;border-radius:18px}.hero{padding:20px}
+.container{padding:10px}
+.card{padding:16px;border-radius:18px}
+.hero{padding:20px}
+.heroCube{width:65px;height:65px;font-size:35px}
+.logo{font-size:18px}
 }
 </style>
 </head>
 
 <body>
-<div id="app"></div>
+<div id="app">
+<div class="loading"><div><div class="spinner"></div><div style="margin-top:12px">در حال بارگذاری...</div></div></div>
+</div>
 
 <script>
+"use strict";
+
+/* =========================================================
+   CONFIG
+========================================================= */
+
 const SUPABASE_URL="https://kapzyedzjecnfxevjisq.supabase.co";
 const SUPABASE_KEY="sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
-
-const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const ACCESS_FUNCTION=SUPABASE_URL+"/functions/v1/student-access";
+
+const db=supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+/* =========================================================
+   STATE
+========================================================= */
 
 let S={
 student:null,
@@ -181,9 +310,17 @@ achievements:[]
 let examRecords=
 JSON.parse(localStorage.getItem("AN_EXAMS")||"[]");
 
+/* =========================================================
+   HELPERS
+========================================================= */
+
 function esc(x){
 return String(x??"").replace(/[&<>"']/g,m=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
 }[m]));
 }
 
@@ -192,7 +329,19 @@ return String(x||"").replace(/\D/g,"");
 }
 
 function saveLocal(){
-localStorage.setItem("AN_EXAMS",JSON.stringify(examRecords));
+localStorage.setItem(
+"AN_EXAMS",
+JSON.stringify(examRecords)
+);
+}
+
+function shuffle(arr){
+const a=[...arr];
+for(let i=a.length-1;i>0;i--){
+const j=Math.floor(Math.random()*(i+1));
+[a[i],a[j]]=[a[j],a[i]];
+}
+return a;
 }
 
 function speak(text){
@@ -208,26 +357,48 @@ speechSynthesis.resume();
 speechSynthesis.speak(u);
 }
 
+function safeJSON(x){
+try{return JSON.stringify(x)}catch(e){return '""'}
+}
+
+/* =========================================================
+   ACCESS FUNCTION
+========================================================= */
+
 async function accessFunction(payload){
-const r=await fetch(ACCESS_FUNCTION,{
+
+const r=await fetch(
+ACCESS_FUNCTION,
+{
 method:"POST",
 headers:{
 "Content-Type":"application/json",
-"apikey":SUPABASE_KEY
+"apikey":SUPABASE_KEY,
+"Authorization":"Bearer "+SUPABASE_KEY
 },
 body:JSON.stringify(payload)
-});
-let data=null;
-try{data=await r.json()}catch(e){}
-if(!r.ok||data?.ok===false){
-throw new Error(data?.error||"خطا در ارتباط با سرور.");
 }
+);
+
+let data=null;
+
+try{
+data=await r.json();
+}catch(e){}
+
+if(!r.ok||data?.ok===false){
+throw new Error(
+data?.error||
+"خطا در ارتباط با سرور."
+);
+}
+
 return data;
 }
 
-/* =========================
-BOOKS
-========================= */
+/* =========================================================
+   BOOKS
+========================================================= */
 
 const books={
 7:{
@@ -237,8 +408,8 @@ lessons:[
 "Lesson 2: My Classmates",
 "Lesson 3: My Age",
 "Lesson 4: My Family",
-"Lesson 5: My Appearance",
-"Lesson 6: My House",
+"Lesson 5: My House",
+"Lesson 6: My City",
 "Lesson 7: My Address",
 "Lesson 8: My Favorite Food"
 ]},
@@ -292,80 +463,146 @@ lessons:[
 ]}
 };
 
+/* =========================================================
+   WORDS
+========================================================= */
+
 const words={
 1:[
-["student","دانش‌آموز"],["teacher","معلم"],["school","مدرسه"],
-["book","کتاب"],["friend","دوست"],["class","کلاس"],
-["name","نام"],["English","انگلیسی"]],
+["student","دانش‌آموز"],
+["teacher","معلم"],
+["school","مدرسه"],
+["book","کتاب"],
+["friend","دوست"],
+["class","کلاس"],
+["name","نام"],
+["English","انگلیسی"]
+],
 2:[
-["classmate","همکلاسی"],["study","مطالعه کردن"],["learn","یاد گرفتن"],
-["subject","درس"],["favorite","مورد علاقه"],["science","علوم"]],
+["classmate","همکلاسی"],
+["study","مطالعه کردن"],
+["learn","یاد گرفتن"],
+["subject","درس"],
+["favorite","مورد علاقه"],
+["science","علوم"]
+],
 3:[
-["age","سن"],["birthday","تولد"],["month","ماه"],["year","سال"],
-["January","ژانویه"],["February","فوریه"],["today","امروز"]],
+["age","سن"],
+["birthday","تولد"],
+["month","ماه"],
+["year","سال"],
+["January","ژانویه"],
+["February","فوریه"],
+["today","امروز"]
+],
 4:[
-["mother","مادر"],["father","پدر"],["brother","برادر"],
-["sister","خواهر"],["family","خانواده"],["job","شغل"]],
+["mother","مادر"],
+["father","پدر"],
+["brother","برادر"],
+["sister","خواهر"],
+["family","خانواده"],
+["job","شغل"]
+],
 5:[
-["tall","قدبلند"],["short","کوتاه"],["young","جوان"],["old","پیر"],
-["shirt","پیراهن"],["trousers","شلوار"],["red","قرمز"],["blue","آبی"]],
+["tall","قدبلند"],
+["short","کوتاه"],
+["young","جوان"],
+["old","پیر"],
+["shirt","پیراهن"],
+["trousers","شلوار"],
+["red","قرمز"],
+["blue","آبی"]
+],
 6:[
-["house","خانه"],["room","اتاق"],["kitchen","آشپزخانه"],
-["table","میز"],["chair","صندلی"],["park","پارک"],
-["under","زیر"],["on","روی"]],
+["house","خانه"],
+["room","اتاق"],
+["kitchen","آشپزخانه"],
+["table","میز"],
+["chair","صندلی"],
+["park","پارک"],
+["under","زیر"],
+["on","روی"]
+],
 7:[
-["phone","تلفن"],["number","شماره"],["address","نشانی"],
-["street","خیابان"],["morning","صبح"],["evening","عصر"]],
+["phone","تلفن"],
+["number","شماره"],
+["address","نشانی"],
+["street","خیابان"],
+["morning","صبح"],
+["evening","عصر"]
+],
 8:[
-["food","غذا"],["rice","برنج"],["bread","نان"],["apple","سیب"],
-["banana","موز"],["tea","چای"],["water","آب"],["juice","آبمیوه"]]
+["food","غذا"],
+["rice","برنج"],
+["bread","نان"],
+["apple","سیب"],
+["banana","موز"],
+["tea","چای"],
+["water","آب"],
+["juice","آبمیوه"]
+]
 };
+
+/* =========================================================
+   GRAMMAR
+========================================================= */
 
 const grammar={
 1:[
 ["ضمیرهای فاعلی و فعل to be","I am a student.","من دانش‌آموز هستم."],
 ["I / You / He / She / We / They","She is my friend.","او دوست من است."],
-["جمله مثبت","I am Ali.","من علی هستم."]],
+["جمله مثبت","I am Ali.","من علی هستم."]
+],
 2:[
 ["Simple Present","I study English every day.","من هر روز انگلیسی می‌خوانم."],
 ["سوم شخص مفرد","She studies English.","او انگلیسی می‌خواند."],
-["پرسش با Where","Where do you live?","کجا زندگی می‌کنی؟"]],
+["پرسش با Where","Where do you live?","کجا زندگی می‌کنی؟"]
+],
 3:[
 ["پرسیدن سن","How old are you?","چند سالت است؟"],
 ["گفتن سن","I am thirteen years old.","من سیزده ساله هستم."],
-["Birthday","My birthday is in May.","تولد من در ماه مه است."]],
+["Birthday","My birthday is in May.","تولد من در ماه مه است."]
+],
 4:[
 ["have / has","She has two brothers.","او دو برادر دارد."],
 ["صفات ملکی","This is my father.","این پدر من است."],
-["Who","Who is he?","او کیست؟"]],
+["Who","Who is he?","او کیست؟"]
+],
 5:[
 ["صفات","She is tall.","او قدبلند است."],
 ["This / That","This is my bag.","این کیف من است."],
-["رنگ‌ها","It is a blue shirt.","این یک پیراهن آبی است."]],
+["رنگ‌ها","It is a blue shirt.","این یک پیراهن آبی است."]
+],
 6:[
 ["There is / There are","There is a table.","یک میز وجود دارد."],
 ["حروف اضافه مکان","The book is on the table.","کتاب روی میز است."],
-["Present Continuous","She is reading.","او در حال مطالعه است."]],
+["Present Continuous","She is reading.","او در حال مطالعه است."]
+],
 7:[
 ["Can","I can swim.","من می‌توانم شنا کنم."],
 ["Imperative","Open the door.","در را باز کن."],
-["at برای ساعت","I get up at seven.","من ساعت هفت بیدار می‌شوم."]],
+["at برای ساعت","I get up at seven.","من ساعت هفت بیدار می‌شوم."]
+],
 8:[
 ["I'd like","I'd like some tea.","من مقداری چای می‌خواهم."],
 ["some / any","I'd like some water.","من مقداری آب می‌خواهم."],
-["درخواست مؤدبانه","Can I have some rice?","می‌توانم مقداری برنج داشته باشم؟"]]
+["درخواست مؤدبانه","Can I have some rice?","می‌توانم مقداری برنج داشته باشم؟"]
+]
 };
 
-/* =========================
-XP / PROGRESS
-========================= */
+/* =========================================================
+   XP
+========================================================= */
 
 function xpForLevel(level){
 return (level-1)*100;
 }
 
 function calculateLevel(xp){
-return Math.max(1,Math.floor(xp/100)+1);
+return Math.max(
+1,
+Math.floor(Number(xp||0)/100)+1
+);
 }
 
 async function loadStudentStats(){
@@ -379,8 +616,7 @@ S.achievements=[];
 
 try{
 
-const xp=
-await db
+const xp=await db
 .from("student_xp")
 .select("xp,level")
 .eq("student_id",S.student.id)
@@ -388,25 +624,17 @@ await db
 
 if(xp.data){
 S.xp=Number(xp.data.xp||0);
-S.level=Number(xp.data.level||calculateLevel(S.xp));
-}else{
-
-await db
-.from("student_xp")
-.insert({
-student_id:S.student.id,
-xp:0,
-level:1
-});
-
+S.level=Number(
+xp.data.level||
+calculateLevel(S.xp)
+);
 }
 
 }catch(e){}
 
 try{
 
-const p=
-await db
+const p=await db
 .from("student_progress")
 .select("lesson_id,progress,completed")
 .eq("student_id",S.student.id);
@@ -424,8 +652,7 @@ completed:Boolean(x.completed)
 
 try{
 
-const a=
-await db
+const a=await db
 .from("student_achievements")
 .select("achievement_key,title")
 .eq("student_id",S.student.id);
@@ -435,15 +662,14 @@ S.achievements=a.data;
 }
 
 }catch(e){}
-
 }
 
 async function addXP(amount,reason=""){
 
 if(!S.student)return;
 
-const oldXP=S.xp;
-const newXP=oldXP+Number(amount||0);
+const oldLevel=calculateLevel(S.xp);
+const newXP=S.xp+Number(amount||0);
 const newLevel=calculateLevel(newXP);
 
 S.xp=newXP;
@@ -464,13 +690,14 @@ onConflict:"student_id"
 
 }catch(e){}
 
-if(newLevel>calculateLevel(oldXP)){
+if(newLevel>oldLevel){
+
 await unlockAchievement(
 "level_"+newLevel,
 "رسیدن به Level "+newLevel
 );
-}
 
+}
 }
 
 async function unlockAchievement(key,title){
@@ -485,8 +712,7 @@ x=>x.achievement_key===key
 
 try{
 
-const r=
-await db
+const r=await db
 .from("student_achievements")
 .insert({
 student_id:S.student.id,
@@ -504,10 +730,13 @@ title
 }
 
 }catch(e){}
-
 }
 
-async function saveProgress(lessonId,progress,completed){
+async function saveProgress(
+lessonId,
+progress,
+completed
+){
 
 if(!S.student)return;
 
@@ -526,42 +755,63 @@ lesson_id:lessonId,
 progress,
 completed,
 completed_at:
-completed?new Date().toISOString():null
+completed?
+new Date().toISOString():
+null
 },{
 onConflict:"student_id,lesson_id"
 });
 
 }catch(e){}
-
 }
 
-/* =========================
-LOGIN
-========================= */
+/* =========================================================
+   LOGIN
+========================================================= */
 
 function login(){
 
 document.body.innerHTML=`
 <div class="login">
+
 <div class="loginCard">
 
 <div style="text-align:center">
-<div style="font-size:55px">📚</div>
+
+<div class="loginLogo">📚</div>
+
 <h2>AliNagheli English</h2>
-<p class="muted">سامانه آموزش زبان انگلیسی</p>
+
+<p class="muted">
+سامانه آموزش زبان انگلیسی
+</p>
+
 </div>
 
 <div class="tabs">
-<button id="st" class="tab active"
-onclick="loginTab('student')">🎓 زبان‌آموز</button>
 
-<button id="ad" class="tab"
-onclick="loginTab('admin')">👨‍💼 مدیر</button>
+<button
+id="st"
+class="tab active"
+type="button"
+onclick="loginTab('student')">
+🎓 زبان‌آموز
+</button>
+
+<button
+id="ad"
+class="tab"
+type="button"
+onclick="loginTab('admin')">
+👨‍💼 مدیر
+</button>
+
 </div>
 
 <div id="lf"></div>
 
 </div>
+
 </div>
 `;
 
@@ -570,89 +820,144 @@ loginTab("student");
 
 function loginTab(type){
 
-document.getElementById("st")
-.classList.toggle("active",type==="student");
+const st=document.getElementById("st");
+const ad=document.getElementById("ad");
+const lf=document.getElementById("lf");
 
-document.getElementById("ad")
-.classList.toggle("active",type==="admin");
+if(!st||!ad||!lf)return;
+
+st.classList.toggle(
+"active",
+type==="student"
+);
+
+ad.classList.toggle(
+"active",
+type==="admin"
+);
 
 if(type==="admin"){
 
-document.getElementById("lf").innerHTML=`
+lf.innerHTML=`
+
 <label>ایمیل مدیر</label>
-<input id="email" type="email" value="alinagheli@gmail.com">
+
+<input
+id="email"
+type="email"
+autocomplete="username"
+value="alinagheli@gmail.com">
 
 <label>رمز عبور</label>
-<input id="pass" type="password">
 
-<button class="btn full" onclick="adminLogin()">
+<input
+id="pass"
+type="password"
+autocomplete="current-password">
+
+<button
+class="btn full"
+type="button"
+onclick="adminLogin()">
 ورود مدیر
 </button>
+
 `;
 
 }else{
 
-document.getElementById("lf").innerHTML=`
+lf.innerHTML=`
+
 <label>شماره تلفن</label>
-<input id="phone" inputmode="tel" placeholder="شماره تلفن">
+
+<input
+id="phone"
+inputmode="tel"
+autocomplete="username"
+placeholder="شماره تلفن">
 
 <label>رمز عبور</label>
-<input id="pass" type="password">
 
-<button class="btn full" onclick="studentLogin()">
+<input
+id="pass"
+type="password"
+autocomplete="current-password">
+
+<button
+class="btn full"
+type="button"
+onclick="studentLogin()">
 ورود زبان‌آموز
 </button>
 
-<button class="btn secondary full"
+<button
+class="btn secondary full"
 style="margin-top:8px"
+type="button"
 onclick="registerForm()">
 ثبت‌نام زبان‌آموز جدید
 </button>
+
 `;
 
 }
-
 }
 
-/* =========================
-STUDENT LOGIN
-========================= */
+/* =========================================================
+   STUDENT LOGIN
+========================================================= */
 
 async function studentLogin(){
 
-const phone=document.getElementById("phone").value.trim();
-const password=document.getElementById("pass").value;
+const phoneEl=document.getElementById("phone");
+const passEl=document.getElementById("pass");
+
+if(!phoneEl||!passEl)return;
+
+const phone=phoneEl.value.trim();
+const password=passEl.value;
 
 if(!phone||!password){
-alert("شماره تلفن و رمز عبور را وارد کنید.");
+
+alert(
+"شماره تلفن و رمز عبور را وارد کنید."
+);
+
 return;
 }
 
 try{
 
-const result=
-await accessFunction({
+const result=await accessFunction({
 action:"find",
-phone
+phone:normalizePhone(phone)
 });
 
-const student=result.student;
-const email=result.email;
+const student=result?.student;
+const email=result?.email;
 
 if(!student)
-throw new Error("زبان‌آموزی با این شماره پیدا نشد.");
+throw new Error(
+"زبان‌آموزی با این شماره پیدا نشد."
+);
 
 if(student.status==="rejected")
-throw new Error("ثبت‌نام شما توسط مدیر رد شده است.");
+throw new Error(
+"ثبت‌نام شما توسط مدیر رد شده است."
+);
 
 if(
 student.status!=="registered" &&
 student.status!=="approved"
 )
-throw new Error("ثبت‌نام شما هنوز توسط مدیر تأیید نشده است.");
+throw new Error(
+"ثبت‌نام شما هنوز توسط مدیر تأیید نشده است."
+);
 
 if(!email)
-throw new Error("ایمیل ورود زبان‌آموز پیدا نشد.");
+throw new Error(
+"ایمیل ورود زبان‌آموز پیدا نشد."
+);
 
 const auth=
 await db.auth.signInWithPassword({
@@ -661,7 +966,9 @@ password
 });
 
 if(auth.error)
-throw new Error("رمز عبور صحیح نیست.");
+throw new Error(
+"رمز عبور صحیح نیست."
+);
 
 S.student=student;
 S.admin=false;
@@ -672,32 +979,42 @@ home();
 
 }catch(e){
 
-alert(e?.message||"ورود ناموفق بود.");
+alert(
+e?.message||
+"ورود ناموفق بود."
+);
 
 }
-
 }
 
-/* =========================
-ADMIN LOGIN
-========================= */
+/* =========================================================
+   ADMIN LOGIN
+========================================================= */
 
 async function adminLogin(){
 
-const email=
-document.getElementById("email").value.trim();
+const emailEl=document.getElementById("email");
+const passEl=document.getElementById("pass");
 
-const password=
-document.getElementById("pass").value;
+if(!emailEl||!passEl)return;
 
-if(email.toLowerCase()!=="alinagheli@gmail.com"){
+const email=emailEl.value.trim();
+const password=passEl.value;
+
+if(
+email.toLowerCase()!=="alinagheli@gmail.com"
+){
+
 alert("ایمیل مدیر صحیح نیست.");
 return;
+
 }
 
 if(!password){
+
 alert("رمز عبور را وارد کنید.");
 return;
+
 }
 
 try{
@@ -717,94 +1034,131 @@ admin();
 
 }catch(e){
 
-alert("ورود مدیر ناموفق بود:\n"+e.message);
+alert(
+"ورود مدیر ناموفق بود:\n"+
+(e?.message||"خطای نامشخص")
+);
 
 }
-
 }
 
-/* =========================
-REGISTER
-========================= */
+/* =========================================================
+   REGISTER
+========================================================= */
 
 function registerForm(){
 
-document.getElementById("lf").innerHTML=`
+const lf=document.getElementById("lf");
+if(!lf)return;
+
+lf.innerHTML=`
+
 <h3>ثبت‌نام زبان‌آموز جدید</h3>
 
 <label>نام</label>
-<input id="rf">
+<input id="rf" autocomplete="given-name">
 
 <label>نام خانوادگی</label>
-<input id="rl">
+<input id="rl" autocomplete="family-name">
 
 <label>شماره تلفن</label>
 <input id="rp" inputmode="tel">
 
 <label>رمز عبور</label>
-<input id="rpass" type="password">
+<input id="rpass" type="password" autocomplete="new-password">
 
 <label>پایه / سطح</label>
+
 <select id="rlevel">
-<option value="">انتخاب پایه</option>
+
+<option value="">
+انتخاب پایه
+</option>
+
 <option value="7">پایه هفتم</option>
 <option value="8">پایه هشتم</option>
 <option value="9">پایه نهم</option>
 <option value="10">پایه دهم</option>
 <option value="11">پایه یازدهم</option>
 <option value="12">پایه دوازدهم</option>
+
 </select>
 
-<button class="btn full" onclick="register()">
+<button
+class="btn full"
+type="button"
+onclick="register()">
 ثبت‌نام
 </button>
 
-<button class="btn secondary full"
+<button
+class="btn secondary full"
 style="margin-top:8px"
+type="button"
 onclick="login()">
 بازگشت
 </button>
+
 `;
 }
 
 async function register(){
 
-const first=document.getElementById("rf").value.trim();
-const last=document.getElementById("rl").value.trim();
-const phone=document.getElementById("rp").value.trim();
-const password=document.getElementById("rpass").value;
-const level=document.getElementById("rlevel").value;
+const first=document.getElementById("rf")?.value.trim();
+const last=document.getElementById("rl")?.value.trim();
+const phone=document.getElementById("rp")?.value.trim();
+const password=document.getElementById("rpass")?.value;
+const level=document.getElementById("rlevel")?.value;
 
-if(!first||!last||!phone||!password||!level){
+if(
+!first||
+!last||
+!phone||
+!password||
+!level
+){
+
 alert("همه موارد را تکمیل کنید.");
 return;
+
 }
 
 if(password.length<6){
-alert("رمز عبور باید حداقل ۶ کاراکتر باشد.");
+
+alert(
+"رمز عبور باید حداقل ۶ کاراکتر باشد."
+);
+
 return;
+
 }
 
 const digits=normalizePhone(phone);
 
 if(digits.length<10){
+
 alert("شماره تلفن معتبر نیست.");
 return;
+
 }
 
-const email=digits+"@alinagheli.com";
+const email=
+digits+"@alinagheli.com";
 
 try{
 
-const r=
-await db.auth.signUp({
+/*
+ثبت Auth
+*/
+
+const r=await db.auth.signUp({
 email,
 password,
 options:{
 data:{
 first_name:first,
 last_name:last,
-phone,
+phone:digits,
 level
 }
 }
@@ -812,14 +1166,20 @@ level
 
 if(r.error)throw r.error;
 
-if(!r.data.user)
-throw new Error("حساب کاربری ساخته نشد.");
+if(!r.data?.user)
+throw new Error(
+"حساب کاربری ساخته نشد."
+);
+
+/*
+ثبت در students از طریق Edge Function
+*/
 
 await accessFunction({
 action:"register",
 first_name:first,
 last_name:last,
-phone,
+phone:digits,
 level,
 auth_user_id:r.data.user.id,
 email
@@ -828,79 +1188,141 @@ email
 await db.auth.signOut();
 
 alert(
-"ثبت‌نام با موفقیت انجام شد.\nپس از تأیید مدیر می‌توانید وارد شوید."
+"ثبت‌نام با موفقیت انجام شد.\n\n"+
+"پس از تأیید مدیر می‌توانید وارد شوید."
 );
 
 login();
 
 }catch(e){
 
-try{await db.auth.signOut()}catch(_){}
+try{
+await db.auth.signOut();
+}catch(_){}
 
-alert("ثبت‌نام انجام نشد:\n"+(e?.message||"خطای نامشخص"));
+alert(
+"ثبت‌نام انجام نشد:\n"+
+(e?.message||"خطای نامشخص")
+);
 
 }
-
 }
 
-/* =========================
-LAYOUT
-========================= */
+/* =========================================================
+   HEADER
+========================================================= */
 
 function header(title){
 
 return`
+
 <header class="header">
+
 <div class="headerIn">
 
 <div>
-<div class="logo">${esc(title)}</div>
-<div style="font-size:10px;opacity:.8">AliNagheli English</div>
+
+<div class="logo">
+${esc(title)}
+</div>
+
+<div style="font-size:10px;opacity:.8">
+AliNagheli English
+</div>
+
 </div>
 
 <button
+type="button"
 onclick="logout()"
 style="
-background:#ffffff22;color:white;border:0;
-border-radius:10px;padding:9px">
+background:#ffffff22;
+color:white;
+border:0;
+border-radius:10px;
+padding:9px">
 خروج
 </button>
 
 </div>
+
 </header>
+
 `;
 }
+
+/* =========================================================
+   NAV
+========================================================= */
 
 function nav(){
 
 return`
+
 <div class="bottom">
+
 <div class="bottomIn">
 
-<button class="nav" onclick="home()">
-<b>🏠</b>خانه
+<button
+type="button"
+class="nav"
+onclick="home()">
+
+<b>🏠</b>
+خانه
+
 </button>
 
-<button class="nav" onclick="courses()">
-<b>📚</b>دروس
+<button
+type="button"
+class="nav"
+onclick="courses()">
+
+<b>📚</b>
+دروس
+
 </button>
 
-<button class="nav" onclick="conversation()">
-<b>🗣️</b>مکالمه
+<button
+type="button"
+class="nav"
+onclick="conversation()">
+
+<b>🗣️</b>
+مکالمه
+
 </button>
 
-<button class="nav" onclick="contest()">
-<b>🏆</b>مسابقه
+<button
+type="button"
+class="nav"
+onclick="contest()">
+
+<b>🏆</b>
+مسابقه
+
 </button>
 
-<button class="nav" onclick="profile()">
-<b>👤</b>پروفایل
+<button
+type="button"
+class="nav"
+onclick="profile()">
+
+<b>👤</b>
+پروفایل
+
 </button>
 
 </div>
+
 </div>
+
 `;
 }
+
+/* =========================================================
+   RENDER
+========================================================= */
 
 function render(title,content){
 
@@ -911,43 +1333,73 @@ nav();
 
 }
 
-/* =========================
-HOME
-========================= */
+/* =========================================================
+   HOME
+========================================================= */
 
 function home(){
 
 const xp=S.xp||0;
 const level=S.level||calculateLevel(xp);
-const currentLevelXP=xpForLevel(level);
-const nextLevelXP=xpForLevel(level+1);
+
+const currentLevelXP=
+xpForLevel(level);
+
+const nextLevelXP=
+xpForLevel(level+1);
+
 const levelPercent=
 Math.min(
 100,
+Math.max(
+0,
 Math.round(
 ((xp-currentLevelXP)/
-(nextLevelXP-currentLevelXP))*100
+Math.max(
+nextLevelXP-currentLevelXP,
+1
+))*100
+)
 )
 );
 
 render(
 "خانه",
 `
+
 <div class="hero">
 
-<h2>
-سلام ${esc(S.student?.first_name||"زبان‌آموز")} 👋
+<div class="hero3d">
+
+<div class="heroCube">📚</div>
+
+<div>
+
+<h2 style="margin:0 0 7px">
+سلام ${esc(
+S.student?.first_name||
+"زبان‌آموز"
+)} 👋
 </h2>
 
-<p>
-به AliNagheli English خوش آمدی.
+<p style="margin:0">
+به دنیای انگلیسی AliNagheli خوش آمدی ✨
 </p>
 
-<div class="levelBar">
-<i style="width:${levelPercent}%"></i>
 </div>
 
-<p>
+</div>
+
+<div class="levelBar"
+style="background:#ffffff25;margin-top:22px">
+<i style="
+width:${levelPercent}%;
+background:linear-gradient(
+90deg,#fff,#ddd6fe
+)"></i>
+</div>
+
+<p style="margin-bottom:0">
 ⭐ XP: ${xp}
 &nbsp;&nbsp;
 🏅 Level: ${level}
@@ -955,48 +1407,94 @@ render(
 
 </div>
 
-
 <div class="grid">
 
 <div class="item">
+
 <div class="icon">📚</div>
+
 <h3>دروس مدرسه</h3>
+
 <p class="muted">
 Prospect و Vision
 </p>
-<button class="btn full" onclick="courses()">ورود</button>
+
+<button
+class="btn full"
+type="button"
+onclick="courses()">
+ورود
+</button>
+
 </div>
 
 <div class="item">
+
 <div class="icon">🗣️</div>
+
 <h3>مکالمه</h3>
-<p class="muted">Touchstone و Viewpoint</p>
-<button class="btn full" onclick="conversation()">ورود</button>
+
+<p class="muted">
+Touchstone و Viewpoint
+</p>
+
+<button
+class="btn full"
+type="button"
+onclick="conversation()">
+ورود
+</button>
+
 </div>
 
 <div class="item">
+
 <div class="icon">🏆</div>
+
 <h3>مسابقه</h3>
-<p class="muted">مسابقات زبان انگلیسی</p>
-<button class="btn full" onclick="contest()">ورود</button>
+
+<p class="muted">
+مسابقات زبان انگلیسی
+</p>
+
+<button
+class="btn full"
+type="button"
+onclick="contest()">
+ورود
+</button>
+
 </div>
 
 <div class="item">
+
 <div class="icon">📊</div>
+
 <h3>پیشرفت من</h3>
-<p class="muted">XP، Level و نمرات</p>
-<button class="btn full" onclick="profile()">مشاهده</button>
+
+<p class="muted">
+XP، Level و نمرات
+</p>
+
+<button
+class="btn full"
+type="button"
+onclick="profile()">
+مشاهده
+</button>
+
 </div>
 
 </div>
+
 `
 );
 
 }
 
-/* =========================
-PROFILE
-========================= */
+/* =========================================================
+   PROFILE
+========================================================= */
 
 async function profile(){
 
@@ -1004,24 +1502,28 @@ await loadStudentStats();
 
 const completed=
 Object.values(S.progress)
-.filter(x=>x.completed).length;
+.filter(x=>x.completed)
+.length;
 
 const totalLessons=
 Object.keys(books)
 .reduce(
-(sum,g)=>sum+books[g].lessons.length,
+(sum,g)=>
+sum+books[g].lessons.length,
 0
 );
 
 const overall=
 Math.round(
 completed/
-Math.max(totalLessons,1)*100
+Math.max(totalLessons,1)*
+100
 );
 
 render(
 "پروفایل من",
 `
+
 <div class="card">
 
 <div style="text-align:center">
@@ -1040,15 +1542,18 @@ ${esc(S.student?.last_name||"")}
 </h2>
 
 <p class="muted">
+
 📱 ${esc(S.student?.phone||"")}
+
 <br>
+
 🎓 پایه ${esc(S.student?.level||"-")}
+
 </p>
 
 </div>
 
 </div>
-
 
 <div class="grid">
 
@@ -1074,7 +1579,6 @@ ${esc(S.student?.last_name||"")}
 
 </div>
 
-
 <div class="card">
 
 <h3>📈 پیشرفت کلی</h3>
@@ -1089,7 +1593,6 @@ ${overall}% از درس‌های ثبت‌شده تکمیل شده است.
 
 </div>
 
-
 <div class="card">
 
 <h3>🏆 دستاوردها</h3>
@@ -1097,40 +1600,47 @@ ${overall}% از درس‌های ثبت‌شده تکمیل شده است.
 ${
 S.achievements.length
 ?
-S.achievements
-.map(a=>`
+S.achievements.map(a=>`
 <span class="badge">
 🏆 ${esc(a.title)}
 </span>
 `).join("")
 :
-`<p class="muted">
+`
+<p class="muted">
 هنوز دستاوردی کسب نکرده‌ای.
-</p>`
+</p>
+`
 }
 
 </div>
+
 `
 );
 
 }
 
-/* =========================
-COURSES
-========================= */
+/* =========================================================
+   COURSES
+========================================================= */
 
 function courses(){
 
 render(
 "دروس مدرسه",
 `
+
 <div class="card">
+
 <h2>📚 کتاب‌های مدرسه</h2>
 
 <div class="grid">
 
 ${Object.keys(books).map(g=>`
-<div class="item" onclick="grade(${g})">
+
+<div
+class="item"
+onclick="grade(${g})">
 
 <div class="icon">📖</div>
 
@@ -1140,29 +1650,37 @@ ${Object.keys(books).map(g=>`
 ${esc(books[g].title)}
 </p>
 
-<button class="btn full">
+<button
+class="btn full"
+type="button">
 مشاهده درس‌ها
 </button>
 
 </div>
+
 `).join("")}
 
 </div>
+
 </div>
+
 `
 );
 }
 
 function grade(g){
 
-S.grade=g;
+S.grade=Number(g);
 
 render(
 "پایه "+g,
 `
+
 <div class="card">
 
-<button class="btn secondary"
+<button
+class="btn secondary"
+type="button"
 onclick="courses()">
 ← بازگشت
 </button>
@@ -1175,8 +1693,7 @@ onclick="courses()">
 
 ${books[g].lessons.map((x,i)=>{
 
-const key=
-`${g}-${i}`;
+const key=`${g}-${i}`;
 
 const p=
 S.progress[key]||
@@ -1184,10 +1701,13 @@ S.progress[key]||
 
 return`
 
-<div class="lesson"
+<div
+class="lesson"
 onclick="openLesson(${i})">
 
-<div class="lessonNo">${i+1}</div>
+<div class="lessonNo">
+${i+1}
+</div>
 
 <h3>${esc(x)}</h3>
 
@@ -1200,7 +1720,13 @@ onclick="openLesson(${i})">
 </div>
 
 <small>
-${p.completed?"✅ تکمیل شده":"⏳ "+(p.progress||0)+"%"}
+${
+p.completed
+?
+"✅ تکمیل شده"
+:
+"⏳ "+(p.progress||0)+"%"
+}
 </small>
 
 </div>
@@ -1211,47 +1737,59 @@ ${p.completed?"✅ تکمیل شده":"⏳ "+(p.progress||0)+"%"}
 </div>
 
 </div>
+
 `
 );
 }
 
-/* =========================
-LESSON
-========================= */
+/* =========================================================
+   LESSON
+========================================================= */
 
 function openLesson(i){
 
-S.lesson=i;
+S.lesson=Number(i);
 
-const no=i+1;
+const no=S.lesson+1;
 const book=books[S.grade];
-const key=`${S.grade}-${i}`;
+const key=`${S.grade}-${S.lesson}`;
 
 render(
 "درس "+no,
 `
+
 <div class="card">
 
-<button class="btn secondary"
+<button
+class="btn secondary"
+type="button"
 onclick="grade(${S.grade})">
 ← بازگشت
 </button>
 
-<h2>${esc(book.lessons[i])}</h2>
+<h2>
+${esc(book.lessons[S.lesson])}
+</h2>
 
 <div class="tabs2">
 
-<button class="tab2 active"
+<button
+type="button"
+class="tab2 active"
 onclick="lessonTab(0)">
 📘 گرامر
 </button>
 
-<button class="tab2"
+<button
+type="button"
+class="tab2"
 onclick="lessonTab(1)">
 🔊 لغات
 </button>
 
-<button class="tab2"
+<button
+type="button"
+class="tab2"
 onclick="lessonTab(2)">
 📝 آزمون
 </button>
@@ -1261,6 +1799,7 @@ onclick="lessonTab(2)">
 <div id="s0" class="sec active">
 
 ${(grammar[no]||[]).map(g=>`
+
 <div class="grammar">
 
 <h3>${esc(g[0])}</h3>
@@ -1275,20 +1814,22 @@ ${esc(g[1])}
 </div>
 
 <p>
-<b>ترجمه:</b> ${esc(g[2])}
+<b>ترجمه:</b>
+${esc(g[2])}
 </p>
 
 </div>
+
 `).join("")}
 
 <button
 class="btn full"
+type="button"
 onclick="completeLesson('${key}')">
 ✅ تکمیل مطالعه این درس
 </button>
 
 </div>
-
 
 <div id="s1" class="sec">
 
@@ -1301,8 +1842,10 @@ onclick="completeLesson('${key}')">
 <div class="wordGrid">
 
 ${(words[no]||[]).map(w=>`
-<div class="word"
-onclick='speak(${JSON.stringify(w[0])})'>
+
+<div
+class="word"
+onclick='speak(${safeJSON(w[0])})'>
 
 <div class="en">
 🔊 ${esc(w[0])}
@@ -1313,18 +1856,21 @@ ${esc(w[1])}
 </div>
 
 </div>
+
 `).join("")}
 
 </div>
 
 </div>
 
-
 <div id="s2" class="sec">
+
 <div id="lessonQuiz"></div>
+
 </div>
 
 </div>
+
 `
 );
 }
@@ -1337,14 +1883,19 @@ key,
 true
 );
 
-await addXP(20,"lesson");
+await addXP(
+20,
+"lesson"
+);
 
 await unlockAchievement(
 "first_lesson",
 "اولین درس تکمیل شد"
 );
 
-alert("درس با موفقیت تکمیل شد! ⭐ +20 XP");
+alert(
+"درس با موفقیت تکمیل شد! ⭐ +20 XP"
+);
 
 openLesson(S.lesson);
 
@@ -1354,58 +1905,101 @@ function lessonTab(n){
 
 document.querySelectorAll(".sec")
 .forEach((x,i)=>{
-x.classList.toggle("active",i===n);
+x.classList.toggle(
+"active",
+i===n
+);
 });
 
 document.querySelectorAll(".tab2")
 .forEach((x,i)=>{
-x.classList.toggle("active",i===n);
+x.classList.toggle(
+"active",
+i===n
+);
 });
 
-if(n===2)startLessonQuiz();
+if(n===2){
+startLessonQuiz();
+}
 
 }
 
-/* =========================
-QUIZ
-========================= */
+/* =========================================================
+   QUIZ DATA
+========================================================= */
+
+function createQuestion(
+q,
+options,
+answer
+){
+
+const shuffled=shuffle(
+options.map((text,index)=>({
+text,
+isCorrect:index===answer
+}))
+);
+
+return{
+q,
+options:shuffled.map(x=>x.text),
+answer:shuffled.findIndex(
+x=>x.isCorrect
+)
+};
+
+}
+
+/* =========================================================
+   LESSON QUIZ
+========================================================= */
 
 function makeLessonQuestions(){
 
 const no=S.lesson+1;
 let arr=[];
 
-(words[no]||[]).forEach((w,i)=>{
+const a=words[no]||[];
 
-const a=words[no];
+a.forEach((w,i)=>{
 
-arr.push({
-q:`معنی "${w[0]}" چیست؟`,
-options:[
+if(a.length>=3){
+
+arr.push(
+createQuestion(
+`معنی "${w[0]}" چیست؟`,
+[
 w[1],
 a[(i+1)%a.length][1],
 a[(i+2)%a.length][1]
 ],
-answer:0
-});
+0
+)
+);
+
+}
 
 });
 
 (grammar[no]||[]).forEach(g=>{
 
-arr.push({
-q:`کدام گزینه با ${g[0]} هماهنگ است؟`,
-options:[
+arr.push(
+createQuestion(
+`کدام گزینه با ${g[0]} هماهنگ است؟`,
+[
 g[1],
 "She are student.",
 "They is happy."
 ],
-answer:0
-});
+0
+)
+);
 
 });
 
-return arr.slice(0,15);
+return shuffle(arr).slice(0,15);
 }
 
 function startLessonQuiz(){
@@ -1417,15 +2011,20 @@ title:
 questions:makeLessonQuestions(),
 i:0,
 correct:0,
-wrong:0
+wrong:0,
+answered:false
 };
 
 quizRender("lessonQuiz");
 }
 
+/* =========================================================
+   QUIZ RENDER
+========================================================= */
+
 function quizRender(id){
 
-const q=S.quiz.questions[S.quiz.i];
+const q=S.quiz?.questions?.[S.quiz.i];
 
 if(!q){
 quizFinish(id);
@@ -1433,9 +2032,11 @@ return;
 }
 
 const el=document.getElementById(id);
+
 if(!el)return;
 
 el.innerHTML=`
+
 <div class="card">
 
 <b>
@@ -1444,75 +2045,153 @@ el.innerHTML=`
 </b>
 
 <div class="progress">
+
 <i style="
-width:${S.quiz.i/S.quiz.questions.length*100}%
-"></i>
+width:${
+S.quiz.i/
+Math.max(
+S.quiz.questions.length,
+1
+)*100
+}%">
+</i>
+
 </div>
 
 <div style="
-font-size:18px;font-weight:bold;
-line-height:2;margin:15px 0">
+font-size:18px;
+font-weight:bold;
+line-height:2;
+margin:15px 0">
 ${esc(q.q)}
 </div>
 
+<div id="quizOptions">
+
 ${q.options.map((x,i)=>`
-<button class="option"
+
+<button
+type="button"
+class="option"
+data-option="${i}"
 onclick="answer(${i},'${id}')">
 ${esc(x)}
 </button>
+
 `).join("")}
+
+</div>
 
 <div id="fb"></div>
 
 </div>
+
 `;
 }
 
+/* =========================================================
+   QUIZ ANSWER
+========================================================= */
+
 function answer(i,id){
 
-const q=S.quiz.questions[S.quiz.i];
+if(!S.quiz)return;
 
-const opts=document.querySelectorAll(".option");
+if(S.quiz.answered)return;
 
-opts.forEach(x=>x.disabled=true);
+S.quiz.answered=true;
+
+const q=
+S.quiz.questions[S.quiz.i];
+
+const opts=
+document.querySelectorAll(
+"#"+CSS.escape(id)+" .option"
+);
+
+opts.forEach(x=>{
+x.disabled=true;
+});
+
+const feedback=
+document.getElementById("fb");
 
 if(i===q.answer){
 
 S.quiz.correct++;
 
+if(opts[i]){
 opts[i].classList.add("correct");
+}
 
-document.getElementById("fb").className="feedback ok";
-document.getElementById("fb").innerHTML=
+if(feedback){
+
+feedback.className=
+"feedback ok";
+
+feedback.innerHTML=
 "✅ 😊 آفرین! پاسخ درست است.";
+
+}
 
 }else{
 
 S.quiz.wrong++;
 
+if(opts[i]){
 opts[i].classList.add("wrong");
-opts[q.answer].classList.add("correct");
+}
 
-document.getElementById("fb").className="feedback bad";
-document.getElementById("fb").innerHTML=
+if(opts[q.answer]){
+opts[q.answer].classList.add("correct");
+}
+
+if(feedback){
+
+feedback.className=
+"feedback bad";
+
+feedback.innerHTML=
 "❌ 😢 پاسخ اشتباه است.";
 
 }
 
+}
+
 setTimeout(()=>{
+
+if(!S.quiz)return;
+
 S.quiz.i++;
+S.quiz.answered=false;
+
 quizRender(id);
+
 },900);
 
 }
 
+/* =========================================================
+   QUIZ FINISH
+========================================================= */
+
 async function quizFinish(id){
 
-const total=S.quiz.questions.length;
+if(!S.quiz)return;
 
-const percent=total
-?Math.round(S.quiz.correct/total*100)
-:0;
+const total=
+S.quiz.questions.length;
+
+const percent=
+total
+?
+Math.round(
+S.quiz.correct/
+total*
+100
+)
+:
+0;
 
 examRecords.push({
 student:S.student?.phone||"",
@@ -1535,7 +2214,9 @@ student_name:
 `${S.student.first_name||""} ${S.student.last_name||""}`,
 exam_type:S.quiz.type||"lesson",
 exam_title:S.quiz.title,
-lesson:S.lesson+1,
+lesson:S.lesson!==null?
+S.lesson+1:
+null,
 score:S.quiz.correct,
 total,
 percentage:percent
@@ -1549,22 +2230,27 @@ Math.max(10,percent),
 );
 
 if(percent>=80){
+
 await unlockAchievement(
 "exam_80",
 "امتیاز بالای ۸۰٪"
 );
+
 }
 
 if(percent===100){
+
 await unlockAchievement(
 "perfect_exam",
 "آزمون کامل"
 );
+
 }
 
 if(S.quiz.type==="lesson"){
 
-const key=`${S.grade}-${S.lesson}`;
+const key=
+`${S.grade}-${S.lesson}`;
 
 await saveProgress(
 key,
@@ -1577,9 +2263,11 @@ true
 }
 
 const el=document.getElementById(id);
+
 if(!el)return;
 
 el.innerHTML=`
+
 <div class="card">
 
 <div class="score">
@@ -1592,26 +2280,47 @@ ${percent}%
 
 <p style="text-align:center">
 ${S.quiz.correct}
-پاسخ درست از ${total}
+پاسخ درست از
+${total}
 </p>
 
-<p style="text-align:center;font-weight:bold">
+<p style="
+text-align:center;
+font-weight:bold">
 نمره شما: ${percent}%
+</p>
+
+<p style="
+text-align:center;
+font-size:28px">
+${
+percent>=80
+?
+"🥳 عالی بود!"
+:
+percent>=50
+?
+"😊 خوب بود، ادامه بده!"
+:
+"💪 دوباره تمرین کن!"
+}
 </p>
 
 <button
 class="btn full"
+type="button"
 onclick="profile()">
 مشاهده پیشرفت
 </button>
 
 </div>
+
 `;
 }
 
-/* =========================
-CONVERSATION
-========================= */
+/* =========================================================
+   CONVERSATION
+========================================================= */
 
 const conversationBooks=[
 "Touchstone 1",
@@ -1627,6 +2336,7 @@ function conversation(){
 render(
 "مکالمه",
 `
+
 <div class="card">
 
 <h2>🗣️ دوره‌های مکالمه</h2>
@@ -1634,27 +2344,33 @@ render(
 <div class="grid">
 
 ${conversationBooks.map((x,i)=>`
-<div class="item"
+
+<div
+class="item"
 onclick="conversationBook(${i})">
 
 <div class="icon">🗣️</div>
 
-<h3>${x}</h3>
+<h3>${esc(x)}</h3>
 
 <p class="muted">
 Units · Vocabulary · Grammar · Quiz
 </p>
 
-<button class="btn full">
+<button
+class="btn full"
+type="button">
 ورود
 </button>
 
 </div>
+
 `).join("")}
 
 </div>
 
 </div>
+
 `
 );
 }
@@ -1664,42 +2380,59 @@ function conversationBook(i){
 render(
 conversationBooks[i],
 `
+
 <div class="card">
 
-<button class="btn secondary"
+<button
+class="btn secondary"
+type="button"
 onclick="conversation()">
 ← بازگشت
 </button>
 
-<h2>${conversationBooks[i]}</h2>
+<h2>
+${esc(conversationBooks[i])}
+</h2>
 
 <div class="lessonGrid">
 
-${Array.from({length:12},(_,n)=>`
-<div class="lesson"
+${Array.from(
+{length:12},
+(_,n)=>`
+
+<div
+class="lesson"
 onclick="conversationLesson(${i},${n})">
 
-<div class="lessonNo">${n+1}</div>
+<div class="lessonNo">
+${n+1}
+</div>
 
-<h3>Unit ${n+1}</h3>
+<h3>
+Unit ${n+1}
+</h3>
 
 <p class="muted">
 لغات · Grammar · توضیحات · Quiz
 </p>
 
 </div>
-`).join("")}
+
+`
+).join("")}
 
 </div>
 
 </div>
+
 `
 );
 }
 
 function conversationLesson(book,unit){
 
-const name=conversationBooks[book];
+const name=
+conversationBooks[book];
 
 const cw=[
 ["conversation","گفت‌وگو"],
@@ -1740,25 +2473,33 @@ const cg=[
 render(
 name,
 `
+
 <div class="card">
 
-<button class="btn secondary"
+<button
+class="btn secondary"
+type="button"
 onclick="conversationBook(${book})">
 ← بازگشت
 </button>
 
-<h2>${name} — Unit ${unit+1}</h2>
+<h2>
+${esc(name)} — Unit ${unit+1}
+</h2>
 
 <h3>📘 Grammar</h3>
 
 ${cg.map(g=>`
+
 <div class="grammar">
 
-<h3>${g[0]}</h3>
+<h3>${esc(g[0])}</h3>
 
-<p>${g[1]}</p>
+<p>${esc(g[1])}</p>
 
-<div class="example">${g[2]}</div>
+<div class="example">
+${esc(g[2])}
+</div>
 
 <p>
 ساختار جمله را بررسی کن و چند مثال جدید
@@ -1766,6 +2507,7 @@ ${cg.map(g=>`
 </p>
 
 </div>
+
 `).join("")}
 
 <h3>🔊 Vocabulary</h3>
@@ -1773,18 +2515,21 @@ ${cg.map(g=>`
 <div class="wordGrid">
 
 ${cw.map(w=>`
-<div class="word"
-onclick='speak(${JSON.stringify(w[0])})'>
+
+<div
+class="word"
+onclick='speak(${safeJSON(w[0])})'>
 
 <div class="en">
-🔊 ${w[0]}
+🔊 ${esc(w[0])}
 </div>
 
 <div class="fa">
-${w[1]}
+${esc(w[1])}
 </div>
 
 </div>
+
 `).join("")}
 
 </div>
@@ -1792,18 +2537,27 @@ ${w[1]}
 <button
 class="btn full"
 style="margin-top:18px"
-onclick="conversationQuiz('${name.replace(/'/g,"")}',${unit})">
+type="button"
+onclick="conversationQuiz(${book},${unit})">
 
 📝 آزمون Unit ${unit+1}
 
 </button>
 
 </div>
+
 `
 );
 }
 
-function conversationQuiz(name,unit){
+/* =========================================================
+   CONVERSATION QUIZ
+========================================================= */
+
+function conversationQuiz(book,unit){
+
+const name=
+conversationBooks[book];
 
 const q=[
 ["What is the meaning of conversation?","گفت‌وگو"],
@@ -1818,15 +2572,23 @@ const q=[
 ["What is the meaning of information?","اطلاعات"]
 ];
 
-let arr=q.map((x,i)=>({
-q:x[0],
-options:[
+let arr=q.map((x,i)=>{
+
+const others=[
 x[1],
 q[(i+1)%q.length][1],
 q[(i+2)%q.length][1]
-],
-answer:0
-}));
+];
+
+return createQuestion(
+x[0],
+others,
+0
+);
+
+});
+
+arr=shuffle(arr);
 
 S.quiz={
 type:"conversation",
@@ -1834,7 +2596,8 @@ title:name+" Unit "+(unit+1),
 questions:arr,
 i:0,
 correct:0,
-wrong:0
+wrong:0,
+answered:false
 };
 
 render(
@@ -1846,41 +2609,53 @@ quizRender("conversationQuiz");
 
 }
 
-/* =========================
-CONTEST
-========================= */
+/* =========================================================
+   CONTEST
+========================================================= */
 
 function contest(){
 
 render(
 "مسابقه",
 `
+
 <div class="card">
 
 <h2>🏆 مسابقه</h2>
 
+<p class="muted">
+پایه خودت را انتخاب کن و امتیاز بگیر.
+</p>
+
 <div class="grid">
 
 ${[7,8,9,10,11,12].map(g=>`
+
 <div class="item">
 
 <div class="icon">🏆</div>
 
 <h3>مسابقه پایه ${g}</h3>
 
-<p class="muted">۲۰ سؤال</p>
+<p class="muted">
+۲۰ سؤال
+</p>
 
-<button class="btn full"
+<button
+class="btn full"
+type="button"
 onclick="startContest(${g})">
 شروع
 </button>
 
 </div>
+
 `).join("")}
 
 </div>
 
 </div>
+
 `
 );
 }
@@ -1895,15 +2670,24 @@ for(let i=1;i<=8;i++){
 
 if(q.length<20){
 
-q.push({
-q:`معنی "${w[0]}" چیست؟`,
-options:[
+const arr=
+words[i]||[];
+
+if(arr.length>=3){
+
+q.push(
+createQuestion(
+`معنی "${w[0]}" چیست؟`,
+[
 w[1],
-(words[i]||[])[(j+1)%words[i].length][1],
-(words[i]||[])[(j+2)%words[i].length][1]
+arr[(j+1)%arr.length][1],
+arr[(j+2)%arr.length][1]
 ],
-answer:0
-});
+0
+)
+);
+
+}
 
 }
 
@@ -1913,21 +2697,32 @@ answer:0
 
 while(q.length<20){
 
-q.push({
-q:`سؤال ${q.length+1}: کدام گزینه صحیح است؟`,
-options:["English","School","Teacher"],
-answer:0
-});
+const n=q.length+1;
+
+q.push(
+createQuestion(
+`سؤال ${n}: کدام گزینه صحیح است؟`,
+[
+"English",
+"School",
+"Teacher"
+],
+0
+)
+);
 
 }
+
+q=shuffle(q.slice(0,20));
 
 S.quiz={
 type:"contest",
 title:"مسابقه پایه "+g,
-questions:q.slice(0,20),
+questions:q,
 i:0,
 correct:0,
-wrong:0
+wrong:0,
+answered:false
 };
 
 render(
@@ -1939,9 +2734,9 @@ quizRender("contestQuiz");
 
 }
 
-/* =========================
-ADMIN
-========================= */
+/* =========================================================
+   ADMIN
+========================================================= */
 
 async function admin(){
 
@@ -1960,25 +2755,33 @@ renderAdmin(r.data||[]);
 }catch(e){
 
 document.body.innerHTML=`
+
 <div class="container">
+
 <div class="card">
 
 <h2>خطا در پنل مدیر</h2>
 
 <p>${esc(e.message)}</p>
 
-<button class="btn"
+<button
+class="btn"
+type="button"
 onclick="admin()">
 تلاش مجدد
 </button>
 
-<button class="btn secondary"
+<button
+class="btn secondary"
+type="button"
 onclick="logout()">
 خروج
 </button>
 
 </div>
+
 </div>
+
 `;
 
 }
@@ -1988,13 +2791,19 @@ onclick="logout()">
 function renderAdmin(students){
 
 document.body.innerHTML=`
+
 ${header("پنل مدیریت")}
 
 <main class="container">
 
 <div class="hero">
+
 <h2>👨‍💼 پنل مدیریت</h2>
-<p>مدیریت ثبت‌نام زبان‌آموزان</p>
+
+<p>
+مدیریت ثبت‌نام زبان‌آموزان
+</p>
+
 </div>
 
 <div class="grid">
@@ -2009,7 +2818,9 @@ ${header("پنل مدیریت")}
 <div class="icon">⏳</div>
 <h3>در انتظار</h3>
 <b>
-${students.filter(x=>x.status==="waiting").length}
+${students.filter(
+x=>x.status==="waiting"
+).length}
 </b>
 </div>
 
@@ -2019,7 +2830,8 @@ ${students.filter(x=>x.status==="waiting").length}
 <b>
 ${
 students.filter(
-x=>x.status==="registered"||
+x=>
+x.status==="registered"||
 x.status==="approved"
 ).length
 }
@@ -2030,7 +2842,9 @@ x.status==="approved"
 <div class="icon">❌</div>
 <h3>رد شده</h3>
 <b>
-${students.filter(x=>x.status==="rejected").length}
+${students.filter(
+x=>x.status==="rejected"
+).length}
 </b>
 </div>
 
@@ -2055,10 +2869,18 @@ ${esc(x.last_name)}
 <div class="muted">
 
 📱 ${esc(x.phone||"")}
+
 <br>
+
 🎓 پایه: ${esc(x.level||"-")}
+
 <br>
-✉️ ${esc(x.login_email||"-")}
+
+✉️ ${esc(
+x.login_email||
+x.email||
+"-"
+)}
 
 </div>
 
@@ -2068,36 +2890,50 @@ ${
 x.status==="waiting"
 ?
 `
-<button class="btn success"
-onclick='approve(${JSON.stringify(x.id)})'>
+
+<button
+class="btn success"
+type="button"
+onclick="approve('${String(x.id).replace(/'/g,"\\'")}')">
 ✅ تأیید
 </button>
 
-<button class="btn danger"
-onclick='rejectStudent(${JSON.stringify(x.id)})'>
+<button
+class="btn danger"
+type="button"
+onclick="rejectStudent('${String(x.id).replace(/'/g,"\\'")}')">
 ❌ رد
 </button>
+
 `
 :
 x.status==="registered"||
 x.status==="approved"
 ?
 `
+
 <span>✅ تأیید شده</span>
 
-<button class="btn danger"
-onclick='rejectStudent(${JSON.stringify(x.id)})'>
+<button
+class="btn danger"
+type="button"
+onclick="rejectStudent('${String(x.id).replace(/'/g,"\\'")}')">
 رد / حذف
 </button>
+
 `
 :
 `
+
 <span>❌ رد شده</span>
 
-<button class="btn success"
-onclick='approve(${JSON.stringify(x.id)})'>
+<button
+class="btn success"
+type="button"
+onclick="approve('${String(x.id).replace(/'/g,"\\'")}')">
 تأیید مجدد
 </button>
+
 `
 }
 
@@ -2107,18 +2943,26 @@ onclick='approve(${JSON.stringify(x.id)})'>
 
 `).join("")
 :
-`<p class="muted">ثبت‌نامی وجود ندارد.</p>`
+`
+<p class="muted">
+ثبت‌نامی وجود ندارد.
+</p>
+`
 }
 
 </div>
 
-<button class="btn secondary full"
+<button
+class="btn secondary full"
+type="button"
 onclick="logout()">
 خروج
 </button>
 
 </main>
+
 `;
+
 }
 
 async function approve(id){
@@ -2128,7 +2972,9 @@ try{
 const r=
 await db
 .from("students")
-.update({status:"registered"})
+.update({
+status:"registered"
+})
 .eq("id",id);
 
 if(r.error)throw r.error;
@@ -2137,7 +2983,10 @@ admin();
 
 }catch(e){
 
-alert("خطا در تأیید:\n"+e.message);
+alert(
+"خطا در تأیید:\n"+
+e.message
+);
 
 }
 
@@ -2150,7 +2999,9 @@ try{
 const r=
 await db
 .from("students")
-.update({status:"rejected"})
+.update({
+status:"rejected"
+})
 .eq("id",id);
 
 if(r.error)throw r.error;
@@ -2159,15 +3010,18 @@ admin();
 
 }catch(e){
 
-alert("خطا در رد کردن:\n"+e.message);
+alert(
+"خطا در رد کردن:\n"+
+e.message
+);
 
 }
 
 }
 
-/* =========================
-LOGOUT / START
-========================= */
+/* =========================================================
+   LOGOUT
+========================================================= */
 
 async function logout(){
 
@@ -2191,26 +3045,39 @@ login();
 
 }
 
+/* =========================================================
+   STARTUP
+========================================================= */
+
 async function startup(){
 
 try{
 
-const r=await db.auth.getSession();
-const session=r.data?.session;
+const r=
+await db.auth.getSession();
+
+const session=
+r.data?.session;
 
 if(!session){
+
 login();
 return;
+
 }
 
-const user=session.user;
+const user=
+session.user;
 
 if(
-(user.email||"").toLowerCase()==="alinagheli@gmail.com"
+(user.email||"").toLowerCase()===
+"alinagheli@gmail.com"
 ){
 
 S.admin=true;
+
 admin();
+
 return;
 
 }
@@ -2241,11 +3108,14 @@ return;
 }
 
 await db.auth.signOut();
+
 login();
 
 }catch(e){
 
-try{await db.auth.signOut()}catch(_){}
+try{
+await db.auth.signOut();
+}catch(_){}
 
 login();
 
@@ -2253,11 +3123,17 @@ login();
 
 }
 
-db.auth.onAuthStateChange((event,session)=>{
+/* =========================================================
+   AUTH LISTENER
+========================================================= */
+
+db.auth.onAuthStateChange(
+(event,session)=>{
+
+if(event==="SIGNED_OUT"){
 
 if(
-event==="SIGNED_OUT" &&
-!S.admin &&
+!S.admin&&
 !S.student
 ){
 
@@ -2265,7 +3141,14 @@ login();
 
 }
 
-});
+}
+
+}
+);
+
+/* =========================================================
+   RUN
+========================================================= */
 
 startup();
 
