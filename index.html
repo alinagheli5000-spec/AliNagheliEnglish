@@ -1,279 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#6d28d9">
 <title>AliNagheli English</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 :root{
-  --primary:#6d28d9;
-  --primary2:#9333ea;
-  --light:#f5f3ff;
-  --card:#fff;
-  --text:#17121f;
-  --muted:#6b7280;
-  --green:#16a34a;
-  --red:#dc2626;
-  --gold:#f59e0b;
+--p:#6d28d9;--p2:#9333ea;--bg:#f7f4ff;--card:#fff;--text:#18121f;
+--muted:#6b7280;--green:#16a34a;--red:#dc2626;--gold:#f59e0b
 }
 *{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{
-  font-family:Tahoma,Arial,sans-serif;
-  background:var(--light);
-  color:var(--text);
-  padding-bottom:82px
-}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif;padding-bottom:80px}
 button,input{font-family:inherit}
 button{cursor:pointer}
 .hidden{display:none!important}
-.container{max-width:1100px;margin:auto;padding:15px}
-.header{
-  background:linear-gradient(135deg,var(--primary),var(--primary2));
-  color:#fff;padding:23px 15px;
-  border-radius:0 0 30px 30px;
-  box-shadow:0 8px 25px #6d28d944
-}
-.header h1{margin:0;font-size:28px}
-.header p{margin:7px 0 0}
-.card{
-  background:var(--card);
-  border-radius:22px;
-  padding:19px;
-  margin:14px 0;
-  box-shadow:0 7px 25px #0000000d
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:13px
-}
-.course{
-  border:1px solid #e9d5ff;
-  border-radius:22px;
-  padding:18px 12px;
-  min-height:135px;
-  background:linear-gradient(145deg,#fff,#f3e8ff);
-  color:#4c1d95;
-  font-weight:bold;
-  font-size:16px;
-  box-shadow:0 5px 16px #0000000b;
-  transition:.18s
-}
-.course:active{transform:scale(.97)}
-.course .icon{display:block;font-size:40px;margin-bottom:9px}
-.btn{
-  border:0;
-  border-radius:14px;
-  padding:12px 18px;
-  margin:4px;
-  background:var(--primary);
-  color:#fff;
-  font-weight:bold
-}
+.header{background:linear-gradient(135deg,var(--p),var(--p2));color:white;padding:25px 16px;border-radius:0 0 28px 28px}
+.container{max-width:1100px;margin:auto;padding:14px}
+.card{background:white;border-radius:22px;padding:18px;margin:14px 0;box-shadow:0 7px 25px #0000000d}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:13px}
+.course{border:1px solid #e9d5ff;background:linear-gradient(145deg,#fff,#f3e8ff);color:#4c1d95;border-radius:22px;padding:18px 10px;min-height:135px;font-size:16px;font-weight:bold}
+.icon{display:block;font-size:42px;margin-bottom:8px}
+.btn{border:0;background:var(--p);color:white;padding:12px 18px;border-radius:14px;font-weight:bold;margin:4px}
 .btn.secondary{background:#ede9fe;color:#5b21b6}
 .btn.danger{background:var(--red)}
 .btn.green{background:var(--green)}
-input{
-  width:100%;
-  padding:13px;
-  border:1px solid #ddd;
-  border-radius:13px;
-  margin:6px 0;
-  outline:none
-}
-input:focus{border-color:var(--primary)}
-.lessonCard{
-  background:#fff;
-  border:1px solid #e9d5ff;
-  border-radius:22px;
-  padding:18px;
-  margin:12px 0
-}
-.lessonCard h3{color:#5b21b6;margin-top:0}
-.word{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  background:#fafafa;
-  border-radius:15px;
-  padding:11px;
-  margin:7px 0
-}
+input{width:100%;padding:13px;border:1px solid #ddd;border-radius:13px;margin:6px 0}
+.lesson{background:white;border:1px solid #e9d5ff;border-radius:20px;padding:17px;margin:12px 0}
+.grammar{background:#faf5ff;border-right:4px solid var(--p);border-radius:15px;padding:15px;line-height:2}
+.example{direction:ltr;text-align:left;background:white;border-radius:11px;padding:10px;margin:7px 0;box-shadow:0 2px 8px #00000008}
+.word{display:flex;align-items:center;gap:10px;justify-content:space-between;background:#fafafa;border-radius:14px;padding:10px;margin:7px 0}
 .wordText{direction:ltr;text-align:left;flex:1}
-.wordText strong{font-size:17px}
-.wordText small{display:block;direction:rtl;text-align:right;color:#555;margin-top:4px}
-.speak{
-  width:48px;height:48px;
-  border:0;border-radius:14px;
-  background:#ede9fe;color:var(--primary);
-  font-size:21px
-}
-.grammar{
-  background:#faf5ff;
-  border-right:4px solid var(--primary);
-  border-radius:14px;
-  padding:15px;
-  line-height:2;
-  margin-top:14px
-}
-.example{
-  direction:ltr;
-  text-align:left;
-  background:#fff;
-  padding:10px 13px;
-  border-radius:11px;
-  margin:7px 0;
-  box-shadow:0 2px 8px #00000008
-}
-.quizBox{
-  background:#fff;
-  border-radius:20px;
-  padding:18px;
-  margin-top:15px
-}
-.option{
-  width:100%;
-  border:2px solid #e5e7eb;
-  background:#fff;
-  border-radius:13px;
-  padding:13px;
-  margin:6px 0;
-  text-align:right
-}
-.option.correct{
-  border-color:var(--green);
-  background:#dcfce7;
-  color:#166534
-}
-.option.wrong{
-  border-color:var(--red);
-  background:#fee2e2;
-  color:#991b1b
-}
-.progress{
-  height:10px;
-  background:#eee;
-  border-radius:10px;
-  overflow:hidden;
-  margin:12px 0
-}
-.progress>div{
-  height:100%;
-  background:linear-gradient(90deg,var(--primary),var(--primary2))
-}
-.result{
-  text-align:center;
-  padding:20px;
-  background:#f3e8ff;
-  border-radius:18px;
-  font-size:21px;
-  line-height:2
-}
-.teacherGrid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:14px
-}
-.teacher{
-  padding:20px;
-  border-radius:22px;
-  background:linear-gradient(145deg,#fff,#faf5ff);
-  border:1px solid #e9d5ff
-}
-.phone{
-  display:inline-block;
-  direction:ltr;
-  color:var(--primary);
-  font-weight:bold;
-  text-decoration:none;
-  padding:8px 0
-}
-.nav{
-  position:fixed;
-  z-index:1000;
-  bottom:0;left:0;right:0;
-  display:flex;
-  background:#fff;
-  box-shadow:0 -5px 22px #0002;
-  padding:7px
-}
-.nav button{
-  flex:1;
-  border:0;
-  background:#fff;
-  border-radius:12px;
-  padding:8px 3px;
-  font-size:11px
-}
-.nav button.active{
-  background:#ede9fe;
-  color:var(--primary);
-  font-weight:bold
-}
-.rank{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:13px;
-  border-radius:14px;
-  background:#faf5ff;
-  margin:7px 0
-}
-.badge{
-  display:inline-block;
-  padding:6px 10px;
-  background:#ede9fe;
-  color:#5b21b6;
-  border-radius:20px;
-  margin:3px;
-  font-size:12px
-}
+.wordText small{display:block;direction:rtl;text-align:right;color:#666;margin-top:4px}
+.speak{border:0;background:#ede9fe;color:var(--p);border-radius:13px;width:48px;height:48px;font-size:21px}
+.option{width:100%;padding:13px;margin:6px 0;background:white;border:2px solid #e5e7eb;border-radius:13px;text-align:right}
+.option.correct{border-color:var(--green);background:#dcfce7;color:#166534}
+.option.wrong{border-color:var(--red);background:#fee2e2;color:#991b1b}
+.progress{height:10px;background:#eee;border-radius:10px;overflow:hidden;margin:12px 0}
+.progress div{height:100%;background:linear-gradient(90deg,var(--p),var(--p2))}
+.result{text-align:center;background:#f3e8ff;border-radius:18px;padding:20px;font-size:21px;line-height:2}
+.teacherGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px}
+.teacher{background:linear-gradient(145deg,#fff,#faf5ff);border:1px solid #e9d5ff;border-radius:22px;padding:20px}
+.phone{display:block;color:var(--p);font-weight:bold;text-decoration:none;direction:ltr;text-align:right;margin-top:12px}
+.nav{position:fixed;z-index:1000;bottom:0;left:0;right:0;background:white;display:flex;padding:7px;box-shadow:0 -5px 22px #0002}
+.nav button{flex:1;border:0;background:white;border-radius:12px;padding:8px 2px;font-size:11px}
+.nav button.active{background:#ede9fe;color:var(--p);font-weight:bold}
+.rank{display:flex;justify-content:space-between;align-items:center;background:#faf5ff;padding:13px;border-radius:14px;margin:7px 0}
+.badge{display:inline-block;background:#ede9fe;color:#5b21b6;border-radius:20px;padding:5px 10px;margin:3px;font-size:12px}
+#overlay{position:fixed;z-index:3000;inset:0;background:var(--bg);overflow:auto}
 table{width:100%;border-collapse:collapse}
-th,td{padding:10px;border-bottom:1px solid #eee;text-align:right}
+td,th{padding:10px;border-bottom:1px solid #eee;text-align:right}
 th{background:#faf5ff}
-.tableWrap{overflow:auto}
-#competitionOverlay{
-  position:fixed;
-  inset:0;
-  z-index:3000;
-  background:var(--light);
-  overflow:auto
-}
-#toast{
-  position:fixed;
-  z-index:5000;
-  bottom:92px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#17121f;
-  color:#fff;
-  padding:12px 18px;
-  border-radius:14px;
-  display:none;
-  max-width:90%;
-  text-align:center
-}
-.adminStat{
-  background:#faf5ff;
-  border-radius:18px;
-  padding:18px;
-  text-align:center
-}
-.adminStat b{
-  display:block;
-  font-size:28px;
-  color:var(--primary)
-}
-@media(max-width:600px){
-  .header h1{font-size:23px}
-  .container{padding:10px}
-  .card{padding:15px}
-  .grid{grid-template-columns:repeat(2,1fr)}
-}
+.table{overflow:auto}
+.stat{background:#faf5ff;border-radius:18px;padding:18px;text-align:center}
+.stat b{display:block;font-size:27px;color:var(--p)}
+@media(max-width:600px){.grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 
@@ -288,1970 +72,778 @@ th{background:#faf5ff}
 
 <main class="container">
 
-<!-- LOGIN -->
-<section id="loginPage">
+<section id="login">
 <div class="card">
 <h2>🔐 ورود زبان‌آموز</h2>
-
-<input id="studentPhone"
-       inputmode="tel"
-       autocomplete="username"
-       placeholder="شماره تلفن">
-
-<input id="studentPassword"
-       type="password"
-       autocomplete="current-password"
-       placeholder="رمز عبور">
-
-<button class="btn" onclick="studentLogin()">ورود زبان‌آموز</button>
-<button class="btn secondary" onclick="showPage('adminLoginPage')">👑 ورود مدیر</button>
-
-<p id="studentLoginMsg"></p>
+<input id="studentPhone" inputmode="tel" placeholder="شماره تلفن">
+<input id="studentPassword" type="password" placeholder="رمز عبور">
+<button class="btn" onclick="studentLogin()">ورود</button>
+<button class="btn secondary" onclick="page('adminLogin')">👑 ورود مدیر</button>
+<p id="loginMsg"></p>
 </div>
 </section>
 
-<!-- ADMIN LOGIN -->
-<section id="adminLoginPage" class="hidden">
+<section id="adminLogin" class="hidden">
 <div class="card">
 <h2>👑 ورود مدیر</h2>
-
-<input id="adminUsername"
-       autocomplete="username"
-       placeholder="نام کاربری مدیر">
-
-<input id="adminPassword"
-       type="password"
-       autocomplete="current-password"
-       placeholder="رمز عبور مدیر">
-
+<input id="adminEmail" type="email" value="alinagheli@gmail.com" readonly>
+<input id="adminPassword" type="password" placeholder="رمز عبور مدیر">
 <button class="btn" onclick="adminLogin()">ورود به پنل مدیر</button>
-<button class="btn secondary" onclick="showPage('loginPage')">بازگشت</button>
-
-<p id="adminLoginMsg"></p>
-
-<div class="grammar" style="margin-top:15px">
-برای ورود آزمایشی مدیر:<br>
-نام کاربری: <b>admin</b><br>
-رمز عبور: <b>1234</b>
-</div>
+<button class="btn secondary" onclick="page('login')">بازگشت</button>
+<p id="adminMsg"></p>
 </div>
 </section>
 
-<!-- STUDENT APP -->
 <section id="studentApp" class="hidden">
 
-<div id="homePage">
-
+<div id="home">
 <div class="card">
-<h2>سلام <span id="studentDisplayName">زبان‌آموز</span> 👋</h2>
-<p>به AliNagheli English خوش آمدی 🌷</p>
+<h2>سلام <span id="studentName">زبان‌آموز</span> 👋</h2>
 <button class="btn danger" onclick="studentLogout()">🚪 خروج</button>
 </div>
 
 <div class="card">
 <h2>📚 دوره‌ها</h2>
-
 <div class="grid">
-
-<button class="course" onclick="showSchool()">
-<span class="icon">🏫</span>
-مدرسه
-</button>
-
-<button class="course" onclick="showConversation()">
-<span class="icon">🗣️</span>
-مکالمه
-</button>
-
-<button class="course" onclick="showTeachers()">
-<span class="icon">👨‍🏫</span>
-مدرسان
-</button>
-
+<button class="course" onclick="school()"><span class="icon">🏫</span>مدرسه</button>
+<button class="course" onclick="conversation()"><span class="icon">🗣️</span>مکالمه</button>
+<button class="course" onclick="teachers()"><span class="icon">👨‍🏫</span>مدرسان</button>
 </div>
 </div>
 
 <div class="card">
-<h2>🏆 مسابقه</h2>
-
+<h2>🏆 مسابقه و رکورد</h2>
 <div class="grid">
-
-<button class="course" onclick="openCompetitionMenu()">
-<span class="icon">🏆</span>
-شروع مسابقه
-</button>
-
-<button class="course" onclick="showRecords()">
-<span class="icon">📊</span>
-رکوردهای من
-</button>
-
+<button class="course" onclick="competitionMenu()"><span class="icon">🏆</span>مسابقه</button>
+<button class="course" onclick="records()"><span class="icon">📊</span>رکوردهای من</button>
+</div>
 </div>
 </div>
 
-</div>
-
-<div id="studentContent"></div>
-
+<div id="content"></div>
 </section>
 
-<!-- ADMIN -->
 <section id="adminApp" class="hidden">
-
-<div class="card">
-<h2>👑 پنل مدیریت</h2>
-<button class="btn danger" onclick="adminLogout()">🚪 خروج مدیر</button>
-</div>
-
 <div id="adminContent"></div>
-
 </section>
 
 </main>
 
-<!-- BOTTOM NAV -->
-<nav class="nav" id="bottomNav">
-
-<button id="navHome" onclick="goHome()">🏠<br>خانه</button>
-<button id="navSchool" onclick="showSchool()">🏫<br>مدرسه</button>
-<button id="navConversation" onclick="showConversation()">🗣️<br>مکالمه</button>
-<button id="navTeachers" onclick="showTeachers()">👨‍🏫<br>استاد</button>
-<button id="navCompetition" onclick="openCompetitionMenu()">🏆<br>مسابقه</button>
-
+<nav class="nav" id="nav">
+<button onclick="home()" id="nHome">🏠<br>خانه</button>
+<button onclick="school()" id="nSchool">🏫<br>مدرسه</button>
+<button onclick="conversation()" id="nConversation">🗣️<br>مکالمه</button>
+<button onclick="teachers()" id="nTeachers">👨‍🏫<br>استاد</button>
+<button onclick="competitionMenu()" id="nCompetition">🏆<br>مسابقه</button>
 </nav>
 
-<!-- COMPETITION -->
-<div id="competitionOverlay" class="hidden">
+<div id="overlay" class="hidden">
 <div class="container">
-
 <div class="card">
-
-<div id="competitionHeader"></div>
-
-<div id="competitionBody"></div>
-
-<button class="btn secondary" onclick="closeCompetition()">
-بازگشت
-</button>
-
-</div>
-
+<div id="quizHead"></div>
+<div id="quizBody"></div>
+<button class="btn secondary" onclick="closeQuiz()">بازگشت</button>
 </div>
 </div>
-
-<div id="toast"></div>
+</div>
 
 <script>
-
-/* =========================================================
-   DATA
-========================================================= */
+const SUPABASE_URL="https://kapzyedzjecnfxevjisq.supabase.co";
+const SUPABASE_KEY="sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 const SCHOOL={
-
 "هفتم":[
-{
-title:"درس ۱ — My Name",
-grammarTitle:"معرفی خود و پرسیدن نام",
-grammar:[
-"در این درس یاد می‌گیریم خودمان را معرفی کنیم و نام شخص مقابل را بپرسیم.",
-"برای گفتن نام خود می‌توانیم از ساختار My name is ... استفاده کنیم.",
-"همچنین می‌توانیم از I am ... برای معرفی خود استفاده کنیم.",
-"برای پرسیدن نام از What is your name? استفاده می‌کنیم.",
-"فعل be در این ساختار برای I به صورت am و برای he/she به صورت is می‌آید."
+["درس ۱","My Name",["hello|سلام","name|نام","student|دانش‌آموز","teacher|معلم","school|مدرسه","friend|دوست","class|کلاس","book|کتاب"],"معرفی خود و پرسیدن نام","My name is Ali.","What is your name?","I am a student."],
+["درس ۲","My Classmates",["classmate|همکلاسی","friend|دوست","boy|پسر","girl|دختر","teacher|معلم","student|دانش‌آموز","class|کلاس","school|مدرسه"],"استفاده از He و She برای معرفی افراد","He is my friend.","She is my classmate.","He is a student."],
+["درس ۳","My Age",["age|سن","old|ساله","year|سال","birthday|تولد","young|جوان","thirteen|سیزده","twelve|دوازده","fourteen|چهارده"],"گفتن و پرسیدن سن","How old are you?","I am thirteen years old.","She is twelve years old."]
 ],
-structure:[
-"My name is + name.",
-"I am + name.",
-"What is your name?"
-],
-examples:[
-"My name is Ali.",
-"I am Sara.",
-"What is your name?",
-"My name is Reza."
-],
-words:[
-["hello","سلام"],
-["name","نام"],
-["student","دانش‌آموز"],
-["teacher","معلم"],
-["book","کتاب"],
-["school","مدرسه"],
-["friend","دوست"],
-["class","کلاس"]
-]
-},
-{
-title:"درس ۲ — My Classmates",
-grammarTitle:"معرفی افراد و استفاده از He / She",
-grammar:[
-"در این درس درباره همکلاسی‌ها و دوستان صحبت می‌کنیم.",
-"برای صحبت درباره یک پسر یا مرد از He و برای یک دختر یا زن از She استفاده می‌کنیم.",
-"بعد از He و She معمولاً فعل is قرار می‌گیرد.",
-"برای گفتن رابطه یا ویژگی یک فرد می‌توانیم از He is ... و She is ... استفاده کنیم."
-],
-structure:[
-"He is + ...",
-"She is + ...",
-"He is my friend.",
-"She is my classmate."
-],
-examples:[
-"He is my friend.",
-"She is my classmate.",
-"He is a student.",
-"She is a teacher.",
-"He is Ali."
-],
-words:[
-["classmate","همکلاسی"],
-["friend","دوست"],
-["boy","پسر"],
-["girl","دختر"],
-["teacher","معلم"],
-["student","دانش‌آموز"],
-["class","کلاس"],
-["school","مدرسه"]
-]
-},
-{
-title:"درس ۳ — My Age",
-grammarTitle:"گفتن و پرسیدن سن",
-grammar:[
-"در این درس یاد می‌گیریم درباره سن خود و دیگران صحبت کنیم.",
-"برای گفتن سن از ساختار I am ... years old استفاده می‌کنیم.",
-"برای پرسیدن سن یک نفر از How old are you? استفاده می‌کنیم.",
-"در جواب می‌توانیم بگوییم I am thirteen years old.",
-"در مکالمه روزمره گاهی years old حذف می‌شود و فقط I am thirteen گفته می‌شود."
-],
-structure:[
-"How old are you?",
-"I am + number + years old.",
-"She is + number + years old."
-],
-examples:[
-"How old are you?",
-"I am thirteen years old.",
-"She is twelve years old.",
-"He is fourteen."
-],
-words:[
-["age","سن"],
-["old","ساله"],
-["year","سال"],
-["birthday","تولد"],
-["young","جوان"],
-["thirteen","سیزده"],
-["twelve","دوازده"],
-["fourteen","چهارده"]
-]
-}
-],
-
 "هشتم":[
-{
-title:"درس ۱ — My Nationality",
-grammarTitle:"کشور و ملیت",
-grammar:[
-"در این درس درباره کشورها و ملیت‌ها صحبت می‌کنیم.",
-"برای پرسیدن اینکه کسی اهل کجاست از Where are you from? استفاده می‌کنیم.",
-"برای پاسخ می‌توانیم از I am from ... استفاده کنیم.",
-"برای بیان ملیت از I am Iranian / She is Iranian استفاده می‌کنیم.",
-"نام کشور و ملیت دو واژه متفاوت هستند؛ Iran نام کشور و Iranian نام ملیت است."
+["درس ۱","My Nationality",["country|کشور","nationality|ملیت","Iran|ایران","Iranian|ایرانی","England|انگلستان","English|انگلیسی","American|آمریکایی","city|شهر"],"کشور و ملیت","Where are you from?","I am from Iran.","I am Iranian."],
+["درس ۲","My Week",["week|هفته","Saturday|شنبه","Sunday|یکشنبه","Monday|دوشنبه","Tuesday|سه‌شنبه","study|مطالعه کردن","go|رفتن","school|مدرسه"],"زمان حال ساده و روزهای هفته","I study English.","I go to school on Saturday.","She goes to school."],
+["درس ۳","My Abilities",["can|توانستن","swim|شنا کردن","run|دویدن","play|بازی کردن","speak|صحبت کردن","read|خواندن","write|نوشتن","sing|آواز خواندن"],"توانایی با Can","I can swim.","Can you speak English?","She can play football."]
 ],
-structure:[
-"Where are you from?",
-"I am from + country.",
-"I am + nationality."
-],
-examples:[
-"Where are you from?",
-"I am from Iran.",
-"I am Iranian.",
-"She is from Iran."
-],
-words:[
-["country","کشور"],
-["nationality","ملیت"],
-["Iran","ایران"],
-["Iranian","ایرانی"],
-["England","انگلستان"],
-["English","انگلیسی"],
-["American","آمریکایی"],
-["city","شهر"]
-]
-},
-{
-title:"درس ۲ — My Week",
-grammarTitle:"روزهای هفته و فعالیت‌های روزمره",
-grammar:[
-"برای صحبت درباره کارهای همیشگی از زمان حال ساده استفاده می‌کنیم.",
-"وقتی درباره برنامه همیشگی خود صحبت می‌کنیم از شکل ساده فعل استفاده می‌کنیم.",
-"برای روزهای هفته معمولاً از حرف اضافه on استفاده می‌شود.",
-"مثلاً می‌گوییم I go to school on Saturday.",
-"برای he و she معمولاً به فعل s یا es اضافه می‌شود."
-],
-structure:[
-"I + verb.",
-"He/She + verb-s.",
-"on + day"
-],
-examples:[
-"I study English.",
-"I go to school on Saturday.",
-"She goes to school.",
-"He studies English on Sunday."
-],
-words:[
-["week","هفته"],
-["Saturday","شنبه"],
-["Sunday","یکشنبه"],
-["Monday","دوشنبه"],
-["Tuesday","سه‌شنبه"],
-["study","مطالعه کردن"],
-["go","رفتن"],
-["school","مدرسه"]
-]
-},
-{
-title:"درس ۳ — My Abilities",
-grammarTitle:"توانایی با Can",
-grammar:[
-"از can برای بیان توانایی استفاده می‌کنیم.",
-"بعد از can همیشه شکل ساده فعل می‌آید.",
-"برای ساختن سؤال، can را به ابتدای جمله می‌بریم.",
-"برای منفی کردن می‌توانیم از cannot یا can't استفاده کنیم.",
-"مثلاً Can you swim? یعنی آیا می‌توانی شنا کنی؟"
-],
-structure:[
-"I can + verb.",
-"Can you + verb?",
-"I can't + verb."
-],
-examples:[
-"I can swim.",
-"Can you speak English?",
-"She can play football.",
-"He can't swim."
-],
-words:[
-["can","توانستن"],
-["swim","شنا کردن"],
-["run","دویدن"],
-["play","بازی کردن"],
-["speak","صحبت کردن"],
-["read","خواندن"],
-["write","نوشتن"],
-["sing","آواز خواندن"]
-]
-}
-],
-
 "نهم":[
-{
-title:"درس ۱ — Personality",
-grammarTitle:"توصیف شخصیت افراد",
-grammar:[
-"در این درس با واژگان مربوط به شخصیت آشنا می‌شویم.",
-"برای توصیف افراد می‌توانیم از صفت‌ها استفاده کنیم.",
-"بعد از فعل be مانند am/is/are می‌توانیم صفت قرار دهیم.",
-"Very قبل از صفت برای قوی‌تر کردن آن استفاده می‌شود.",
-"مثلاً She is very kind یعنی او بسیار مهربان است."
+["درس ۱","Personality",["personality|شخصیت","kind|مهربان","clever|باهوش","friendly|دوستانه","active|فعال","quiet|ساکت","helpful|کمک‌کننده","polite|مودب"],"توصیف شخصیت","He is clever.","She is very kind.","Ali is friendly."],
+["درس ۲","Travel",["travel|سفر کردن","trip|سفر","ticket|بلیت","hotel|هتل","visit|دیدن","city|شهر","airport|فرودگاه","journey|سفر"],"Be Going To برای برنامه آینده","I am going to travel.","We are going to visit Tehran.","She is going to buy a ticket."],
+["درس ۳","Health",["health|سلامت","healthy|سالم","exercise|ورزش","doctor|پزشک","medicine|دارو","food|غذا","hospital|بیمارستان","ill|بیمار"],"Should برای توصیه","You should exercise.","You should eat healthy food.","You shouldn't eat too much junk food."]
 ],
-structure:[
-"Subject + be + adjective.",
-"Subject + be + very + adjective."
-],
-examples:[
-"He is clever.",
-"She is very kind.",
-"Ali is friendly.",
-"They are active."
-],
-words:[
-["personality","شخصیت"],
-["kind","مهربان"],
-["clever","باهوش"],
-["friendly","دوستانه"],
-["active","فعال"],
-["quiet","ساکت"],
-["helpful","کمک‌کننده"],
-["polite","مودب"]
-]
-},
-{
-title:"درس ۲ — Travel",
-grammarTitle:"برنامه آینده با Be Going To",
-grammar:[
-"در این درس درباره سفر و برنامه‌های آینده صحبت می‌کنیم.",
-"برای صحبت درباره کاری که قصد انجام آن را داریم از be going to استفاده می‌کنیم.",
-"بعد از going to فعل به شکل ساده می‌آید.",
-"برای I از am، برای he/she از is و برای you/we/they از are استفاده می‌کنیم.",
-"مثلاً I am going to travel یعنی من قصد دارم سفر کنم."
-],
-structure:[
-"I am going to + verb.",
-"He/She is going to + verb.",
-"They are going to + verb."
-],
-examples:[
-"I am going to travel.",
-"We are going to visit Tehran.",
-"She is going to buy a ticket.",
-"They are going to stay at a hotel."
-],
-words:[
-["travel","سفر کردن"],
-["trip","سفر"],
-["ticket","بلیت"],
-["hotel","هتل"],
-["visit","دیدن"],
-["city","شهر"],
-["airport","فرودگاه"],
-["journey","سفر"]
-]
-},
-{
-title:"درس ۳ — Health",
-grammarTitle:"توصیه کردن با Should",
-grammar:[
-"در این درس درباره سلامت و عادت‌های سالم صحبت می‌کنیم.",
-"برای دادن توصیه از should استفاده می‌کنیم.",
-"بعد از should همیشه شکل ساده فعل قرار می‌گیرد.",
-"برای منفی کردن از shouldn't استفاده می‌کنیم.",
-"مثلاً You should exercise یعنی بهتر است ورزش کنی.",
-"Should برای توصیه مناسب است و الزام خیلی شدید ایجاد نمی‌کند."
-],
-structure:[
-"You should + verb.",
-"You shouldn't + verb.",
-"He should + verb."
-],
-examples:[
-"You should exercise.",
-"You should eat healthy food.",
-"You shouldn't eat too much junk food.",
-"He should see a doctor."
-],
-words:[
-["health","سلامت"],
-["healthy","سالم"],
-["exercise","ورزش"],
-["doctor","پزشک"],
-["medicine","دارو"],
-["food","غذا"],
-["hospital","بیمارستان"],
-["ill","بیمار"]
-]
-}
-],
-
 "دهم":[
-{
-title:"درس ۱ — Saving Nature",
-grammarTitle:"محیط زیست و توصیه‌ها",
-grammar:[
-"در این درس درباره طبیعت، محیط زیست و راه‌های حفاظت از آن صحبت می‌کنیم.",
-"برای بیان واقعیت‌های عمومی معمولاً از زمان حال ساده استفاده می‌شود.",
-"برای بیان وظیفه یا توصیه می‌توانیم از should و must استفاده کنیم.",
-"Must الزام قوی‌تری از should دارد.",
-"مثلاً We should protect nature یک توصیه است؛ اما We must protect nature الزام قوی‌تری دارد."
+["درس ۱","Saving Nature",["nature|طبیعت","environment|محیط زیست","forest|جنگل","pollution|آلودگی","protect|محافظت کردن","save|نجات دادن","reduce|کاهش دادن","wildlife|حیات وحش"],"محیط زیست، should و must","We should protect nature.","We must save forests.","People should reduce pollution."],
+["درس ۲","Wonders of Creation",["creation|آفرینش","animal|حیوان","world|جهان","amazing|شگفت‌انگیز","life|زندگی","bird|پرنده","nature|طبیعت","earth|زمین"],"واقعیت‌های عمومی و توانایی","Birds can fly.","Animals need water.","The world is amazing."]
 ],
-structure:[
-"Subject + verb.",
-"Subject + should + verb.",
-"Subject + must + verb."
-],
-examples:[
-"We should protect nature.",
-"Pollution is dangerous.",
-"We must save forests.",
-"People should reduce pollution."
-],
-words:[
-["nature","طبیعت"],
-["environment","محیط زیست"],
-["forest","جنگل"],
-["pollution","آلودگی"],
-["protect","محافظت کردن"],
-["save","نجات دادن"],
-["reduce","کاهش دادن"],
-["wildlife","حیات وحش"]
-]
-},
-{
-title:"درس ۲ — Wonders of Creation",
-grammarTitle:"واقعیت‌های عمومی",
-grammar:[
-"در این درس درباره شگفتی‌های آفرینش و موجودات مختلف صحبت می‌کنیم.",
-"برای بیان واقعیت‌های علمی و عمومی از حال ساده استفاده می‌کنیم.",
-"برای بیان توانایی موجودات می‌توانیم از can استفاده کنیم.",
-"در جملات مثبت، برای he/she/it معمولاً به فعل s اضافه می‌شود."
-],
-structure:[
-"Subject + verb.",
-"Subject + can + verb."
-],
-examples:[
-"Birds can fly.",
-"Animals need water.",
-"The world is amazing.",
-"Birds live in many places."
-],
-words:[
-["creation","آفرینش"],
-["animal","حیوان"],
-["world","جهان"],
-["amazing","شگفت‌انگیز"],
-["life","زندگی"],
-["bird","پرنده"],
-["nature","طبیعت"],
-["earth","زمین"]
-]
-}
-],
-
 "یازدهم":[
-{
-title:"درس ۱ — Understanding People",
-grammarTitle:"افراد، رفتار و ارتباط",
-grammar:[
-"در این درس درباره انسان‌ها، رفتار و ارتباط صحبت می‌کنیم.",
-"برای بیان نظر می‌توانیم از I think و I believe استفاده کنیم.",
-"بعد از این عبارت‌ها معمولاً یک جمله کامل می‌آید.",
-"برای بیان واقعیت‌های عمومی از حال ساده استفاده می‌کنیم."
+["درس ۱","Understanding People",["human|انسان","behavior|رفتار","culture|فرهنگ","society|جامعه","communication|ارتباط","people|مردم","different|متفاوت","believe|باور داشتن"],"بیان نظر و ارتباط","I think communication is important.","I believe people are different.","People communicate in different ways."],
+["درس ۲","Technology",["technology|فناوری","internet|اینترنت","device|دستگاه","digital|دیجیتال","information|اطلاعات","computer|رایانه","website|وب‌سایت","communication|ارتباط"],"فناوری و کاربردهای آن","Technology helps people.","The internet provides information.","People use technology every day."]
 ],
-structure:[
-"I think + sentence.",
-"I believe + sentence.",
-"People + verb."
-],
-examples:[
-"I think communication is important.",
-"I believe people are different.",
-"People communicate in different ways.",
-"Culture affects people."
-],
-words:[
-["human","انسان"],
-["behavior","رفتار"],
-["culture","فرهنگ"],
-["society","جامعه"],
-["communication","ارتباط"],
-["people","مردم"],
-["different","متفاوت"],
-["believe","باور داشتن"]
-]
-},
-{
-title:"درس ۲ — Technology",
-grammarTitle:"فناوری و اطلاعات",
-grammar:[
-"در این درس درباره فناوری و ابزارهای دیجیتال صحبت می‌کنیم.",
-"از زمان حال ساده برای بیان کاربردها و واقعیت‌های مربوط به فناوری استفاده می‌کنیم.",
-"برای بیان اینکه چیزی به شخصی کمک می‌کند از help استفاده می‌کنیم.",
-"برای he/she/it در زمان حال ساده معمولاً s به فعل اضافه می‌شود."
-],
-structure:[
-"Technology + verb-s.",
-"Subject + use + object.",
-"Subject + can + verb."
-],
-examples:[
-"Technology helps people.",
-"The internet provides information.",
-"Digital devices are useful.",
-"People use technology every day."
-],
-words:[
-["technology","فناوری"],
-["internet","اینترنت"],
-["device","دستگاه"],
-["digital","دیجیتال"],
-["information","اطلاعات"],
-["computer","رایانه"],
-["website","وب‌سایت"],
-["communication","ارتباط"]
-]
-}
-],
-
 "دوازدهم":[
-{
-title:"درس ۱ — Sense of Appreciation",
-grammarTitle:"قدردانی و ارزش‌گذاری",
-grammar:[
-"در این درس درباره قدردانی، احترام و تلاش صحبت می‌کنیم.",
-"می‌توانیم با should توصیه کنیم که افراد قدر دیگران را بدانند.",
-"از حال ساده برای بیان واقعیت‌های عمومی استفاده می‌کنیم.",
-"برای بیان رابطه علت و نتیجه از عبارت‌هایی مانند leads to استفاده می‌شود.",
-"مثلاً Effort leads to success یعنی تلاش به موفقیت منجر می‌شود."
-],
-structure:[
-"Subject + should + verb.",
-"Subject + verb + result.",
-"Effort leads to success."
-],
-examples:[
-"We should appreciate our teachers.",
-"Effort leads to success.",
-"Respect is important.",
-"Hard work can bring success."
-],
-words:[
-["appreciation","قدردانی"],
-["value","ارزش"],
-["respect","احترام"],
-["success","موفقیت"],
-["effort","تلاش"],
-["hard work","کار سخت"],
-["achieve","به دست آوردن"],
-["thank","تشکر کردن"]
+["درس ۱","Sense of Appreciation",["appreciation|قدردانی","value|ارزش","respect|احترام","success|موفقیت","effort|تلاش","hard work|کار سخت","achieve|به دست آوردن","thank|تشکر کردن"],"قدردانی، احترام و موفقیت","We should appreciate our teachers.","Effort leads to success.","Respect is important."],
+["درس ۲","We Are Global Citizens",["global|جهانی","citizen|شهروند","responsibility|مسئولیت","peace|صلح","future|آینده","world|جهان","community|جامعه","responsible|مسئول"],"شهروند جهانی و مسئولیت","We should protect peace.","Global citizens have responsibilities.","We must think about the future."]
 ]
-},
-{
-title:"درس ۲ — We Are Global Citizens",
-grammarTitle:"شهروند جهانی و مسئولیت",
-grammar:[
-"در این درس درباره شهروندی جهانی، مسئولیت و آینده صحبت می‌کنیم.",
-"برای بیان وظیفه از should و must استفاده می‌کنیم.",
-"Should بیشتر برای توصیه و must برای الزام استفاده می‌شود.",
-"می‌توانیم درباره آینده و مسئولیت‌های خود با جملات ساده صحبت کنیم."
-],
-structure:[
-"We should + verb.",
-"We must + verb.",
-"Global citizens + verb."
-],
-examples:[
-"We should protect peace.",
-"Global citizens have responsibilities.",
-"We must think about the future.",
-"People should respect one another."
-],
-words:[
-["global","جهانی"],
-["citizen","شهروند"],
-["responsibility","مسئولیت"],
-["peace","صلح"],
-["future","آینده"],
-["world","جهان"],
-["community","جامعه"],
-["responsible","مسئول"]
-]
-}
-]
-
 };
 
 const CONVERSATION={
-
-"Touchstone 1":[
-["hello","سلام"],["family","خانواده"],["friend","دوست"],
-["work","کار"],["weekend","آخر هفته"],["free time","اوقات فراغت"],
-["like","دوست داشتن"],["live","زندگی کردن"]
-],
-
-"Touchstone 2":[
-["interesting","جالب"],["favorite","مورد علاقه"],["restaurant","رستوران"],
-["shopping","خرید"],["weather","آب‌وهوا"],["usually","معمولاً"],
-["sometimes","گاهی"],["together","با هم"]
-],
-
-"Touchstone 3":[
-["experience","تجربه"],["travel","سفر"],["plan","برنامه"],
-["decision","تصمیم"],["advice","توصیه"],["future","آینده"],
-["problem","مشکل"],["choice","انتخاب"]
-],
-
-"Touchstone 4":[
-["conversation","گفتگو"],["opinion","نظر"],["suggestion","پیشنهاد"],
-["problem","مشکل"],["solution","راه‌حل"],["agree","موافق بودن"],
-["disagree","مخالف بودن"],["explain","توضیح دادن"]
-],
-
-"Viewpoint 1":[
-["global","جهانی"],["culture","فرهنگ"],["communication","ارتباط"],
-["career","شغل"],["education","تحصیل"],["society","جامعه"],
-["technology","فناوری"],["experience","تجربه"]
-],
-
-"Viewpoint 2":[
-["society","جامعه"],["technology","فناوری"],["relationship","رابطه"],
-["environment","محیط زیست"],["achievement","دستاورد"],["future","آینده"],
-["challenge","چالش"],["opportunity","فرصت"]
-]
-
+"Touchstone 1":["hello|سلام","family|خانواده","friend|دوست","work|کار","weekend|آخر هفته","free time|اوقات فراغت","like|دوست داشتن","live|زندگی کردن"],
+"Touchstone 2":["interesting|جالب","favorite|مورد علاقه","restaurant|رستوران","shopping|خرید","weather|آب‌وهوا","usually|معمولاً","sometimes|گاهی","together|با هم"],
+"Touchstone 3":["experience|تجربه","travel|سفر","plan|برنامه","decision|تصمیم","advice|توصیه","future|آینده","problem|مشکل","choice|انتخاب"],
+"Touchstone 4":["conversation|گفتگو","opinion|نظر","suggestion|پیشنهاد","solution|راه‌حل","agree|موافق بودن","disagree|مخالف بودن","explain|توضیح دادن","experience|تجربه"],
+"Viewpoint 1":["global|جهانی","culture|فرهنگ","communication|ارتباط","career|شغل","education|تحصیل","society|جامعه","technology|فناوری","experience|تجربه"],
+"Viewpoint 2":["society|جامعه","technology|فناوری","relationship|رابطه","environment|محیط زیست","achievement|دستاورد","future|آینده","challenge|چالش","opportunity|فرصت"]
 };
 
-/* =========================================================
-   HELPERS
-========================================================= */
-
-let student=null;
-let admin=false;
-let quiz=null;
-
-function esc(x){
-return String(x)
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+function splitWord(x){
+const p=x.split("|");return [p[0],p[1]]
 }
 
-function shuffle(a){
-return [...a].sort(()=>Math.random()-.5);
+function page(id){
+["login","adminLogin","studentApp","adminApp"].forEach(x=>document.getElementById(x).classList.add("hidden"));
+document.getElementById(id).classList.remove("hidden");
 }
 
-function showPage(id){
-[
-"loginPage",
-"adminLoginPage",
-"studentApp",
-"adminApp"
-].forEach(x=>{
-document.getElementById(x)?.classList.add("hidden")
-});
-document.getElementById(id)?.classList.remove("hidden");
-}
-
-function toast(msg){
-const t=document.getElementById("toast");
-t.textContent=msg;
-t.style.display="block";
-clearTimeout(window.__toast);
-window.__toast=setTimeout(()=>t.style.display="none",2500);
-}
-
-function nav(active){
+function nav(id){
 document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
-document.getElementById(active)?.classList.add("active");
+document.getElementById(id)?.classList.add("active");
 }
 
-/* =========================================================
-   AUDIO
-========================================================= */
+function home(){
+if(!student)return;
+document.getElementById("home").classList.remove("hidden");
+document.getElementById("content").innerHTML="";
+nav("nHome");
+}
+
+async function studentLogin(){
+const phone=document.getElementById("studentPhone").value.trim();
+const password=document.getElementById("studentPassword").value;
+const msg=document.getElementById("loginMsg");
+
+if(!phone||!password){msg.textContent="شماره تلفن و رمز عبور را وارد کنید.";return}
+
+let email=phone.includes("@")?phone:`${phone}@alinagheli.local`;
+
+let {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+
+if(error){
+msg.textContent="ورود ناموفق: "+error.message;
+return;
+}
+
+student=data.user;
+localStorage.setItem("ali_student_session","1");
+
+const {data:profile}=await supabaseClient
+.from("students")
+.select("first_name,last_name,phone")
+.eq("auth_user_id",student.id)
+.maybeSingle();
+
+document.getElementById("studentName").textContent=
+profile?`${profile.first_name||""} ${profile.last_name||""}`.trim()||"زبان‌آموز":"زبان‌آموز";
+
+page("studentApp");
+nav("nHome");
+}
+
+async function studentLogout(){
+await supabaseClient.auth.signOut();
+student=null;
+localStorage.removeItem("ali_student_session");
+page("login");
+nav("");
+}
+
+async function adminLogin(){
+
+const email="alinagheli@gmail.com";
+const password=document.getElementById("adminPassword").value;
+const msg=document.getElementById("adminMsg");
+
+if(!password){
+msg.textContent="رمز عبور مدیر را وارد کنید.";
+return;
+}
+
+const {data,error}=await supabaseClient.auth.signInWithPassword({
+email,password
+});
+
+if(error){
+msg.textContent="ورود مدیر ناموفق است: "+error.message;
+return;
+}
+
+const user=data.user;
+
+const {data:adminRow,error:adminError}=await supabaseClient
+.from("admins")
+.select("id,user_id,auth_user_id")
+.or(`user_id.eq.${user.id},auth_user_id.eq.${user.id}`)
+.maybeSingle();
+
+if(adminError||!adminRow){
+await supabaseClient.auth.signOut();
+msg.textContent="این حساب دسترسی مدیر ندارد.";
+return;
+}
+
+sessionStorage.setItem("ali_admin","1");
+page("adminApp");
+adminDashboard();
+}
+
+async function adminLogout(){
+await supabaseClient.auth.signOut();
+sessionStorage.removeItem("ali_admin");
+page("login");
+}
+
+function school(){
+
+document.getElementById("home").classList.add("hidden");
+nav("nSchool");
+
+const icons={"هفتم":"📘","هشتم":"📗","نهم":"📕","دهم":"📙","یازدهم":"📔","دوازدهم":"📓"};
+
+let h=`<div class="card"><h2>🏫 مدرسه</h2><button class="btn secondary" onclick="home()">بازگشت</button><div class="grid">`;
+
+Object.keys(SCHOOL).forEach(g=>{
+h+=`<button class="course" onclick="grade('${g}')"><span class="icon">${icons[g]}</span>پایه ${g}</button>`
+});
+
+h+=`</div></div>`;
+document.getElementById("content").innerHTML=h;
+}
+
+function grade(g){
+
+let h=`<div class="card"><h2>📚 پایه ${g}</h2><button class="btn secondary" onclick="school()">بازگشت</button><div class="grid">`;
+
+SCHOOL[g].forEach((l,i)=>{
+h+=`<button class="course" onclick="lesson('${g}',${i})"><span class="icon">📖</span>${l[0]}<br>${l[1]}</button>`
+});
+
+h+=`</div></div>`;
+document.getElementById("content").innerHTML=h;
+}
+
+function lesson(g,i){
+
+const l=SCHOOL[g][i];
+const words=l[2];
+
+let h=`
+<div class="card">
+<h2>📖 ${l[0]} — ${l[1]}</h2>
+<button class="btn secondary" onclick="grade('${g}')">⬅️ درس‌ها</button>
+
+<div class="lesson">
+<h3>📚 لغات</h3>
+`;
+
+words.forEach(w=>{
+const [en,fa]=splitWord(w);
+h+=`
+<div class="word">
+<div class="wordText"><strong>${en}</strong><small>${fa}</small></div>
+<button class="speak" onclick="speak('${en.replace(/'/g,"\\'")}')">🔊</button>
+</div>`
+});
+
+h+=`
+<h3>🧠 گرامر و نکات درس</h3>
+<div class="grammar">
+<p>${l[3]}</p>
+<p>در این بخش ابتدا معنی و کاربرد ساختار را درک کن. سپس مثال‌ها را با صدای بلند بخوان و سعی کن مثال مشابهی برای خودت بسازی.</p>
+<p>برای جمله‌های مثبت، فاعل را در ابتدای جمله قرار بده و سپس ساختار مناسب درس را استفاده کن.</p>
+<p>در سؤال‌ها به جایگاه کلمات دقت کن؛ جای فعل کمکی یا کلمه پرسشی می‌تواند معنی جمله را تغییر دهد.</p>
+<p>برای منفی کردن نیز ساختار منفی همان درس را رعایت کن و به شکل فعل دقت داشته باش.</p>
+
+<h4>مثال‌های بیشتر</h4>
+<div class="example">${l[4]}</div>
+<div class="example">${l[5]}</div>
+<div class="example">${l[6]}</div>
+</div>
+
+<button class="btn" onclick="lessonQuiz('${g}',${i})">📝 آزمون این درس — ۱۵ سؤال</button>
+</div>
+</div>
+`;
+
+document.getElementById("content").innerHTML=h;
+}
 
 function speak(text){
 
 if(!("speechSynthesis" in window)){
-toast("مرورگر شما از پخش صوتی پشتیبانی نمی‌کند.");
+alert("مرورگر دستگاه شما از پخش صوتی پشتیبانی نمی‌کند.");
 return;
 }
 
-window.speechSynthesis.cancel();
+speechSynthesis.cancel();
 
-const u=new SpeechSynthesisUtterance(String(text));
+const u=new SpeechSynthesisUtterance(text);
 u.lang="en-US";
 u.rate=.65;
 u.pitch=1;
 u.volume=1;
 
-const voices=window.speechSynthesis.getVoices();
+const voices=speechSynthesis.getVoices();
+const v=voices.find(x=>x.lang.toLowerCase()==="en-us")||voices.find(x=>x.lang.toLowerCase().startsWith("en"));
+if(v)u.voice=v;
 
-const voice=
-voices.find(v=>/^en-US$/i.test(v.lang))||
-voices.find(v=>/^en/i.test(v.lang));
-
-if(voice)u.voice=voice;
-
-window.speechSynthesis.speak(u);
-
+speechSynthesis.speak(u);
 }
 
-/* =========================================================
-   STUDENT LOGIN
-========================================================= */
+function makeLessonQuiz(g,i){
 
-function studentLogin(){
+const l=SCHOOL[g][i];
+let words=l[2].map(splitWord);
+let qs=[];
 
-const phone=document.getElementById("studentPhone").value.trim();
-const password=document.getElementById("studentPassword").value;
-const msg=document.getElementById("studentLoginMsg");
+words.forEach(([en,fa])=>{
+let others=words.filter(x=>x[0]!==en);
 
-if(!phone||!password){
-msg.textContent="شماره تلفن و رمز عبور را وارد کنید.";
-return;
-}
-
-student={
-phone,
-name:"زبان‌آموز"
-};
-
-localStorage.setItem("ali_student",JSON.stringify(student));
-
-document.getElementById("studentDisplayName").textContent=student.name;
-
-showPage("studentApp");
-nav("navHome");
-loadRecords();
-
-}
-
-function studentLogout(){
-
-student=null;
-localStorage.removeItem("ali_student");
-
-showPage("loginPage");
-nav("");
-toast("با موفقیت خارج شدید.");
-
-}
-
-/* =========================================================
-   ADMIN LOGIN
-========================================================= */
-
-function adminLogin(){
-
-const user=document.getElementById("adminUsername").value.trim();
-const pass=document.getElementById("adminPassword").value;
-const msg=document.getElementById("adminLoginMsg");
-
-if(
-(user==="admin"||user==="ali"||user==="manager") &&
-(pass==="1234"||pass==="admin123")
-){
-
-admin=true;
-sessionStorage.setItem("ali_admin","1");
-
-showPage("adminApp");
-adminDashboard();
-
-}else{
-
-msg.textContent="نام کاربری یا رمز عبور مدیر صحیح نیست.";
-
-}
-
-}
-
-function adminLogout(){
-
-admin=false;
-sessionStorage.removeItem("ali_admin");
-showPage("loginPage");
-toast("از پنل مدیر خارج شدید.");
-
-}
-
-/* =========================================================
-   HOME
-========================================================= */
-
-function goHome(){
-
-if(!student)return;
-
-document.getElementById("homePage").classList.remove("hidden");
-document.getElementById("studentContent").innerHTML="";
-nav("navHome");
-
-}
-
-function showSchool(){
-
-document.getElementById("homePage").classList.add("hidden");
-nav("navSchool");
-
-let html=`
-
-<div class="card">
-
-<h2>🏫 زبان انگلیسی مدارس</h2>
-
-<button class="btn secondary" onclick="goHome()">🏠 بازگشت</button>
-
-<div class="grid">
-`;
-
-const icons={
-"هفتم":"📘",
-"هشتم":"📗",
-"نهم":"📕",
-"دهم":"📙",
-"یازدهم":"📔",
-"دوازدهم":"📓"
-};
-
-Object.keys(SCHOOL).forEach(g=>{
-
-html+=`
-
-<button class="course" onclick="showGrade('${g}')">
-
-<span class="icon">${icons[g]}</span>
-
-پایه ${g}
-
-</button>
-`;
-
+qs.push({
+q:`معنی "${en}" چیست؟`,
+a:fa,
+o:shuffle([fa,...others.slice(0,3).map(x=>x[1])])
 });
 
-html+=`</div></div>`;
+qs.push({
+q:`"${fa}" به انگلیسی چیست؟`,
+a:en,
+o:shuffle([en,...others.slice(0,3).map(x=>x[0])])
+});
+});
 
-document.getElementById("studentContent").innerHTML=html;
+l.slice(4).forEach(x=>{
+qs.push({
+q:"کدام جمله مربوط به این درس است؟",
+a:x,
+o:shuffle([x,...l.slice(4).filter(y=>y!==x)])
+})
+});
 
+while(qs.length<15){
+qs.push(qs[qs.length%Math.max(1,qs.length)])
 }
 
-function showGrade(grade){
-
-const lessons=SCHOOL[grade];
-
-let html=`
-
-<div class="card">
-
-<h2>📚 زبان انگلیسی پایه ${grade}</h2>
-
-<p>یک درس را انتخاب کن تا فقط مطالب همان درس را ببینی.</p>
-
-<button class="btn secondary" onclick="showSchool()">بازگشت</button>
-
-<div class="grid">
-`;
-
-lessons.forEach((l,i)=>{
-
-html+=`
-
-<button class="course" onclick="showLesson('${grade}',${i})">
-
-<span class="icon">📖</span>
-
-${esc(l.title)}
-
-</button>
-`;
-
-});
-
-html+=`
-
-</div>
-</div>
-`;
-
-document.getElementById("studentContent").innerHTML=html;
-
+return shuffle(qs).slice(0,15);
 }
 
-function showLesson(grade,index){
+function lessonQuiz(g,i){
 
-const lesson=SCHOOL[grade][index];
-
-let html=`
-
-<div class="card">
-
-<h2>📖 ${esc(lesson.title)}</h2>
-
-<button class="btn secondary" onclick="showGrade('${grade}')">
-⬅️ فهرست درس‌ها
-</button>
-
-<div class="lessonCard">
-
-<h3>📚 لغات درس</h3>
-`;
-
-lesson.words.forEach(w=>{
-
-html+=`
-
-<div class="word">
-
-<div class="wordText">
-
-<strong>${esc(w[0])}</strong>
-
-<small>${esc(w[1])}</small>
-
-</div>
-
-<button class="speak"
-onclick="speak(${JSON.stringify(w[0])})"
-aria-label="پخش تلفظ">
-
-🔊
-
-</button>
-
-</div>
-`;
-
-});
-
-html+=`
-
-<h3>🧠 گرامر</h3>
-
-<div class="grammar">
-
-<h4>${esc(lesson.grammarTitle)}</h4>
-`;
-
-lesson.grammar.forEach(x=>{
-html+=`<p>• ${esc(x)}</p>`;
-});
-
-html+=`
-
-<h4>ساختارهای مهم</h4>
-`;
-
-lesson.structure.forEach(x=>{
-html+=`<div class="example">${esc(x)}</div>`;
-});
-
-html+=`
-
-<h4>مثال‌های بیشتر</h4>
-`;
-
-lesson.examples.forEach(x=>{
-html+=`<div class="example">${esc(x)}</div>`;
-});
-
-html+=`
-
-</div>
-
-<button class="btn" onclick="startLessonQuiz('${grade}',${index})">
-
-📝 آزمون این درس
-
-</button>
-
-</div>
-</div>
-`;
-
-document.getElementById("studentContent").innerHTML=html;
-
-}
-
-/* =========================================================
-   CONVERSATION
-========================================================= */
-
-function showConversation(){
-
-document.getElementById("homePage").classList.add("hidden");
-nav("navConversation");
-
-let html=`
-
-<div class="card">
-
-<h2>🗣️ دوره مکالمه</h2>
-
-<button class="btn secondary" onclick="goHome()">بازگشت</button>
-
-<div class="grid">
-`;
-
-Object.keys(CONVERSATION).forEach(book=>{
-
-html+=`
-
-<button class="course"
-onclick="showConversationBook('${book}')">
-
-<span class="icon">🗣️</span>
-
-${esc(book)}
-
-</button>
-`;
-
-});
-
-html+=`</div></div>`;
-
-document.getElementById("studentContent").innerHTML=html;
-
-}
-
-function showConversationBook(book){
-
-const words=CONVERSATION[book];
-
-let html=`
-
-<div class="card">
-
-<h2>🗣️ ${esc(book)}</h2>
-
-<button class="btn secondary" onclick="showConversation()">
-⬅️ بازگشت
-</button>
-
-<h3>📖 لغات و عبارات</h3>
-`;
-
-words.forEach(w=>{
-
-html+=`
-
-<div class="word">
-
-<div class="wordText">
-
-<strong>${esc(w[0])}</strong>
-<small>${esc(w[1])}</small>
-
-</div>
-
-<button class="speak"
-onclick="speak(${JSON.stringify(w[0])})">
-
-🔊
-
-</button>
-
-</div>
-`;
-
-});
-
-html+=`</div>`;
-
-document.getElementById("studentContent").innerHTML=html;
-
-}
-
-/* =========================================================
-   TEACHERS
-========================================================= */
-
-function showTeachers(){
-
-document.getElementById("homePage").classList.add("hidden");
-nav("navTeachers");
-
-document.getElementById("studentContent").innerHTML=`
-
-<div class="card">
-
-<h2>👨‍🏫 مدرسان</h2>
-
-<button class="btn secondary" onclick="goHome()">🏠 بازگشت</button>
-
-<div class="teacherGrid">
-
-<div class="teacher">
-
-<h2>👨‍🏫 علی ناقلی</h2>
-
-<p><b>کارشناس ارشد آموزش زبان انگلیسی</b></p>
-
-<p>
-بیش از ۲۰ سال سابقه تدریس زبان انگلیسی
-</p>
-
-<p>
-مدرس دوره‌های IELTS، TOEFL، PTE، MCHE، MSRT، KET، PET و TTC
-</p>
-
-<a class="phone" href="tel:09141892768">
-📞 09141892768
-</a>
-
-</div>
-
-<div class="teacher">
-
-<h2>👩‍🏫 الهه باغبانی</h2>
-
-<p>
-<b>کارشناس ارشد آموزش زبان انگلیسی</b>
-</p>
-
-<p>
-بیش از ۱۰ سال سابقه تدریس کتب زبان انگلیسی مدارس و مکالمه
-</p>
-
-<p>
-مدرس دوره‌های بین‌المللی زبان انگلیسی
-</p>
-
-<a class="phone" href="tel:09914312534">
-📞 09914312534
-</a>
-
-</div>
-
-</div>
-
-</div>
-`;
-
-}
-
-/* =========================================================
-   QUIZ GENERATION
-========================================================= */
-
-function makeLessonQuestions(grade,index){
-
-const lesson=SCHOOL[grade][index];
-const questions=[];
-
-lesson.words.forEach((w,i)=>{
-
-const wrong=shuffle(
-lesson.words
-.filter(x=>x!==w)
-.map(x=>x[1])
-).slice(0,3);
-
-questions.push({
-q:`معنی "${w[0]}" کدام است؟`,
-a:w[1],
-o:shuffle([w[1],...wrong])
-});
-
-questions.push({
-q:`"${w[1]}" به انگلیسی چیست؟`,
-a:w[0],
-o:shuffle([
-w[0],
-...shuffle(
-lesson.words
-.filter(x=>x!==w)
-.map(x=>x[0])
-).slice(0,3)
-])
-});
-
-});
-
-lesson.examples.forEach(ex=>{
-
-questions.push({
-q:"کدام جمله مربوط به گرامر این درس است؟",
-a:ex,
-o:shuffle([
-ex,
-...shuffle(
-lesson.examples.filter(x=>x!==ex)
-).slice(0,3)
-])
-});
-
-});
-
-return shuffle(questions).slice(0,15);
-
-}
-
-/* =========================================================
-   LESSON QUIZ
-========================================================= */
-
-function startLessonQuiz(grade,index){
-
-const questions=makeLessonQuestions(grade,index);
+const qs=makeLessonQuiz(g,i);
 
 quiz={
-type:`${grade} - ${SCHOOL[grade][index].title}`,
-questions,
-index:0,
+type:`${g} - ${SCHOOL[g][i][0]}`,
+questions:qs,
+i:0,
 correct:0,
 wrong:0,
-negative:false,
-lesson:true
+negative:false
 };
 
 openQuiz();
+}
 
+function shuffle(a){
+return [...a].sort(()=>Math.random()-.5)
 }
 
 function openQuiz(){
-
-document.getElementById("competitionOverlay").classList.remove("hidden");
+document.getElementById("overlay").classList.remove("hidden");
 renderQuiz();
-
 }
 
 function renderQuiz(){
 
-const q=quiz.questions[quiz.index];
-
+const q=quiz.questions[quiz.i];
+const n=quiz.i+1;
 const total=quiz.questions.length;
-const number=quiz.index+1;
 
-document.getElementById("competitionHeader").innerHTML=`
-
-<h2>📝 ${esc(quiz.type)}</h2>
-
-<span class="badge">سؤال ${number} از ${total}</span>
+document.getElementById("quizHead").innerHTML=`
+<h2>📝 ${quiz.type}</h2>
+<span class="badge">سؤال ${n} از ${total}</span>
 <span class="badge">✅ ${quiz.correct}</span>
 <span class="badge">❌ ${quiz.wrong}</span>
-
-<div class="progress">
-<div style="width:${(number-1)/total*100}%"></div>
-</div>
+<div class="progress"><div style="width:${(n-1)/total*100}%"></div></div>
 `;
 
-document.getElementById("competitionBody").innerHTML=`
-
-<div class="quizBox">
-
-<h3>${esc(q.q)}</h3>
-
-${q.o.map((o,i)=>`
-
-<button class="option"
-onclick="answerQuiz(this,${JSON.stringify(o)},${JSON.stringify(q.a)})">
-
-${esc(o)}
-
-</button>
-
-`).join("")}
-
+document.getElementById("quizBody").innerHTML=`
+<div class="lesson">
+<h3>${q.q}</h3>
+${q.o.map(o=>`<button class="option" onclick="answer(this,${JSON.stringify(o)},${JSON.stringify(q.a)})">${o}</button>`).join("")}
 </div>
 `;
-
 }
 
-function answerQuiz(btn,answer,correct){
+function answer(btn,a,c){
 
 if(btn.disabled)return;
 
-const buttons=
-document.querySelectorAll(".quizBox .option");
+document.querySelectorAll(".option").forEach(x=>x.disabled=true);
 
-buttons.forEach(b=>b.disabled=true);
-
-if(answer===correct){
-
+if(a===c){
 btn.classList.add("correct");
 quiz.correct++;
-
 }else{
-
 btn.classList.add("wrong");
 quiz.wrong++;
-
-buttons.forEach(b=>{
-if(b.textContent.trim()===String(correct)){
-b.classList.add("correct");
-}
-});
-
+document.querySelectorAll(".option").forEach(x=>{
+if(x.textContent.trim()===c)x.classList.add("correct")
+})
 }
 
 setTimeout(()=>{
-
-quiz.index++;
-
-if(quiz.index>=quiz.questions.length){
-
-finishQuiz();
-
-}else{
-
-renderQuiz();
-
+quiz.i++;
+if(quiz.i>=quiz.questions.length)finishQuiz();
+else renderQuiz();
+},650);
 }
 
-},700);
+async function finishQuiz(){
 
+let score=quiz.negative
+?Math.max(0,Math.round(((quiz.correct-quiz.wrong*.25)/quiz.questions.length)*100))
+:Math.round(quiz.correct/quiz.questions.length*100);
+
+await saveResult(quiz.type,score,quiz.correct,quiz.questions.length);
+
+document.getElementById("quizHead").innerHTML="<h2>🎉 نتیجه آزمون</h2>";
+
+document.getElementById("quizBody").innerHTML=`
+<div class="result">
+صحیح: ${quiz.correct}<br>
+غلط: ${quiz.wrong}<br><br>
+نمره نهایی:<br>
+<strong>${score}٪</strong>
+</div>
+`;
 }
 
-function finishQuiz(){
+async function saveResult(type,score,correct,total){
 
-const percentage=
-Math.round(
-quiz.correct/quiz.questions.length*100
-);
+let records=JSON.parse(localStorage.getItem("ali_records")||"[]");
 
-saveRecord({
-type:quiz.type,
-score:percentage,
-correct:quiz.correct,
-wrong:quiz.wrong,
+records.unshift({
+type,score,correct,total,
 date:new Date().toLocaleDateString("fa-IR")
 });
 
-document.getElementById("competitionHeader").innerHTML=
-`<h2>🎉 آزمون تمام شد</h2>`;
+localStorage.setItem("ali_records",JSON.stringify(records.slice(0,200)));
 
-document.getElementById("competitionBody").innerHTML=`
+if(student){
 
-<div class="result">
+const {data:s}=await supabaseClient
+.from("students")
+.select("id")
+.eq("auth_user_id",student.id)
+.maybeSingle();
 
-تعداد صحیح: ${quiz.correct}<br>
-
-تعداد غلط: ${quiz.wrong}<br><br>
-
-نمره نهایی:<br>
-
-<strong>${percentage}٪</strong>
-
-</div>
-`;
+if(s){
+await supabaseClient.from("exam_attempts").insert({
+student_id:s.id,
+exam_type:type,
+score,
+correct_answers:correct,
+total_questions:total
+});
+}
 
 }
 
-/* =========================================================
-   COMPETITION
-========================================================= */
+}
 
-const COMP_QUESTIONS={
+function closeQuiz(){
+document.getElementById("overlay").classList.add("hidden");
+quiz=null;
+}
 
+function conversation(){
+
+document.getElementById("home").classList.add("hidden");
+nav("nConversation");
+
+let h=`<div class="card"><h2>🗣️ مکالمه</h2><button class="btn secondary" onclick="home()">بازگشت</button><div class="grid">`;
+
+Object.keys(CONVERSATION).forEach(x=>{
+h+=`<button class="course" onclick="conversationBook('${x}')"><span class="icon">🗣️</span>${x}</button>`
+});
+
+h+=`</div></div>`;
+document.getElementById("content").innerHTML=h;
+}
+
+function conversationBook(book){
+
+let h=`<div class="card"><h2>🗣️ ${book}</h2><button class="btn secondary" onclick="conversation()">بازگشت</button>`;
+
+CONVERSATION[book].forEach(w=>{
+const [en,fa]=splitWord(w);
+h+=`
+<div class="word">
+<div class="wordText"><strong>${en}</strong><small>${fa}</small></div>
+<button class="speak" onclick="speak('${en.replace(/'/g,"\\'")}')">🔊</button>
+</div>`
+});
+
+h+=`</div>`;
+document.getElementById("content").innerHTML=h;
+}
+
+function teachers(){
+
+document.getElementById("home").classList.add("hidden");
+nav("nTeachers");
+
+document.getElementById("content").innerHTML=`
+<div class="card">
+<h2>👨‍🏫 مدرسان</h2>
+<button class="btn secondary" onclick="home()">بازگشت</button>
+
+<div class="teacherGrid">
+
+<div class="teacher">
+<h2>👨‍🏫 علی ناقلی</h2>
+<p><b>کارشناس ارشد آموزش زبان انگلیسی</b></p>
+<p>بیش از ۲۰ سال سابقه تدریس زبان انگلیسی</p>
+<p>مدرس دوره‌های IELTS، TOEFL، PTE، MCHE، MSRT، KET، PET و TTC</p>
+<a class="phone" href="tel:09141892768">📞 09141892768</a>
+</div>
+
+<div class="teacher">
+<h2>👩‍🏫 الهه باغبانی</h2>
+<p><b>کارشناس ارشد آموزش زبان انگلیسی</b></p>
+<p>بیش از ۱۰ سال سابقه تدریس کتب زبان انگلیسی مدارس و مکالمه</p>
+<p>مدرس دوره‌های بین‌المللی زبان انگلیسی</p>
+<a class="phone" href="tel:09914312534">📞 09914312534</a>
+</div>
+
+</div>
+</div>
+`;
+}
+
+function competitionMenu(){
+
+document.getElementById("home").classList.add("hidden");
+nav("nCompetition");
+
+const types=["هفتم","هشتم","نهم","دهم","یازدهم","دوازدهم","مکالمه"];
+
+let h=`<div class="card"><h2>🏆 مسابقات</h2><p>۲۰ سؤال از آسان تا سخت؛ پاسخ غلط نمره منفی دارد.</p><div class="grid">`;
+
+types.forEach(x=>{
+h+=`<button class="course" onclick="competition('${x}')"><span class="icon">🏆</span>مسابقه ${x}</button>`
+});
+
+h+=`</div></div>`;
+document.getElementById("content").innerHTML=h;
+}
+
+const COMP={
 "هفتم":[
-["My name ___ Ali.","is","am","are","be"],
-["I ___ a student.","am","is","are","be"],
-["What is your ___?","name","school","book","class"],
-["She ___ my friend.","is","am","are","be"],
-["He is ___ student.","a","an","the","to"],
-["How ___ are you?","old","many","much","long"],
-["I am thirteen years ___.","old","young","new","age"],
-["They ___ students.","are","is","am","be"],
-["___ is your teacher?","Who","Where","How","When"],
-["This is ___ book.","my","me","I","mine"],
-["He is my ___.","classmate","school","book","name"],
-["We are ___ school.","at","on","from","to"],
-["___ is my friend.","He","His","Him","Hers"],
-["___ is my classmate.","She","Her","Hers","Him"],
-["How old are you?","I am thirteen.","I am Ali.","I am from Iran.","I am a teacher."]
+["My name ___ Ali.","is","am","are","be"],["I ___ a student.","am","is","are","be"],["What is your ___?","name","school","book","class"],["She ___ my friend.","is","am","are","be"],["He is ___ student.","a","an","the","to"],["How ___ are you?","old","many","much","long"],["I am thirteen years ___.","old","young","new","age"],["They ___ students.","are","is","am","be"],["___ is your teacher?","Who","Where","How","When"],["This is ___ book.","my","me","I","mine"],["He is my ___.","classmate","school","book","name"],["We are ___ school.","at","on","from","to"],["___ is my friend.","He","His","Him","Hers"],["___ is my classmate.","She","Her","Hers","Him"],["How old are you?","I am thirteen.","I am Ali.","I am from Iran.","I am a teacher."],
+["My name is Sara. What is my ___?","name","age","school","book"],["I am a ___.","student","teacher","school","class"],["He is ___ years old.","thirteen","thirteenly","thirteen-old","age"],["She is my ___.","friend","school","book","age"],["What is your name?","My name is Ali.","I am thirteen.","I am Iranian.","I am a teacher."]
 ],
-
 "هشتم":[
-["I am ___ Iran.","from","at","on","to"],
-["Where ___ you from?","are","is","am","be"],
-["I am ___.","Iranian","Iran","Iranianly","Irans"],
-["She ___ to school every day.","goes","go","going","gone"],
-["I ___ English every day.","study","studies","studying","studied"],
-["Can you ___?","swim","swims","swimming","swam"],
-["She can ___ football.","play","plays","playing","played"],
-["We go to school ___ Saturday.","on","at","in","from"],
-["Can she swim?","Yes, she can.","Yes, she is.","Yes, she does.","Yes, she has."],
-["He can ___ English.","speak","speaks","speaking","spoke"],
-["She ___ to school.","goes","go","going","gone"],
-["They ___ students.","are","is","am","be"],
-["I study ___ Monday.","on","at","to","from"],
-["Can means ___.","توانستن","رفتن","خواندن","نوشتن"],
-["Where are you from?","I am from Iran.","I am thirteen.","I am a student.","My name is Ali."]
+["I am ___ Iran.","from","at","on","to"],["Where ___ you from?","are","is","am","be"],["I am ___.","Iranian","Iran","Irans","Iranly"],["She ___ to school every day.","goes","go","going","gone"],["I ___ English every day.","study","studies","studying","studied"],["Can you ___?","swim","swims","swimming","swam"],["She can ___ football.","play","plays","playing","played"],["We go to school ___ Saturday.","on","at","in","from"],["Can she swim?","Yes, she can.","Yes, she is.","Yes, she does.","Yes, she has."],["He can ___ English.","speak","speaks","speaking","spoke"],["She ___ to school.","goes","go","going","gone"],["They ___ students.","are","is","am","be"],["I study ___ Monday.","on","at","to","from"],["Can means ___.","توانستن","رفتن","خواندن","نوشتن"],["Where are you from?","I am from Iran.","I am thirteen.","I am a student.","My name is Ali"],["She can ___.","swim","swims","swam","swimming"],["He ___ English every day.","studies","study","studying","studied"],["We go to school ___ Sunday.","on","at","in","from"],["Iranian is a ___.","nationality","country","city","school"],["Can you speak English?","Yes, I can.","Yes, I am.","Yes, I do.","Yes, I have."]
 ],
-
 "نهم":[
-["He is very ___.","clever","cleverly","cleverness","clevers"],
-["She is ___ friendly.","very","many","much","a"],
-["You ___ exercise.","should","should to","can to","are"],
-["You should ___ healthy food.","eat","eats","eating","ate"],
-["I am going ___ travel.","to","for","at","on"],
-["We are going to ___ Tehran.","visit","visits","visited","visiting"],
-["I bought a ___.","ticket","tickets","ticketing","ticked"],
-["A doctor works in a ___.","hospital","hotel","school","station"],
-["You should see a ___.","doctor","book","ticket","city"],
-["Healthy means ___.","سالم","بیمار","سریع","پیر"],
-["She ___ friendly.","is","are","am","be"],
-["They are ___.","active","activity","actively","act"],
-["You should ___ more water.","drink","drinks","drinking","drank"],
-["They are going to ___ a trip.","take","takes","taking","took"],
-["Who can help a sick person?","doctor","teacher","driver","student"]
+["He is very ___.","clever","cleverly","cleverness","clevers"],["She is ___ friendly.","very","many","much","a"],["You ___ exercise.","should","should to","can to","are"],["You should ___ healthy food.","eat","eats","eating","ate"],["I am going ___ travel.","to","for","at","on"],["We are going to ___ Tehran.","visit","visits","visited","visiting"],["I bought a ___.","ticket","tickets","ticketing","ticked"],["A doctor works in a ___.","hospital","hotel","school","station"],["You should see a ___.","doctor","book","ticket","city"],["Healthy means ___.","سالم","بیمار","سریع","پیر"],["She ___ friendly.","is","are","am","be"],["They are ___.","active","activity","actively","act"],["You should ___ more water.","drink","drinks","drinking","drank"],["They are going to ___ a trip.","take","takes","taking","took"],["Who can help a sick person?","doctor","teacher","driver","student"],["He is a very ___ person.","kind","kindly","kindness","kinds"],["You shouldn't ___ too much junk food.","eat","eats","eating","ate"],["She is going to ___ a ticket.","buy","buys","buying","bought"],["A sick person should see a ___.","doctor","student","teacher","driver"],["They are going to ___ travel.","to","at","on","from"]
 ],
-
 "دهم":[
-["Nature means ___.","طبیعت","جامعه","فناوری","موفقیت"],
-["We should ___ nature.","protect","protects","protected","protecting"],
-["Pollution is ___.","dangerous","danger","dangerously","endanger"],
-["Birds can ___.","fly","flies","flying","flew"],
-["Animals need ___.","water","waters","watering","watered"],
-["We must ___ forests.","save","saves","saving","saved"],
-["Environment means ___.","محیط زیست","آموزش","سفر","سلامت"],
-["The world is ___.","amazing","amazingly","amaze","amazedly"],
-["We should protect the ___.","environment","ticket","hotel","class"],
-["A forest has many ___.","trees","tree","treed","treeing"],
-["Pollution can harm ___.","nature","name","age","class"],
-["We should ___ pollution.","reduce","reduces","reduced","reducing"],
-["People must protect ___.","nature","ticket","book","hotel"],
-["We should ___ trees.","plant","plants","planting","planted"],
-["Protect means ___.","محافظت کردن","سفر کردن","خرید کردن","صحبت کردن"]
+["Nature means ___.","طبیعت","جامعه","فناوری","موفقیت"],["We should ___ nature.","protect","protects","protected","protecting"],["Pollution is ___.","dangerous","danger","dangerously","endanger"],["Birds can ___.","fly","flies","flying","flew"],["Animals need ___.","water","waters","watering","watered"],["We must ___ forests.","save","saves","saving","saved"],["Environment means ___.","محیط زیست","آموزش","سفر","سلامت"],["The world is ___.","amazing","amazingly","amaze","amazedly"],["We should protect the ___.","environment","ticket","hotel","class"],["A forest has many ___.","trees","tree","treed","treeing"],["Pollution can harm ___.","nature","name","age","class"],["We should ___ pollution.","reduce","reduces","reduced","reducing"],["People must protect ___.","nature","ticket","book","hotel"],["We should ___ trees.","plant","plants","planting","planted"],["Protect means ___.","محافظت کردن","سفر کردن","خرید کردن","صحبت کردن"],["Wildlife means ___.","حیات وحش","آب‌وهوا","جامعه","مدرسه"],["We must ___ nature.","protect","protects","protecting","protected"],["People should ___ pollution.","reduce","reduces","reducing","reduced"],["Birds can ___ in the sky.","fly","flies","flying","flew"],["The environment needs our ___.","protection","protect","protected","protecting"]
 ],
-
 "یازدهم":[
-["Technology means ___.","فناوری","فرهنگ","جامعه","طبیعت"],
-["People use the ___ to find information.","internet","forest","hotel","ticket"],
-["A phone is a digital ___.","device","citizen","culture","society"],
-["Technology ___ people.","helps","help","helping","helped"],
-["Communication means ___.","ارتباط","موفقیت","تلاش","آلودگی"],
-["Culture is important in ___.","society","device","internet","forest"],
-["I think communication is ___.","important","importance","importantly","import"],
-["People ___ in different ways.","communicate","communicates","communicating","communicated"],
-["Information can be found on the ___.","internet","forest","hotel","school"],
-["Digital devices are ___.","useful","use","usefully","used"],
-["Behavior means ___.","رفتار","فناوری","کشور","آموزش"],
-["Technology can provide ___.","information","forest","ticket","nature"],
-["Good communication helps ___.","people","pollution","trees","hotels"],
-["A computer is a digital ___.","device","culture","society","human"],
-["Culture affects ___.","people","devices","tickets","forests"]
+["Technology means ___.","فناوری","فرهنگ","جامعه","طبیعت"],["People use the ___ to find information.","internet","forest","hotel","ticket"],["A phone is a digital ___.","device","citizen","culture","society"],["Technology ___ people.","helps","help","helping","helped"],["Communication means ___.","ارتباط","موفقیت","تلاش","آلودگی"],["Culture is important in ___.","society","device","internet","forest"],["I think communication is ___.","important","importance","importantly","import"],["People ___ in different ways.","communicate","communicates","communicating","communicated"],["Information can be found on the ___.","internet","forest","hotel","school"],["Digital devices are ___.","useful","use","usefully","used"],["Behavior means ___.","رفتار","فناوری","کشور","آموزش"],["Technology can provide ___.","information","forest","ticket","nature"],["Good communication helps ___.","people","pollution","trees","hotels"],["A computer is a digital ___.","device","culture","society","human"],["Culture affects ___.","people","devices","tickets","forests"],["People use technology every ___.","day","tree","hotel","ticket"],["The internet provides ___.","information","forest","nature","culture"],["I ___ communication is important.","think","thinks","thinking","thought"],["A digital device can help ___.","people","forests","tickets","hotels"],["Different cultures are ___.","different","difference","differently","differ"]
 ],
-
 "دوازدهم":[
-["Appreciation means ___.","قدردانی","مسئولیت","فناوری","سفر"],
-["We should ___ our teachers.","appreciate","appreciates","appreciating","appreciated"],
-["Effort leads to ___.","success","pollution","travel","culture"],
-["Respect is ___.","important","importance","importantly","import"],
-["Global means ___.","جهانی","محلی","شخصی","قدیمی"],
-["Citizen means ___.","شهروند","معلم","پزشک","دانش‌آموز"],
-["We should protect ___.","peace","ticket","device","forest"],
-["Citizens have ___.","responsibilities","responsible","responsibilitys","respond"],
-["We must think about the ___.","future","pastly","presented","yesterday"],
-["Success means ___.","موفقیت","احترام","آینده","صلح"],
-["We should ___ peace.","protect","protects","protected","protecting"],
-["Respect means ___.","احترام","تلاش","فناوری","آلودگی"],
-["Future means ___.","آینده","گذشته","امروز","تولد"],
-["Our effort can lead to ___.","success","nature","travel","culture"],
-["Appreciate means ___.","قدردانی کردن","سفر کردن","خرید کردن","دویدن"]
+["Appreciation means ___.","قدردانی","مسئولیت","فناوری","سفر"],["We should ___ our teachers.","appreciate","appreciates","appreciating","appreciated"],["Effort leads to ___.","success","pollution","travel","culture"],["Respect is ___.","important","importance","importantly","import"],["Global means ___.","جهانی","محلی","شخصی","قدیمی"],["Citizen means ___.","شهروند","معلم","پزشک","دانش‌آموز"],["We should protect ___.","peace","ticket","device","forest"],["Citizens have ___.","responsibilities","responsible","responsibilitys","respond"],["We must think about the ___.","future","pastly","presented","yesterday"],["Success means ___.","موفقیت","احترام","آینده","صلح"],["We should ___ peace.","protect","protects","protected","protecting"],["Respect means ___.","احترام","تلاش","فناوری","آلودگی"],["Future means ___.","آینده","گذشته","امروز","تولد"],["Our effort can lead to ___.","success","nature","travel","culture"],["Appreciate means ___.","قدردانی کردن","سفر کردن","خرید کردن","دویدن"],["Global citizens have ___.","responsibilities","tickets","devices","hotels"],["We should ___ our teachers.","respect","respects","respecting","respected"],["Hard work can bring ___.","success","pollution","travel","culture"],["The future is ___.","important","importance","importantly","import"],["A citizen is a member of a ___.","community","ticket","device","forest"]
 ],
-
 "مکالمه":[
-["Hello means ___.","سلام","خداحافظ","ممنون","لطفاً"],
-["Favorite means ___.","مورد علاقه","مشکل","تصمیم","فرهنگ"],
-["Weekend means ___.","آخر هفته","هر روز","امروز","فردا"],
-["Experience means ___.","تجربه","برنامه","نظر","راه‌حل"],
-["Advice means ___.","توصیه","مشکل","رستوران","آب‌وهوا"],
-["Opinion means ___.","نظر","خانواده","خرید","کار"],
-["Suggestion means ___.","پیشنهاد","تصمیم","تجربه","سفر"],
-["Solution means ___.","راه‌حل","مشکل","فرهنگ","شغل"],
-["Career means ___.","شغل","تحصیل","دستاورد","مشکل"],
-["Achievement means ___.","دستاورد","رابطه","آلودگی","کشور"],
-["Weather means ___.","آب‌وهوا","رستوران","خرید","آخر هفته"],
-["Family means ___.","خانواده","کار","سفر","نظر"],
-["Education means ___.","تحصیل","شغل","دستاورد","مشکل"],
-["Environment means ___.","محیط زیست","رابطه","فناوری","پیشنهاد"],
-["Relationship means ___.","رابطه","جامعه","فرهنگ","تصمیم"],
-["Interesting means ___.","جالب","خسته‌کننده","سخت","آسان"],
-["Problem means ___.","مشکل","راه‌حل","پیشنهاد","نظر"],
-["Decision means ___.","تصمیم","تجربه","سفر","خانواده"],
-["Travel means ___.","سفر","شغل","تحصیل","رابطه"],
-["Communication means ___.","ارتباط","موفقیت","آب‌وهوا","رستوران"]
+["Hello means ___.","سلام","خداحافظ","ممنون","لطفاً"],["Favorite means ___.","مورد علاقه","مشکل","تصمیم","فرهنگ"],["Weekend means ___.","آخر هفته","هر روز","امروز","فردا"],["Experience means ___.","تجربه","برنامه","نظر","راه‌حل"],["Advice means ___.","توصیه","مشکل","رستوران","آب‌وهوا"],["Opinion means ___.","نظر","خانواده","خرید","کار"],["Suggestion means ___.","پیشنهاد","تصمیم","تجربه","سفر"],["Solution means ___.","راه‌حل","مشکل","فرهنگ","شغل"],["Career means ___.","شغل","تحصیل","دستاورد","مشکل"],["Achievement means ___.","دستاورد","رابطه","آلودگی","کشور"],["Weather means ___.","آب‌وهوا","رستوران","خرید","آخر هفته"],["Family means ___.","خانواده","کار","سفر","نظر"],["Education means ___.","تحصیل","شغل","دستاورد","مشکل"],["Environment means ___.","محیط زیست","رابطه","فناوری","پیشنهاد"],["Relationship means ___.","رابطه","جامعه","فرهنگ","تصمیم"],["Interesting means ___.","جالب","خسته‌کننده","سخت","آسان"],["Problem means ___.","مشکل","راه‌حل","پیشنهاد","نظر"],["Decision means ___.","تصمیم","تجربه","سفر","خانواده"],["Travel means ___.","سفر","شغل","تحصیل","رابطه"],["Communication means ___.","ارتباط","موفقیت","آب‌وهوا","رستوران"]
 ]
-
 };
 
-/* =========================================================
-   COMPETITION MENU
-========================================================= */
+function competition(type){
 
-function openCompetitionMenu(){
-
-document.getElementById("homePage").classList.add("hidden");
-nav("navCompetition");
-
-let html=`
-
-<div class="card">
-
-<h2>🏆 مسابقات</h2>
-
-<p>مسابقه موردنظر را انتخاب کن.</p>
-
-<div class="grid">
-
-<button class="course" onclick="startCompetition('هفتم')">📘 هفتمی‌ها</button>
-<button class="course" onclick="startCompetition('هشتم')">📗 هشتمی‌ها</button>
-<button class="course" onclick="startCompetition('نهم')">📕 نهمی‌ها</button>
-<button class="course" onclick="startCompetition('دهم')">📙 دهمی‌ها</button>
-<button class="course" onclick="startCompetition('یازدهم')">📔 یازدهمی‌ها</button>
-<button class="course" onclick="startCompetition('دوازدهم')">📓 دوازدهمی‌ها</button>
-<button class="course" onclick="startCompetition('مکالمه')">🗣️ مکالمه</button>
-
-</div>
-
-</div>
-`;
-
-document.getElementById("studentContent").innerHTML=html;
-
-}
-
-function startCompetition(type){
-
-let bank=COMP_QUESTIONS[type];
-
-if(!bank||bank.length<15){
-toast("سؤالات این مسابقه موجود نیست.");
-return;
-}
-
-let questions=shuffle(bank);
-
-if(type==="مکالمه"){
-questions=questions.slice(0,20);
-}else{
-questions=questions.slice(0,Math.min(20,questions.length));
-}
+const qs=shuffle(COMP[type]).slice(0,20);
 
 quiz={
-type:"مسابقه "+type,
-questions:questions.map(q=>({
-q:q[0],
-a:q[1],
-o:shuffle(q.slice(1))
-})),
-index:0,
+type:`مسابقه ${type}`,
+questions:qs.map(q=>({q:q[0],a:q[1],o:shuffle(q.slice(1))})),
+i:0,
 correct:0,
 wrong:0,
-negative:true,
-lesson:false
+negative:true
 };
 
 openQuiz();
-
 }
 
-/* =========================================================
-   RECORDS
-========================================================= */
+async function records(){
 
-function getRecords(){
+document.getElementById("home").classList.add("hidden");
+nav("nCompetition");
 
-try{
 const r=JSON.parse(localStorage.getItem("ali_records")||"[]");
-return Array.isArray(r)?r:[];
-}catch{
-return [];
-}
 
-}
+let h=`<div class="card"><h2>📊 رکوردهای من</h2><button class="btn secondary" onclick="home()">بازگشت</button>`;
 
-function saveRecord(record){
-
-const records=getRecords();
-
-records.unshift({
-...record,
-name:student?.name||"زبان‌آموز",
-phone:student?.phone||"",
-timestamp:Date.now()
-});
-
-localStorage.setItem(
-"ali_records",
-JSON.stringify(records.slice(0,200))
-);
-
-}
-
-function showRecords(){
-
-document.getElementById("homePage").classList.add("hidden");
-nav("navCompetition");
-
-const records=getRecords();
-
-let html=`
-
-<div class="card">
-
-<h2>📊 رکوردهای من</h2>
-
-<button class="btn secondary" onclick="goHome()">بازگشت</button>
-
-`;
-
-if(!records.length){
-
-html+=`<p>هنوز رکوردی ثبت نشده است.</p>`;
-
+if(!r.length){
+h+="<p>هنوز رکوردی ثبت نشده است.</p>";
 }else{
-
-records.slice(0,30).forEach((r,i)=>{
-
-html+=`
-
-<div class="rank">
-
-<span>
-${i+1}. ${esc(r.type)}
-<br>
-<small>${esc(r.date||"")}</small>
-</span>
-
-<strong>${Number(r.score)||0}٪</strong>
-
-</div>
-`;
-
-});
-
+r.slice(0,30).forEach((x,i)=>{
+h+=`<div class="rank"><span>${i+1}. ${x.type}<br><small>${x.date}</small></span><b>${x.score}٪</b></div>`
+})
 }
 
-html+=`</div>`;
-
-document.getElementById("studentContent").innerHTML=html;
-
+h+="</div>";
+document.getElementById("content").innerHTML=h;
 }
 
-/* =========================================================
-   ADMIN
-========================================================= */
+/* =========================
+ADMIN
+========================= */
 
-function adminDashboard(){
+async function adminDashboard(){
 
-if(!admin)return;
+const {count:students}=await supabaseClient
+.from("students")
+.select("*",{count:"exact",head:true});
 
-const records=getRecords();
-
-const students=new Set(
-records.map(r=>r.phone).filter(Boolean)
-);
-
-const average=records.length
-?Math.round(records.reduce((a,b)=>a+Number(b.score||0),0)/records.length)
-:0;
+const {count:exams}=await supabaseClient
+.from("exam_attempts")
+.select("*",{count:"exact",head:true});
 
 document.getElementById("adminContent").innerHTML=`
+<div class="card">
+<h2>👑 پنل مدیر</h2>
+<button class="btn danger" onclick="adminLogout()">🚪 خروج مدیر</button>
+</div>
 
 <div class="card">
-
 <h2>📊 داشبورد</h2>
-
 <div class="grid">
-
-<div class="adminStat">
-<b>${students.size}</b>
-زبان‌آموز
+<div class="stat"><b>${students||0}</b>زبان‌آموز</div>
+<div class="stat"><b>${exams||0}</b>آزمون</div>
+<div class="stat"><b>۶</b>پایه مدرسه</div>
+<div class="stat"><b>۶</b>دوره مکالمه</div>
 </div>
-
-<div class="adminStat">
-<b>${records.length}</b>
-رکورد ثبت‌شده
-</div>
-
-<div class="adminStat">
-<b>${average}٪</b>
-میانگین
-</div>
-
-</div>
-
 </div>
 
 <div class="card">
-
-<h3>⚙️ مدیریت</h3>
-
-<button class="btn" onclick="adminStudents()">
-👨‍🎓 زبان‌آموزان
-</button>
-
-<button class="btn" onclick="adminRecords()">
-🏆 رکوردها
-</button>
-
-<button class="btn secondary" onclick="adminDashboard()">
-📊 داشبورد
-</button>
-
+<button class="btn" onclick="adminStudents()">👨‍🎓 زبان‌آموزان</button>
+<button class="btn" onclick="adminExams()">📝 نتایج آزمون‌ها</button>
+<button class="btn" onclick="adminDashboard()">📊 داشبورد</button>
 </div>
 `;
-
 }
 
-function adminStudents(){
+async function adminStudents(){
 
-const records=getRecords();
-const map={};
+const {data,error}=await supabaseClient
+.from("students")
+.select("id,first_name,last_name,phone,level,status,password_created")
+.order("id",{ascending:false});
 
-records.forEach(r=>{
-
-if(!r.phone)return;
-
-if(!map[r.phone]){
-map[r.phone]={
-phone:r.phone,
-count:0,
-best:0
-};
-}
-
-map[r.phone].count++;
-map[r.phone].best=
-Math.max(map[r.phone].best,Number(r.score||0));
-
-});
-
-let html=`
-
+let h=`
 <div class="card">
-
 <h2>👨‍🎓 زبان‌آموزان</h2>
-
 <button class="btn secondary" onclick="adminDashboard()">بازگشت</button>
-
-<div class="tableWrap">
-
+<div class="table">
 <table>
-
-<tr>
-<th>شماره تلفن</th>
-<th>تعداد آزمون</th>
-<th>بهترین نمره</th>
-</tr>
+<tr><th>نام</th><th>تلفن</th><th>پایه</th><th>وضعیت</th></tr>
 `;
 
-Object.values(map).forEach(s=>{
-
-html+=`
-
+(data||[]).forEach(s=>{
+h+=`
 <tr>
-<td dir="ltr">${esc(s.phone)}</td>
-<td>${s.count}</td>
-<td>${s.best}٪</td>
-</tr>
-`;
-
+<td>${s.first_name||""} ${s.last_name||""}</td>
+<td dir="ltr">${s.phone||""}</td>
+<td>${s.level||""}</td>
+<td>${s.status||""}</td>
+</tr>`
 });
 
-if(!Object.keys(map).length){
-
-html+=`
-<tr>
-<td colspan="3">هنوز اطلاعاتی ثبت نشده است.</td>
-</tr>
-`;
-
+h+="</table></div></div>";
+document.getElementById("adminContent").innerHTML=h;
 }
 
-html+=`
+async function adminExams(){
 
-</table>
+const {data}=await supabaseClient
+.from("exam_attempts")
+.select("student_id,exam_type,score,correct_answers,total_questions,created_at")
+.order("created_at",{ascending:false})
+.limit(100);
 
-</div>
-</div>
-`;
-
-document.getElementById("adminContent").innerHTML=html;
-
-}
-
-function adminRecords(){
-
-const records=getRecords();
-
-let html=`
-
+let h=`
 <div class="card">
-
-<h2>🏆 رکوردهای همه زبان‌آموزان</h2>
-
+<h2>📝 نتایج آزمون‌ها</h2>
 <button class="btn secondary" onclick="adminDashboard()">بازگشت</button>
-
-<div class="tableWrap">
-
-<table>
-
-<tr>
-<th>نام</th>
-<th>شماره</th>
-<th>آزمون</th>
-<th>نمره</th>
-<th>تاریخ</th>
-</tr>
+<div class="table"><table>
+<tr><th>دانش‌آموز</th><th>آزمون</th><th>نمره</th><th>صحیح</th><th>تاریخ</th></tr>
 `;
 
-records.forEach(r=>{
-
-html+=`
-
+(data||[]).forEach(x=>{
+h+=`
 <tr>
-
-<td>${esc(r.name||"زبان‌آموز")}</td>
-
-<td dir="ltr">${esc(r.phone||"")}</td>
-
-<td>${esc(r.type)}</td>
-
-<td><b>${Number(r.score)||0}٪</b></td>
-
-<td>${esc(r.date||"")}</td>
-
-</tr>
-`;
-
+<td>${x.student_id||""}</td>
+<td>${x.exam_type||""}</td>
+<td>${x.score||0}٪</td>
+<td>${x.correct_answers||0}/${x.total_questions||0}</td>
+<td>${new Date(x.created_at).toLocaleDateString("fa-IR")}</td>
+</tr>`
 });
 
-html+=`
-
-</table>
-
-</div>
-</div>
-`;
-
-document.getElementById("adminContent").innerHTML=html;
-
+h+="</table></div></div>";
+document.getElementById("adminContent").innerHTML=h;
 }
 
-/* =========================================================
-   COMPETITION CLOSE
-========================================================= */
+/* =========================
+INIT
+========================= */
 
-function closeCompetition(){
+let student=null;
+let quiz=null;
 
-document.getElementById("competitionOverlay").classList.add("hidden");
-quiz=null;
+(async function(){
 
-}
+const {data:{session}}=await supabaseClient.auth.getSession();
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
+if(session){
 
-(function(){
+const {data:adminRow}=await supabaseClient
+.from("admins")
+.select("id")
+.or(`user_id.eq.${session.user.id},auth_user_id.eq.${session.user.id}`)
+.maybeSingle();
 
-const savedStudent=localStorage.getItem("ali_student");
-
-if(savedStudent){
-
-try{
-
-student=JSON.parse(savedStudent);
-
-document.getElementById("studentDisplayName").textContent=
-student.name||"زبان‌آموز";
-
-showPage("studentApp");
-nav("navHome");
-
-}catch{
-
-localStorage.removeItem("ali_student");
-showPage("loginPage");
-
-}
-
-return;
-
-}
-
-if(sessionStorage.getItem("ali_admin")==="1"){
-
-admin=true;
-showPage("adminApp");
+if(adminRow){
+page("adminApp");
 adminDashboard();
 return;
-
 }
 
-showPage("loginPage");
+student=session.user;
+page("studentApp");
+nav("nHome");
+return;
+}
+
+page("login");
 
 })();
+
+window.addEventListener("load",()=>{
+if("speechSynthesis" in window){
+speechSynthesis.getVoices();
+setTimeout(()=>speechSynthesis.getVoices(),500);
+}
+});
 
 </script>
 
