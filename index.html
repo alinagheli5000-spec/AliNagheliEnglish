@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#6d28d9">
 <title>AliNagheli English</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -13,9 +12,7 @@
 html,body{margin:0;padding:0}
 body{
 font-family:Tahoma,Arial,sans-serif;
-background:#f5f3ff;
-color:#171717;
-padding-bottom:82px
+background:#f5f3ff;color:#171717;padding-bottom:82px
 }
 button,input,select,textarea{font-family:inherit}
 button{cursor:pointer}
@@ -23,145 +20,43 @@ button{cursor:pointer}
 
 .header{
 background:linear-gradient(135deg,#4c1d95,#7c3aed);
-color:#fff;
-padding:15px;
-position:sticky;
-top:0;
-z-index:100;
+color:#fff;padding:15px;position:sticky;top:0;z-index:100;
 box-shadow:0 3px 15px #0002
 }
-
 .headerIn{
-max-width:1100px;
-margin:auto;
-display:flex;
-justify-content:space-between;
-align-items:center
+max-width:1100px;margin:auto;display:flex;
+justify-content:space-between;align-items:center
 }
+.logo{font-size:20px;font-weight:bold}
 
-.logo{
-font-size:20px;
-font-weight:bold
-}
-
-.container{
-max-width:1100px;
-margin:auto;
-padding:15px
-}
+.container{max-width:1100px;margin:auto;padding:15px}
 
 .card{
-background:#fff;
-border-radius:22px;
-padding:20px;
-margin-bottom:15px;
+background:#fff;border-radius:22px;padding:20px;margin-bottom:15px;
 box-shadow:0 5px 25px #0000000d
 }
 
-/* =========================
-   3D HOME
-========================= */
-
-.hero3d{
-position:relative;
-overflow:hidden;
-background:
-radial-gradient(circle at 15% 20%,#c084fc55,transparent 25%),
-radial-gradient(circle at 85% 80%,#38bdf855,transparent 25%),
-linear-gradient(135deg,#1e1b4b,#4c1d95 45%,#7c3aed);
-color:#fff;
-border-radius:28px;
-padding:28px;
-margin-bottom:16px;
-min-height:260px;
-box-shadow:
-0 20px 50px #4c1d9566,
-inset 0 1px #ffffff33
+.hero{
+background:linear-gradient(135deg,#312e81,#7c3aed);
+color:#fff;border-radius:24px;padding:25px;margin-bottom:15px;
+position:relative;overflow:hidden
 }
 
-.hero3d:before,
-.hero3d:after{
-content:"";
-position:absolute;
-border-radius:50%;
-filter:blur(2px);
-opacity:.35
+.hero:before,.hero:after{
+content:"";position:absolute;border-radius:50%;
+background:#ffffff18;pointer-events:none
 }
-
-.hero3d:before{
-width:180px;
-height:180px;
-background:#a78bfa;
-left:-70px;
-bottom:-80px
-}
-
-.hero3d:after{
-width:140px;
-height:140px;
-background:#22d3ee;
-right:-45px;
-top:-60px
-}
-
-.heroContent{
-position:relative;
-z-index:2
-}
-
-.heroTitle{
-font-size:30px;
-font-weight:900;
-margin:0 0 10px;
-text-shadow:0 5px 12px #0005
-}
-
-.floatingBooks{
-display:flex;
-gap:10px;
-position:absolute;
-left:25px;
-bottom:22px;
-z-index:2
-}
-
-.floatBook{
-width:62px;
-height:76px;
-background:linear-gradient(145deg,#fff,#ddd6fe);
-color:#4c1d95;
-border-radius:10px 5px 5px 10px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:28px;
-box-shadow:8px 10px 20px #0005;
-transform:rotate(-8deg);
-border-left:5px solid #6d28d9
-}
-
-.floatBook:nth-child(2){
-transform:rotate(5deg) translateY(-12px)
-}
-
-.floatBook:nth-child(3){
-transform:rotate(-3deg) translateY(5px)
-}
+.hero:before{width:180px;height:180px;left:-70px;top:-80px}
+.hero:after{width:120px;height:120px;right:-40px;bottom:-50px}
 
 .grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:12px
+display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px
 }
 
 .item{
-background:#fff;
-border:1px solid #e5e7eb;
-border-radius:20px;
-padding:18px;
-transition:.2s
+background:#fff;border:1px solid #e5e7eb;border-radius:20px;
+padding:18px;transition:.2s
 }
-
 .item:hover{
 transform:translateY(-3px);
 box-shadow:0 8px 25px #6d28d933
@@ -170,463 +65,213 @@ box-shadow:0 8px 25px #6d28d933
 .icon{font-size:40px}
 
 .btn{
-background:#6d28d9;
-color:#fff;
-border:0;
-border-radius:13px;
-padding:12px 16px;
-font-weight:bold
+background:#6d28d9;color:#fff;border:0;border-radius:13px;
+padding:12px 16px;font-weight:bold
 }
-
-.btn:hover{
-filter:brightness(1.05)
-}
-
 .btn.full{width:100%}
 .secondary{background:#ede9fe;color:#5b21b6}
 .success{background:#dcfce7;color:#166534}
 .danger{background:#fee2e2;color:#991b1b}
-.warning{background:#fef3c7;color:#92400e}
+.info{background:#dbeafe;color:#1d4ed8}
 
 .login{
 min-height:100vh;
-background:
-radial-gradient(circle at 15% 20%,#c084fc55,transparent 25%),
-radial-gradient(circle at 85% 80%,#38bdf855,transparent 25%),
-linear-gradient(135deg,#2e1065,#7c3aed,#a855f7);
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px
+background:linear-gradient(135deg,#2e1065,#7c3aed,#a855f7);
+display:flex;justify-content:center;align-items:center;padding:20px
 }
 
 .loginCard{
-background:#fff;
-width:min(430px,100%);
-padding:25px;
-border-radius:28px;
+background:#fff;width:min(430px,100%);padding:25px;border-radius:28px;
 box-shadow:0 20px 60px #0004
 }
 
-label{
-display:block;
-font-weight:bold;
-font-size:13px;
-margin:12px 0 6px
+.tabs{display:flex;gap:8px;margin:18px 0}
+.tab{
+flex:1;border:0;border-radius:12px;padding:12px;background:#f3f4f6
 }
+.tab.active{background:#ede9fe;color:#6d28d9;font-weight:bold}
 
 input,select,textarea{
-width:100%;
-border:1px solid #ddd6fe;
-border-radius:12px;
-padding:12px;
-background:#fff;
-outline:none
+width:100%;padding:12px;margin:6px 0 12px;
+border:1px solid #ddd6fe;border-radius:12px;
+background:#fff;outline:none
 }
+textarea{min-height:100px;resize:vertical}
 
-input:focus,select:focus,textarea:focus{
-border-color:#7c3aed;
-box-shadow:0 0 0 3px #7c3aed18
-}
-
-.tabs{
-display:flex;
-gap:8px;
-margin:18px 0
-}
-
-.tab{
-flex:1;
-border:0;
-border-radius:12px;
-padding:12px;
-background:#f3f4f6
-}
-
-.tab.active{
-background:#ede9fe;
-color:#6d28d9;
-font-weight:bold
+label{
+font-size:13px;font-weight:bold;display:block
 }
 
 .bottom{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-height:78px;
-background:#fff;
-border-top:1px solid #ddd;
-z-index:200;
-box-shadow:0 -3px 15px #0000000d
+position:fixed;bottom:0;left:0;right:0;height:78px;background:#fff;
+border-top:1px solid #ddd;z-index:200;box-shadow:0 -3px 15px #0000000d
 }
-
-.bottomIn{
-max-width:700px;
-height:100%;
-margin:auto;
-display:flex
-}
+.bottomIn{max-width:700px;height:100%;margin:auto;display:flex}
 
 .nav{
-flex:1;
-border:0;
-background:#fff;
-padding:7px 2px;
-color:#777;
-font-size:11px
+flex:1;border:0;background:#fff;padding:7px 2px;color:#777;font-size:11px
 }
-
-.nav b{
-display:block;
-font-size:21px;
-margin-bottom:3px
-}
-
-.nav.active{
-color:#6d28d9;
-font-weight:bold
-}
+.nav b{display:block;font-size:21px;margin-bottom:3px}
+.nav.active{color:#6d28d9;font-weight:bold}
 
 .lessonGrid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:12px
+display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px
 }
-
 .lesson{
-background:#faf9ff;
-border:1px solid #ddd6fe;
-border-radius:18px;
-padding:17px;
-cursor:pointer;
-transition:.2s
+background:#faf9ff;border:1px solid #ddd6fe;border-radius:18px;
+padding:17px;cursor:pointer
 }
-
-.lesson:hover{
-background:#f3efff;
-transform:translateY(-2px)
-}
-
-.lessonNo{
-font-size:30px;
-color:#6d28d9;
-font-weight:bold
-}
+.lesson:hover{background:#f3efff}
+.lessonNo{font-size:30px;color:#6d28d9;font-weight:bold}
 
 .tabs2{
-display:flex;
-gap:7px;
-overflow:auto;
-margin-bottom:15px
+display:flex;gap:7px;overflow:auto;margin-bottom:15px
 }
-
 .tab2{
-padding:11px 15px;
-border:0;
-border-radius:12px;
-background:#eee;
-white-space:nowrap
+padding:11px 15px;border:0;border-radius:12px;
+background:#eee;white-space:nowrap
 }
-
-.tab2.active{
-background:#6d28d9;
-color:#fff
-}
+.tab2.active{background:#6d28d9;color:#fff}
 
 .sec{display:none}
 .sec.active{display:block}
 
 .wordGrid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
-gap:10px
+display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px
 }
-
 .word{
-border:1px solid #ddd6fe;
-background:#faf9ff;
-border-radius:15px;
-padding:13px;
-text-align:center;
-cursor:pointer;
-transition:.2s
+border:1px solid #ddd6fe;background:#faf9ff;border-radius:15px;
+padding:13px;text-align:center;cursor:pointer
 }
-
-.word:hover{
-background:#ede9fe;
-transform:translateY(-2px)
-}
-
-.en{
-direction:ltr;
-color:#5b21b6;
-font-weight:bold
-}
-
-.fa{
-font-size:11px;
-color:#777;
-margin-top:5px
-}
+.en{direction:ltr;color:#5b21b6;font-weight:bold}
+.fa{font-size:11px;color:#777;margin-top:5px}
 
 .grammar{
-border:1px solid #e9e5ff;
-background:#faf9ff;
-padding:17px;
-border-radius:17px;
-margin-bottom:12px;
-line-height:2
+border:1px solid #e9e5ff;background:#faf9ff;padding:18px;
+border-radius:17px;margin-bottom:13px;line-height:2.1
 }
-
+.grammar h3{color:#5b21b6;margin-top:0}
 .example{
-direction:ltr;
-text-align:left;
-background:#fff;
-border-radius:10px;
-padding:11px;
-font-family:Arial,sans-serif;
-border:1px solid #eee
+direction:ltr;text-align:left;background:#fff;border-radius:10px;
+padding:12px;font-family:Arial,sans-serif;
+border-right:4px solid #7c3aed;margin:10px 0
+}
+.translation{
+font-size:13px;color:#555
 }
 
 .option{
-display:block;
-width:100%;
-text-align:right;
-background:#fff;
-border:1px solid #ddd6fe;
-border-radius:13px;
-padding:13px;
-margin:7px 0
+display:block;width:100%;text-align:right;background:#fff;
+border:1px solid #ddd6fe;border-radius:13px;
+padding:13px;margin:7px 0
 }
-
-.option:hover{
-background:#faf5ff
-}
-
-.option.correct{
-background:#dcfce7;
-border-color:#22c55e
-}
-
-.option.wrong{
-background:#fee2e2;
-border-color:#ef4444
-}
+.option.correct{background:#dcfce7;border-color:#22c55e}
+.option.wrong{background:#fee2e2;border-color:#ef4444}
 
 .feedback{
-text-align:center;
-border-radius:15px;
-padding:13px;
-margin-top:10px;
-font-weight:bold
+text-align:center;border-radius:15px;padding:13px;
+margin-top:10px;font-weight:bold
 }
-
-.ok{
-background:#dcfce7;
-color:#166534
-}
-
-.bad{
-background:#fee2e2;
-color:#991b1b
-}
+.ok{background:#dcfce7;color:#166534}
+.bad{background:#fee2e2;color:#991b1b}
 
 .progress{
-height:8px;
-background:#eee;
-border-radius:99px;
-overflow:hidden;
-margin:12px 0
+height:8px;background:#eee;border-radius:99px;overflow:hidden;margin:12px 0
 }
-
 .progress i{
-display:block;
-height:100%;
-background:linear-gradient(90deg,#6d28d9,#a855f7);
-transition:.3s
+display:block;height:100%;background:#7c3aed;transition:.3s
 }
 
 .score{
-font-size:55px;
-color:#6d28d9;
-font-weight:bold;
-text-align:center
+font-size:55px;color:#6d28d9;font-weight:bold;text-align:center
 }
 
-.adminRow{
-border:1px solid #e5e7eb;
-border-radius:16px;
-padding:14px;
-margin:9px 0
+.profileStat{
+background:#faf9ff;border:1px solid #e9d5ff;border-radius:18px;
+padding:15px;text-align:center
+}
+.profileStat b{
+display:block;font-size:27px;color:#6d28d9;margin-top:5px
+}
+
+.levelBar{
+height:12px;background:#eee;border-radius:99px;overflow:hidden;margin:10px 0
+}
+.levelBar i{display:block;height:100%;background:#7c3aed}
+
+.badge{
+display:inline-block;padding:8px 12px;margin:4px;border-radius:20px;
+background:#ede9fe;color:#5b21b6;font-size:12px
 }
 
 .muted{
-font-size:12px;
-color:#777;
-line-height:1.9
+font-size:12px;color:#777;line-height:1.9
 }
 
 .teacher{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:15px
+display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px
 }
 
 .teacherBox{
 background:linear-gradient(135deg,#faf5ff,#fff);
-border:1px solid #e9d5ff;
-border-radius:22px;
-padding:20px;
-line-height:2
+border:1px solid #e9d5ff;border-radius:22px;padding:20px;line-height:2
 }
 
-.teacherPhoto{
-width:100px;
-height:100px;
-border-radius:50%;
-margin:auto;
-background:linear-gradient(135deg,#7c3aed,#c084fc);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:50px;
-box-shadow:0 10px 25px #7c3aed55
+.teacherName{
+font-size:24px;color:#5b21b6;font-weight:bold
 }
 
-.profileStat{
-background:#faf9ff;
-border:1px solid #e9d5ff;
-border-radius:18px;
-padding:15px;
-text-align:center
+.teacherDegree{
+font-size:14px;color:#555;font-weight:bold
 }
 
-.profileStat b{
-display:block;
-font-size:27px;
-color:#6d28d9;
-margin-top:5px
+.phoneBtn{
+display:flex;align-items:center;justify-content:center;
+gap:8px;background:#dcfce7;color:#166534;
+border-radius:13px;padding:12px;text-decoration:none;
+font-weight:bold;margin:12px 0
 }
 
-.levelBar{
-height:12px;
-background:#eee;
-border-radius:99px;
-overflow:hidden;
-margin:10px 0
+.reserve{
+background:#f5f3ff;border:1px solid #ddd6fe;
+padding:15px;border-radius:18px;margin-top:15px
 }
 
-.levelBar i{
-display:block;
-height:100%;
-background:linear-gradient(90deg,#6d28d9,#c084fc)
+.request{
+border:1px solid #e5e7eb;border-radius:17px;
+padding:15px;margin:10px 0;background:#fff
 }
 
-.badge{
-display:inline-block;
-padding:8px 12px;
-margin:4px;
-border-radius:20px;
-background:#ede9fe;
-color:#5b21b6;
-font-size:12px
+.status{
+display:inline-block;padding:6px 10px;border-radius:15px;
+font-size:11px;font-weight:bold
 }
+.status.pending{background:#fef3c7;color:#92400e}
+.status.approved{background:#dcfce7;color:#166534}
+.status.rejected{background:#fee2e2;color:#991b1b}
 
 .notice{
-padding:13px;
-border-radius:13px;
-background:#fff7ed;
-color:#9a3412;
-font-size:13px;
-line-height:1.8;
-margin-bottom:12px
-}
-
-.bookCard{
-position:relative;
-overflow:hidden;
-background:linear-gradient(145deg,#fff,#faf5ff);
-border:1px solid #ddd6fe;
-border-radius:24px;
-padding:20px;
-cursor:pointer;
-transition:.25s
-}
-
-.bookCard:hover{
-transform:translateY(-5px);
-box-shadow:0 15px 35px #6d28d933
-}
-
-.book3d{
-font-size:55px;
-filter:drop-shadow(8px 8px 5px #0003)
-}
-
-.realTag{
-display:inline-block;
-background:#ede9fe;
-color:#5b21b6;
-padding:5px 9px;
-border-radius:20px;
-font-size:10px;
-margin-top:5px
-}
-
-.searchBox{
-margin-bottom:15px
-}
-
-.empty{
-text-align:center;
-padding:30px;
-color:#777
-}
-
-.statNumber{
-font-size:28px;
-color:#6d28d9;
-font-weight:bold
+padding:13px;border-radius:13px;background:#fff7ed;
+color:#9a3412;font-size:13px;line-height:1.8;margin-bottom:12px
 }
 
 @media(max-width:600px){
 .container{padding:10px}
 .card{padding:16px;border-radius:18px}
-.hero3d{padding:20px;min-height:300px}
-.heroTitle{font-size:24px}
-.floatingBooks{left:18px}
+.hero{padding:20px}
 }
 </style>
 </head>
 
 <body>
-
 <div id="app"></div>
 
 <script>
-
-/* =========================================================
-   SUPABASE
-========================================================= */
-
 const SUPABASE_URL="https://kapzyedzjecnfxevjisq.supabase.co";
+const SUPABASE_KEY="sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
 
-const SUPABASE_KEY=
-"sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
-
-const db=supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
-
-const ACCESS_FUNCTION=
-SUPABASE_URL+"/functions/v1/student-access";
-
-
-/* =========================================================
-   GLOBAL STATE
-========================================================= */
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const ACCESS_FUNCTION=SUPABASE_URL+"/functions/v1/student-access";
 
 let S={
 student:null,
@@ -637,118 +282,69 @@ quiz:null,
 xp:0,
 level:1,
 progress:{},
-achievements:[]
+achievements:[],
+teacher:null
 };
 
 let examRecords=
-JSON.parse(
-localStorage.getItem("AN_EXAMS")||"[]"
-);
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
+JSON.parse(localStorage.getItem("AN_EXAMS")||"[]");
 
 function esc(x){
-
-return String(x??"").replace(
-/[&<>"']/g,
-m=>({
+return String(x??"").replace(/[&<>"']/g,m=>({
 "&":"&amp;",
 "<":"&lt;",
 ">":"&gt;",
 '"':"&quot;",
 "'":"&#039;"
-}[m])
-);
-
+}[m]));
 }
 
 function normalizePhone(x){
-
 return String(x||"").replace(/\D/g,"");
-
 }
 
 function saveLocal(){
-
-localStorage.setItem(
-"AN_EXAMS",
-JSON.stringify(examRecords)
-);
-
+localStorage.setItem("AN_EXAMS",JSON.stringify(examRecords));
 }
 
 function speak(text){
-
 if(!window.speechSynthesis){
-
-alert(
-"مرورگر شما از تلفظ صوتی پشتیبانی نمی‌کند."
-);
-
+alert("مرورگر شما از تلفظ صوتی پشتیبانی نمی‌کند.");
 return;
-
 }
-
 speechSynthesis.cancel();
-
-const u=
-new SpeechSynthesisUtterance(text);
-
+const u=new SpeechSynthesisUtterance(text);
 u.lang="en-US";
 u.rate=.75;
-
 speechSynthesis.resume();
 speechSynthesis.speak(u);
-
 }
 
 async function accessFunction(payload){
-
-const r=
-await fetch(
-ACCESS_FUNCTION,
-{
+const r=await fetch(ACCESS_FUNCTION,{
 method:"POST",
 headers:{
 "Content-Type":"application/json",
 "apikey":SUPABASE_KEY
 },
 body:JSON.stringify(payload)
-}
-);
-
+});
 let data=null;
-
-try{
-data=await r.json();
-}catch(e){}
-
+try{data=await r.json()}catch(e){}
 if(!r.ok||data?.ok===false){
-
-throw new Error(
-data?.error||
-"خطا در ارتباط با سرور."
-);
-
+throw new Error(data?.error||"خطا در ارتباط با سرور.");
 }
-
 return data;
-
 }
 
 
 /* =========================================================
-   REAL SCHOOL BOOK STRUCTURE
+BOOKS
 ========================================================= */
 
 const books={
-
 7:{
 title:"Prospect 1",
-name:"انگلیسی پایه هفتم",
 lessons:[
 "Lesson 1: My Name",
 "Lesson 2: My Classmates",
@@ -758,633 +354,458 @@ lessons:[
 "Lesson 6: My House",
 "Lesson 7: My Address",
 "Lesson 8: My Favorite Food"
-]
-},
-
+]},
 8:{
 title:"Prospect 2",
-name:"انگلیسی پایه هشتم",
 lessons:[
 "Lesson 1: My Nationality",
 "Lesson 2: My Week",
 "Lesson 3: My Abilities",
 "Lesson 4: My Health",
 "Lesson 5: My City",
-"Lesson 6: My Village",
-"Lesson 7: My Hobbies"
-]
-},
-
+"Lesson 6: My Hobbies",
+"Lesson 7: My Services",
+"Lesson 8: My Plans"
+]},
 9:{
 title:"Prospect 3",
-name:"انگلیسی پایه نهم",
 lessons:[
 "Lesson 1: Personality",
 "Lesson 2: Travel",
 "Lesson 3: Festivals and Ceremonies",
 "Lesson 4: Services",
 "Lesson 5: Media",
-"Lesson 6: Health and Injuries"
-]
-},
-
+"Lesson 6: Health and Medicine",
+"Lesson 7: Sports",
+"Lesson 8: Nature"
+]},
 10:{
 title:"Vision 1",
-name:"انگلیسی پایه دهم",
 lessons:[
 "Lesson 1: Saving Nature",
 "Lesson 2: Wonders of Creation",
 "Lesson 3: The Value of Knowledge",
 "Lesson 4: Traveling the World"
-]
-},
-
+]},
 11:{
 title:"Vision 2",
-name:"انگلیسی پایه یازدهم",
 lessons:[
 "Lesson 1: Understanding People",
 "Lesson 2: A Healthy Lifestyle",
-"Lesson 3: Art and Culture"
-]
-},
-
+"Lesson 3: Art and Culture",
+"Lesson 4: The World of Technology"
+]},
 12:{
 title:"Vision 3",
-name:"انگلیسی پایه دوازدهم",
 lessons:[
 "Lesson 1: Sense of Appreciation",
-"Lesson 2: Look It Up!",
+"Lesson 2: Look It Up",
 "Lesson 3: Renewable Energy",
 "Lesson 4: The Power of Nature"
+]}
+};
+
+
+/* =========================================================
+TEACHERS
+========================================================= */
+
+const teachers=[
+{
+id:"ali",
+name:"علی ناقلی",
+degree:"کارشناس ارشد آموزش زبان انگلیسی",
+phone:"09141892768",
+phoneDisplay:"۰۹۱۴۱۸۹۲۷۶۸",
+experience:"بیش از ۲۰ سال تجربه تدریس زبان انگلیسی",
+courses:[
+"IELTS","TOEFL","PTE","MCHE","MSRT",
+"KET","PET","TTC"
+]
+},
+{
+id:"elahe",
+name:"الهه باغبانی",
+degree:"کارشناس ارشد آموزش زبان انگلیسی",
+phone:"",
+phoneDisplay:"",
+experience:"مدرس زبان انگلیسی",
+courses:[
+"English Language","Grammar",
+"Speaking","Vocabulary","Teacher Training"
 ]
 }
+];
+
+
+/* =========================================================
+REALISTIC SCHOOL CONTENT
+========================================================= */
+
+const words={
+
+1:[
+["name","نام"],["first name","نام کوچک"],["last name","نام خانوادگی"],
+["student","دانش‌آموز"],["teacher","معلم"],["school","مدرسه"],
+["class","کلاس"],["book","کتاب"],["friend","دوست"],
+["boy","پسر"],["girl","دختر"],["English","انگلیسی"],
+["hello","سلام"],["goodbye","خداحافظ"],["morning","صبح"],
+["afternoon","بعدازظهر"],["yes","بله"],["no","نه"]
+],
+
+2:[
+["classmate","همکلاسی"],["study","مطالعه کردن"],["learn","یاد گرفتن"],
+["subject","درس"],["favorite","مورد علاقه"],["science","علوم"],
+["English","انگلیسی"],["math","ریاضی"],["Persian","فارسی"],
+["history","تاریخ"],["school","مدرسه"],["class","کلاس"],
+["friend","دوست"],["teacher","معلم"],["book","کتاب"],
+["read","خواندن"],["write","نوشتن"],["speak","صحبت کردن"]
+],
+
+3:[
+["age","سن"],["old","سال‌دار"],["birthday","تولد"],
+["month","ماه"],["year","سال"],["today","امروز"],
+["January","ژانویه"],["February","فوریه"],["March","مارس"],
+["April","آوریل"],["May","مه"],["June","ژوئن"],
+["July","ژوئیه"],["August","اوت"],["September","سپتامبر"],
+["October","اکتبر"],["November","نوامبر"],["December","دسامبر"]
+],
+
+4:[
+["mother","مادر"],["father","پدر"],["brother","برادر"],
+["sister","خواهر"],["family","خانواده"],["parent","والد"],
+["grandmother","مادربزرگ"],["grandfather","پدربزرگ"],
+["aunt","خاله / عمه"],["uncle","دایی / عمو"],
+["cousin","پسرعمو / دخترعمو / پسرخاله / دخترخاله"],
+["son","پسر"],["daughter","دختر"],["child","فرزند"],
+["job","شغل"],["doctor","پزشک"],["teacher","معلم"]
+],
+
+5:[
+["tall","قدبلند"],["short","کوتاه‌قد"],["young","جوان"],
+["old","پیر"],["thin","لاغر"],["fat","چاق"],
+["beautiful","زیبا"],["handsome","خوش‌قیافه"],
+["hair","مو"],["eye","چشم"],["face","صورت"],
+["shirt","پیراهن"],["trousers","شلوار"],["dress","لباس"],
+["red","قرمز"],["blue","آبی"],["green","سبز"],["black","مشکی"],
+["white","سفید"],["brown","قهوه‌ای"]
+],
+
+6:[
+["house","خانه"],["room","اتاق"],["bedroom","اتاق خواب"],
+["kitchen","آشپزخانه"],["bathroom","حمام / دستشویی"],
+["living room","اتاق نشیمن"],["table","میز"],["chair","صندلی"],
+["bed","تخت"],["door","در"],["window","پنجره"],
+["garden","باغچه"],["park","پارک"],["wall","دیوار"],
+["floor","کف"],["on","روی"],["under","زیر"],
+["in","داخل"],["next to","کنار"],["behind","پشت"]
+],
+
+7:[
+["phone","تلفن"],["number","شماره"],["address","نشانی"],
+["street","خیابان"],["city","شهر"],["village","روستا"],
+["home","خانه"],["morning","صبح"],["afternoon","بعدازظهر"],
+["evening","عصر"],["night","شب"],["seven","هفت"],
+["eight","هشت"],["nine","نه"],["ten","ده"],
+["live","زندگی کردن"],["go","رفتن"],["come","آمدن"]
+],
+
+8:[
+["food","غذا"],["rice","برنج"],["bread","نان"],
+["apple","سیب"],["banana","موز"],["orange","پرتقال"],
+["tea","چای"],["water","آب"],["juice","آبمیوه"],
+["milk","شیر"],["cheese","پنیر"],["chicken","مرغ"],
+["fish","ماهی"],["meat","گوشت"],["egg","تخم‌مرغ"],
+["hungry","گرسنه"],["thirsty","تشنه"],["breakfast","صبحانه"],
+["lunch","ناهار"],["dinner","شام"]
+]
+};
+
+
+/* =========================================================
+GRAMMAR - MORE COMPLETE
+========================================================= */
+
+const grammar={
+
+1:[
+[
+"معرفی خود با I am",
+"I am Ali.",
+"من علی هستم.",
+"برای معرفی خودمان از I am استفاده می‌کنیم. I همیشه با am می‌آید."
+],
+[
+"معرفی دیگران با He / She",
+"He is a student.<br>She is my friend.",
+"او یک دانش‌آموز است. / او دوست من است.",
+"برای یک پسر یا مرد از He و برای یک دختر یا زن از She استفاده می‌کنیم. هر دو با is می‌آیند."
+],
+[
+"معرفی با You / We / They",
+"You are a student.<br>We are friends.<br>They are teachers.",
+"تو یک دانش‌آموز هستی. / ما دوست هستیم. / آنها معلم هستند.",
+"You، We و They با are می‌آیند."
+],
+[
+"جمله منفی با to be",
+"I am not a teacher.<br>She is not a student.",
+"من معلم نیستم. / او دانش‌آموز نیست.",
+"برای منفی کردن am/is/are، کلمه not را بعد از فعل قرار می‌دهیم."
+],
+[
+"سؤال بله / خیر",
+"Are you a student?<br>Yes, I am.",
+"آیا تو دانش‌آموز هستی؟ بله، هستم.",
+"در سؤال‌های to be، فعل am/is/are قبل از فاعل قرار می‌گیرد."
+]
+],
+
+2:[
+[
+"Simple Present",
+"I study English every day.",
+"من هر روز انگلیسی می‌خوانم.",
+"برای عادت‌ها و کارهایی که به طور معمول انجام می‌دهیم از حال ساده استفاده می‌کنیم."
+],
+[
+"سوم شخص مفرد",
+"She studies English every day.",
+"او هر روز انگلیسی می‌خواند.",
+"با He، She و It معمولاً به فعل s یا es اضافه می‌شود. study به studies تبدیل می‌شود."
+],
+[
+"منفی کردن حال ساده",
+"I don't study French.<br>She doesn't study French.",
+"من فرانسوی نمی‌خوانم. / او فرانسوی نمی‌خواند.",
+"برای I/You/We/They از don't و برای He/She/It از doesn't استفاده می‌کنیم."
+],
+[
+"سؤال با Do و Does",
+"Do you study English?<br>Does she study English?",
+"آیا انگلیسی می‌خوانی؟ / آیا او انگلیسی می‌خواند؟",
+"برای ساخت سؤال حال ساده از Do یا Does در ابتدای جمله استفاده می‌کنیم."
+],
+[
+"Where",
+"Where do you study?",
+"کجا درس می‌خوانی؟",
+"Where برای پرسیدن مکان استفاده می‌شود."
+]
+],
+
+3:[
+[
+"پرسیدن سن",
+"How old are you?",
+"چند سالت است؟",
+"برای پرسیدن سن از How old are you? استفاده می‌کنیم."
+],
+[
+"گفتن سن",
+"I am thirteen years old.",
+"من سیزده ساله هستم.",
+"برای بیان سن از I am + عدد + years old استفاده می‌کنیم."
+],
+[
+"Birthday",
+"My birthday is in May.",
+"تولد من در ماه مه است.",
+"برای گفتن ماه تولد می‌توانیم از in + نام ماه استفاده کنیم."
+],
+[
+"When",
+"When is your birthday?",
+"تولد تو چه زمانی است؟",
+"When برای پرسیدن زمان استفاده می‌شود."
+],
+[
+"عددهای ترتیبی",
+"My birthday is on May 5th.",
+"تولد من پنجم مه است.",
+"برای تاریخ دقیق از عدد ترتیبی مانند 5th استفاده می‌کنیم."
+]
+],
+
+4:[
+[
+"Have / Has",
+"I have two brothers.<br>She has one sister.",
+"من دو برادر دارم. / او یک خواهر دارد.",
+"Have با I/You/We/They و has با He/She/It استفاده می‌شود."
+],
+[
+"صفات ملکی",
+"This is my father.<br" +
+">That is her mother.",
+"این پدر من است. / آن مادر اوست.",
+"my یعنی مال من و her یعنی مال او. صفات ملکی قبل از اسم می‌آیند."
+],
+[
+"Who",
+"Who is he?<br>He is my brother.",
+"او کیست؟ / او برادر من است.",
+"Who برای پرسیدن درباره شخص استفاده می‌شود."
+],
+[
+"جمع بستن اسم‌ها",
+"one brother → two brothers<br>one sister → two sisters",
+"یک برادر → دو برادر / یک خواهر → دو خواهر",
+"بسیاری از اسم‌های قابل شمارش با افزودن s جمع بسته می‌شوند."
+],
+[
+"ضمیرهای ملکی ساده",
+"My mother is a teacher.<br>His father is a doctor.",
+"مادر من معلم است. / پدر او پزشک است.",
+"my و his مالکیت را نشان می‌دهند."
+]
+],
+
+5:[
+[
+"صفات",
+"Ali is tall.<br>Mary is young.",
+"علی قدبلند است. / مری جوان است.",
+"صفت برای توصیف افراد یا اشیا استفاده می‌شود."
+],
+[
+"صفات با to be",
+"She is beautiful.<br>He is handsome.",
+"او زیباست. / او خوش‌قیافه است.",
+"بعد از am/is/are می‌توانیم صفت بیاوریم."
+],
+[
+"This / That",
+"This is my book.<br>That is your bag.",
+"این کتاب من است. / آن کیف توست.",
+"This برای چیز نزدیک و That برای چیز دور استفاده می‌شود."
+],
+[
+"These / Those",
+"These are my books.<br>Those are your bags.",
+"اینها کتاب‌های من هستند. / آنها کیف‌های تو هستند.",
+"These جمع This و Those جمع That است."
+],
+[
+"رنگ‌ها",
+"It is a blue shirt.",
+"این یک پیراهن آبی است.",
+"در انگلیسی معمولاً صفت رنگ قبل از اسم می‌آید."
+]
+],
+
+6:[
+[
+"There is",
+"There is a table in the room.",
+"یک میز در اتاق وجود دارد.",
+"There is برای یک اسم مفرد استفاده می‌شود."
+],
+[
+"There are",
+"There are two chairs in the room.",
+"دو صندلی در اتاق وجود دارد.",
+"There are برای اسم‌های جمع استفاده می‌شود."
+],
+[
+"حروف اضافه مکان",
+"The book is on the table.",
+"کتاب روی میز است.",
+"on یعنی روی، in یعنی داخل و under یعنی زیر."
+],
+[
+"Present Continuous",
+"She is reading a book now.",
+"او اکنون در حال خواندن یک کتاب است.",
+"برای کاری که همین حالا در حال انجام است از am/is/are + verb-ing استفاده می‌کنیم."
+],
+[
+"سؤال Present Continuous",
+"What is she doing?",
+"او دارد چه کاری انجام می‌دهد؟",
+"What برای پرسیدن درباره کار یا چیز استفاده می‌شود."
+]
+],
+
+7:[
+[
+"Can",
+"I can swim.",
+"من می‌توانم شنا کنم.",
+"Can برای بیان توانایی استفاده می‌شود و بعد از آن شکل ساده فعل می‌آید."
+],
+[
+"منفی Can",
+"I cannot swim.<br>I can't swim.",
+"من نمی‌توانم شنا کنم.",
+"cannot یا شکل کوتاه can't برای بیان ناتوانی استفاده می‌شود."
+],
+[
+"Imperative",
+"Open the door.<br>Close the window.",
+"در را باز کن. / پنجره را ببند.",
+"در جمله امری، معمولاً جمله را با شکل ساده فعل شروع می‌کنیم."
+],
+[
+"at برای ساعت",
+"I get up at seven.",
+"من ساعت هفت بیدار می‌شوم.",
+"برای ساعت مشخص از at استفاده می‌کنیم."
+],
+[
+"What time",
+"What time do you get up?",
+"چه ساعتی بیدار می‌شوی؟",
+"What time برای پرسیدن ساعت انجام یک کار استفاده می‌شود."
+]
+],
+
+8:[
+[
+"I'd like",
+"I'd like some tea.",
+"من مقداری چای می‌خواهم.",
+"I'd like شکل مؤدبانه‌ای برای بیان خواسته است."
+],
+[
+"Some",
+"I'd like some water.",
+"من مقداری آب می‌خواهم.",
+"Some معمولاً در جمله‌های مثبت و درخواست‌های مؤدبانه استفاده می‌شود."
+],
+[
+"Any",
+"Do you have any juice?",
+"آیا آبمیوه‌ای داری؟",
+"Any معمولاً در سؤال‌ها و جمله‌های منفی استفاده می‌شود."
+],
+[
+"Can I have...?",
+"Can I have some rice?",
+"می‌توانم مقداری برنج داشته باشم؟",
+"این ساختار برای درخواست مؤدبانه استفاده می‌شود."
+],
+[
+"Would like",
+"I would like some bread.",
+"من مقداری نان می‌خواهم.",
+"Would like برای بیان خواسته به شکل مؤدبانه استفاده می‌شود."
+]
+]
 
 };
 
 
 /* =========================================================
-   SCHOOL CONTENT
+XP
 ========================================================= */
-
-const schoolContent={
-
-7:{
-
-1:{
-theme:"My Name",
-function:"Introducing yourself and others",
-grammar:"Subject pronouns and verb to be",
-vocabulary:[
-["name","نام"],
-["first name","نام کوچک"],
-["last name","نام خانوادگی"],
-["student","دانش‌آموز"],
-["teacher","معلم"],
-["class","کلاس"],
-["friend","دوست"],
-["school","مدرسه"]
-]
-},
-
-2:{
-theme:"My Classmates",
-function:"Talking about classmates",
-grammar:"Verb to be and questions",
-vocabulary:[
-["classmate","همکلاسی"],
-["boy","پسر"],
-["girl","دختر"],
-["friend","دوست"],
-["clever","باهوش"],
-["kind","مهربان"],
-["school","مدرسه"],
-["class","کلاس"]
-]
-},
-
-3:{
-theme:"My Age",
-function:"Talking about age and birthday",
-grammar:"How old ...? Numbers and months",
-vocabulary:[
-["age","سن"],
-["old","سال‌دار"],
-["birthday","تولد"],
-["month","ماه"],
-["year","سال"],
-["January","ژانویه"],
-["May","مه"],
-["birthday party","جشن تولد"]
-]
-},
-
-4:{
-theme:"My Family",
-function:"Talking about family members",
-grammar:"Possessive adjectives and have/has",
-vocabulary:[
-["family","خانواده"],
-["mother","مادر"],
-["father","پدر"],
-["brother","برادر"],
-["sister","خواهر"],
-["grandfather","پدربزرگ"],
-["grandmother","مادربزرگ"],
-["parents","والدین"]
-]
-},
-
-5:{
-theme:"My Appearance",
-function:"Talking about appearance",
-grammar:"Adjectives and have/has",
-vocabulary:[
-["appearance","ظاهر"],
-["tall","قدبلند"],
-["short","کوتاه"],
-["young","جوان"],
-["old","پیر"],
-["hair","مو"],
-["eye","چشم"],
-["beautiful","زیبا"]
-]
-},
-
-6:{
-theme:"My House",
-function:"Talking about rooms and objects",
-grammar:"There is / There are and prepositions of place",
-vocabulary:[
-["house","خانه"],
-["room","اتاق"],
-["bedroom","اتاق خواب"],
-["kitchen","آشپزخانه"],
-["bathroom","حمام"],
-["table","میز"],
-["chair","صندلی"],
-["bed","تخت"]
-]
-},
-
-7:{
-theme:"My Address",
-function:"Talking about address and location",
-grammar:"Where...? and prepositions of place",
-vocabulary:[
-["address","نشانی"],
-["street","خیابان"],
-["city","شهر"],
-["number","شماره"],
-["phone","تلفن"],
-["road","جاده"],
-["near","نزدیک"],
-["far","دور"]
-]
-},
-
-8:{
-theme:"My Favorite Food",
-function:"Talking about food and preferences",
-grammar:"Like / dislike and would like",
-vocabulary:[
-["food","غذا"],
-["rice","برنج"],
-["bread","نان"],
-["meat","گوشت"],
-["chicken","مرغ"],
-["apple","سیب"],
-["tea","چای"],
-["water","آب"]
-]
-}
-
-},
-
-8:{
-
-1:{
-theme:"My Nationality",
-function:"Talking about nationality",
-grammar:"Countries, nationalities and verb to be",
-vocabulary:[
-["Iran","ایران"],
-["Iranian","ایرانی"],
-["France","فرانسه"],
-["French","فرانسوی"],
-["England","انگلستان"],
-["British","بریتانیایی"],
-["China","چین"],
-["Chinese","چینی"]
-]
-},
-
-2:{
-theme:"My Week",
-function:"Talking about weekly activities",
-grammar:"Simple Present and time expressions",
-vocabulary:[
-["morning","صبح"],
-["afternoon","بعدازظهر"],
-["evening","عصر"],
-["Monday","دوشنبه"],
-["Tuesday","سه‌شنبه"],
-["study","مطالعه کردن"],
-["work","کار کردن"],
-["every day","هر روز"]
-]
-},
-
-3:{
-theme:"My Abilities",
-function:"Talking about abilities",
-grammar:"Can / Can't",
-vocabulary:[
-["ability","توانایی"],
-["swim","شنا کردن"],
-["draw","نقاشی کردن"],
-["ride","سوار شدن"],
-["play tennis","تنیس بازی کردن"],
-["run","دویدن"],
-["sing","آواز خواندن"],
-["dance","رقصیدن"]
-]
-},
-
-4:{
-theme:"My Health",
-function:"Talking about health and advice",
-grammar:"Health expressions and should",
-vocabulary:[
-["health","سلامتی"],
-["headache","سردرد"],
-["toothache","دندان‌درد"],
-["flu","آنفلوآنزا"],
-["fever","تب"],
-["cough","سرفه"],
-["dentist","دندانپزشک"],
-["doctor","پزشک"]
-]
-},
-
-5:{
-theme:"My City",
-function:"Talking about places in a city",
-grammar:"There is / There are",
-vocabulary:[
-["city","شهر"],
-["park","پارک"],
-["hospital","بیمارستان"],
-["museum","موزه"],
-["library","کتابخانه"],
-["restaurant","رستوران"],
-["street","خیابان"],
-["square","میدان"]
-]
-},
-
-6:{
-theme:"My Village",
-function:"Talking about a village",
-grammar:"There is / There are and weather",
-vocabulary:[
-["village","روستا"],
-["mountain","کوه"],
-["river","رودخانه"],
-["field","مزرعه"],
-["forest","جنگل"],
-["sunny","آفتابی"],
-["rainy","بارانی"],
-["cold","سرد"]
-]
-},
-
-7:{
-theme:"My Hobbies",
-function:"Talking about hobbies",
-grammar:"Simple Present and activities",
-vocabulary:[
-["hobby","سرگرمی"],
-["free time","اوقات فراغت"],
-["reading","مطالعه"],
-["listening","گوش دادن"],
-["shopping","خرید"],
-["playing tennis","تنیس بازی کردن"],
-["watching TV","تلویزیون دیدن"],
-["traveling","سفر کردن"]
-]
-}
-
-},
-
-9:{
-
-1:{
-theme:"Personality",
-function:"Talking about personality",
-grammar:"Adjectives and verb to be",
-vocabulary:[
-["clever","باهوش"],
-["kind","مهربان"],
-["hard-working","سخت‌کوش"],
-["helpful","کمک‌کننده"],
-["funny","بامزه"],
-["shy","خجالتی"],
-["angry","عصبانی"],
-["brave","شجاع"]
-]
-},
-
-2:{
-theme:"Travel",
-function:"Talking about travel",
-grammar:"Travel expressions and present continuous",
-vocabulary:[
-["travel","سفر کردن"],
-["ticket","بلیط"],
-["passport","گذرنامه"],
-["trip","سفر"],
-["tourist","گردشگر"],
-["receptionist","پذیرشگر"],
-["hotel","هتل"],
-["airport","فرودگاه"]
-]
-},
-
-3:{
-theme:"Festivals and Ceremonies",
-function:"Talking about festivals and ceremonies",
-grammar:"Simple Present",
-vocabulary:[
-["festival","جشنواره"],
-["ceremony","مراسم"],
-["holiday","تعطیلات"],
-["celebrate","جشن گرفتن"],
-["culture","فرهنگ"],
-["religious","مذهبی"],
-["traditional","سنتی"],
-["celebration","جشن"]
-]
-},
-
-4:{
-theme:"Services",
-function:"Talking about public services",
-grammar:"Requests and everyday expressions",
-vocabulary:[
-["service","خدمات"],
-["post office","اداره پست"],
-["bank","بانک"],
-["police station","کلانتری"],
-["fire station","ایستگاه آتش‌نشانی"],
-["hospital","بیمارستان"],
-["send","فرستادن"],
-["receive","دریافت کردن"]
-]
-},
-
-5:{
-theme:"Media",
-function:"Talking about media",
-grammar:"Past events and media expressions",
-vocabulary:[
-["media","رسانه"],
-["newspaper","روزنامه"],
-["magazine","مجله"],
-["radio","رادیو"],
-["television","تلویزیون"],
-["movie","فیلم"],
-["program","برنامه"],
-["news","اخبار"]
-]
-},
-
-6:{
-theme:"Health and Injuries",
-function:"Talking about health and injuries",
-grammar:"Past events and health expressions",
-vocabulary:[
-["health","سلامتی"],
-["injury","آسیب"],
-["accident","حادثه"],
-["broken","شکسته"],
-["hurt","آسیب دیدن"],
-["hospital","بیمارستان"],
-["medicine","دارو"],
-["pain","درد"]
-]
-}
-
-},
-
-10:{
-
-1:{
-theme:"Saving Nature",
-function:"Talking about protecting nature",
-grammar:"Future expressions",
-vocabulary:[
-["nature","طبیعت"],
-["endangered","در معرض انقراض"],
-["protect","محافظت کردن"],
-["wildlife","حیات وحش"],
-["cheetah","یوزپلنگ"],
-["animal","حیوان"],
-["increase","افزایش یافتن"],
-["destroy","نابود کردن"]
-]
-},
-
-2:{
-theme:"Wonders of Creation",
-function:"Talking about natural wonders",
-grammar:"Comparative and superlative adjectives",
-vocabulary:[
-["wonder","شگفتی"],
-["creation","آفرینش"],
-["observatory","رصدخانه"],
-["scientist","دانشمند"],
-["liquid","مایع"],
-["natural","طبیعی"],
-["large","بزرگ"],
-["beautiful","زیبا"]
-]
-},
-
-3:{
-theme:"The Value of Knowledge",
-function:"Talking about knowledge and scientists",
-grammar:"Past Progressive",
-vocabulary:[
-["knowledge","دانش"],
-["science","علم"],
-["scientist","دانشمند"],
-["discover","کشف کردن"],
-["invent","اختراع کردن"],
-["research","پژوهش"],
-["experiment","آزمایش"],
-["famous","مشهور"]
-]
-},
-
-4:{
-theme:"Traveling the World",
-function:"Talking about travel and destinations",
-grammar:"Modal verbs and travel expressions",
-vocabulary:[
-["travel","سفر کردن"],
-["destination","مقصد"],
-["tourist","گردشگر"],
-["country","کشور"],
-["world","جهان"],
-["culture","فرهنگ"],
-["visit","بازدید کردن"],
-["passport","گذرنامه"]
-]
-}
-
-},
-
-11:{
-
-1:{
-theme:"Understanding People",
-function:"Talking about communication and people",
-grammar:"Gerunds and infinitives",
-vocabulary:[
-["language","زبان"],
-["communication","ارتباط"],
-["ability","توانایی"],
-["sign language","زبان اشاره"],
-["confident","بااعتمادبه‌نفس"],
-["understand","درک کردن"],
-["foreign","خارجی"],
-["culture","فرهنگ"]
-]
-},
-
-2:{
-theme:"A Healthy Lifestyle",
-function:"Talking about healthy living",
-grammar:"Reported Speech",
-vocabulary:[
-["healthy","سالم"],
-["lifestyle","سبک زندگی"],
-["exercise","ورزش"],
-["nutrition","تغذیه"],
-["habit","عادت"],
-["diet","رژیم غذایی"],
-["physical","جسمانی"],
-["mental","ذهنی"]
-]
-},
-
-3:{
-theme:"Art and Culture",
-function:"Talking about art and culture",
-grammar:"Relative clauses",
-vocabulary:[
-["art","هنر"],
-["artist","هنرمند"],
-["painting","نقاشی"],
-["music","موسیقی"],
-["literature","ادبیات"],
-["culture","فرهنگ"],
-["masterpiece","شاهکار"],
-["creative","خلاق"]
-]
-}
-
-},
-
-12:{
-
-1:{
-theme:"Sense of Appreciation",
-function:"Expressing appreciation and respect",
-grammar:"Passive voice and tag questions",
-vocabulary:[
-["appreciation","قدردانی"],
-["respect","احترام"],
-["achievement","دستاورد"],
-["kindness","مهربانی"],
-["generation","نسل"],
-["honor","افتخار"],
-["respectful","محترمانه"],
-["great","بزرگ"]
-]
-},
-
-2:{
-theme:"Look It Up!",
-function:"Finding information and using references",
-grammar:"Conditional structures and reference language",
-vocabulary:[
-["dictionary","فرهنگ لغت"],
-["definition","تعریف"],
-["meaning","معنی"],
-["entry","مدخل"],
-["pronunciation","تلفظ"],
-["information","اطلاعات"],
-["search","جستجو کردن"],
-["reference","مرجع"]
-]
-},
-
-3:{
-theme:"Renewable Energy",
-function:"Talking about renewable energy",
-grammar:"Passive voice and modal structures",
-vocabulary:[
-["renewable","تجدیدپذیر"],
-["energy","انرژی"],
-["wind","باد"],
-["solar","خورشیدی"],
-["turbine","توربین"],
-["electricity","برق"],
-["environment","محیط زیست"],
-["pollution","آلودگی"]
-]
-},
-
-4:{
-theme:"The Power of Nature",
-function:"Talking about natural forces",
-grammar:"Review of important structures",
-vocabulary:[
-["nature","طبیعت"],
-["power","قدرت"],
-["earthquake","زلزله"],
-["volcano","آتشفشان"],
-["flood","سیل"],
-["storm","طوفان"],
-["environment","محیط زیست"],
-["protect","محافظت کردن"]
-]
-}
-
-}
-
-};
-
-
-/* =========================================================
-   XP / PROGRESS
-========================================================= */
-
-function calculateLevel(xp){
-
-return Math.max(
-1,
-Math.floor(Number(xp||0)/100)+1
-);
-
-}
 
 function xpForLevel(level){
+return (level-1)*100;
+}
 
-return (Number(level)-1)*100;
-
+function calculateLevel(xp){
+return Math.max(1,Math.floor(xp/100)+1);
 }
 
 async function loadStudentStats(){
@@ -1397,436 +818,242 @@ S.progress={};
 S.achievements=[];
 
 try{
-
-const xp=
-await db
+const xp=await db
 .from("student_xp")
 .select("xp,level")
 .eq("student_id",S.student.id)
 .maybeSingle();
 
 if(xp.data){
-
 S.xp=Number(xp.data.xp||0);
-
-S.level=
-Number(
-xp.data.level||
-calculateLevel(S.xp)
-);
-
+S.level=Number(xp.data.level||calculateLevel(S.xp));
 }
-
 }catch(e){}
 
 try{
-
-const p=
-await db
+const p=await db
 .from("student_progress")
-.select(
-"lesson_id,progress,completed"
-)
+.select("lesson_id,progress,completed")
 .eq("student_id",S.student.id);
 
 if(p.data){
-
 p.data.forEach(x=>{
-
 S.progress[x.lesson_id]={
 progress:Number(x.progress||0),
 completed:Boolean(x.completed)
 };
-
 });
-
 }
-
 }catch(e){}
 
 try{
-
-const a=
-await db
+const a=await db
 .from("student_achievements")
-.select(
-"achievement_key,title"
-)
+.select("achievement_key,title")
 .eq("student_id",S.student.id);
 
-if(a.data){
-
-S.achievements=a.data;
-
-}
-
+if(a.data)S.achievements=a.data;
 }catch(e){}
-
 }
 
-async function addXP(amount){
+async function addXP(amount,reason=""){
 
 if(!S.student)return;
 
-const oldLevel=
-calculateLevel(S.xp);
+const oldXP=S.xp;
+const newXP=oldXP+Number(amount||0);
+const newLevel=calculateLevel(newXP);
 
-S.xp+=Number(amount||0);
-
-S.level=
-calculateLevel(S.xp);
+S.xp=newXP;
+S.level=newLevel;
 
 try{
-
-await db
-.from("student_xp")
-.upsert(
-{
+await db.from("student_xp").upsert({
 student_id:S.student.id,
-xp:S.xp,
-level:S.level,
+xp:newXP,
+level:newLevel,
 updated_at:new Date().toISOString()
-},
-{
+},{
 onConflict:"student_id"
-}
-);
-
+});
 }catch(e){}
 
-if(S.level>oldLevel){
-
+if(newLevel>calculateLevel(oldXP)){
 await unlockAchievement(
-"level_"+S.level,
-"رسیدن به Level "+S.level
+"level_"+newLevel,
+"رسیدن به Level "+newLevel
 );
-
 }
-
 }
 
 async function unlockAchievement(key,title){
 
 if(!S.student)return;
 
-if(
-S.achievements.some(
-x=>x.achievement_key===key
-)
-)return;
+if(S.achievements.some(x=>x.achievement_key===key))return;
 
 try{
-
-const r=
-await db
-.from("student_achievements")
-.insert(
-{
+const r=await db.from("student_achievements").insert({
 student_id:S.student.id,
-achievement_key:key,
-title
-}
-);
-
-if(!r.error){
-
-S.achievements.push({
 achievement_key:key,
 title
 });
 
+if(!r.error){
+S.achievements.push({
+achievement_key:key,
+title
+});
 }
-
 }catch(e){}
-
 }
 
-async function saveProgress(
-lessonId,
-progress,
-completed
-){
+async function saveProgress(lessonId,progress,completed){
 
 if(!S.student)return;
 
-S.progress[lessonId]={
-progress,
-completed
-};
+S.progress[lessonId]={progress,completed};
 
 try{
-
-await db
-.from("student_progress")
-.upsert(
-{
+await db.from("student_progress").upsert({
 student_id:S.student.id,
 lesson_id:lessonId,
 progress,
 completed,
 completed_at:
-completed?
-new Date().toISOString():
-null
-},
-{
+completed?new Date().toISOString():null
+},{
 onConflict:"student_id,lesson_id"
-}
-);
-
+});
 }catch(e){}
-
 }
 
 
 /* =========================================================
-   LOGIN
+LOGIN
 ========================================================= */
 
 function login(){
 
 document.body.innerHTML=`
-
 <div class="login">
-
 <div class="loginCard">
 
 <div style="text-align:center">
-
-<div style="font-size:60px">
-📚
-</div>
-
-<h2>
-AliNagheli English
-</h2>
-
-<p class="muted">
-سامانه آموزش زبان انگلیسی
-</p>
-
+<div style="font-size:55px">📚</div>
+<h2>AliNagheli English</h2>
+<p class="muted">سامانه آموزش زبان انگلیسی</p>
 </div>
 
 <div class="tabs">
+<button id="st" class="tab active"
+onclick="loginTab('student')">🎓 زبان‌آموز</button>
 
-<button
-id="st"
-class="tab active"
-onclick="loginTab('student')">
-
-🎓 زبان‌آموز
-
-</button>
-
-<button
-id="ad"
-class="tab"
-onclick="loginTab('admin')">
-
-👨‍💼 مدیر
-
-</button>
-
+<button id="ad" class="tab"
+onclick="loginTab('admin')">👨‍💼 مدیر</button>
 </div>
 
 <div id="lf"></div>
 
 </div>
-
 </div>
-
 `;
 
 loginTab("student");
-
 }
 
 function loginTab(type){
 
-const st=document.getElementById("st");
-const ad=document.getElementById("ad");
-const lf=document.getElementById("lf");
+document.getElementById("st")
+.classList.toggle("active",type==="student");
 
-if(!st||!ad||!lf)return;
-
-st.classList.toggle(
-"active",
-type==="student"
-);
-
-ad.classList.toggle(
-"active",
-type==="admin"
-);
+document.getElementById("ad")
+.classList.toggle("active",type==="admin");
 
 if(type==="admin"){
 
-lf.innerHTML=`
+document.getElementById("lf").innerHTML=`
+<label>ایمیل مدیر</label>
+<input id="email" type="email" value="alinagheli@gmail.com">
 
-<label>
-ایمیل مدیر
-</label>
+<label>رمز عبور</label>
+<input id="pass" type="password">
 
-<input
-id="email"
-type="email"
-value="alinagheli@gmail.com">
-
-<label>
-رمز عبور
-</label>
-
-<input
-id="pass"
-type="password"
-autocomplete="current-password">
-
-<button
-class="btn full"
-style="margin-top:15px"
-onclick="adminLogin()">
-
+<button class="btn full" onclick="adminLogin()">
 ورود مدیر
-
 </button>
-
 `;
 
 }else{
 
-lf.innerHTML=`
+document.getElementById("lf").innerHTML=`
+<label>شماره تلفن</label>
+<input id="phone" inputmode="tel" placeholder="شماره تلفن">
 
-<label>
-شماره تلفن
-</label>
+<label>رمز عبور</label>
+<input id="pass" type="password">
 
-<input
-id="phone"
-inputmode="tel"
-autocomplete="username"
-placeholder="مثلاً 09361892768">
-
-<label>
-رمز عبور
-</label>
-
-<input
-id="pass"
-type="password"
-autocomplete="current-password">
-
-<button
-class="btn full"
-style="margin-top:15px"
-onclick="studentLogin()">
-
+<button class="btn full" onclick="studentLogin()">
 ورود زبان‌آموز
-
 </button>
 
-<button
-class="btn secondary full"
+<button class="btn secondary full"
 style="margin-top:8px"
 onclick="registerForm()">
-
 ثبت‌نام زبان‌آموز جدید
-
 </button>
-
 `;
 
 }
-
 }
 
 
 /* =========================================================
-   STUDENT LOGIN
+STUDENT LOGIN
 ========================================================= */
 
 async function studentLogin(){
 
-const phone=
-document.getElementById("phone")?.
-value.trim();
-
-const password=
-document.getElementById("pass")?.
-value;
+const phone=document.getElementById("phone").value.trim();
+const password=document.getElementById("pass").value;
 
 if(!phone||!password){
-
-alert(
-"شماره تلفن و رمز عبور را وارد کنید."
-);
-
+alert("شماره تلفن و رمز عبور را وارد کنید.");
 return;
-
 }
 
 try{
 
-const result=
-await accessFunction(
-{
+const result=await accessFunction({
 action:"find",
 phone
-}
-);
+});
 
 const student=result.student;
 const email=result.email;
 
-if(!student){
+if(!student)
+throw new Error("زبان‌آموزی با این شماره پیدا نشد.");
 
-throw new Error(
-"زبان‌آموزی با این شماره پیدا نشد."
-);
-
-}
-
-if(student.status==="rejected"){
-
-throw new Error(
-"ثبت‌نام شما توسط مدیر رد شده است."
-);
-
-}
+if(student.status==="rejected")
+throw new Error("ثبت‌نام شما توسط مدیر رد شده است.");
 
 if(
 student.status!=="registered" &&
 student.status!=="approved"
-){
+)
+throw new Error("ثبت‌نام شما هنوز توسط مدیر تأیید نشده است.");
 
-throw new Error(
-"ثبت‌نام شما هنوز توسط مدیر تأیید نشده است."
-);
+if(!email)
+throw new Error("ایمیل ورود زبان‌آموز پیدا نشد.");
 
-}
-
-if(!email){
-
-throw new Error(
-"ایمیل ورود زبان‌آموز پیدا نشد."
-);
-
-}
-
-const auth=
-await db.auth.signInWithPassword(
-{
+const auth=await db.auth.signInWithPassword({
 email:String(email).trim(),
 password
-}
-);
+});
 
-if(auth.error){
-
-throw new Error(
-"رمز عبور صحیح نیست."
-);
-
-}
+if(auth.error)
+throw new Error("رمز عبور صحیح نیست.");
 
 S.student=student;
 S.admin=false;
@@ -1836,69 +1063,38 @@ await loadStudentStats();
 home();
 
 }catch(e){
-
-alert(
-e?.message||
-"ورود ناموفق بود."
-);
-
+alert(e?.message||"ورود ناموفق بود.");
 }
-
 }
 
 
 /* =========================================================
-   ADMIN LOGIN
+ADMIN LOGIN
 ========================================================= */
 
 async function adminLogin(){
 
-const email=
-document.getElementById("email")?.
-value.trim();
+const email=document.getElementById("email").value.trim();
+const password=document.getElementById("pass").value;
 
-const password=
-document.getElementById("pass")?.
-value;
-
-if(
-email.toLowerCase()!==
-"alinagheli@gmail.com"
-){
-
-alert(
-"ایمیل مدیر صحیح نیست."
-);
-
+if(email.toLowerCase()!=="alinagheli@gmail.com"){
+alert("ایمیل مدیر صحیح نیست.");
 return;
-
 }
 
 if(!password){
-
-alert(
-"رمز عبور را وارد کنید."
-);
-
+alert("رمز عبور را وارد کنید.");
 return;
-
 }
 
 try{
 
-const r=
-await db.auth.signInWithPassword(
-{
+const r=await db.auth.signInWithPassword({
 email:"alinagheli@gmail.com",
 password
-}
-);
+});
 
-if(r.error){
-
-throw r.error;
-
-}
+if(r.error)throw r.error;
 
 S.admin=true;
 S.student=null;
@@ -1906,268 +1102,123 @@ S.student=null;
 admin();
 
 }catch(e){
-
-alert(
-"ورود مدیر ناموفق بود:\n"+
-e.message
-);
-
+alert("ورود مدیر ناموفق بود:\n"+e.message);
 }
-
 }
 
 
 /* =========================================================
-   REGISTER
+REGISTER
 ========================================================= */
 
 function registerForm(){
 
-const lf=document.getElementById("lf");
+document.getElementById("lf").innerHTML=`
+<h3>ثبت‌نام زبان‌آموز جدید</h3>
 
-if(!lf)return;
-
-lf.innerHTML=`
-
-<h3>
-ثبت‌نام زبان‌آموز جدید
-</h3>
-
-<label>
-نام
-</label>
-
+<label>نام</label>
 <input id="rf">
 
-<label>
-نام خانوادگی
-</label>
-
+<label>نام خانوادگی</label>
 <input id="rl">
 
-<label>
-شماره تلفن
-</label>
+<label>شماره تلفن</label>
+<input id="rp" inputmode="tel">
 
-<input
-id="rp"
-inputmode="tel"
-placeholder="09xxxxxxxxx">
+<label>رمز عبور</label>
+<input id="rpass" type="password">
 
-<label>
-رمز عبور
-</label>
-
-<input
-id="rpass"
-type="password">
-
-<label>
-پایه / سطح
-</label>
-
+<label>پایه / سطح</label>
 <select id="rlevel">
-
-<option value="">
-انتخاب پایه
-</option>
-
-<option value="7">
-پایه هفتم
-</option>
-
-<option value="8">
-پایه هشتم
-</option>
-
-<option value="9">
-پایه نهم
-</option>
-
-<option value="10">
-پایه دهم
-</option>
-
-<option value="11">
-پایه یازدهم
-</option>
-
-<option value="12">
-پایه دوازدهم
-</option>
-
+<option value="">انتخاب پایه</option>
+<option value="7">پایه هفتم</option>
+<option value="8">پایه هشتم</option>
+<option value="9">پایه نهم</option>
+<option value="10">پایه دهم</option>
+<option value="11">پایه یازدهم</option>
+<option value="12">پایه دوازدهم</option>
 </select>
 
-<button
-class="btn full"
-style="margin-top:15px"
-onclick="register()">
-
+<button class="btn full" onclick="register()">
 ثبت‌نام
-
 </button>
 
-<button
-class="btn secondary full"
+<button class="btn secondary full"
 style="margin-top:8px"
 onclick="login()">
-
 بازگشت
-
 </button>
-
 `;
-
 }
 
 async function register(){
 
-const first=
-document.getElementById("rf")?.
-value.trim();
+const first=document.getElementById("rf").value.trim();
+const last=document.getElementById("rl").value.trim();
+const phone=document.getElementById("rp").value.trim();
+const password=document.getElementById("rpass").value;
+const level=document.getElementById("rlevel").value;
 
-const last=
-document.getElementById("rl")?.
-value.trim();
-
-const phone=
-document.getElementById("rp")?.
-value.trim();
-
-const password=
-document.getElementById("rpass")?.
-value;
-
-const level=
-document.getElementById("rlevel")?.
-value;
-
-if(
-!first||
-!last||
-!phone||
-!password||
-!level
-){
-
-alert(
-"همه موارد را تکمیل کنید."
-);
-
+if(!first||!last||!phone||!password||!level){
+alert("همه موارد را تکمیل کنید.");
 return;
-
 }
 
 if(password.length<6){
-
-alert(
-"رمز عبور باید حداقل ۶ کاراکتر باشد."
-);
-
+alert("رمز عبور باید حداقل ۶ کاراکتر باشد.");
 return;
-
 }
 
-const digits=
-normalizePhone(phone);
+const digits=normalizePhone(phone);
 
 if(digits.length<10){
-
-alert(
-"شماره تلفن معتبر نیست."
-);
-
+alert("شماره تلفن معتبر نیست.");
 return;
-
 }
 
-const email=
-digits+"@alinagheli.com";
+const email=digits+"@alinagheli.com";
 
 try{
 
-/*
-   ایجاد حساب احراز هویت
-*/
-
-const r=
-await db.auth.signUp(
-{
+const r=await db.auth.signUp({
 email,
 password,
 options:{
 data:{
 first_name:first,
 last_name:last,
-phone:digits,
+phone,
 level
 }
 }
-}
-);
+});
 
-if(r.error){
+if(r.error)throw r.error;
 
-/*
-   اگر کاربر قبلاً وجود داشته باشد،
-   پیام واضح نمایش داده می‌شود.
-*/
+if(!r.data.user)
+throw new Error("حساب کاربری ساخته نشد.");
 
-if(
-r.error.message
-.toLowerCase()
-.includes("already")
-){
-
-throw new Error(
-"این شماره تلفن قبلاً ثبت‌نام کرده است."
-);
-
-}
-
-throw r.error;
-
-}
-
-if(!r.data.user){
-
-throw new Error(
-"حساب کاربری ساخته نشد."
-);
-
-}
-
-/*
-   ثبت اطلاعات دانش‌آموز
-   در Edge Function
-*/
-
-await accessFunction(
-{
+await accessFunction({
 action:"register",
 first_name:first,
 last_name:last,
-phone:digits,
+phone,
 level,
 auth_user_id:r.data.user.id,
 email
-}
-);
+});
 
 await db.auth.signOut();
 
 alert(
-"ثبت‌نام با موفقیت انجام شد.\n\n"+
-"پس از تأیید مدیر می‌توانید وارد شوید."
+"ثبت‌نام با موفقیت انجام شد.\nپس از تأیید مدیر می‌توانید وارد شوید."
 );
 
 login();
 
 }catch(e){
 
-try{
-await db.auth.signOut();
-}catch(_){}
+try{await db.auth.signOut()}catch(_){}
 
 alert(
 "ثبت‌نام انجام نشد:\n"+
@@ -2175,491 +1226,342 @@ alert(
 );
 
 }
-
 }
 
 
 /* =========================================================
-   HEADER
+LAYOUT
 ========================================================= */
 
 function header(title){
 
 return`
-
 <header class="header">
-
 <div class="headerIn">
 
 <div>
-
-<div class="logo">
-${esc(title)}
-</div>
-
+<div class="logo">${esc(title)}</div>
 <div style="font-size:10px;opacity:.8">
 AliNagheli English
 </div>
-
 </div>
 
-<button
-onclick="logout()"
+<button onclick="logout()"
 style="
-background:#ffffff22;
-color:white;
-border:0;
-border-radius:10px;
-padding:9px">
-
+background:#ffffff22;color:white;border:0;
+border-radius:10px;padding:9px">
 خروج
-
 </button>
 
 </div>
-
 </header>
-
 `;
-
 }
-
-
-/* =========================================================
-   NAV
-========================================================= */
 
 function nav(){
 
 return`
-
 <div class="bottom">
-
 <div class="bottomIn">
 
-<button
-class="nav"
-onclick="home()">
-
-<b>🏠</b>
-خانه
-
+<button class="nav" onclick="home()">
+<b>🏠</b>خانه
 </button>
 
-<button
-class="nav"
-onclick="courses()">
-
-<b>📚</b>
-دروس
-
+<button class="nav" onclick="courses()">
+<b>📚</b>دروس
 </button>
 
-<button
-class="nav"
-onclick="conversation()">
-
-<b>🗣️</b>
-مکالمه
-
+<button class="nav" onclick="conversation()">
+<b>🗣️</b>مکالمه
 </button>
 
-<button
-class="nav"
-onclick="contest()">
-
-<b>🏆</b>
-مسابقه
-
+<button class="nav" onclick="teachersPage()">
+<b>👨‍🏫</b>اساتید
 </button>
 
-<button
-class="nav"
-onclick="profile()">
+<button class="nav" onclick="contest()">
+<b>🏆</b>مسابقه
+</button>
 
-<b>👤</b>
-پروفایل
-
+<button class="nav" onclick="profile()">
+<b>👤</b>پروفایل
 </button>
 
 </div>
-
 </div>
-
 `;
-
 }
-
-
-/* =========================================================
-   RENDER
-========================================================= */
 
 function render(title,content){
 
 document.body.innerHTML=
 header(title)+
-`
-<main class="container">
-${content}
-</main>
-`+
+`<main class="container">${content}</main>`+
 nav();
-
 }
 
 
 /* =========================================================
-   HOME
+HOME
 ========================================================= */
 
 function home(){
 
 const xp=S.xp||0;
+const level=S.level||calculateLevel(xp);
 
-const level=
-S.level||
-calculateLevel(xp);
-
-const currentLevelXP=
-xpForLevel(level);
-
-const nextLevelXP=
-xpForLevel(level+1);
+const currentLevelXP=xpForLevel(level);
+const nextLevelXP=xpForLevel(level+1);
 
 const levelPercent=
 Math.min(
 100,
-Math.max(
-0,
 Math.round(
 ((xp-currentLevelXP)/
-(nextLevelXP-currentLevelXP))*100
-)
+Math.max(nextLevelXP-currentLevelXP,1))*100
 )
 );
 
 render(
 "خانه",
 `
-
-<div class="hero3d">
-
-<div class="heroContent">
-
-<h1 class="heroTitle">
-
-سلام
-${esc(
-S.student?.first_name||
-"زبان‌آموز"
-)}
-👋
-
-</h1>
-
-<p style="font-size:15px">
-به دنیای انگلیسی AliNagheli خوش آمدی.
-</p>
-
-<p>
-⭐ XP:
-<b>${xp}</b>
-&nbsp;&nbsp;
-🏅 Level:
-<b>${level}</b>
-</p>
-
-<div class="levelBar"
-style="background:#ffffff33">
-
-<i
-style="
-width:${levelPercent}%;
-background:#fff">
-</i>
-
-</div>
-
-<p style="font-size:11px;opacity:.85">
-${levelPercent}% تا Level بعدی
-</p>
-
-</div>
-
-<div class="floatingBooks">
-
-<div class="floatBook">
-A
-</div>
-
-<div class="floatBook">
-B
-</div>
-
-<div class="floatBook">
-C
-</div>
-
-</div>
-
-</div>
-
-
-<div class="grid">
-
-<div class="item">
-
-<div class="icon">
-📚
-</div>
-
-<h3>
-دروس مدرسه
-</h3>
-
-<p class="muted">
-Prospect 1–3 و Vision 1–3
-</p>
-
-<button
-class="btn full"
-onclick="courses()">
-
-ورود به کتاب‌ها
-
-</button>
-
-</div>
-
-
-<div class="item">
-
-<div class="icon">
-🗣️
-</div>
-
-<h3>
-مکالمه
-</h3>
-
-<p class="muted">
-Touchstone و Viewpoint
-</p>
-
-<button
-class="btn full"
-onclick="conversation()">
-
-شروع مکالمه
-
-</button>
-
-</div>
-
-
-<div class="item">
-
-<div class="icon">
-🏆
-</div>
-
-<h3>
-مسابقه
-</h3>
-
-<p class="muted">
-سؤال‌های چهارگزینه‌ای
-</p>
-
-<button
-class="btn full"
-onclick="contest()">
-
-شروع مسابقه
-
-</button>
-
-</div>
-
-
-<div class="item">
-
-<div class="icon">
-👨‍🏫
-</div>
-
-<h3>
-اساتید
-</h3>
-
-<p class="muted">
-معرفی مدرس و دوره‌ها
-</p>
-
-<button
-class="btn full"
-onclick="teachers()">
-
-مشاهده
-
-</button>
-
-</div>
-
-
-<div class="item">
-
-<div class="icon">
-📊
-</div>
-
-<h3>
-پیشرفت من
-</h3>
-
-<p class="muted">
-XP، Level و دستاوردها
-</p>
-
-<button
-class="btn full"
-onclick="profile()">
-
-مشاهده
-
-</button>
-
-</div>
-
-</div>
-
-`
-);
-
-}
-
-
-/* =========================================================
-   TEACHERS
-========================================================= */
-
-function teachers(){
-
-render(
-"اساتید",
-`
-
-<div class="card">
-
-<div class="teacher">
-
-<div class="teacherBox"
-style="text-align:center">
-
-<div class="teacherPhoto">
-👨‍🏫
-</div>
+<div class="hero">
 
 <h2>
-علی نقلی
+سلام ${esc(S.student?.first_name||"زبان‌آموز")} 👋
 </h2>
 
 <p>
-<b>
-MA in TEFL
-</b>
+به AliNagheli English خوش آمدی.
+<br>
+اینجا می‌توانی درس بخوانی، تمرین کنی، آزمون بدهی
+و با استاد موردنظرت کلاس رزرو کنی.
 </p>
 
-<p class="muted">
-مدرس زبان انگلیسی
-</p>
-
-<span class="badge">
-20+ سال تجربه تدریس
-</span>
-
+<div class="levelBar">
+<i style="width:${levelPercent}%"></i>
 </div>
-
-
-<div class="teacherBox">
-
-<h3>
-🎓 زمینه‌های آموزشی
-</h3>
 
 <p>
-آموزش زبان انگلیسی از سطح پایه تا پیشرفته
+⭐ XP: ${xp}
+&nbsp;&nbsp;
+🏅 Level: ${level}
 </p>
 
-<span class="badge">IELTS</span>
-<span class="badge">TOEFL</span>
-<span class="badge">PTE</span>
-<span class="badge">MSRT</span>
-<span class="badge">MCHE</span>
-<span class="badge">TTC</span>
-<span class="badge">KET</span>
-<span class="badge">PET</span>
-
 </div>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-📚 دوره‌های آموزشی
-</h3>
 
 <div class="grid">
 
 <div class="item">
-<div class="icon">🎯</div>
-<h3>IELTS</h3>
-<p class="muted">
-Listening · Reading · Writing · Speaking
-</p>
+<div class="icon">📚</div>
+<h3>دروس مدرسه</h3>
+<p class="muted">Prospect و Vision</p>
+<button class="btn full" onclick="courses()">ورود</button>
 </div>
 
 <div class="item">
-<div class="icon">🌎</div>
-<h3>TOEFL</h3>
-<p class="muted">
-Academic English
-</p>
-</div>
-
-<div class="item">
-<div class="icon">💬</div>
-<h3>Speaking</h3>
-<p class="muted">
-تقویت مکالمه و Fluency
-</p>
+<div class="icon">🗣️</div>
+<h3>مکالمه</h3>
+<p class="muted">Touchstone و Viewpoint</p>
+<button class="btn full" onclick="conversation()">ورود</button>
 </div>
 
 <div class="item">
 <div class="icon">👨‍🏫</div>
-<h3>TTC</h3>
-<p class="muted">
-Teacher Training Course
-</p>
+<h3>اساتید</h3>
+<p class="muted">معرفی اساتید و رزرو کلاس</p>
+<button class="btn full" onclick="teachersPage()">مشاهده</button>
+</div>
+
+<div class="item">
+<div class="icon">🏆</div>
+<h3>مسابقه</h3>
+<p class="muted">مسابقات زبان انگلیسی</p>
+<button class="btn full" onclick="contest()">ورود</button>
+</div>
+
+<div class="item">
+<div class="icon">📊</div>
+<h3>پیشرفت من</h3>
+<p class="muted">XP، Level و نمرات</p>
+<button class="btn full" onclick="profile()">مشاهده</button>
 </div>
 
 </div>
-
-</div>
-
 `
 );
-
 }
 
 
 /* =========================================================
-   PROFILE
+TEACHERS
+========================================================= */
+
+function teachersPage(){
+
+render(
+"اساتید",
+`
+<div class="card">
+
+<h2>👨‍🏫 اساتید AliNagheli English</h2>
+
+<p class="muted">
+استاد موردنظر خود را انتخاب کنید و برای رزرو تایم کلاس درخواست بفرستید.
+</p>
+
+<div class="teacher">
+
+${teachers.map(t=>`
+
+<div class="teacherBox">
+
+<div style="font-size:50px">👨‍🏫</div>
+
+<div class="teacherName">
+${esc(t.name)}
+</div>
+
+<div class="teacherDegree">
+${esc(t.degree)}
+</div>
+
+<p>
+${esc(t.experience)}
+</p>
+
+<div>
+${t.courses.map(x=>`
+<span class="badge">${esc(x)}</span>
+`).join("")}
+</div>
+
+${
+t.phone
+?
+`
+<a class="phoneBtn"
+href="tel:${t.phone}">
+📞 تماس با ${esc(t.name)}
+<br>
+${esc(t.phoneDisplay)}
+</a>
+`
+:
+`
+<div class="phoneBtn">
+📞 شماره تماس به‌زودی
+</div>
+`
+}
+
+<div class="reserve">
+
+<h3>📅 رزرو تایم کلاس با استاد</h3>
+
+<label>روز پیشنهادی</label>
+<input id="day_${t.id}" type="date">
+
+<label>ساعت پیشنهادی</label>
+<input id="time_${t.id}" type="time">
+
+<label>نوع کلاس</label>
+<select id="type_${t.id}">
+<option value="private">کلاس خصوصی</option>
+<option value="conversation">مکالمه</option>
+<option value="grammar">گرامر</option>
+<option value="exam">آمادگی آزمون</option>
+<option value="school">زبان مدرسه</option>
+</select>
+
+<label>توضیحات</label>
+<textarea id="note_${t.id}"
+placeholder="مثلاً روزهای زوج، بعد از ساعت ۵..."></textarea>
+
+<button class="btn full"
+onclick="reserveTeacher('${t.id}')">
+📩 ارسال درخواست کلاس
+</button>
+
+</div>
+
+</div>
+
+`).join("")}
+
+</div>
+
+</div>
+`
+);
+}
+
+
+/* =========================================================
+CLASS RESERVATION
+========================================================= */
+
+async function reserveTeacher(teacherId){
+
+if(!S.student){
+alert("ابتدا وارد حساب زبان‌آموز شوید.");
+return;
+}
+
+const teacher=teachers.find(x=>x.id===teacherId);
+if(!teacher)return;
+
+const day=document.getElementById("day_"+teacherId)?.value;
+const time=document.getElementById("time_"+teacherId)?.value;
+const type=document.getElementById("type_"+teacherId)?.value;
+const note=document.getElementById("note_"+teacherId)?.value.trim();
+
+if(!day||!time){
+alert("لطفاً روز و ساعت پیشنهادی را انتخاب کنید.");
+return;
+}
+
+try{
+
+const r=await db
+.from("class_requests")
+.insert({
+student_id:S.student.id,
+student_name:
+`${S.student.first_name||""} ${S.student.last_name||""}`.trim(),
+student_phone:S.student.phone||"",
+teacher_id:teacher.id,
+teacher_name:teacher.name,
+requested_date:day,
+requested_time:time,
+class_type:type,
+note:note,
+status:"pending"
+});
+
+if(r.error)throw r.error;
+
+alert(
+"درخواست کلاس با موفقیت ارسال شد. 📩\n"+
+"استاد درخواست شما را در بخش مدیریت مشاهده خواهد کرد."
+);
+
+document.getElementById("note_"+teacherId).value="";
+
+}catch(e){
+
+alert(
+"ارسال درخواست انجام نشد:\n"+
+(e?.message||"خطای نامشخص")
+);
+
+}
+}
+
+
+/* =========================================================
+PROFILE
 ========================================================= */
 
 async function profile(){
@@ -2668,45 +1570,33 @@ await loadStudentStats();
 
 const completed=
 Object.values(S.progress)
-.filter(x=>x.completed)
-.length;
+.filter(x=>x.completed).length;
 
 const totalLessons=
 Object.keys(books)
 .reduce(
-(sum,g)=>
-sum+books[g].lessons.length,
+(sum,g)=>sum+books[g].lessons.length,
 0
 );
 
 const overall=
 Math.round(
-completed/
-Math.max(totalLessons,1)*
-100
+completed/Math.max(totalLessons,1)*100
 );
 
 render(
 "پروفایل من",
 `
-
 <div class="card">
 
 <div style="text-align:center">
 
 <div style="
-width:85px;
-height:85px;
-border-radius:50%;
-background:#ede9fe;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:42px;
-margin:auto">
-
+width:85px;height:85px;border-radius:50%;
+background:#ede9fe;display:flex;
+align-items:center;justify-content:center;
+font-size:42px;margin:auto">
 👤
-
 </div>
 
 <h2>
@@ -2715,128 +1605,79 @@ ${esc(S.student?.last_name||"")}
 </h2>
 
 <p class="muted">
-
-📱
-${esc(S.student?.phone||"")}
-
+📱 ${esc(S.student?.phone||"")}
 <br>
-
-🎓 پایه
-${esc(S.student?.level||"-")}
-
+🎓 پایه ${esc(S.student?.level||"-")}
 </p>
 
 </div>
 
 </div>
-
 
 <div class="grid">
 
 <div class="profileStat">
-
 ⭐ XP
-
-<b>
-${S.xp}
-</b>
-
+<b>${S.xp}</b>
 </div>
 
 <div class="profileStat">
-
 🏅 Level
-
-<b>
-${S.level}
-</b>
-
+<b>${S.level}</b>
 </div>
 
 <div class="profileStat">
-
 📚 درس‌های تکمیل‌شده
-
-<b>
-${completed}
-</b>
-
+<b>${completed}</b>
 </div>
 
 <div class="profileStat">
-
 📊 پیشرفت
-
-<b>
-${overall}%
-</b>
-
+<b>${overall}%</b>
 </div>
 
 </div>
-
 
 <div class="card">
 
-<h3>
-📈 پیشرفت کلی
-</h3>
+<h3>📈 پیشرفت کلی</h3>
 
 <div class="levelBar">
-
-<i
-style="width:${overall}%">
-</i>
-
+<i style="width:${overall}%"></i>
 </div>
 
 <p class="muted">
-
-${overall}%
-از درس‌های ثبت‌شده تکمیل شده است.
-
+${overall}% از درس‌های ثبت‌شده تکمیل شده است.
 </p>
 
 </div>
 
-
 <div class="card">
 
-<h3>
-🏆 دستاوردها
-</h3>
+<h3>🏆 دستاوردها</h3>
 
 ${
 S.achievements.length
 ?
 S.achievements.map(a=>`
-
 <span class="badge">
-
-🏆
-${esc(a.title)}
-
+🏆 ${esc(a.title)}
 </span>
-
 `).join("")
 :
-`
-<p class="muted">
+`<p class="muted">
 هنوز دستاوردی کسب نکرده‌ای.
-</p>
-`
+</p>`
 }
 
 </div>
-
 `
 );
-
 }
 
 
 /* =========================================================
-   COURSES
+COURSES
 ========================================================= */
 
 function courses(){
@@ -2844,176 +1685,91 @@ function courses(){
 render(
 "دروس مدرسه",
 `
+<div class="card">
 
-<div class="hero3d"
-style="min-height:auto">
+<h2>📚 کتاب‌های مدرسه</h2>
 
-<div class="heroContent">
-
-<h2>
-📚 کتاب‌های مدرسه
-</h2>
-
-<p>
-ساختار Prospect و Vision
-برای پایه‌های هفتم تا دوازدهم
+<p class="muted">
+محتوا بر اساس ساختار کتاب‌های Prospect و Vision
+تنظیم شده است.
 </p>
-
-</div>
-
-</div>
-
 
 <div class="grid">
 
 ${Object.keys(books).map(g=>`
+<div class="item" onclick="grade(${g})">
 
-<div
-class="bookCard"
-onclick="grade(${g})">
+<div class="icon">📖</div>
 
-<div class="book3d">
-📖
-</div>
-
-<h2>
-پایه ${g}
-</h2>
-
-<h3>
-${esc(books[g].title)}
-</h3>
+<h3>پایه ${g}</h3>
 
 <p class="muted">
-${esc(books[g].name)}
-<br>
-${books[g].lessons.length}
-درس
+${esc(books[g].title)}
 </p>
 
-<span class="realTag">
-School English
-</span>
-
-<button
-class="btn full"
-style="margin-top:12px">
-
-مشاهده کتاب
-
+<button class="btn full">
+مشاهده درس‌ها
 </button>
 
 </div>
-
 `).join("")}
 
 </div>
-
+</div>
 `
 );
-
 }
-
-
-/* =========================================================
-   GRADE
-========================================================= */
 
 function grade(g){
 
 S.grade=g;
 
-const book=books[g];
-
 render(
-book.title,
+"پایه "+g,
 `
-
 <div class="card">
 
-<button
-class="btn secondary"
+<button class="btn secondary"
 onclick="courses()">
-
 ← بازگشت
-
 </button>
 
 <h2>
-${esc(book.name)}
+پایه ${g} — ${esc(books[g].title)}
 </h2>
-
-<p class="muted">
-${esc(book.title)}
- ·
-${book.lessons.length}
-Lessons
-</p>
 
 <div class="lessonGrid">
 
-${book.lessons.map((title,i)=>{
+${books[g].lessons.map((x,i)=>{
 
-const key=
-`${g}-${i}`;
+const key=`${g}-${i}`;
 
 const p=
 S.progress[key]||
-{
-progress:0,
-completed:false
-};
-
-const c=
-schoolContent[String(g)]?.
-[String(i+1)];
+{progress:0,completed:false};
 
 return`
 
-<div
-class="lesson"
+<div class="lesson"
 onclick="openLesson(${i})">
 
-<div class="lessonNo">
-${i+1}
-</div>
+<div class="lessonNo">${i+1}</div>
 
-<h3>
-${esc(title)}
-</h3>
+<h3>${esc(x)}</h3>
 
 <p class="muted">
-
-${esc(c?.theme||"English")}
-
-<br>
-
-${esc(c?.function||"")}
-
+لغات · گرامر · آزمون
 </p>
 
 <div class="progress">
-
-<i
-style="width:${p.progress||0}%">
-</i>
-
+<i style="width:${p.progress||0}%"></i>
 </div>
 
 <small>
-
-${
-p.completed
-?
-"✅ تکمیل شده"
-:
-"⏳ "+(p.progress||0)+"%"
-}
-
+${p.completed?"✅ تکمیل شده":"⏳ "+(p.progress||0)+"%"}
 </small>
 
 </div>
-
 `;
 
 }).join("")}
@@ -3021,169 +1777,99 @@ p.completed
 </div>
 
 </div>
-
 `
 );
-
 }
 
 
 /* =========================================================
-   LESSON
+LESSON
 ========================================================= */
 
 function openLesson(i){
 
 S.lesson=i;
 
-const gradeNo=
-String(S.grade);
-
-const lessonNo=
-String(i+1);
-
-const book=
-books[S.grade];
-
-const content=
-schoolContent[gradeNo]?.[lessonNo];
-
-const key=
-`${S.grade}-${i}`;
+const no=i+1;
+const book=books[S.grade];
+const key=`${S.grade}-${i}`;
 
 render(
-"درس "+lessonNo,
+"درس "+no,
 `
-
 <div class="card">
 
-<button
-class="btn secondary"
+<button class="btn secondary"
 onclick="grade(${S.grade})">
-
 ← بازگشت
-
 </button>
 
-<h2>
-${esc(book.lessons[i])}
-</h2>
-
-<div class="notice">
-
-📘
-<b>Theme:</b>
-${esc(content?.theme||"")}
-
-<br>
-
-🎯
-<b>Function:</b>
-${esc(content?.function||"")}
-
-<br>
-
-📚
-<b>Grammar:</b>
-${esc(content?.grammar||"")}
-
-</div>
-
+<h2>${esc(book.lessons[i])}</h2>
 
 <div class="tabs2">
 
-<button
-class="tab2 active"
+<button class="tab2 active"
 onclick="lessonTab(0)">
-
-📘 Grammar
-
+📘 گرامر
 </button>
 
-<button
-class="tab2"
+<button class="tab2"
 onclick="lessonTab(1)">
-
-🔊 Vocabulary
-
+🔊 لغات
 </button>
 
-<button
-class="tab2"
+<button class="tab2"
 onclick="lessonTab(2)">
-
-📝 Quiz
-
+📝 آزمون
 </button>
 
 </div>
 
+<div id="s0" class="sec active">
 
-<div
-id="s0"
-class="sec active">
-
+${
+(grammar[no]||[]).map(g=>`
 <div class="grammar">
 
-<h3>
-${esc(content?.theme||"")}
-</h3>
+<h3>${esc(g[0])}</h3>
 
 <p>
-🎯
-${esc(content?.function||"")}
+${g[3]}
 </p>
 
 <div class="example">
-${esc(
-content?.grammar||
-"Review the grammar of this lesson."
-)}
+${g[1]}
 </div>
 
-<p class="muted">
-
-به ساختار جمله،
-فاعل، فعل،
-زمان و ترتیب کلمات توجه کن.
-
+<p class="translation">
+<b>ترجمه:</b>
+${g[2]}
 </p>
 
 </div>
+`).join("")
+}
 
 <button
 class="btn full"
 onclick="completeLesson('${key}')">
-
-✅ تکمیل مطالعه درس
-
+✅ تکمیل مطالعه این درس
 </button>
 
 </div>
 
+<div id="s1" class="sec">
 
-<div
-id="s1"
-class="sec">
-
-<h3>
-🔊 واژگان درس
-</h3>
+<h3>🔊 واژگان درس</h3>
 
 <p class="muted">
-
 روی هر کلمه بزن تا تلفظ شود.
-
 </p>
 
 <div class="wordGrid">
 
-${
-(content?.vocabulary||[])
-.map(w=>`
-
-<div
-class="word"
+${(words[no]||[]).map(w=>`
+<div class="word"
 onclick='speak(${JSON.stringify(w[0])})'>
 
 <div class="en">
@@ -3195,424 +1881,213 @@ ${esc(w[1])}
 </div>
 
 </div>
-
-`).join("")
-}
+`).join("")}
 
 </div>
 
 </div>
 
-
-<div
-id="s2"
-class="sec">
-
+<div id="s2" class="sec">
 <div id="lessonQuiz"></div>
-
 </div>
 
 </div>
-
 `
 );
-
 }
-
-
-/* =========================================================
-   LESSON TABS
-========================================================= */
-
-function lessonTab(n){
-
-document
-.querySelectorAll(".sec")
-.forEach((x,i)=>{
-
-x.classList.toggle(
-"active",
-i===n
-);
-
-});
-
-document
-.querySelectorAll(".tab2")
-.forEach((x,i)=>{
-
-x.classList.toggle(
-"active",
-i===n
-);
-
-});
-
-if(n===2){
-
-startLessonQuiz();
-
-}
-
-}
-
-
-/* =========================================================
-   COMPLETE LESSON
-========================================================= */
 
 async function completeLesson(key){
 
-await saveProgress(
-key,
-100,
-true
-);
+await saveProgress(key,100,true);
 
-await addXP(20);
+await addXP(20,"lesson");
 
 await unlockAchievement(
 "first_lesson",
 "اولین درس تکمیل شد"
 );
 
-alert(
-"درس با موفقیت تکمیل شد! ⭐ +20 XP"
-);
+alert("درس با موفقیت تکمیل شد! ⭐ +20 XP");
 
 openLesson(S.lesson);
+}
 
+function lessonTab(n){
+
+document.querySelectorAll(".sec")
+.forEach((x,i)=>{
+x.classList.toggle("active",i===n);
+});
+
+document.querySelectorAll(".tab2")
+.forEach((x,i)=>{
+x.classList.toggle("active",i===n);
+});
+
+if(n===2)startLessonQuiz();
 }
 
 
 /* =========================================================
-   LESSON QUIZ
+LESSON QUIZ
 ========================================================= */
 
 function makeLessonQuestions(){
 
-const gradeNo=
-String(S.grade);
-
-const lessonNo=
-String(S.lesson+1);
-
-const content=
-schoolContent[gradeNo]?.[lessonNo];
-
-if(!content)return[];
-
-const vocab=
-content.vocabulary||[];
-
+const no=S.lesson+1;
 let arr=[];
 
+(words[no]||[]).forEach((w,i)=>{
 
-/* Vocabulary questions */
-
-vocab.forEach((w,i)=>{
-
-const alternatives=
-vocab
-.filter((_,index)=>index!==i)
-.slice(0,2)
-.map(x=>x[1]);
-
-if(alternatives.length>=2){
+const a=words[no];
 
 arr.push({
-
-q:
-`معنی واژه "${w[0]}" چیست؟`,
-
+q:`معنی "${w[0]}" چیست؟`,
 options:[
 w[1],
-alternatives[0],
-alternatives[1]
+a[(i+1)%a.length][1],
+a[(i+2)%a.length][1]
 ],
-
 answer:0
+});
 
 });
 
-}
+(grammar[no]||[]).forEach((g,i)=>{
 
-});
-
-
-/* Theme */
-
-const themes=
-Object.values(
-schoolContent[gradeNo]||{}
-)
-.map(x=>x.theme)
-.filter(Boolean);
-
-const otherThemes=
-themes
-.filter(x=>x!==content.theme);
-
-if(otherThemes.length>=2){
+const alternatives=[
+"She are a student.",
+"They is happy.",
+"I am studying yesterday.",
+"She have two brothers."
+];
 
 arr.push({
-
-q:
-`موضوع اصلی ${books[S.grade].lessons[S.lesson]} چیست؟`,
-
+q:`کدام جمله با مبحث «${g[0]}» درست و مناسب است؟`,
 options:[
-content.theme,
-otherThemes[0],
-otherThemes[1]
+g[1].replace(/<br>/g," / "),
+alternatives[i%alternatives.length],
+"Do she studies English?",
+"He are my brother."
 ],
-
 answer:0
-
 });
 
-}
-
-
-/* Function */
-
-arr.push({
-
-q:
-"هدف اصلی این درس چیست؟",
-
-options:[
-content.function,
-"Talking about unrelated topics",
-"Reading numbers only"
-],
-
-answer:0
-
 });
-
 
 return arr.slice(0,15);
-
 }
 
 function startLessonQuiz(){
 
-const questions=
-makeLessonQuestions();
-
 S.quiz={
-
 type:"lesson",
-
 title:
 `پایه ${S.grade} - ${books[S.grade].lessons[S.lesson]}`,
-
-questions,
-
+questions:makeLessonQuestions(),
 i:0,
-
 correct:0,
-
 wrong:0
-
 };
 
 quizRender("lessonQuiz");
-
-}
-
-
-/* =========================================================
-   QUIZ
-========================================================= */
-
-function shuffleQuestionOptions(q){
-
-const correct=
-q.options[q.answer];
-
-const shuffled=
-[...q.options]
-.sort(
-()=>Math.random()-.5
-);
-
-q.options=shuffled;
-
-q.answer=
-shuffled.indexOf(correct);
-
 }
 
 function quizRender(id){
 
-const q=
-S.quiz.questions[S.quiz.i];
+const q=S.quiz.questions[S.quiz.i];
 
 if(!q){
-
 quizFinish(id);
-
 return;
-
 }
 
-shuffleQuestionOptions(q);
-
-const el=
-document.getElementById(id);
-
+const el=document.getElementById(id);
 if(!el)return;
 
 el.innerHTML=`
-
 <div class="card">
 
 <b>
-
-سؤال
-${S.quiz.i+1}
-از
-${S.quiz.questions.length}
-
+سؤال ${S.quiz.i+1}
+از ${S.quiz.questions.length}
 </b>
 
 <div class="progress">
-
-<i
-style="
-width:${
-S.quiz.i/
-S.quiz.questions.length*
-100
-}%">
-
-</i>
-
+<i style="
+width:${S.quiz.i/S.quiz.questions.length*100}%
+"></i>
 </div>
 
-<div
-style="
-font-size:18px;
-font-weight:bold;
-line-height:2;
-margin:15px 0">
-
+<div style="
+font-size:18px;font-weight:bold;
+line-height:2;margin:15px 0">
 ${esc(q.q)}
-
 </div>
 
 ${q.options.map((x,i)=>`
-
-<button
-class="option"
+<button class="option"
 onclick="answer(${i},'${id}')">
-
 ${esc(x)}
-
 </button>
-
 `).join("")}
 
 <div id="fb"></div>
 
 </div>
-
 `;
-
 }
 
 function answer(i,id){
 
-const q=
-S.quiz.questions[S.quiz.i];
+const q=S.quiz.questions[S.quiz.i];
 
-const opts=
-document.querySelectorAll(".option");
+const opts=document.querySelectorAll(".option");
 
-opts.forEach(x=>{
-x.disabled=true;
-});
+opts.forEach(x=>x.disabled=true);
 
 if(i===q.answer){
 
 S.quiz.correct++;
 
-opts[i].classList.add(
-"correct"
-);
+opts[i].classList.add("correct");
 
-document.getElementById("fb")
-.className=
-"feedback ok";
-
-document.getElementById("fb")
-.innerHTML=
+document.getElementById("fb").className="feedback ok";
+document.getElementById("fb").innerHTML=
 "✅ 😊 آفرین! پاسخ درست است.";
 
 }else{
 
 S.quiz.wrong++;
 
-opts[i].classList.add(
-"wrong"
-);
+opts[i].classList.add("wrong");
+opts[q.answer].classList.add("correct");
 
-opts[q.answer]
-.classList.add(
-"correct"
-);
-
-document.getElementById("fb")
-.className=
-"feedback bad";
-
-document.getElementById("fb")
-.innerHTML=
+document.getElementById("fb").className="feedback bad";
+document.getElementById("fb").innerHTML=
 "❌ 😢 پاسخ اشتباه است.";
 
 }
 
 setTimeout(()=>{
-
 S.quiz.i++;
-
 quizRender(id);
-
 },900);
-
 }
 
 async function quizFinish(id){
 
-const total=
-S.quiz.questions.length;
+const total=S.quiz.questions.length;
 
-const percent=
-total
-?
-Math.round(
-S.quiz.correct/
-total*
-100
-)
-:
-0;
+const percent=total
+?Math.round(S.quiz.correct/total*100)
+:0;
 
 examRecords.push({
-
-student:
-S.student?.phone||"",
-
-title:
-S.quiz.title,
-
-score:
-percent,
-
-date:
-new Date().toISOString()
-
+student:S.student?.phone||"",
+title:S.quiz.title,
+score:percent,
+date:new Date().toISOString()
 });
 
 saveLocal();
@@ -3621,65 +2096,39 @@ if(S.student){
 
 try{
 
-await db
-.from("exam_results")
-.insert(
-{
-user_id:
-S.student.auth_user_id,
-
+await db.from("exam_results").insert({
+user_id:S.student.auth_user_id,
 student_name:
 `${S.student.first_name||""} ${S.student.last_name||""}`,
-
-exam_type:
-S.quiz.type||"lesson",
-
-exam_title:
-S.quiz.title,
-
-lesson:
-S.lesson+1,
-
-score:
-S.quiz.correct,
-
+exam_type:S.quiz.type||"lesson",
+exam_title:S.quiz.title,
+lesson:S.lesson+1,
+score:S.quiz.correct,
 total,
-
-percentage:
-percent
-}
-);
+percentage:percent
+});
 
 }catch(e){}
 
-await addXP(
-Math.max(10,percent)
-);
+await addXP(Math.max(10,percent),"exam");
 
 if(percent>=80){
-
 await unlockAchievement(
 "exam_80",
 "امتیاز بالای ۸۰٪"
 );
-
 }
 
 if(percent===100){
-
 await unlockAchievement(
 "perfect_exam",
 "آزمون کامل"
 );
-
 }
 
-if(
-S.quiz.type==="lesson"
-){
+if(S.quiz.type==="lesson"){
 
-const key=
-`${S.grade}-${S.lesson}`;
+const key=`${S.grade}-${S.lesson}`;
 
 await saveProgress(
 key,
@@ -3688,16 +2137,12 @@ true
 );
 
 }
-
 }
 
-const el=
-document.getElementById(id);
-
+const el=document.getElementById(id);
 if(!el)return;
 
 el.innerHTML=`
-
 <div class="card">
 
 <div class="score">
@@ -3709,39 +2154,27 @@ ${percent}%
 </h2>
 
 <p style="text-align:center">
-
 ${S.quiz.correct}
-پاسخ درست از
-${total}
-
+پاسخ درست از ${total}
 </p>
 
-<p style="
-text-align:center;
-font-weight:bold">
-
-نمره شما:
-${percent}%
-
+<p style="text-align:center;font-weight:bold">
+نمره شما: ${percent}%
 </p>
 
 <button
 class="btn full"
 onclick="profile()">
-
 مشاهده پیشرفت
-
 </button>
 
 </div>
-
 `;
-
 }
 
 
 /* =========================================================
-   CONVERSATION
+CONVERSATION
 ========================================================= */
 
 const conversationBooks=[
@@ -3758,60 +2191,36 @@ function conversation(){
 render(
 "مکالمه",
 `
+<div class="card">
 
-<div class="hero3d"
-style="min-height:auto">
-
-<div class="heroContent">
-
-<h2>
-🗣️ دوره‌های مکالمه
-</h2>
-
-<p>
-تمرین مکالمه، واژگان و گرامر
-</p>
-
-</div>
-
-</div>
+<h2>🗣️ دوره‌های مکالمه</h2>
 
 <div class="grid">
 
 ${conversationBooks.map((x,i)=>`
-
-<div
-class="item"
+<div class="item"
 onclick="conversationBook(${i})">
 
-<div class="icon">
-🗣️
-</div>
+<div class="icon">🗣️</div>
 
-<h3>
-${x}
-</h3>
+<h3>${x}</h3>
 
 <p class="muted">
 Units · Vocabulary · Grammar · Quiz
 </p>
 
-<button
-class="btn full">
-
+<button class="btn full">
 ورود
-
 </button>
 
 </div>
-
 `).join("")}
 
 </div>
 
+</div>
 `
 );
-
 }
 
 function conversationBook(i){
@@ -3819,61 +2228,42 @@ function conversationBook(i){
 render(
 conversationBooks[i],
 `
-
 <div class="card">
 
-<button
-class="btn secondary"
+<button class="btn secondary"
 onclick="conversation()">
-
 ← بازگشت
-
 </button>
 
-<h2>
-${conversationBooks[i]}
-</h2>
+<h2>${conversationBooks[i]}</h2>
 
 <div class="lessonGrid">
 
-${Array.from(
-{length:12},
-(_,n)=>`
-
-<div
-class="lesson"
+${Array.from({length:12},(_,n)=>`
+<div class="lesson"
 onclick="conversationLesson(${i},${n})">
 
-<div class="lessonNo">
-${n+1}
-</div>
+<div class="lessonNo">${n+1}</div>
 
-<h3>
-Unit ${n+1}
-</h3>
+<h3>Unit ${n+1}</h3>
 
 <p class="muted">
-Vocabulary · Grammar · Quiz
+لغات · Grammar · توضیحات · Quiz
 </p>
 
 </div>
-
-`
-).join("")}
+`).join("")}
 
 </div>
 
 </div>
-
 `
 );
-
 }
 
 function conversationLesson(book,unit){
 
-const name=
-conversationBooks[book];
+const name=conversationBooks[book];
 
 const cw=[
 ["conversation","گفت‌وگو"],
@@ -3889,99 +2279,76 @@ const cw=[
 ];
 
 const cg=[
-
 [
 "Simple Present",
-"برای عادت‌ها و کارهای همیشگی.",
+"برای عادت‌ها و کارهای همیشگی استفاده می‌شود.",
 "I study English every day."
 ],
-
 [
 "Present Continuous",
 "برای کاری که اکنون در حال انجام است.",
 "I am studying English now."
 ],
-
 [
 "Questions",
-"برای دریافت اطلاعات.",
+"برای دریافت اطلاعات از ساختار سؤال استفاده می‌کنیم.",
 "Where do you live?"
 ],
-
 [
 "Would like",
-"برای بیان خواسته به شکل مؤدبانه.",
+"برای بیان خواسته به شکل مؤدبانه استفاده می‌شود.",
 "I would like some coffee."
 ]
-
 ];
 
 render(
 name,
 `
-
 <div class="card">
 
-<button
-class="btn secondary"
+<button class="btn secondary"
 onclick="conversationBook(${book})">
-
 ← بازگشت
-
 </button>
 
-<h2>
-${name}
-—
-Unit ${unit+1}
-</h2>
+<h2>${name} — Unit ${unit+1}</h2>
 
-<h3>
-📘 Grammar
-</h3>
+<h3>📘 Grammar</h3>
 
 ${cg.map(g=>`
-
 <div class="grammar">
 
-<h3>
-${esc(g[0])}
-</h3>
+<h3>${g[0]}</h3>
+
+<p>${g[1]}</p>
+
+<div class="example">${g[2]}</div>
 
 <p>
-${esc(g[1])}
+ساختار جمله را بررسی کن و چند مثال جدید
+با همان الگو بساز.
 </p>
 
-<div class="example">
-${esc(g[2])}
 </div>
-
-</div>
-
 `).join("")}
 
-<h3>
-🔊 Vocabulary
-</h3>
+<h3>🔊 Vocabulary</h3>
 
 <div class="wordGrid">
 
 ${cw.map(w=>`
-
-<div
-class="word"
+<div class="word"
 onclick='speak(${JSON.stringify(w[0])})'>
 
 <div class="en">
-🔊 ${esc(w[0])}
+🔊 ${w[0]}
 </div>
 
 <div class="fa">
-${esc(w[1])}
+${w[1]}
 </div>
 
 </div>
-
 `).join("")}
 
 </div>
@@ -3989,98 +2356,62 @@ ${esc(w[1])}
 <button
 class="btn full"
 style="margin-top:18px"
-onclick="conversationQuiz(${book},${unit})">
+onclick="conversationQuiz('${name.replace(/'/g,"")}',${unit})">
 
 📝 آزمون Unit ${unit+1}
 
 </button>
 
 </div>
-
 `
 );
-
 }
 
-function conversationQuiz(book,unit){
-
-const name=
-conversationBooks[book];
+function conversationQuiz(name,unit){
 
 const q=[
-
 ["What is the meaning of conversation?","گفت‌وگو"],
-
 ["What is the meaning of question?","سؤال"],
-
 ["What is the meaning of answer?","پاسخ"],
-
 ["What is the meaning of practice?","تمرین"],
-
 ["What is the meaning of language?","زبان"],
-
 ["What is the meaning of class?","کلاس"],
-
 ["What is the meaning of student?","دانش‌آموز"],
-
 ["What is the meaning of teacher?","معلم"],
-
 ["What is the meaning of friend?","دوست"],
-
 ["What is the meaning of information?","اطلاعات"]
-
 ];
 
-let arr=
-q.map((x,i)=>({
-
+let arr=q.map((x,i)=>({
 q:x[0],
-
 options:[
 x[1],
 q[(i+1)%q.length][1],
 q[(i+2)%q.length][1]
 ],
-
 answer:0
-
 }));
 
 S.quiz={
-
 type:"conversation",
-
-title:
-name+
-" Unit "+
-(unit+1),
-
+title:name+" Unit "+(unit+1),
 questions:arr,
-
 i:0,
-
 correct:0,
-
 wrong:0
-
 };
 
 render(
 "آزمون مکالمه",
-`
-<div id="conversationQuiz"></div>
-`
+`<div id="conversationQuiz"></div>`
 );
 
-quizRender(
-"conversationQuiz"
-);
-
+quizRender("conversationQuiz");
 }
 
 
 /* =========================================================
-   CONTEST
+CONTEST
 ========================================================= */
 
 function contest(){
@@ -4088,467 +2419,253 @@ function contest(){
 render(
 "مسابقه",
 `
+<div class="card">
 
-<div class="hero3d"
-style="min-height:auto">
-
-<div class="heroContent">
-
-<h2>
-🏆 مسابقه رکوردی
-</h2>
-
-<p>
-۲۰ سؤال چهارگزینه‌ای
-و ثبت امتیاز
-</p>
-
-</div>
-
-</div>
+<h2>🏆 مسابقه</h2>
 
 <div class="grid">
 
-${[7,8,9,10,11,12]
-.map(g=>`
-
+${[7,8,9,10,11,12].map(g=>`
 <div class="item">
 
-<div class="icon">
-🏆
-</div>
+<div class="icon">🏆</div>
 
-<h3>
-مسابقه پایه ${g}
-</h3>
+<h3>مسابقه پایه ${g}</h3>
 
-<p class="muted">
-۲۰ سؤال
-</p>
+<p class="muted">۲۰ سؤال</p>
 
-<button
-class="btn full"
+<button class="btn full"
 onclick="startContest(${g})">
-
 شروع
-
 </button>
 
 </div>
-
 `).join("")}
 
 </div>
 
+</div>
 `
 );
-
 }
 
 function startContest(g){
 
-const all=[];
+let q=[];
 
-for(
-let gradeNo=7;
-gradeNo<=12;
-gradeNo++
-){
+for(let i=1;i<=8;i++){
 
-const lessons=
-schoolContent[
-String(gradeNo)
-]||{};
+(words[i]||[]).forEach((w,j)=>{
 
-Object.keys(lessons)
-.forEach(lessonNo=>{
+if(q.length<20){
 
-const vocab=
-lessons[lessonNo]
-.vocabulary||[];
+const a=words[i];
 
-vocab.forEach(w=>{
-
-all.push({
-q:
-`معنی واژه "${w[0]}" چیست؟`,
-answer:w[1]
-});
-
-});
-
-});
-
-}
-
-if(all.length<3){
-
-alert(
-"محتوای مسابقه کافی نیست."
-);
-
-return;
-
-}
-
-const shuffled=
-[...all]
-.sort(()=>Math.random()-.5);
-
-const selected=
-shuffled.slice(
-0,
-Math.min(20,shuffled.length)
-);
-
-const questions=
-selected.map((item,index)=>{
-
-const distractors=
-all
-.filter(x=>x.answer!==item.answer)
-.sort(()=>Math.random()-.5)
-.slice(0,3)
-.map(x=>x.answer);
-
-return{
-
-q:item.q,
-
+q.push({
+q:`معنی "${w[0]}" چیست؟`,
 options:[
-item.answer,
-...distractors
+w[1],
+a[(j+1)%a.length][1],
+a[(j+2)%a.length][1]
 ],
-
 answer:0
+});
 
-};
+}
 
 });
+
+}
 
 S.quiz={
-
 type:"contest",
-
-title:
-"مسابقه پایه "+g,
-
-questions,
-
+title:"مسابقه پایه "+g,
+questions:q.slice(0,20),
 i:0,
-
 correct:0,
-
 wrong:0
-
 };
 
 render(
 "مسابقه",
-`
-<div id="contestQuiz"></div>
-`
+`<div id="contestQuiz"></div>`
 );
 
-quizRender(
-"contestQuiz"
-);
-
+quizRender("contestQuiz");
 }
 
 
 /* =========================================================
-   ADMIN
+ADMIN
 ========================================================= */
 
 async function admin(){
 
 try{
 
-const r=
-await db
+const r=await db
 .from("students")
 .select("*")
-.order(
-"id",
-{
-ascending:false
-}
-);
+.order("id",{ascending:false});
 
-if(r.error){
+if(r.error)throw r.error;
 
-throw r.error;
-
-}
-
-renderAdmin(
-r.data||[]
-);
+renderAdmin(r.data||[]);
 
 }catch(e){
 
 document.body.innerHTML=`
-
 <div class="container">
-
 <div class="card">
 
-<h2>
-خطا در پنل مدیر
-</h2>
+<h2>خطا در پنل مدیر</h2>
 
-<p>
-${esc(e.message)}
-</p>
+<p>${esc(e.message)}</p>
 
-<button
-class="btn"
+<button class="btn"
 onclick="admin()">
-
 تلاش مجدد
-
 </button>
 
-<button
-class="btn secondary"
+<button class="btn secondary"
 onclick="logout()">
-
 خروج
-
 </button>
 
 </div>
-
 </div>
-
 `;
 
 }
-
 }
 
 function renderAdmin(students){
 
 document.body.innerHTML=`
-
 ${header("پنل مدیریت")}
 
 <main class="container">
 
-<div class="hero3d"
-style="min-height:auto">
-
-<div class="heroContent">
-
-<h2>
-👨‍💼 پنل مدیریت
-</h2>
-
-<p>
-مدیریت ثبت‌نام زبان‌آموزان
-</p>
-
+<div class="hero">
+<h2>👨‍💼 پنل مدیریت</h2>
+<p>مدیریت زبان‌آموزان و درخواست‌های کلاس</p>
 </div>
-
-</div>
-
 
 <div class="grid">
 
 <div class="item">
-
-<div class="icon">
-👥
+<div class="icon">👥</div>
+<h3>کل</h3>
+<b>${students.length}</b>
 </div>
-
-<h3>
-کل
-</h3>
-
-<div class="statNumber">
-${students.length}
-</div>
-
-</div>
-
 
 <div class="item">
-
-<div class="icon">
-⏳
+<div class="icon">⏳</div>
+<h3>در انتظار</h3>
+<b>
+${students.filter(x=>x.status==="waiting").length}
+</b>
 </div>
-
-<h3>
-در انتظار
-</h3>
-
-<div class="statNumber">
-
-${
-students.filter(
-x=>x.status==="waiting"
-).length
-}
-
-</div>
-
-</div>
-
 
 <div class="item">
-
-<div class="icon">
-✅
-</div>
-
-<h3>
-تأیید شده
-</h3>
-
-<div class="statNumber">
-
+<div class="icon">✅</div>
+<h3>تأیید شده</h3>
+<b>
 ${
 students.filter(
-x=>
-x.status==="registered"||
+x=>x.status==="registered"||
 x.status==="approved"
 ).length
 }
-
+</b>
 </div>
-
-</div>
-
 
 <div class="item">
-
-<div class="icon">
-❌
-</div>
-
-<h3>
-رد شده
-</h3>
-
-<div class="statNumber">
-
-${
-students.filter(
-x=>x.status==="rejected"
-).length
-}
-
+<div class="icon">❌</div>
+<h3>رد شده</h3>
+<b>
+${students.filter(x=>x.status==="rejected").length}
+</b>
 </div>
 
 </div>
-
-</div>
-
 
 <div class="card">
 
-<h3>
-📋 ثبت‌نام‌ها
-</h3>
+<h3>📩 درخواست‌های رزرو کلاس</h3>
+
+<div id="classRequests">
+در حال دریافت درخواست‌ها...
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>ثبت‌نام‌ها</h3>
 
 ${
 students.length
 ?
 students.map(x=>`
 
-<div class="adminRow">
+<div class="request">
 
 <b>
-
 ${esc(x.first_name)}
 ${esc(x.last_name)}
-
 </b>
 
 <div class="muted">
 
-📱
-${esc(x.phone||"")}
-
+📱 ${esc(x.phone||"")}
 <br>
-
-🎓 پایه:
-${esc(x.level||"-")}
-
+🎓 پایه: ${esc(x.level||"-")}
 <br>
-
-✉️
-${esc(
-x.login_email||
-x.email||
-"-"
-)}
+✉️ ${esc(x.login_email||"-")}
 
 </div>
 
-
-<div
-style="margin-top:10px">
+<div style="margin-top:10px">
 
 ${
 x.status==="waiting"
 ?
 `
-
-<button
-class="btn success"
+<button class="btn success"
 onclick='approve(${JSON.stringify(x.id)})'>
-
 ✅ تأیید
-
 </button>
 
-<button
-class="btn danger"
+<button class="btn danger"
 onclick='rejectStudent(${JSON.stringify(x.id)})'>
-
 ❌ رد
-
 </button>
-
 `
 :
-(
 x.status==="registered"||
 x.status==="approved"
-)
 ?
 `
-
-<span>
+<span class="status approved">
 ✅ تأیید شده
 </span>
 
-<button
-class="btn danger"
+<button class="btn danger"
 onclick='rejectStudent(${JSON.stringify(x.id)})'>
-
 رد / حذف
-
 </button>
-
 `
 :
 `
-
-<span>
+<span class="status rejected">
 ❌ رد شده
 </span>
 
-<button
-class="btn success"
+<button class="btn success"
 onclick='approve(${JSON.stringify(x.id)})'>
-
 تأیید مجدد
-
 </button>
-
 `
 }
 
@@ -4558,133 +2675,228 @@ onclick='approve(${JSON.stringify(x.id)})'>
 
 `).join("")
 :
-`
-
-<div class="empty">
-
-📭
-
-<p>
-ثبت‌نامی وجود ندارد.
-</p>
-
-</div>
-
-`
+`<p class="muted">ثبت‌نامی وجود ندارد.</p>`
 }
 
 </div>
 
-
-<button
-class="btn secondary full"
+<button class="btn secondary full"
 onclick="logout()">
-
 خروج
-
 </button>
 
 </main>
-
 `;
 
+loadClassRequests();
+}
+
+
+/* =========================================================
+ADMIN CLASS REQUESTS
+========================================================= */
+
+async function loadClassRequests(){
+
+const el=document.getElementById("classRequests");
+if(!el)return;
+
+try{
+
+const r=await db
+.from("class_requests")
+.select("*")
+.order("created_at",{ascending:false});
+
+if(r.error)throw r.error;
+
+if(!r.data?.length){
+
+el.innerHTML=`
+<p class="muted">
+هنوز درخواست رزرو کلاسی ثبت نشده است.
+</p>
+`;
+return;
+}
+
+el.innerHTML=r.data.map(x=>`
+
+<div class="request">
+
+<h3>
+👨‍🏫 ${esc(x.teacher_name||"-")}
+</h3>
+
+<p>
+👤
+${esc(x.student_name||"-")}
+<br>
+📱 ${esc(x.student_phone||"-")}
+</p>
+
+<div class="muted">
+📅 تاریخ:
+${esc(x.requested_date||"-")}
+<br>
+⏰ ساعت:
+${esc(x.requested_time||"-")}
+<br>
+📚 نوع کلاس:
+${esc(x.class_type||"-")}
+</div>
+
+${
+x.note
+?
+`
+<div class="notice">
+📝 ${esc(x.note)}
+</div>
+`
+:
+""
+}
+
+<div>
+<span class="status ${
+x.status==="approved"
+?"approved":
+x.status==="rejected"
+?"rejected":
+"pending"
+}">
+${
+x.status==="approved"
+?"تأیید شده":
+x.status==="rejected"
+?"رد شده":
+"در انتظار پاسخ"
+}
+</span>
+</div>
+
+${
+x.status==="pending"
+?
+`
+<div style="margin-top:12px">
+
+<button class="btn success"
+onclick='respondRequest(${JSON.stringify(x.id)},"approved")'>
+✅ تأیید درخواست
+</button>
+
+<button class="btn danger"
+onclick='respondRequest(${JSON.stringify(x.id)},"rejected")'>
+❌ رد درخواست
+</button>
+
+</div>
+`
+:
+""
+}
+
+</div>
+
+`).join("");
+
+}catch(e){
+
+el.innerHTML=`
+<div class="notice">
+دریافت درخواست‌ها انجام نشد:
+${esc(e.message)}
+</div>
+`;
+
+}
+}
+
+async function respondRequest(id,status){
+
+try{
+
+const r=await db
+.from("class_requests")
+.update({
+status,
+responded_at:new Date().toISOString()
+})
+.eq("id",id);
+
+if(r.error)throw r.error;
+
+alert(
+status==="approved"
+?
+"درخواست کلاس تأیید شد. ✅"
+:
+"درخواست کلاس رد شد."
+);
+
+loadClassRequests();
+
+}catch(e){
+
+alert(
+"ثبت پاسخ انجام نشد:\n"+
+e.message
+);
+
+}
 }
 
 async function approve(id){
 
 try{
 
-const r=
-await db
+const r=await db
 .from("students")
-.update(
-{
-status:"registered"
-}
-)
+.update({status:"registered"})
 .eq("id",id);
 
-if(r.error){
-
-throw r.error;
-
-}
-
-alert(
-"زبان‌آموز با موفقیت تأیید شد."
-);
+if(r.error)throw r.error;
 
 admin();
 
 }catch(e){
 
-alert(
-"خطا در تأیید:\n"+
-e.message
-);
+alert("خطا در تأیید:\n"+e.message);
 
 }
-
 }
 
 async function rejectStudent(id){
 
-if(
-!confirm(
-"آیا از رد کردن این زبان‌آموز مطمئن هستید؟"
-)
-){
-
-return;
-
-}
-
 try{
 
-const r=
-await db
+const r=await db
 .from("students")
-.update(
-{
-status:"rejected"
-}
-)
+.update({status:"rejected"})
 .eq("id",id);
 
-if(r.error){
-
-throw r.error;
-
-}
-
-alert(
-"وضعیت زبان‌آموز به رد شده تغییر کرد."
-);
+if(r.error)throw r.error;
 
 admin();
 
 }catch(e){
 
-alert(
-"خطا در رد کردن:\n"+
-e.message
-);
+alert("خطا در رد کردن:\n"+e.message);
 
 }
-
 }
 
 
 /* =========================================================
-   LOGOUT
+LOGOUT
 ========================================================= */
 
 async function logout(){
 
 try{
-
 await db.auth.signOut();
-
 }catch(e){}
 
 S={
@@ -4696,112 +2908,60 @@ quiz:null,
 xp:0,
 level:1,
 progress:{},
-achievements:[]
+achievements:[],
+teacher:null
 };
 
 login();
-
 }
 
 
 /* =========================================================
-   AUTH STATE
-========================================================= */
-
-let booting=true;
-
-db.auth.onAuthStateChange(
-(event,session)=>{
-
-if(booting)return;
-
-if(event==="SIGNED_OUT"){
-
-if(
-!S.admin&&
-!S.student
-){
-
-login();
-
-}
-
-}
-
-}
-);
-
-
-/* =========================================================
-   STARTUP
+STARTUP
 ========================================================= */
 
 async function startup(){
 
 try{
 
-const r=
-await db.auth.getSession();
-
-const session=
-r.data?.session;
+const r=await db.auth.getSession();
+const session=r.data?.session;
 
 if(!session){
-
-booting=false;
-
 login();
-
 return;
-
 }
 
-const user=
-session.user;
+const user=session.user;
 
 if(
-(user.email||"")
-.toLowerCase()===
-"alinagheli@gmail.com"
+(user.email||"").toLowerCase()==="alinagheli@gmail.com"
 ){
 
 S.admin=true;
-
-booting=false;
-
-await admin();
-
+admin();
 return;
 
 }
-
 
 const st=
 await db
 .from("students")
 .select("*")
-.eq(
-"auth_user_id",
-user.id
-)
+.eq("auth_user_id",user.id)
 .maybeSingle();
 
 if(
-st.data&&
+st.data &&
 (
 st.data.status==="registered"||
 st.data.status==="approved"
 )
 ){
 
-S.student=
-st.data;
-
-S.admin=false;
+S.student=st.data;
 
 await loadStudentStats();
-
-booting=false;
 
 home();
 
@@ -4810,35 +2970,31 @@ return;
 }
 
 await db.auth.signOut();
-
-booting=false;
-
 login();
 
 }catch(e){
 
-try{
-
-await db.auth.signOut();
-
-}catch(_){}
-
-booting=false;
+try{await db.auth.signOut()}catch(_){}
 
 login();
 
 }
-
 }
 
+db.auth.onAuthStateChange((event,session)=>{
 
-/* =========================================================
-   START
-========================================================= */
+if(
+event==="SIGNED_OUT" &&
+!S.admin &&
+!S.student
+){
+login();
+}
+
+});
 
 startup();
 
 </script>
-
 </body>
 </html>
