@@ -5,1850 +5,1149 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#6d28d9">
 <title>AliNagheli English</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{box-sizing:border-box}
-
-html,body{
-margin:0;
-padding:0;
-width:100%;
-min-height:100%;
-font-family:Tahoma,Arial,sans-serif;
-background:#f5f3ff;
-color:#1f2937;
-}
-
-button,input,select{font-family:inherit}
-
+html,body{margin:0;padding:0}
+body{font-family:Tahoma,Arial,sans-serif;background:#f5f3ff;color:#171717;padding-bottom:82px}
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer}
 .hidden{display:none!important}
-
-#app{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:20px;
-}
-
-.login-box{
-width:100%;
-max-width:430px;
-background:#fff;
-border-radius:28px;
-padding:30px 24px;
-box-shadow:0 15px 50px #4c1d9530;
-}
-
-.logo{
-width:85px;
-height:85px;
-border-radius:25px;
-background:linear-gradient(135deg,#7c3aed,#4f46e5);
-color:#fff;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:30px;
-font-weight:bold;
-margin:0 auto 18px;
-box-shadow:0 10px 25px #6d28d950;
-}
-
-h1{
-text-align:center;
-margin:8px 0;
-font-size:25px;
-color:#4c1d95;
-}
-
-.subtitle{
-text-align:center;
-color:#6b7280;
-margin-bottom:25px;
-font-size:14px;
-}
-
-.tabs{
-display:flex;
-background:#f3f0ff;
-padding:5px;
-border-radius:15px;
-margin-bottom:20px;
-}
-
-.tabs button{
-flex:1;
-border:0;
-background:transparent;
-padding:12px;
-border-radius:11px;
-cursor:pointer;
-color:#6b7280;
-font-weight:bold;
-}
-
-.tabs button.active{
-background:#6d28d9;
-color:#fff;
-}
-
-.field{
-margin-bottom:15px;
-}
-
-.field label{
-display:block;
-font-size:13px;
-margin-bottom:7px;
-font-weight:bold;
-}
-
-.field input{
-width:100%;
-border:1px solid #ddd6fe;
-border-radius:13px;
-padding:13px;
-font-size:15px;
-outline:none;
-direction:ltr;
-text-align:left;
-}
-
-.field input:focus{
-border-color:#7c3aed;
-box-shadow:0 0 0 3px #7c3aed18;
-}
-
-.login-btn{
-width:100%;
-border:0;
-border-radius:14px;
-padding:14px;
-background:linear-gradient(135deg,#7c3aed,#5b21b6);
-color:#fff;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-margin-top:5px;
-}
-
-.login-btn:disabled{
-opacity:.6;
-}
-
-.message{
-margin-top:15px;
-padding:11px;
-border-radius:12px;
-font-size:13px;
-text-align:center;
-display:none;
-}
-
-.message.error{
-display:block;
-background:#fee2e2;
-color:#991b1b;
-}
-
-.message.success{
-display:block;
-background:#dcfce7;
-color:#166534;
-}
-
-/* DASHBOARD */
-
-#dashboard{
-min-height:100vh;
-width:100%;
-background:#f8f7ff;
-}
-
-.topbar{
-height:70px;
-background:#fff;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 20px;
-box-shadow:0 2px 15px #0000000b;
-position:sticky;
-top:0;
-z-index:10;
-}
-
-.brand{
-font-size:20px;
-font-weight:bold;
-color:#5b21b6;
-}
-
-.logout{
-border:0;
-background:#ede9fe;
-color:#5b21b6;
-padding:9px 15px;
-border-radius:10px;
-cursor:pointer;
-font-weight:bold;
-}
-
-.content{
-max-width:1100px;
-margin:auto;
-padding:25px 18px;
-}
-
-.welcome{
-background:linear-gradient(135deg,#6d28d9,#4f46e5);
-color:white;
-border-radius:22px;
-padding:25px;
-margin-bottom:20px;
-}
-
-.welcome h2{
-margin:0 0 8px;
-}
-
-.stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:12px;
-margin-bottom:20px;
-}
-
-.stat{
-background:#fff;
-border-radius:18px;
-padding:18px;
-box-shadow:0 5px 20px #00000008;
-}
-
-.stat strong{
-display:block;
-font-size:25px;
-color:#6d28d9;
-margin-bottom:5px;
-}
-
-.stat span{
-font-size:12px;
-color:#6b7280;
-}
-
-.card{
-background:#fff;
-border-radius:20px;
-padding:20px;
-box-shadow:0 5px 20px #00000008;
-margin-bottom:18px;
-}
-
-.card h3{
-margin-top:0;
-color:#4c1d95;
-}
-
-.student{
-border:1px solid #ede9fe;
-border-radius:15px;
-padding:15px;
-margin-bottom:10px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-}
-
-.student-name{
-font-weight:bold;
-}
-
-.badge{
-padding:6px 10px;
-border-radius:20px;
-font-size:11px;
-background:#ede9fe;
-color:#5b21b6;
-}
-
-.empty{
-text-align:center;
-color:#9ca3af;
-padding:25px;
-}
-
-.student-profile{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-}
-
-.profile-item{
-background:#faf9ff;
-border:1px solid #ede9fe;
-border-radius:15px;
-padding:15px;
-}
-
-.profile-label{
-font-size:11px;
-color:#6b7280;
-margin-bottom:7px;
-}
-
-.profile-value{
-font-size:15px;
-font-weight:bold;
-color:#4c1d95;
-word-break:break-word;
-}
-
-.loading{
-text-align:center;
-padding:35px 10px;
-color:#6b7280;
-}
-
-.error-box{
-background:#fee2e2;
-color:#991b1b;
-border-radius:15px;
-padding:15px;
-text-align:center;
-line-height:1.8;
-}
-
-@media(max-width:600px){
-
-.stats{
-grid-template-columns:1fr;
-}
-
-.student-profile{
-grid-template-columns:1fr;
-}
-
-.topbar{
-padding:0 12px;
-}
-
-.content{
-padding:18px 12px;
-}
-
-.brand{
-font-size:17px;
-}
-
-.welcome{
-padding:20px;
-}
-
-}
+.header{background:linear-gradient(135deg,#4c1d95,#7c3aed);color:#fff;padding:15px;position:sticky;top:0;z-index:100;box-shadow:0 3px 15px #0002}
+.headerIn{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:20px;font-weight:bold}
+.container{max-width:1100px;margin:auto;padding:15px}
+.card{background:#fff;border-radius:22px;padding:20px;margin-bottom:15px;box-shadow:0 5px 25px #0000000d}
+.hero{background:linear-gradient(135deg,#312e81,#7c3aed,#a855f7);color:#fff;border-radius:25px;padding:28px;margin-bottom:15px;box-shadow:0 15px 35px #6d28d944}
+.hero3d{position:relative;overflow:hidden}
+.hero3d:before,.hero3d:after{content:"";position:absolute;border-radius:50%;background:#ffffff18}
+.hero3d:before{width:180px;height:180px;left:-50px;top:-70px}
+.hero3d:after{width:250px;height:250px;right:-100px;bottom:-150px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.item{background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:18px;transition:.2s}
+.item:hover{transform:translateY(-3px);box-shadow:0 10px 25px #6d28d933}
+.icon{font-size:40px}
+.btn{background:#6d28d9;color:#fff;border:0;border-radius:13px;padding:12px 16px;font-weight:bold}
+.btn.full{width:100%}
+.secondary{background:#ede9fe;color:#5b21b6}
+.success{background:#dcfce7;color:#166534}
+.danger{background:#fee2e2;color:#991b1b}
+.warning{background:#fef3c7;color:#92400e}
+.login{min-height:100vh;background:linear-gradient(135deg,#2e1065,#7c3aed,#a855f7);display:flex;justify-content:center;align-items:center;padding:20px}
+.loginCard{background:#fff;width:min(430px,100%);padding:25px;border-radius:28px;box-shadow:0 20px 60px #0004}
+label{display:block;margin:10px 0 5px;font-weight:bold;font-size:13px}
+input,select,textarea{width:100%;border:1px solid #ddd6fe;border-radius:12px;padding:12px;background:#fff;outline:none}
+textarea{min-height:100px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:#7c3aed}
+.tabs{display:flex;gap:8px;margin:18px 0}
+.tab{flex:1;border:0;border-radius:12px;padding:12px;background:#f3f4f6}
+.tab.active{background:#ede9fe;color:#6d28d9;font-weight:bold}
+.bottom{position:fixed;bottom:0;left:0;right:0;height:78px;background:#fff;border-top:1px solid #ddd;z-index:200;box-shadow:0 -3px 15px #0000000d}
+.bottomIn{max-width:700px;height:100%;margin:auto;display:flex}
+.nav{flex:1;border:0;background:#fff;padding:7px 2px;color:#777;font-size:11px}
+.nav b{display:block;font-size:21px;margin-bottom:3px}
+.nav.active{color:#6d28d9;font-weight:bold}
+.lessonGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.lesson{background:#faf9ff;border:1px solid #ddd6fe;border-radius:18px;padding:17px;cursor:pointer}
+.lesson:hover{background:#f3efff}
+.lessonNo{font-size:30px;color:#6d28d9;font-weight:bold}
+.tabs2{display:flex;gap:7px;overflow:auto;margin-bottom:15px}
+.tab2{padding:11px 15px;border:0;border-radius:12px;background:#eee;white-space:nowrap}
+.tab2.active{background:#6d28d9;color:#fff}
+.sec{display:none}.sec.active{display:block}
+.wordGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+.word{border:1px solid #ddd6fe;background:#faf9ff;border-radius:15px;padding:13px;text-align:center;cursor:pointer}
+.en{direction:ltr;color:#5b21b6;font-weight:bold}
+.fa{font-size:11px;color:#777;margin-top:5px}
+.grammar{border:1px solid #e9e5ff;background:#faf9ff;padding:17px;border-radius:17px;margin-bottom:12px;line-height:2}
+.example{direction:ltr;text-align:left;background:#fff;border-radius:10px;padding:11px;font-family:Arial,sans-serif;border:1px solid #eee}
+.option{display:block;width:100%;text-align:right;background:#fff;border:1px solid #ddd6fe;border-radius:13px;padding:13px;margin:7px 0}
+.option.correct{background:#dcfce7;border-color:#22c55e}
+.option.wrong{background:#fee2e2;border-color:#ef4444}
+.feedback{text-align:center;border-radius:15px;padding:13px;margin-top:10px;font-weight:bold}
+.ok{background:#dcfce7;color:#166534}.bad{background:#fee2e2;color:#991b1b}
+.progress{height:9px;background:#eee;border-radius:99px;overflow:hidden;margin:12px 0}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,#6d28d9,#a855f7);transition:.3s}
+.score{font-size:55px;color:#6d28d9;font-weight:bold;text-align:center}
+.adminRow{border:1px solid #e5e7eb;border-radius:16px;padding:14px;margin:9px 0}
+.muted{font-size:12px;color:#777;line-height:1.9}
+.teacher{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px}
+.teacherBox{background:linear-gradient(135deg,#faf5ff,#fff);border:1px solid #e9d5ff;border-radius:22px;padding:20px;line-height:2}
+.teacherAvatar{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:48px;background:#ede9fe;margin:auto}
+.profileStat{background:#faf9ff;border:1px solid #e9d5ff;border-radius:18px;padding:15px;text-align:center}
+.profileStat b{display:block;font-size:27px;color:#6d28d9;margin-top:5px}
+.levelBar{height:12px;background:#eee;border-radius:99px;overflow:hidden;margin:10px 0}
+.levelBar i{display:block;height:100%;background:#7c3aed}
+.badge{display:inline-block;padding:8px 12px;margin:4px;border-radius:20px;background:#ede9fe;color:#5b21b6;font-size:12px}
+.notice{padding:13px;border-radius:13px;background:#fff7ed;color:#9a3412;font-size:13px;line-height:1.8;margin-bottom:12px}
+.call{display:block;text-decoration:none;text-align:center;margin:12px 0}
+.request{background:#f8f5ff;border:1px solid #ddd6fe;border-radius:18px;padding:15px;margin-top:15px}
+.examRow{border:1px solid #e5e7eb;border-radius:15px;padding:14px;margin:8px 0}
+.examScore{font-size:25px;font-weight:bold;color:#6d28d9}
+.resultBox{background:#faf9ff;border:1px solid #ddd6fe;border-radius:18px;padding:18px}
+@media(max-width:600px){.container{padding:10px}.card{padding:16px;border-radius:18px}.hero{padding:20px}}
 </style>
 </head>
 
 <body>
-
-<!-- LOGIN -->
-
-<div id="app">
-
-<div id="loginPage" class="login-box">
-
-<div class="logo">AN</div>
-
-<h1>AliNagheli English</h1>
-
-<div class="subtitle">
-سامانه آموزش زبان انگلیسی
-</div>
-
-<div class="tabs">
-
-<button
-id="studentTab"
-class="active"
-type="button"
-onclick="setLoginType('student')">
-زبان‌آموز
-</button>
-
-<button
-id="adminTab"
-type="button"
-onclick="setLoginType('admin')">
-مدیر
-</button>
-
-</div>
-
-<form id="loginForm">
-
-<div class="field">
-
-<label id="usernameLabel">
-شماره موبایل
-</label>
-
-<input
-id="username"
-type="text"
-inputmode="tel"
-autocomplete="username"
-placeholder="09123456789"
-required>
-
-</div>
-
-<div class="field">
-
-<label>
-رمز عبور
-</label>
-
-<input
-id="password"
-type="password"
-autocomplete="current-password"
-placeholder="رمز عبور"
-required>
-
-</div>
-
-<button
-id="loginBtn"
-class="login-btn"
-type="submit">
-ورود
-</button>
-
-</form>
-
-<div id="message" class="message"></div>
-
-</div>
-
-</div>
-
-
-<!-- DASHBOARD -->
-
-<div id="dashboard" class="hidden">
-
-<div class="topbar">
-
-<div class="brand">
-AliNagheli English
-</div>
-
-<button
-class="logout"
-type="button"
-onclick="logout()">
-خروج
-</button>
-
-</div>
-
-<div class="content">
-
-<div class="welcome">
-
-<h2 id="welcomeTitle">
-خوش آمدید 🌟
-</h2>
-
-<div id="welcomeText">
-به سامانه AliNagheli English خوش آمدید.
-</div>
-
-</div>
-
-
-<!-- ADMIN -->
-
-<div id="adminPanel" class="hidden">
-
-<div class="stats">
-
-<div class="stat">
-
-<strong id="waitingCount">
-0
-</strong>
-
-<span>
-در صف انتظار
-</span>
-
-</div>
-
-<div class="stat">
-
-<strong id="registeredCount">
-0
-</strong>
-
-<span>
-ثبت‌نام شده
-</span>
-
-</div>
-
-<div class="stat">
-
-<strong id="graduateCount">
-0
-</strong>
-
-<span>
-فارغ‌التحصیل
-</span>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h3>
-زبان‌آموزان
-</h3>
-
-<div id="studentsList"></div>
-
-</div>
-
-</div>
-
-
-<!-- STUDENT -->
-
-<div id="studentPanel" class="hidden">
-
-<div class="card">
-
-<h3>
-پروفایل زبان‌آموز
-</h3>
-
-<div id="studentInfo">
-<div class="loading">
-در حال دریافت اطلاعات...
-</div>
-</div>
-
-</div>
-
-<div class="card">
-
-<h3>
-وضعیت ثبت‌نام</h3>
-
-<div id="studentStatusCard"></div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+<div id="app"></div>
 
 <script>
-
-/* =====================================================
-   SUPABASE
-===================================================== */
-
-const SUPABASE_URL =
-"https://YOUR_PROJECT_ID.supabase.co";
-
-const SUPABASE_ANON_KEY =
-"YOUR_SUPABASE_ANON_KEY";
-
-
-/* =====================================================
-   STATE
-===================================================== */
-
-let loginType = "student";
-
-let currentUser = null;
-
-let currentAccessToken = null;
-
-
-/* =====================================================
-   ELEMENTS
-===================================================== */
-
-const loginPage =
-document.getElementById("loginPage");
-
-const dashboard =
-document.getElementById("dashboard");
-
-const loginForm =
-document.getElementById("loginForm");
-
-const username =
-document.getElementById("username");
-
-const password =
-document.getElementById("password");
-
-const loginBtn =
-document.getElementById("loginBtn");
-
-const message =
-document.getElementById("message");
-
-const studentTab =
-document.getElementById("studentTab");
-
-const adminTab =
-document.getElementById("adminTab");
-
-const adminPanel =
-document.getElementById("adminPanel");
-
-const studentPanel =
-document.getElementById("studentPanel");
-
-const welcomeTitle =
-document.getElementById("welcomeTitle");
-
-const welcomeText =
-document.getElementById("welcomeText");
-
-
-/* =====================================================
-   LOGIN TYPE
-===================================================== */
-
-function setLoginType(type){
-
-loginType = type;
-
-studentTab.classList.toggle(
-"active",
-type === "student"
-);
-
-adminTab.classList.toggle(
-"active",
-type === "admin"
-);
-
-document.getElementById(
-"usernameLabel"
-).textContent =
-type === "student"
-? "شماره موبایل"
-: "نام کاربری مدیر";
-
-username.placeholder =
-type === "student"
-? "09123456789"
-: "admin";
-
-username.inputMode =
-type === "student"
-? "tel"
-: "text";
-
-clearMessage();
-
-}
-
-
-/* =====================================================
-   MESSAGE
-===================================================== */
-
-function showMessage(
-text,
-type = "error"
-){
-
-message.textContent = text;
-
-message.className =
-"message " + type;
-
-}
-
-function clearMessage(){
-
-message.textContent = "";
-
-message.className =
-"message";
-
-}
-
-
-/* =====================================================
-   AUTH REQUEST
-===================================================== */
-
-async function authLogin(
-email,
-pass
-){
-
-const response =
-await fetch(
-SUPABASE_URL +
-"/auth/v1/token?grant_type=password",
-{
-method:"POST",
-
-headers:{
-"apikey":SUPABASE_ANON_KEY,
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-email:email,
-password:pass
-})
-}
-);
-
-const text =
-await response.text();
-
-let data = {};
-
-try{
-data =
-text
-? JSON.parse(text)
-: {};
-}catch{
-data = {};
-}
-
-if(!response.ok){
-
-throw new Error(
-data.error_description ||
-data.msg ||
-data.message ||
-"Invalid login credentials"
-);
-
-}
-
-return data;
-
-}
-
-
-/* =====================================================
-   GENERIC SUPABASE REQUEST
-===================================================== */
-
-async function supabaseRequest(
-path,
-options = {},
-token = null
-){
-
-const authToken =
-token ||
-currentAccessToken ||
-SUPABASE_ANON_KEY;
-
-const response =
-await fetch(
-SUPABASE_URL + path,
-{
-...options,
-
-headers:{
-"apikey":
-SUPABASE_ANON_KEY,
-
-"Authorization":
-"Bearer " + authToken,
-
-"Content-Type":
-"application/json",
-
-...(options.headers || {})
-}
-}
-);
-
-const text =
-await response.text();
-
-let data = null;
-
-try{
-
-data =
-text
-? JSON.parse(text)
-: null;
-
-}catch{
-
-data = text;
-
-}
-
-if(!response.ok){
-
-let errorText =
-"خطا در ارتباط با سرور";
-
-if(data){
-
-errorText =
-data.message ||
-data.error_description ||
-data.hint ||
-data.details ||
-data.error ||
-errorText;
-
-}
-
-throw new Error(errorText);
-
-}
-
-return data;
-
-}
-
-
-/* =====================================================
-   LOGIN FORM
-===================================================== */
-
-loginForm.addEventListener(
-"submit",
-async function(e){
-
-e.preventDefault();
-
-clearMessage();
-
-const userValue =
-username.value.trim();
-
-const passValue =
-password.value;
-
-if(!userValue || !passValue){
-
-showMessage(
-"اطلاعات ورود را کامل وارد کنید."
-);
-
-return;
-
-}
-
-loginBtn.disabled = true;
-
-loginBtn.textContent =
-"در حال ورود...";
-
-
-try{
-
-if(loginType === "student"){
-
-await studentLogin(
-userValue,
-passValue
-);
-
-}else{
-
-await adminLogin(
-userValue,
-passValue
-);
-
-}
-
-}catch(error){
-
-console.error(
-"LOGIN ERROR:",
-error
-);
-
-showMessage(
-error.message ||
-"ورود ناموفق بود."
-);
-
-}finally{
-
-loginBtn.disabled = false;
-
-loginBtn.textContent =
-"ورود";
-
-}
-
-}
-);
-
-
-/* =====================================================
-   STUDENT LOGIN
-===================================================== */
-
-async function studentLogin(
-phone,
-pass
-){
-
-const normalizedPhone =
-phone.replace(/\D/g,"");
-
-if(
-normalizedPhone.length < 10 ||
-normalizedPhone.length > 12
-){
-
-throw new Error(
-"شماره موبایل صحیح نیست."
-);
-
-}
-
-
-/*
-=========================================================
-ایمیل داخلی زبان‌آموز
-=========================================================
-*/
-
-const email =
-normalizedPhone +
-"@alinagheli.app";
-
-
-/*
-=========================================================
-ورود به Supabase Auth
-=========================================================
-*/
-
-const authData =
-await authLogin(
-email,
-pass
-);
-
-if(
-!authData ||
-!authData.access_token
-){
-
-throw new Error(
-"ورود زبان‌آموز انجام نشد."
-);
-
-}
-
-currentAccessToken =
-authData.access_token;
-
-
-/*
-=========================================================
-کاربر Auth
-=========================================================
-*/
-
-const authUser =
-authData.user || {};
-
-
-
-/*
-=========================================================
-پیدا کردن زبان‌آموز
-
-اول با auth_user_id
-
-اگر پیدا نشد با شماره موبایل
-=========================================================
-*/
-
-let students = [];
-
-
-/*
-اول auth_user_id
-*/
-
-if(authUser.id){
-
-try{
-
-students =
-await supabaseRequest(
-"/rest/v1/students?auth_user_id=eq." +
-encodeURIComponent(authUser.id) +
-"&select=*",
-{},
-currentAccessToken
-);
-
-}catch(error){
-
-console.warn(
-"auth_user_id lookup failed:",
-error
-);
-
-students = [];
-
-}
-
-}
-
-
-/*
-اگر پیدا نشد، شماره موبایل
-*/
-
-if(
-!students ||
-students.length === 0
-){
-
-students =
-await supabaseRequest(
-"/rest/v1/students?phone=eq." +
-encodeURIComponent(normalizedPhone) +
-"&select=*",
-{},
-currentAccessToken
-);
-
-}
-
-
-/*
-اگر باز هم پیدا نشد
-*/
-
-if(
-!students ||
-students.length === 0
-){
-
-throw new Error(
-"حساب زبان‌آموز پیدا نشد. شماره موبایل ثبت‌شده را بررسی کنید."
-);
-
-}
-
-
-/*
-=========================================================
-ساخت کاربر
-=========================================================
-*/
-
-const student =
-students[0];
-
-currentUser = {
-
-type:"student",
-
-data:student,
-
-authUser:authUser,
-
-token:currentAccessToken
-
+const SUPABASE_URL="https://kapzyedzjecnfxevjisq.supabase.co";
+const SUPABASE_KEY="sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const ACCESS_FUNCTION=SUPABASE_URL+"/functions/v1/student-access";
+
+let S={
+ student:null,admin:false,grade:null,lesson:null,quiz:null,
+ xp:0,level:1,progress:{},achievements:[],exams:[]
 };
 
+let examRecords=JSON.parse(localStorage.getItem("AN_EXAMS")||"[]");
 
-/*
-=========================================================
-ذخیره امن‌تر نشست
-=========================================================
-*/
-
-localStorage.setItem(
-"ali_current_user",
-JSON.stringify({
-
-type:"student",
-
-data:student
-
-})
-);
-
-
-/*
-=========================================================
-نمایش داشبورد
-
-مهم:
-دیگر منتظر درخواست اضافی نمی‌مانیم.
-=========================================================
-*/
-
-openStudentDashboard(
-student
-);
-
+function esc(x){
+ return String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+function normalizePhone(x){return String(x||"").replace(/\D/g,"")}
+function saveLocal(){localStorage.setItem("AN_EXAMS",JSON.stringify(examRecords))}
+function speak(text){
+ if(!window.speechSynthesis){alert("مرورگر شما از تلفظ صوتی پشتیبانی نمی‌کند.");return}
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(text);
+ u.lang="en-US";u.rate=.75;
+ speechSynthesis.resume();speechSynthesis.speak(u);
+}
+async function accessFunction(payload){
+ const r=await fetch(ACCESS_FUNCTION,{
+  method:"POST",
+  headers:{"Content-Type":"application/json","apikey":SUPABASE_KEY},
+  body:JSON.stringify(payload)
+ });
+ let data=null;try{data=await r.json()}catch(e){}
+ if(!r.ok||data?.ok===false)throw new Error(data?.error||"خطا در ارتباط با سرور.");
+ return data;
 }
 
+/* BOOKS */
 
-/* =====================================================
-   ADMIN LOGIN
-===================================================== */
-
-async function adminLogin(
-user,
-pass
-){
-
-let email =
-user.trim();
-
-if(
-!email.includes("@")
-){
-
-email =
-email.toLowerCase() +
-"@alinagheli.app";
-
-}
-
-const authData =
-await authLogin(
-email,
-pass
-);
-
-currentAccessToken =
-authData.access_token;
-
-currentUser = {
-
-type:"admin",
-
-token:currentAccessToken,
-
-data:
-authData.user || {}
-
+const books={
+7:{title:"Prospect 1",lessons:[
+"Lesson 1: My Name","Lesson 2: My Classmates","Lesson 3: My Age",
+"Lesson 4: My Family","Lesson 5: My Appearance","Lesson 6: My House",
+"Lesson 7: My Address","Lesson 8: My Favorite Food"]},
+8:{title:"Prospect 2",lessons:[
+"Lesson 1: My Nationality","Lesson 2: My Week","Lesson 3: My Abilities",
+"Lesson 4: My Health","Lesson 5: My City","Lesson 6: My Hobbies",
+"Lesson 7: My Services","Lesson 8: My Plans"]},
+9:{title:"Prospect 3",lessons:[
+"Lesson 1: Personality","Lesson 2: Travel","Lesson 3: Festivals and Ceremonies",
+"Lesson 4: Services","Lesson 5: Media","Lesson 6: Health and Medicine",
+"Lesson 7: Sports","Lesson 8: Nature"]},
+10:{title:"Vision 1",lessons:[
+"Lesson 1: Saving Nature","Lesson 2: Wonders of Creation",
+"Lesson 3: The Value of Knowledge","Lesson 4: Traveling the World"]},
+11:{title:"Vision 2",lessons:[
+"Lesson 1: Understanding People","Lesson 2: A Healthy Lifestyle",
+"Lesson 3: Art and Culture","Lesson 4: The World of Technology"]},
+12:{title:"Vision 3",lessons:[
+"Lesson 1: Sense of Appreciation","Lesson 2: Look It Up",
+"Lesson 3: Renewable Energy","Lesson 4: The Power of Nature"]}
 };
 
-localStorage.setItem(
-"ali_current_user",
-JSON.stringify({
+/* EXTENDED VOCABULARY */
 
-type:"admin",
+const words={
+1:[
+["student","دانش‌آموز"],["teacher","معلم"],["school","مدرسه"],["book","کتاب"],
+["friend","دوست"],["class","کلاس"],["name","نام"],["English","انگلیسی"],
+["lesson","درس"],["schoolbag","کیف مدرسه"],["pencil","مداد"],["pen","خودکار"],
+["desk","میز تحریر"],["chair","صندلی"],["board","تخته"],["classroom","کلاس درس"],
+["learn","یاد گرفتن"],["study","مطالعه کردن"],["read","خواندن"],["write","نوشتن"]],
+2:[
+["classmate","همکلاسی"],["study","مطالعه کردن"],["learn","یاد گرفتن"],
+["subject","درس"],["favorite","مورد علاقه"],["science","علوم"],["math","ریاضی"],
+["English","انگلیسی"],["Persian","فارسی"],["physical education","تربیت بدنی"],
+["history","تاریخ"],["geography","جغرافیا"],["question","سؤال"],["answer","پاسخ"],
+["school year","سال تحصیلی"],["teacher","معلم"],["friend","دوست"],["group","گروه"]],
+3:[
+["age","سن"],["birthday","تولد"],["month","ماه"],["year","سال"],
+["January","ژانویه"],["February","فوریه"],["March","مارس"],["April","آوریل"],
+["May","مه"],["June","ژوئن"],["July","ژوئیه"],["August","اوت"],
+["September","سپتامبر"],["October","اکتبر"],["November","نوامبر"],["December","دسامبر"],
+["today","امروز"],["tomorrow","فردا"],["yesterday","دیروز"],["date","تاریخ"]],
+4:[
+["mother","مادر"],["father","پدر"],["brother","برادر"],["sister","خواهر"],
+["family","خانواده"],["job","شغل"],["parent","والد"],["son","پسر"],
+["daughter","دختر"],["grandfather","پدربزرگ"],["grandmother","مادربزرگ"],
+["uncle","عمو/دایی"],["aunt","عمه/خاله"],["cousin","پسرخاله/دخترخاله و..."],
+["husband","شوهر"],["wife","همسر"],["child","کودک"],["children","فرزندان"]],
+5:[
+["tall","قدبلند"],["short","کوتاه"],["young","جوان"],["old","پیر"],
+["shirt","پیراهن"],["trousers","شلوار"],["red","قرمز"],["blue","آبی"],
+["green","سبز"],["black","مشکی"],["white","سفید"],["brown","قهوه‌ای"],
+["hair","مو"],["eye","چشم"],["face","صورت"],["beautiful","زیبا"],
+["handsome","خوش‌تیپ"],["thin","لاغر"],["fat","چاق"],["strong","قوی"]],
+6:[
+["house","خانه"],["room","اتاق"],["kitchen","آشپزخانه"],["table","میز"],
+["chair","صندلی"],["park","پارک"],["under","زیر"],["on","روی"],
+["bedroom","اتاق خواب"],["bathroom","حمام"],["living room","اتاق نشیمن"],
+["garden","باغچه"],["door","در"],["window","پنجره"],["wall","دیوار"],
+["floor","کف/طبقه"],["bed","تخت"],["sofa","مبل"],["lamp","چراغ"],["near","نزدیک"]],
+7:[
+["phone","تلفن"],["number","شماره"],["address","نشانی"],["street","خیابان"],
+["morning","صبح"],["evening","عصر"],["city","شهر"],["home","خانه"],
+["telephone","تلفن"],["mobile","موبایل"],["country","کشور"],["Iran","ایران"],
+["road","جاده"],["avenue","خیابان"],["neighborhood","محله"],["live","زندگی کردن"],
+["call","تماس گرفتن"],["message","پیام"],["seven","هفت"],["o'clock","ساعت"]],
+8:[
+["food","غذا"],["rice","برنج"],["bread","نان"],["apple","سیب"],
+["banana","موز"],["tea","چای"],["water","آب"],["juice","آبمیوه"],
+["milk","شیر"],["cheese","پنیر"],["egg","تخم مرغ"],["meat","گوشت"],
+["chicken","مرغ"],["fish","ماهی"],["fruit","میوه"],["vegetable","سبزیجات"],
+["breakfast","صبحانه"],["lunch","ناهار"],["dinner","شام"],["hungry","گرسنه"]]
+};
 
-data:
-authData.user || {}
+/* GRAMMAR */
 
-})
-);
-
-openAdminDashboard();
-
-}
-
-
-/* =====================================================
-   SHOW ADMIN
-===================================================== */
-
-async function openAdminDashboard(){
-
-loginPage.classList.add(
-"hidden"
-);
-
-dashboard.classList.remove(
-"hidden"
-);
-
-adminPanel.classList.remove(
-"hidden"
-);
-
-studentPanel.classList.add(
-"hidden"
-);
-
-welcomeTitle.textContent =
-"سلام مدیر عزیز 👋";
-
-welcomeText.textContent =
-"مدیریت زبان‌آموزان AliNagheli English";
-
-await loadStudents();
-
-}
-
-
-/* =====================================================
-   SHOW STUDENT
-===================================================== */
-
-function openStudentDashboard(
-student
-){
-
-/*
-مهم‌ترین اصلاح:
-
-اول داشبورد را نمایش می‌دهیم
-و بعد اطلاعات را render می‌کنیم.
-*/
-
-loginPage.classList.add(
-"hidden"
-);
-
-dashboard.classList.remove(
-"hidden"
-);
-
-adminPanel.classList.add(
-"hidden"
-);
-
-studentPanel.classList.remove(
-"hidden"
-);
-
-
-/*
-اگر اطلاعات نام موجود باشد
-*/
-
-const firstName =
-student &&
-student.first_name
-? student.first_name
-: "زبان‌آموز";
-
-
-welcomeTitle.textContent =
-"سلام " +
-escapeHtml(firstName) +
-" 👋";
-
-
-welcomeText.textContent =
-"به پنل زبان‌آموزی خودت خوش آمدی.";
-
-
-/*
-رندر بدون هیچ درخواست اضافی
-*/
-
-try{
-
-renderStudent(
-student
-);
-
-}catch(error){
-
-console.error(
-"STUDENT RENDER ERROR:",
-error
-);
-
-document.getElementById(
-"studentInfo"
-).innerHTML =
-
-'<div class="error-box">' +
-"نمایش اطلاعات زبان‌آموز با خطا مواجه شد." +
-"</div>";
-
-}
-
-}
-
-
-/* =====================================================
-   STUDENT RENDER
-===================================================== */
-
-function renderStudent(
-student
-){
-
-const info =
-document.getElementById(
-"studentInfo"
-);
-
-const statusCard =
-document.getElementById(
-"studentStatusCard"
-);
-
-
-if(!student){
-
-info.innerHTML =
-'<div class="error-box">اطلاعات زبان‌آموز موجود نیست.</div>';
-
-return;
-
-}
-
-
-const fullName =
-(
-student.first_name || ""
-) +
-" " +
-(
-student.last_name || ""
-);
-
-
-const status =
-student.status ||
-"waiting";
-
-
-const fields = [
-
-[
-"نام و نام خانوادگی",
-fullName.trim() || "-"
+const grammar={
+1:[
+["ضمیرهای فاعلی","I am a student.","من دانش‌آموز هستم.","I برای خودمان، You برای مخاطب و He/She برای یک شخص استفاده می‌شود."],
+["فعل to be","She is my friend.","او دوست من است.","در زمان حال از am، is و are استفاده می‌کنیم: I am، He/She is، You/We/They are."],
+["جمله منفی","I am not tired.","من خسته نیستم.","برای منفی کردن فعل to be، not را بعد از am/is/are قرار می‌دهیم."],
+["سؤال بله/خیر","Are you a student?","آیا دانش‌آموز هستی؟","در سؤال با to be، فعل قبل از فاعل می‌آید: Are you...? Is he...?"],
+["سؤال با What","What is your name?","اسمت چیست؟","What برای پرسیدن درباره یک چیز یا اطلاعات استفاده می‌شود."],
+["سؤال با Who","Who is she?","او کیست؟","Who برای پرسیدن درباره شخص استفاده می‌شود."]
 ],
-
-[
-"شماره موبایل",
-student.phone || "-"
+2:[
+["Simple Present","I study English every day.","من هر روز انگلیسی می‌خوانم.","برای عادت‌ها و کارهای تکراری از حال ساده استفاده می‌کنیم."],
+["سوم شخص مفرد","She studies English.","او انگلیسی می‌خواند.","در جمله مثبت، با He/She/It معمولاً s یا es به فعل اضافه می‌شود."],
+["منفی حال ساده","He does not play football.","او فوتبال بازی نمی‌کند.","برای He/She/It از does not و برای I/You/We/They از do not استفاده می‌کنیم."],
+["سؤال حال ساده","Do you like English?","آیا انگلیسی را دوست داری؟","برای سؤال حال ساده از Do یا Does در ابتدای جمله استفاده می‌شود."],
+["Where","Where do you live?","کجا زندگی می‌کنی؟","Where برای پرسیدن مکان استفاده می‌شود."],
+["What","What do you study?","چه چیزی مطالعه می‌کنی؟","What برای پرسیدن درباره چیزها یا اطلاعات استفاده می‌شود."]
 ],
-
-[
-"سطح",
-student.level || "-"
+3:[
+["How old","How old are you?","چند سالت است؟","برای پرسیدن سن از How old are you? استفاده می‌کنیم."],
+["گفتن سن","I am thirteen years old.","من سیزده ساله هستم.","سن را با ساختار I am + number + years old بیان می‌کنیم."],
+["Birthday","My birthday is in May.","تولد من در ماه مه است.","برای ماه‌ها معمولاً از حرف اضافه in استفاده می‌کنیم."],
+["تاریخ","My birthday is on May 5th.","تولد من پنجم مه است.","برای تاریخ مشخص معمولاً از on استفاده می‌کنیم."],
+["When","When is your birthday?","تولدت چه زمانی است؟","When برای پرسیدن زمان یک رویداد استفاده می‌شود."],
+["There is","There is a birthday party.","یک جشن تولد وجود دارد.","There is برای یک اسم مفرد یا غیرقابل‌شمارش استفاده می‌شود."]
 ],
-
-[
-"کتاب",
-student.book || "-"
+4:[
+["have / has","She has two brothers.","او دو برادر دارد.","Have با I/You/We/They و has با He/She/It می‌آید."],
+["صفات ملکی","This is my father.","این پدر من است.","my، your، his، her، our و their مالکیت را نشان می‌دهند."],
+["Who","Who is he?","او کیست؟","Who برای پرسیدن درباره هویت یک شخص استفاده می‌شود."],
+["Possessive 's","Ali's father is a teacher.","پدر علی معلم است.","برای نشان دادن مالکیت انسان‌ها می‌توان از 's استفاده کرد."],
+["جمع","I have two sisters.","من دو خواهر دارم.","بیشتر اسم‌های قابل‌شمارش برای جمع شدن s یا es می‌گیرند."]
 ],
-
-[
-"روز کلاس",
-student.class_day || "-"
+5:[
+["صفات","She is tall.","او قدبلند است.","صفت ویژگی یک اسم یا شخص را توصیف می‌کند."],
+["This / That","This is my bag.","این کیف من است.","This برای چیز نزدیک و That برای چیز دور استفاده می‌شود."],
+["These / Those","These are my books.","این‌ها کتاب‌های من هستند.","These جمع نزدیک و Those جمع دور است."],
+["رنگ‌ها","It is a blue shirt.","این یک پیراهن آبی است.","در انگلیسی صفت رنگ معمولاً قبل از اسم می‌آید."],
+["have got","He has got black hair.","او موی مشکی دارد.","have got و has got برای بیان داشتن و مالکیت نیز استفاده می‌شوند."]
 ],
-
-[
-"ساعت کلاس",
-buildClassTime(student)
+6:[
+["There is / There are","There is a table in the room.","یک میز در اتاق وجود دارد.","There is برای مفرد و There are برای جمع استفاده می‌شود."],
+["حروف اضافه مکان","The book is on the table.","کتاب روی میز است.","on، under، in، next to و near مکان را مشخص می‌کنند."],
+["Present Continuous","She is reading.","او در حال مطالعه است.","برای کاری که همین حالا در حال انجام است از am/is/are + verb-ing استفاده می‌کنیم."],
+["سؤال حال استمراری","What are you doing?","چه کار می‌کنی؟","در سؤال حال استمراری، am/is/are قبل از فاعل می‌آید."],
+["منفی حال استمراری","He isn't sleeping.","او در حال خوابیدن نیست.","not بعد از am/is/are قرار می‌گیرد."]
 ],
-
-[
-"هدف",
-student.goal || "-"
+7:[
+["Can","I can swim.","من می‌توانم شنا کنم.","Can توانایی یا امکان را بیان می‌کند و بعد از آن شکل ساده فعل می‌آید."],
+["Can سؤال","Can you play football?","می‌توانی فوتبال بازی کنی؟","برای سؤال، Can در ابتدای جمله قرار می‌گیرد."],
+["Imperative","Open the door.","در را باز کن.","در جمله امری معمولاً فاعل حذف می‌شود و فعل در ابتدای جمله می‌آید."],
+["at برای ساعت","I get up at seven.","من ساعت هفت بیدار می‌شوم.","برای ساعت مشخص معمولاً از at استفاده می‌کنیم."],
+["Where","Where do you live?","کجا زندگی می‌کنی؟","Where برای مکان استفاده می‌شود."]
 ],
-
-[
-"تعداد جلسات",
-student.sessions ?? "-"
+8:[
+["I'd like","I'd like some tea.","من مقداری چای می‌خواهم.","I'd like شکل مؤدبانه برای بیان خواسته است."],
+["some","I'd like some water.","من مقداری آب می‌خواهم.","some معمولاً در جمله‌های مثبت و درخواست‌های مؤدبانه به کار می‌رود."],
+["any","Do you have any juice?","آیا آبمیوه‌ای داری؟","any معمولاً در سؤال‌ها و جمله‌های منفی استفاده می‌شود."],
+["Can I have...?","Can I have some rice?","می‌توانم مقداری برنج داشته باشم؟","این ساختار یک درخواست مؤدبانه برای گرفتن چیزی است."],
+["How much","How much water do you need?","چقدر آب نیاز داری؟","How much برای اسم‌های غیرقابل‌شمارش استفاده می‌شود."]
 ]
+};
 
+/* ADVANCED GRAMMAR FOR 10-12 */
+
+grammar[10]=[
+["Present Perfect","Scientists have discovered new species.","دانشمندان گونه‌های جدیدی کشف کرده‌اند.","برای تجربه‌ها یا اتفاق‌هایی که ارتباطی با حال دارند از have/has + past participle استفاده می‌کنیم."],
+["Passive Voice","Trees are planted every year.","درختان هر سال کاشته می‌شوند.","در مجهول، تمرکز روی عمل یا نتیجه است و از be + past participle استفاده می‌کنیم."],
+["Relative Clauses","Animals that live here need protection.","حیواناتی که اینجا زندگی می‌کنند به حفاظت نیاز دارند.","that و which می‌توانند اطلاعات بیشتری درباره اسم قبل از خود بدهند."],
+["First Conditional","If we protect nature, we will save animals.","اگر از طبیعت محافظت کنیم، حیوانات را نجات خواهیم داد.","برای شرط واقعی یا محتمل آینده از If + present و will + verb استفاده می‌کنیم."],
+["Modal Verbs","We should protect endangered animals.","ما باید از حیوانات در معرض خطر محافظت کنیم.","should برای توصیه و must برای الزام قوی استفاده می‌شود."],
+["Gerund / Infinitive","Protecting nature is important.","محافظت از طبیعت مهم است.","Gerund با ing می‌تواند نقش اسم داشته باشد و infinitive معمولاً با to می‌آید."],
+["Comparatives","This animal is more endangered than that one.","این حیوان بیشتر از آن یکی در معرض خطر است.","برای صفات بلند معمولاً more + adjective + than استفاده می‌شود."],
+["Superlatives","This is the most important problem.","این مهم‌ترین مشکل است.","برای مقایسه بیش از دو مورد از the most یا صفت برترین استفاده می‌کنیم."]
 ];
 
+grammar[11]=[
+["Present Perfect","People have changed their lifestyles.","مردم سبک زندگی خود را تغییر داده‌اند.","Present Perfect رابطه‌ای بین گذشته و حال ایجاد می‌کند و معمولاً زمان دقیق گذشته را مشخص نمی‌کند."],
+["Past Perfect","She had finished her work before dinner.","او قبل از شام کارش را تمام کرده بود.","Past Perfect برای کاری است که قبل از کار دیگری در گذشته اتفاق افتاده است."],
+["Second Conditional","If I had more time, I would exercise every day.","اگر وقت بیشتری داشتم، هر روز ورزش می‌کردم.","Second Conditional برای موقعیت‌های فرضی یا غیرواقعی استفاده می‌شود."],
+["Passive Voice","The painting was created by a famous artist.","این نقاشی توسط یک هنرمند مشهور خلق شد.","در مجهول، مفعول جمله معلوم به جایگاه فاعل می‌آید."],
+["Reported Speech","He said that he was tired.","او گفت که خسته بود.","در نقل قول غیرمستقیم، زمان و ضمایر ممکن است با توجه به جمله اصلی تغییر کنند."],
+["Relative Clauses","A person who exercises regularly is usually healthier.","فردی که مرتب ورزش می‌کند معمولاً سالم‌تر است.","who برای افراد و which/that برای اشیا و حیوانات استفاده می‌شود."],
+["Modal Perfect","You should have studied more.","باید بیشتر مطالعه می‌کردی.","should have + past participle برای بیان انتقاد یا کاری که بهتر بود در گذشته انجام می‌شد."],
+["Too / Enough","This exercise is too difficult for me.","این تمرین برای من بیش از حد سخت است.","too یعنی بیش از حد و enough یعنی به اندازه کافی."]
+];
 
-info.innerHTML =
+grammar[12]=[
+["Third Conditional","If they had used renewable energy, they would have reduced pollution.","اگر از انرژی تجدیدپذیر استفاده کرده بودند، آلودگی را کاهش داده بودند.","Third Conditional درباره شرایط فرضی در گذشته و نتیجه‌ای است که دیگر تغییر نمی‌کند."],
+["Mixed Conditional","If we had protected forests, the air would be cleaner now.","اگر از جنگل‌ها محافظت کرده بودیم، هوا الان پاک‌تر بود.","Mixed Conditional گذشته را به نتیجه‌ای در زمان حال مرتبط می‌کند."],
+["Passive with Modals","More energy should be saved.","باید انرژی بیشتری ذخیره شود.","در مجهول همراه modal از modal + be + past participle استفاده می‌کنیم."],
+["Causative","We had our solar panels installed.","ما نصب پنل‌های خورشیدی‌مان را انجام دادیم.","have/get + object + past participle برای کاری است که شخص دیگری برای ما انجام می‌دهد."],
+["Future Perfect","By 2030, scientists will have developed better technology.","تا سال ۲۰۳۰ دانشمندان فناوری بهتری توسعه داده خواهند بود.","Future Perfect کاری را توصیف می‌کند که تا زمان مشخصی در آینده کامل شده است."],
+["Noun Clauses","What scientists discover can change our future.","آنچه دانشمندان کشف می‌کنند می‌تواند آینده ما را تغییر دهد.","یک عبارت می‌تواند در جمله نقش اسم و فاعل یا مفعول را داشته باشد."],
+["Inversion","Never have we seen such a serious problem.","هرگز چنین مشکل جدی‌ای ندیده‌ایم.","بعد از برخی قیدهای منفی در ساختار رسمی، جای فاعل و auxiliary تغییر می‌کند."],
+["Advanced Relative Clause","The technology, which was developed recently, uses less energy.","این فناوری که اخیراً توسعه یافته انرژی کمتری مصرف می‌کند.","عبارت موصولی توضیح اضافی درباره اسم می‌دهد و معمولاً بین ویرگول قرار می‌گیرد."]
+];
 
-'<div class="student-profile">' +
+/* XP */
 
-fields.map(
-item =>
+function calculateLevel(xp){return Math.max(1,Math.floor(Number(xp||0)/100)+1)}
+function xpForLevel(level){return (level-1)*100}
 
-'<div class="profile-item">' +
-
-'<div class="profile-label">' +
-escapeHtml(item[0]) +
-"</div>" +
-
-'<div class="profile-value">' +
-escapeHtml(String(item[1])) +
-"</div>" +
-
-"</div>"
-
-).join("") +
-
-"</div>";
-
-
-/*
-کارت وضعیت
-*/
-
-let statusColor =
-"#ede9fe";
-
-let statusTextValue =
-statusText(status);
-
-
-if(status === "registered"){
-
-statusColor =
-"#dcfce7";
-
-}else if(status === "waiting"){
-
-statusColor =
-"#fef3c7";
-
-}else if(
-status === "graduate" ||
-status === "graduated"
-){
-
-statusColor =
-"#dbeafe";
-
+async function loadStudentStats(){
+ if(!S.student)return;
+ S.xp=0;S.level=1;S.progress={};S.achievements=[];S.exams=[];
+ try{
+  const r=await db.from("student_xp").select("xp,level").eq("student_id",S.student.id).maybeSingle();
+  if(r.data){S.xp=Number(r.data.xp||0);S.level=Number(r.data.level||calculateLevel(S.xp))}
+ }catch(e){}
+ try{
+  const r=await db.from("student_progress").select("lesson_id,progress,completed").eq("student_id",S.student.id);
+  (r.data||[]).forEach(x=>S.progress[x.lesson_id]={progress:Number(x.progress||0),completed:Boolean(x.completed)});
+ }catch(e){}
+ try{
+  const r=await db.from("student_achievements").select("achievement_key,title").eq("student_id",S.student.id);
+  S.achievements=r.data||[];
+ }catch(e){}
+ try{
+  const r=await db.from("exam_results").select("*").eq("user_id",S.student.auth_user_id).order("created_at",{ascending:false});
+  S.exams=r.data||[];
+ }catch(e){}
 }
 
-
-statusCard.innerHTML =
-
-'<div style="' +
-"background:" +
-statusColor +
-";" +
-"border-radius:18px;" +
-"padding:20px;" +
-"text-align:center;" +
-"font-weight:bold;" +
-"color:#4c1d95;" +
-'">' +
-
-escapeHtml(
-statusTextValue
-) +
-
-"</div>";
-
+async function addXP(amount){
+ if(!S.student)return;
+ const old=S.xp;
+ S.xp+=Number(amount||0);
+ S.level=calculateLevel(S.xp);
+ try{
+  await db.from("student_xp").upsert({
+   student_id:S.student.id,xp:S.xp,level:S.level,updated_at:new Date().toISOString()
+  },{onConflict:"student_id"});
+ }catch(e){}
+ if(S.level>calculateLevel(old))await unlockAchievement("level_"+S.level,"رسیدن به Level "+S.level);
 }
 
-
-/* =====================================================
-   CLASS TIME
-===================================================== */
-
-function buildClassTime(
-student
-){
-
-const start =
-student.class_start ||
-"";
-
-const end =
-student.class_end ||
-"";
-
-if(
-start &&
-end
-){
-
-return start +
-" تا " +
-end;
-
+async function unlockAchievement(key,title){
+ if(!S.student||S.achievements.some(x=>x.achievement_key===key))return;
+ try{
+  const r=await db.from("student_achievements").insert({
+   student_id:S.student.id,achievement_key:key,title
+  });
+  if(!r.error)S.achievements.push({achievement_key:key,title});
+ }catch(e){}
 }
 
-if(start){
-
-return start;
-
+async function saveProgress(lessonId,progress,completed){
+ if(!S.student)return;
+ S.progress[lessonId]={progress,completed};
+ try{
+  await db.from("student_progress").upsert({
+   student_id:S.student.id,lesson_id:lessonId,progress,completed,
+   completed_at:completed?new Date().toISOString():null
+  },{onConflict:"student_id,lesson_id"});
+ }catch(e){}
 }
 
-return "-";
+/* LOGIN */
 
+function login(){
+ document.body.innerHTML=`
+ <div class="login">
+ <div class="loginCard">
+ <div style="text-align:center">
+ <div style="font-size:55px">📚</div>
+ <h2>AliNagheli English</h2>
+ <p class="muted">سامانه آموزش زبان انگلیسی</p>
+ </div>
+ <div class="tabs">
+ <button id="st" class="tab active" onclick="loginTab('student')">🎓 زبان‌آموز</button>
+ <button id="ad" class="tab" onclick="loginTab('admin')">👨‍💼 مدیر</button>
+ </div>
+ <div id="lf"></div>
+ </div></div>`;
+ loginTab("student");
 }
 
-
-/* =====================================================
-   LOAD STUDENTS
-===================================================== */
-
-async function loadStudents(){
-
-const list =
-document.getElementById(
-"studentsList"
-);
-
-list.innerHTML =
-'<div class="loading">در حال دریافت اطلاعات...</div>';
-
-try{
-
-const students =
-await supabaseRequest(
-"/rest/v1/students?select=*&order=id.desc",
-{},
-currentAccessToken
-);
-
-
-const waiting =
-students.filter(
-s =>
-s.status === "waiting"
-).length;
-
-
-const registered =
-students.filter(
-s =>
-s.status === "registered"
-).length;
-
-
-const graduate =
-students.filter(
-s =>
-s.status === "graduate" ||
-s.status === "graduated"
-).length;
-
-
-document.getElementById(
-"waitingCount"
-).textContent =
-waiting;
-
-
-document.getElementById(
-"registeredCount"
-).textContent =
-registered;
-
-
-document.getElementById(
-"graduateCount"
-).textContent =
-graduate;
-
-
-if(
-!students.length
-){
-
-list.innerHTML =
-'<div class="empty">' +
-"هنوز زبان‌آموزی ثبت نشده است." +
-"</div>";
-
-return;
-
+function loginTab(type){
+ document.getElementById("st").classList.toggle("active",type==="student");
+ document.getElementById("ad").classList.toggle("active",type==="admin");
+ document.getElementById("lf").innerHTML=type==="admin"?`
+ <label>ایمیل مدیر</label>
+ <input id="email" type="email" value="alinagheli@gmail.com">
+ <label>رمز عبور</label>
+ <input id="pass" type="password">
+ <button class="btn full" onclick="adminLogin()">ورود مدیر</button>`
+ :`
+ <label>شماره تلفن</label>
+ <input id="phone" inputmode="tel" placeholder="شماره تلفن">
+ <label>رمز عبور</label>
+ <input id="pass" type="password">
+ <button class="btn full" onclick="studentLogin()">ورود زبان‌آموز</button>
+ <button class="btn secondary full" style="margin-top:8px" onclick="registerForm()">ثبت‌نام زبان‌آموز جدید</button>`;
 }
 
-
-list.innerHTML =
-students.map(
-student => {
-
-const name =
-(
-student.first_name || ""
-) +
-" " +
-(
-student.last_name || ""
-);
-
-
-const status =
-student.status ||
-"waiting";
-
-
-return `
-
-<div class="student">
-
-<div>
-
-<div class="student-name">
-
-${escapeHtml(
-name.trim() || "بدون نام"
-)}
-
-</div>
-
-<div style="
-font-size:12px;
-color:#6b7280;
-margin-top:5px;
-direction:ltr">
-
-${escapeHtml(
-student.phone || ""
-)}
-
-</div>
-
-</div>
-
-<div class="badge">
-
-${escapeHtml(
-statusText(status)
-)}
-
-</div>
-
-</div>
-
-`;
-
-}
-).join("");
-
-
-}catch(error){
-
-console.error(
-"LOAD STUDENTS ERROR:",
-error
-);
-
-list.innerHTML =
-'<div class="error-box">' +
-"دریافت اطلاعات زبان‌آموزان با خطا مواجه شد." +
-"</div>";
-
+async function studentLogin(){
+ const phone=document.getElementById("phone").value.trim();
+ const password=document.getElementById("pass").value;
+ if(!phone||!password){alert("شماره تلفن و رمز عبور را وارد کنید.");return}
+ try{
+  const result=await accessFunction({action:"find",phone});
+  const student=result.student,email=result.email;
+  if(!student)throw new Error("زبان‌آموزی با این شماره پیدا نشد.");
+  if(student.status==="rejected")throw new Error("ثبت‌نام شما توسط مدیر رد شده است.");
+  if(!["registered","approved"].includes(student.status))
+   throw new Error("ثبت‌نام شما هنوز توسط مدیر تأیید نشده است.");
+  if(!email)throw new Error("ایمیل ورود زبان‌آموز پیدا نشد.");
+  const auth=await db.auth.signInWithPassword({email:String(email).trim(),password});
+  if(auth.error)throw new Error("رمز عبور صحیح نیست.");
+  S.student=student;S.admin=false;
+  await loadStudentStats();home();
+ }catch(e){alert(e?.message||"ورود ناموفق بود.")}
 }
 
+async function adminLogin(){
+ const email=document.getElementById("email").value.trim();
+ const password=document.getElementById("pass").value;
+ if(email.toLowerCase()!=="alinagheli@gmail.com"){alert("ایمیل مدیر صحیح نیست.");return}
+ if(!password){alert("رمز عبور را وارد کنید.");return}
+ try{
+  const r=await db.auth.signInWithPassword({email:"alinagheli@gmail.com",password});
+  if(r.error)throw r.error;
+  S.admin=true;S.student=null;admin();
+ }catch(e){alert("ورود مدیر ناموفق بود:\n"+e.message)}
 }
 
+/* REGISTER */
 
-/* =====================================================
-   STATUS
-===================================================== */
-
-function statusText(
-status
-){
-
-switch(status){
-
-case "waiting":
-return "در صف انتظار";
-
-case "registered":
-return "ثبت‌نام شده";
-
-case "graduate":
-case "graduated":
-return "فارغ‌التحصیل";
-
-default:
-return status || "نامشخص";
-
+function registerForm(){
+ document.getElementById("lf").innerHTML=`
+ <h3>ثبت‌نام زبان‌آموز جدید</h3>
+ <label>نام</label><input id="rf">
+ <label>نام خانوادگی</label><input id="rl">
+ <label>شماره تلفن</label><input id="rp" inputmode="tel">
+ <label>رمز عبور</label><input id="rpass" type="password">
+ <label>پایه / سطح</label>
+ <select id="rlevel">
+ <option value="">انتخاب پایه</option>
+ <option value="7">پایه هفتم</option><option value="8">پایه هشتم</option>
+ <option value="9">پایه نهم</option><option value="10">پایه دهم</option>
+ <option value="11">پایه یازدهم</option><option value="12">پایه دوازدهم</option>
+ </select>
+ <button class="btn full" onclick="register()">ثبت‌نام</button>
+ <button class="btn secondary full" style="margin-top:8px" onclick="login()">بازگشت</button>`;
 }
 
+async function register(){
+ const first=document.getElementById("rf").value.trim();
+ const last=document.getElementById("rl").value.trim();
+ const phone=document.getElementById("rp").value.trim();
+ const password=document.getElementById("rpass").value;
+ const level=document.getElementById("rlevel").value;
+ if(!first||!last||!phone||!password||!level){alert("همه موارد را تکمیل کنید.");return}
+ if(password.length<6){alert("رمز عبور باید حداقل ۶ کاراکتر باشد.");return}
+ const digits=normalizePhone(phone);
+ if(digits.length<10){alert("شماره تلفن معتبر نیست.");return}
+ const email=digits+"@alinagheli.com";
+ try{
+  const r=await db.auth.signUp({
+   email,password,
+   options:{data:{first_name:first,last_name:last,phone,level}}
+  });
+  if(r.error)throw r.error;
+  if(!r.data.user)throw new Error("حساب کاربری ساخته نشد.");
+  await accessFunction({
+   action:"register",first_name:first,last_name:last,phone,level,
+   auth_user_id:r.data.user.id,email
+  });
+  await db.auth.signOut();
+  alert("ثبت‌نام با موفقیت انجام شد.\nپس از تأیید مدیر می‌توانید وارد شوید.");
+  login();
+ }catch(e){
+  try{await db.auth.signOut()}catch(_){}
+  alert("ثبت‌نام انجام نشد:\n"+(e?.message||"خطای نامشخص"));
+ }
 }
 
+/* LAYOUT */
 
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-function logout(){
-
-currentUser = null;
-
-currentAccessToken = null;
-
-localStorage.removeItem(
-"ali_current_user"
-);
-
-dashboard.classList.add(
-"hidden"
-);
-
-loginPage.classList.remove(
-"hidden"
-);
-
-username.value = "";
-
-password.value = "";
-
-setLoginType(
-"student"
-);
-
-clearMessage();
-
+function header(title){
+ return `<header class="header"><div class="headerIn">
+ <div><div class="logo">${esc(title)}</div><div style="font-size:10px;opacity:.8">AliNagheli English</div></div>
+ <button onclick="logout()" style="background:#ffffff22;color:white;border:0;border-radius:10px;padding:9px">خروج</button>
+ </div></header>`;
 }
 
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHtml(
-value
-){
-
-return String(value ?? "")
-.replace(
-/&/g,
-"&amp;"
-)
-.replace(
-/</g,
-"&lt;"
-)
-.replace(
-/>/g,
-"&gt;"
-)
-.replace(
-/"/g,
-"&quot;"
-)
-.replace(
-/'/g,
-"&#039;"
-);
-
+function nav(){
+ return `<div class="bottom"><div class="bottomIn">
+ <button class="nav" onclick="home()"><b>🏠</b>خانه</button>
+ <button class="nav" onclick="courses()"><b>📚</b>دروس</button>
+ <button class="nav" onclick="conversation()"><b>🗣️</b>مکالمه</button>
+ <button class="nav" onclick="contest()"><b>🏆</b>مسابقه</button>
+ <button class="nav" onclick="teachers()"><b>👨‍🏫</b>اساتید</button>
+ <button class="nav" onclick="profile()"><b>👤</b>پروفایل</button>
+ </div></div>`;
 }
 
-
-/* =====================================================
-   AUTO LOGIN
-===================================================== */
-
-function checkSavedLogin(){
-
-try{
-
-const saved =
-localStorage.getItem(
-"ali_current_user"
-);
-
-if(!saved){
-
-return;
-
+function render(title,content){
+ document.body.innerHTML=header(title)+`<main class="container">${content}</main>`+nav();
 }
 
-const user =
-JSON.parse(saved);
+/* HOME */
 
+function home(){
+ const xp=S.xp||0,level=S.level||calculateLevel(xp);
+ const base=xpForLevel(level),next=xpForLevel(level+1);
+ const percent=Math.min(100,Math.round(((xp-base)/(next-base))*100));
+ render("خانه",`
+ <div class="hero hero3d">
+ <div style="position:relative;z-index:2">
+ <div style="font-size:13px;opacity:.85">WELCOME TO</div>
+ <h1 style="font-size:32px;margin:8px 0">AliNagheli English 🚀</h1>
+ <h2>سلام ${esc(S.student?.first_name||"زبان‌آموز")} 👋</h2>
+ <p>یادگیری انگلیسی را حرفه‌ای شروع کن.</p>
+ <div class="levelBar"><i style="width:${percent}%"></i></div>
+ <b>⭐ ${xp} XP &nbsp; 🏅 Level ${level}</b>
+ </div></div>
 
-if(
-!user ||
-!user.type
-){
-
-localStorage.removeItem(
-"ali_current_user"
-);
-
-return;
-
+ <div class="grid">
+ <div class="item"><div class="icon">📚</div><h3>دروس مدرسه</h3><p class="muted">Prospect و Vision</p><button class="btn full" onclick="courses()">ورود</button></div>
+ <div class="item"><div class="icon">🎯</div><h3>تعیین سطح</h3><p class="muted">۳۰ سؤال از آسان تا خیلی سخت</p><button class="btn full" onclick="placementTest()">شروع تعیین سطح</button></div>
+ <div class="item"><div class="icon">🗣️</div><h3>مکالمه</h3><p class="muted">Touchstone و Viewpoint</p><button class="btn full" onclick="conversation()">ورود</button></div>
+ <div class="item"><div class="icon">🏆</div><h3>مسابقه</h3><p class="muted">رقابت و کسب XP</p><button class="btn full" onclick="contest()">ورود</button></div>
+ <div class="item"><div class="icon">👨‍🏫</div><h3>اساتید</h3><p class="muted">رزرو کلاس با استاد</p><button class="btn full" onclick="teachers()">مشاهده اساتید</button></div>
+ <div class="item"><div class="icon">📊</div><h3>پیشرفت من</h3><p class="muted">درصد پیشرفت و سوابق آزمون</p><button class="btn full" onclick="profile()">مشاهده</button></div>
+ </div>`);
 }
 
+/* TEACHERS */
 
-/*
-برای زبان‌آموز:
-بدون توکن، فقط داشبورد محلی را نشان می‌دهیم.
-*/
+const teachersData=[
+ {
+  name:"علی ناقلی",
+  degree:"کارشناس ارشد آموزش زبان انگلیسی",
+  phone:"09141892768",
+  icon:"👨‍🏫",
+  text:"با بیش از ۲۰ سال سابقه تدریس مکالمه زبان انگلیسی و مدرس دوره‌های TOEFL, IELTS, FCE, KET, PET, PTE, MCHE, MSRT و برگزارکننده دوره‌های حرفه‌ای TTC"
+ },
+ {
+  name:"الهه باغبانی",
+  degree:"کارشناس ارشد آموزش زبان انگلیسی",
+  phone:"09914312534",
+  icon:"👩‍🏫",
+  text:"با بیش از ۱۰ سال سابقه تدریس مکالمه زبان انگلیسی و دوره‌های بین‌المللی TOEFL, IELTS, KET, PET, PTE, MSRT"
+ }
+];
 
-if(
-user.type === "student" &&
-user.data
-){
-
-openStudentDashboard(
-user.data
-);
-
-return;
-
+function teachers(){
+ render("اساتید",`
+ <div class="card">
+ <h2>👨‍🏫 اساتید AliNagheli English</h2>
+ <p class="muted">استاد مورد نظر خود را انتخاب کنید و درخواست رزرو کلاس بفرستید.</p>
+ </div>
+ <div class="teacher">
+ ${teachersData.map((t,i)=>`
+ <div class="teacherBox">
+ <div class="teacherAvatar">${t.icon}</div>
+ <h2 style="text-align:center">${esc(t.name)}</h2>
+ <p style="text-align:center"><b>${esc(t.degree)}</b></p>
+ <p>${esc(t.text)}</p>
+ <a class="btn call" href="tel:${t.phone}">📞 تماس با ${esc(t.name)}<br>${t.phone}</a>
+ <div class="request">
+ <h3>📅 رزرو تایم کلاس با استاد</h3>
+ <label>تاریخ پیشنهادی</label>
+ <input id="td${i}" type="date">
+ <label>ساعت پیشنهادی</label>
+ <input id="tt${i}" type="time">
+ <label>نوع کلاس</label>
+ <select id="ttype${i}">
+ <option>کلاس مکالمه</option><option>کلاس خصوصی</option>
+ <option>آمادگی IELTS</option><option>آمادگی TOEFL</option>
+ <option>آمادگی KET / PET</option><option>سایر</option>
+ </select>
+ <label>توضیحات</label>
+ <textarea id="tn${i}" placeholder="توضیحات یا زمان جایگزین..."></textarea>
+ <button class="btn full" onclick="requestTeacher(${i})">📨 ارسال درخواست رزرو</button>
+ </div>
+ </div>`).join("")}
+ </div>`);
 }
 
-
-/*
-مدیر
-*/
-
-if(
-user.type === "admin"
-){
-
-openAdminDashboard();
-
+async function requestTeacher(i){
+ if(!S.student){alert("ابتدا وارد حساب زبان‌آموز شوید.");return}
+ const date=document.getElementById("td"+i).value;
+ const time=document.getElementById("tt"+i).value;
+ const type=document.getElementById("ttype"+i).value;
+ const note=document.getElementById("tn"+i).value.trim();
+ if(!date||!time){alert("تاریخ و ساعت را انتخاب کنید.");return}
+ try{
+  const r=await db.from("teacher_requests").insert({
+   student_id:S.student.id,
+   student_name:`${S.student.first_name||""} ${S.student.last_name||""}`,
+   student_phone:S.student.phone,
+   teacher_name:teachersData[i].name,
+   requested_date:date,
+   requested_time:time,
+   class_type:type,
+   note,
+   status:"pending"
+  });
+  if(r.error)throw r.error;
+  alert("درخواست شما با موفقیت برای استاد ارسال شد. ✅");
+ }catch(e){
+  alert("ارسال درخواست انجام نشد:\n"+e.message);
+ }
 }
 
-}catch(error){
+/* COURSES */
 
-console.error(
-"AUTO LOGIN ERROR:",
-error
-);
-
-localStorage.removeItem(
-"ali_current_user"
-);
-
+function courses(){
+ render("دروس مدرسه",`
+ <div class="card"><h2>📚 کتاب‌های مدرسه</h2><div class="grid">
+ ${Object.keys(books).map(g=>`
+ <div class="item" onclick="grade(${g})">
+ <div class="icon">📖</div><h3>پایه ${g}</h3>
+ <p class="muted">${esc(books[g].title)}</p>
+ <button class="btn full">مشاهده درس‌ها</button>
+ </div>`).join("")}</div></div>`);
 }
 
+function grade(g){
+ S.grade=g;
+ render("پایه "+g,`
+ <div class="card">
+ <button class="btn secondary" onclick="courses()">← بازگشت</button>
+ <h2>پایه ${g} — ${esc(books[g].title)}</h2>
+ <div class="lessonGrid">
+ ${books[g].lessons.map((x,i)=>{
+  const p=S.progress[`${g}-${i}`]||{progress:0,completed:false};
+  return `<div class="lesson" onclick="openLesson(${i})">
+  <div class="lessonNo">${i+1}</div><h3>${esc(x)}</h3>
+  <p class="muted">گرامر · لغات · آزمون</p>
+  <div class="progress"><i style="width:${p.progress||0}%"></i></div>
+  <small>${p.completed?"✅ تکمیل شده":"⏳ "+(p.progress||0)+"%"}</small>
+  </div>`;
+ }).join("")}
+ </div></div>`);
 }
 
+function openLesson(i){
+ S.lesson=i;
+ const no=i+1,book=books[S.grade],key=`${S.grade}-${i}`;
+ render("درس "+no,`
+ <div class="card">
+ <button class="btn secondary" onclick="grade(${S.grade})">← بازگشت</button>
+ <h2>${esc(book.lessons[i])}</h2>
+ <div class="tabs2">
+ <button class="tab2 active" onclick="lessonTab(0)">📘 گرامر</button>
+ <button class="tab2" onclick="lessonTab(1)">🔊 لغات</button>
+ <button class="tab2" onclick="lessonTab(2)">📝 آزمون</button>
+ </div>
 
-/* =====================================================
-   START
-===================================================== */
+ <div id="s0" class="sec active">
+ ${(grammar[no]||[]).map(g=>`
+ <div class="grammar">
+ <h3>${esc(g[0])}</h3>
+ <p>${esc(g[3])}</p>
+ <div class="example">${esc(g[1])}</div>
+ <p><b>ترجمه:</b> ${esc(g[2])}</p>
+ </div>`).join("")}
+ <button class="btn full" onclick="completeLesson('${key}')">✅ تکمیل مطالعه این درس</button>
+ </div>
 
-setLoginType(
-"student"
-);
+ <div id="s1" class="sec">
+ <h3>🔊 واژگان درس — ${words[no]?.length||0} کلمه</h3>
+ <p class="muted">روی هر کلمه بزن تا تلفظ شود.</p>
+ <div class="wordGrid">
+ ${(words[no]||[]).map(w=>`
+ <div class="word" onclick='speak(${JSON.stringify(w[0])})'>
+ <div class="en">🔊 ${esc(w[0])}</div><div class="fa">${esc(w[1])}</div>
+ </div>`).join("")}
+ </div></div>
 
-checkSavedLogin();
+ <div id="s2" class="sec"><div id="lessonQuiz"></div></div>
+ </div>`);
+}
 
+async function completeLesson(key){
+ await saveProgress(key,100,true);
+ await addXP(20);
+ await unlockAchievement("first_lesson","اولین درس تکمیل شد");
+ alert("درس با موفقیت تکمیل شد! ⭐ +20 XP");
+ openLesson(S.lesson);
+}
+
+function lessonTab(n){
+ document.querySelectorAll(".sec").forEach((x,i)=>x.classList.toggle("active",i===n));
+ document.querySelectorAll(".tab2").forEach((x,i)=>x.classList.toggle("active",i===n));
+ if(n===2)startLessonQuiz();
+}
+
+/* QUIZ ENGINE WITH RANDOM OPTIONS */
+
+function shuffle(arr){
+ const a=[...arr];
+ for(let i=a.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [a[i],a[j]]=[a[j],a[i]];
+ }
+ return a;
+}
+
+function makeLessonQuestions(){
+ const no=S.lesson+1,arr=[];
+ const ws=words[no]||[];
+ ws.forEach((w,i)=>{
+  const pool=shuffle(ws.filter((_,j)=>j!==i).map(x=>x[1])).slice(0,3);
+  const opts=shuffle([w[1],...pool]);
+  arr.push({q:`معنی "${w[0]}" چیست؟`,options:opts,answer:opts.indexOf(w[1])});
+ });
+ (grammar[no]||[]).forEach(g=>{
+  const opts=shuffle([
+   g[1],
+   "She are a student.",
+   "They is happy.",
+   "He am a teacher."
+  ]);
+  arr.push({q:`کدام گزینه با مبحث «${g[0]}» هماهنگ است؟`,options:opts,answer:opts.indexOf(g[1])});
+ });
+ return arr.slice(0,15);
+}
+
+function startLessonQuiz(){
+ S.quiz={type:"lesson",title:`پایه ${S.grade} - ${books[S.grade].lessons[S.lesson]}`,
+ questions:makeLessonQuestions(),i:0,correct:0,wrong:0};
+ quizRender("lessonQuiz");
+}
+
+function quizRender(id){
+ const q=S.quiz.questions[S.quiz.i];
+ if(!q){quizFinish(id);return}
+ const el=document.getElementById(id);if(!el)return;
+ el.innerHTML=`
+ <div class="card">
+ <b>سؤال ${S.quiz.i+1} از ${S.quiz.questions.length}</b>
+ <div class="progress"><i style="width:${S.quiz.i/S.quiz.questions.length*100}%"></i></div>
+ <div style="font-size:18px;font-weight:bold;line-height:2;margin:15px 0">${esc(q.q)}</div>
+ ${q.options.map((x,i)=>`<button class="option" onclick="answer(${i},'${id}')">${esc(x)}</button>`).join("")}
+ <div id="fb"></div></div>`;
+}
+
+function answer(i,id){
+ const q=S.quiz.questions[S.quiz.i];
+ const opts=document.querySelectorAll(".option");
+ opts.forEach(x=>x.disabled=true);
+ if(i===q.answer){
+  S.quiz.correct++;opts[i].classList.add("correct");
+  document.getElementById("fb").className="feedback ok";
+  document.getElementById("fb").innerHTML="✅ 😊 آفرین! پاسخ درست است.";
+ }else{
+  S.quiz.wrong++;opts[i].classList.add("wrong");opts[q.answer].classList.add("correct");
+  document.getElementById("fb").className="feedback bad";
+  document.getElementById("fb").innerHTML="❌ پاسخ اشتباه است.";
+ }
+ setTimeout(()=>{S.quiz.i++;quizRender(id)},700);
+}
+
+async function quizFinish(id){
+ const total=S.quiz.questions.length;
+ const percent=total?Math.round(S.quiz.correct/total*100):0;
+ examRecords.unshift({student:S.student?.phone||"",title:S.quiz.title,score:percent,date:new Date().toISOString()});
+ saveLocal();
+
+ if(S.student){
+  try{
+   await db.from("exam_results").insert({
+    user_id:S.student.auth_user_id,
+    student_name:`${S.student.first_name||""} ${S.student.last_name||""}`,
+    exam_type:S.quiz.type,exam_title:S.quiz.title,lesson:S.lesson+1,
+    score:S.quiz.correct,total,percentage:percent
+   });
+  }catch(e){}
+  await addXP(Math.max(10,percent));
+  if(percent>=80)await unlockAchievement("exam_80","امتیاز بالای ۸۰٪");
+  if(percent===100)await unlockAchievement("perfect_exam","آزمون کامل");
+  if(S.quiz.type==="lesson")await saveProgress(`${S.grade}-${S.lesson}`,100,true);
+ }
+ const el=document.getElementById(id);if(!el)return;
+ el.innerHTML=`<div class="card">
+ <div class="score">${percent}%</div><h2 style="text-align:center">آزمون تمام شد 🎉</h2>
+ <p style="text-align:center">${S.quiz.correct} پاسخ درست از ${total}</p>
+ <button class="btn full" onclick="profile()">مشاهده پیشرفت</button>
+ </div>`;
+}
+
+/* CONVERSATION */
+
+const conversationBooks=["Touchstone 1","Touchstone 2","Touchstone 3","Touchstone 4","Viewpoint 1","Viewpoint 2"];
+
+function conversation(){
+ render("مکالمه",`<div class="card"><h2>🗣️ دوره‌های مکالمه</h2><div class="grid">
+ ${conversationBooks.map((x,i)=>`<div class="item" onclick="conversationBook(${i})"><div class="icon">🗣️</div><h3>${x}</h3><p class="muted">Units · Vocabulary · Grammar · Quiz</p><button class="btn full">ورود</button></div>`).join("")}
+ </div></div>`);
+}
+
+function conversationBook(i){
+ render(conversationBooks[i],`<div class="card"><button class="btn secondary" onclick="conversation()">← بازگشت</button>
+ <h2>${conversationBooks[i]}</h2><div class="lessonGrid">
+ ${Array.from({length:12},(_,n)=>`<div class="lesson" onclick="conversationLesson(${i},${n})"><div class="lessonNo">${n+1}</div><h3>Unit ${n+1}</h3><p class="muted">لغات · Grammar · Quiz</p></div>`).join("")}
+ </div></div>`);
+}
+
+function conversationLesson(book,unit){
+ const name=conversationBooks[book];
+ const cw=[
+ ["conversation","گفت‌وگو"],["question","سؤال"],["answer","پاسخ"],["practice","تمرین"],
+ ["language","زبان"],["class","کلاس"],["student","دانش‌آموز"],["teacher","معلم"],
+ ["friend","دوست"],["information","اطلاعات"],["speak","صحبت کردن"],["listen","گوش دادن"]
+ ];
+ const cg=[
+ ["Simple Present","برای عادت‌ها و کارهای همیشگی.","I study English every day."],
+ ["Present Continuous","برای کاری که اکنون در حال انجام است.","I am studying English now."],
+ ["Questions","برای دریافت اطلاعات.","Where do you live?"],
+ ["Would like","برای بیان خواسته مؤدبانه.","I would like some coffee."]
+ ];
+ render(name,`<div class="card"><button class="btn secondary" onclick="conversationBook(${book})">← بازگشت</button>
+ <h2>${name} — Unit ${unit+1}</h2><h3>📘 Grammar</h3>
+ ${cg.map(g=>`<div class="grammar"><h3>${g[0]}</h3><p>${g[1]}</p><div class="example">${g[2]}</div></div>`).join("")}
+ <h3>🔊 Vocabulary</h3><div class="wordGrid">
+ ${cw.map(w=>`<div class="word" onclick='speak(${JSON.stringify(w[0])})'><div class="en">🔊 ${w[0]}</div><div class="fa">${w[1]}</div></div>`).join("")}
+ </div><button class="btn full" onclick="conversationQuiz('${name}',${unit})">📝 آزمون Unit ${unit+1}</button>
+ </div>`);
+}
+
+function conversationQuiz(name,unit){
+ const q=[
+ ["What is the meaning of conversation?","گفت‌وگو"],["What is the meaning of question?","سؤال"],
+ ["What is the meaning of answer?","پاسخ"],["What is the meaning of practice?","تمرین"],
+ ["What is the meaning of language?","زبان"],["What is the meaning of class?","کلاس"],
+ ["What is the meaning of student?","دانش‌آموز"],["What is the meaning of teacher?","معلم"],
+ ["What is the meaning of friend?","دوست"],["What is the meaning of information?","اطلاعات"]
+ ];
+ const arr=q.map((x,i)=>{
+  const pool=shuffle(q.filter((_,j)=>j!==i).map(y=>y[1])).slice(0,3);
+  const options=shuffle([x[1],...pool]);
+  return {q:x[0],options,answer:options.indexOf(x[1])};
+ });
+ S.quiz={type:"conversation",title:name+" Unit "+(unit+1),questions:arr,i:0,correct:0,wrong:0};
+ render("آزمون مکالمه",`<div id="conversationQuiz"></div>`);
+ quizRender("conversationQuiz");
+}
+
+/* CONTEST */
+
+function contest(){
+ render("مسابقه",`<div class="card"><h2>🏆 مسابقه</h2><div class="grid">
+ ${[7,8,9,10,11,12].map(g=>`<div class="item"><div class="icon">🏆</div><h3>مسابقه پایه ${g}</h3><p class="muted">۲۰ سؤال</p><button class="btn full" onclick="startContest(${g})">شروع</button></div>`).join("")}
+ </div></div>`);
+}
+
+function startContest(g){
+ let q=[];
+ for(let i=1;i<=8;i++){
+  (words[i]||[]).forEach((w,j)=>{
+   if(q.length>=20)return;
+   const pool=shuffle((words[i]||[]).filter((_,k)=>k!==j).map(x=>x[1])).slice(0,3);
+   const options=shuffle([w[1],...pool]);
+   q.push({q:`معنی "${w[0]}" چیست؟`,options,answer:options.indexOf(w[1])});
+  });
+ }
+ while(q.length<20){
+  const base=[
+   {q:"Which sentence is correct?",a:"She is a student."},
+   {q:"Which sentence is correct?",a:"They are happy."},
+   {q:"Which sentence is correct?",a:"I am a teacher."},
+   {q:"Which sentence is correct?",a:"He is my friend."}
+  ][q.length%4];
+  const options=shuffle([base.a,"She are a student.","They is happy.","I is a teacher."]);
+  q.push({q:base.q,options,answer:options.indexOf(base.a)});
+ }
+ S.quiz={type:"contest",title:"مسابقه پایه "+g,questions:q.slice(0,20),i:0,correct:0,wrong:0};
+ render("مسابقه",`<div id="contestQuiz"></div>`);
+ quizRender("contestQuiz");
+}
+
+/* PLACEMENT TEST 30 QUESTIONS */
+
+const placementQuestions=[
+ {q:"Choose the correct sentence.",o:["I am a student.","I is a student.","I are a student.","I be a student."],a:0},
+ {q:"What is the meaning of 'book'?",o:["کتاب","مدرسه","معلم","دوست"],a:0},
+ {q:"She ___ my friend.",o:["is","are","am","be"],a:0},
+ {q:"They ___ students.",o:["are","is","am","be"],a:0},
+ {q:"I ___ English every day.",o:["study","studies","studying","studied"],a:0},
+ {q:"He ___ football every Friday.",o:["plays","play","playing","played"],a:0},
+ {q:"___ old are you?",o:["How","What","Where","Who"],a:0},
+ {q:"Where ___ you live?",o:["do","does","are","is"],a:0},
+ {q:"She ___ two brothers.",o:["has","have","having","had"],a:0},
+ {q:"There ___ a book on the table.",o:["is","are","am","be"],a:0},
+ {q:"The book is ___ the table.",o:["on","at","to","from"],a:0},
+ {q:"I can ___ English.",o:["speak","speaks","speaking","spoke"],a:0},
+ {q:"Look! She ___.",o:["is running","runs","run","ran"],a:0},
+ {q:"I ___ to school yesterday.",o:["went","go","goes","going"],a:0},
+ {q:"We ___ dinner when he arrived.",o:["were having","have","had","are having"],a:0},
+ {q:"She has ___ her homework.",o:["finished","finish","finishing","finishes"],a:0},
+ {q:"This is the ___ book I have ever read.",o:["best","better","good","well"],a:0},
+ {q:"If it rains, we ___ at home.",o:["will stay","stayed","stay yesterday","would stayed"],a:0},
+ {q:"The letters ___ every morning.",o:["are delivered","delivers","delivered by","is deliver"],a:0},
+ {q:"I have lived here ___ 2018.",o:["since","for","at","from"],a:0},
+ {q:"If I had more time, I ___ another language.",o:["would learn","will learn","learned","would learned"],a:0},
+ {q:"The man ___ lives next door is a doctor.",o:["who","where","when","what"],a:0},
+ {q:"She said that she ___ tired.",o:["was","is","were","be"],a:0},
+ {q:"By next year, I ___ this course.",o:["will have completed","complete","completed","am completing"],a:0},
+ {q:"If they had studied harder, they ___ the exam.",o:["would have passed","will pass","would pass","passed"],a:0},
+ {q:"The problem ___ yesterday.",o:["was discussed","discussed by","is discuss","has discuss"],a:0},
+ {q:"He should ___ more carefully.",o:["listen","listens","listening","listened"],a:0},
+ {q:"Never ___ such a beautiful place.",o:["have I seen","I have seen","did I saw","I saw"],a:0},
+ {q:"If we had protected the forest, the air ___ cleaner now.",o:["would be","will be","would have been","is"],a:0},
+ {q:"The technology, ___ was developed recently, saves energy.",o:["which","where","who","what"],a:0}
+];
+
+function placementTest(){
+ S.quiz={
+  type:"placement",title:"آزمون تعیین سطح ۳۰ سؤالی",
+  questions:placementQuestions.map(x=>{
+   const options=shuffle(x.o);
+   return {q:x.q,options,answer:options.indexOf(x.o[x.a])};
+  }),
+  i:0,correct:0,wrong:0
+ };
+ render("تعیین سطح",`<div id="placementQuiz"></div>`);
+ quizRender("placementQuiz");
+}
+
+async function placementFinish(){
+ const score=S.quiz.correct;
+ let level;
+ if(score<=7)level="A1";
+ else if(score<=13)level="A2";
+ else if(score<=19)level="B1";
+ else if(score<=24)level="B2";
+ else if(score<=28)level="C1";
+ else level="C2";
+
+ const el=document.getElementById("placementQuiz");
+ if(S.student){
+  try{
+   await db.from("exam_results").insert({
+    user_id:S.student.auth_user_id,
+    student_name:`${S.student.first_name||""} ${S.student.last_name||""}`,
+    exam_type:"placement",exam_title:"آزمون تعیین سطح ۳۰ سؤالی",
+    score,total:30,percentage:Math.round(score/30*100)
+   });
+  }catch(e){}
+ }
+ el.innerHTML=`<div class="card resultBox">
+ <div class="score">${score}/30</div>
+ <h2 style="text-align:center">سطح پیشنهادی شما: ${level} 🎯</h2>
+ <p style="text-align:center">این نتیجه بر اساس عملکرد شما در آزمون تعیین سطح به دست آمده است.</p>
+ <button class="btn full" onclick="home()">بازگشت به خانه</button>
+ </div>`;
+}
+
+async function placementAnswer(i){
+ const q=S.quiz.questions[S.quiz.i];
+ const opts=document.querySelectorAll(".option");
+ opts.forEach(x=>x.disabled=true);
+ if(i===q.answer){S.quiz.correct++;opts[i].classList.add("correct")}
+ else{S.quiz.wrong++;opts[i].classList.add("wrong");opts[q.answer].classList.add("correct")}
+ setTimeout(async()=>{
+  S.quiz.i++;
+  if(S.quiz.i>=S.quiz.questions.length)await placementFinish();
+  else quizRender("placementQuiz");
+ },650);
+}
+
+/* PATCH QUIZ ANSWER FOR PLACEMENT */
+
+const originalAnswer=answer;
+answer=function(i,id){
+ if(S.quiz?.type==="placement"){placementAnswer(i);return}
+ originalAnswer(i,id);
+};
+
+/* PROFILE + EXAM HISTORY */
+
+async function profile(){
+ await loadStudentStats();
+ const completed=Object.values(S.progress).filter(x=>x.completed).length;
+ const totalLessons=Object.keys(books).reduce((s,g)=>s+books[g].lessons.length,0);
+ const overall=Math.round(completed/Math.max(totalLessons,1)*100);
+ const exams=S.exams||[];
+ render("پروفایل من",`
+ <div class="card">
+ <div style="text-align:center">
+ <div style="width:85px;height:85px;border-radius:50%;background:#ede9fe;display:flex;align-items:center;justify-content:center;font-size:42px;margin:auto">👤</div>
+ <h2>${esc(S.student?.first_name||"")} ${esc(S.student?.last_name||"")}</h2>
+ <p class="muted">📱 ${esc(S.student?.phone||"")}<br>🎓 پایه ${esc(S.student?.level||"-")}</p>
+ </div></div>
+
+ <div class="grid">
+ <div class="profileStat">⭐ XP<b>${S.xp}</b></div>
+ <div class="profileStat">🏅 Level<b>${S.level}</b></div>
+ <div class="profileStat">📚 تکمیل‌شده<b>${completed}</b></div>
+ <div class="profileStat">📊 پیشرفت<b>${overall}%</b></div>
+ </div>
+
+ <div class="card"><h3>📈 پیشرفت درسی</h3>
+ <div class="levelBar"><i style="width:${overall}%"></i></div>
+ <h2 style="text-align:center;color:#6d28d9">${overall}%</h2>
+ <p class="muted">پیشرفت شما بر اساس درس‌هایی که مطالعه و تکمیل کرده‌اید محاسبه می‌شود.</p>
+ </div>
+
+ <div class="card"><h3>📝 سوابق آزمون‌ها</h3>
+ ${exams.length?exams.map(e=>`
+ <div class="examRow">
+ <b>${esc(e.exam_title||e.exam_type||"آزمون")}</b>
+ <div class="muted">${e.created_at?new Date(e.created_at).toLocaleDateString("fa-IR"):""}</div>
+ <div class="examScore">${e.percentage??(e.total?Math.round(e.score/e.total*100):0)}٪</div>
+ <div class="muted">${e.score??"-"} از ${e.total??"-"} پاسخ درست</div>
+ </div>`).join(""):`<p class="muted">هنوز آزمونی ثبت نشده است.</p>`}
+ </div>
+
+ <div class="card"><h3>🏆 دستاوردها</h3>
+ ${S.achievements.length?S.achievements.map(a=>`<span class="badge">🏆 ${esc(a.title)}</span>`).join(""):`<p class="muted">هنوز دستاوردی کسب نکرده‌ای.</p>`}
+ </div>
+ `);
+}
+
+/* ADMIN */
+
+async function admin(){
+ try{
+  const r=await db.from("students").select("*").order("id",{ascending:false});
+  if(r.error)throw r.error;
+  const req=await db.from("teacher_requests").select("*").order("created_at",{ascending:false});
+  renderAdmin(r.data||[],req.data||[]);
+ }catch(e){
+  document.body.innerHTML=`<div class="container"><div class="card"><h2>خطا در پنل مدیر</h2><p>${esc(e.message)}</p><button class="btn" onclick="admin()">تلاش مجدد</button></div></div>`;
+ }
+}
+
+function renderAdmin(students,requests){
+ document.body.innerHTML=`${header("پنل مدیریت")}<main class="container">
+ <div class="hero"><h2>👨‍💼 پنل مدیریت</h2><p>مدیریت زبان‌آموزان و درخواست‌های کلاس</p></div>
+ <div class="grid">
+ <div class="item"><div class="icon">👥</div><h3>کل</h3><b>${students.length}</b></div>
+ <div class="item"><div class="icon">⏳</div><h3>در انتظار</h3><b>${students.filter(x=>x.status==="waiting").length}</b></div>
+ <div class="item"><div class="icon">✅</div><h3>تأیید شده</h3><b>${students.filter(x=>["registered","approved"].includes(x.status)).length}</b></div>
+ <div class="item"><div class="icon">📅</div><h3>درخواست کلاس</h3><b>${requests.filter(x=>x.status==="pending").length}</b></div>
+ </div>
+
+ <div class="card"><h3>📅 درخواست‌های رزرو کلاس</h3>
+ ${requests.length?requests.map(x=>`
+ <div class="adminRow">
+ <b>${esc(x.student_name||"")}</b>
+ <div class="muted">📱 ${esc(x.student_phone||"")}<br>
+ 👨‍🏫 استاد: ${esc(x.teacher_name||"")}<br>
+ 📅 ${esc(x.requested_date||"")} ⏰ ${esc(x.requested_time||"")}<br>
+ 📘 ${esc(x.class_type||"")}<br>
+ 📝 ${esc(x.note||"")}</div>
+ <div style="margin-top:10px">
+ ${x.status==="pending"?`
+ <button class="btn success" onclick="respondRequest('${x.id}','approved')">✅ تأیید</button>
+ <button class="btn danger" onclick="respondRequest('${x.id}','rejected')">❌ رد</button>`:
+ `<b>${x.status==="approved"?"✅ تأیید شده":"❌ رد شده"}</b>`}
+ </div></div>`).join(""):`<p class="muted">درخواستی وجود ندارد.</p>`}
+ </div>
+
+ <div class="card"><h3>👥 ثبت‌نام‌ها</h3>
+ ${students.length?students.map(x=>`
+ <div class="adminRow">
+ <b>${esc(x.first_name)} ${esc(x.last_name)}</b>
+ <div class="muted">📱 ${esc(x.phone||"")}<br>🎓 پایه: ${esc(x.level||"-")}<br>✉️ ${esc(x.login_email||"-")}</div>
+ <div style="margin-top:10px">
+ ${x.status==="waiting"?`
+ <button class="btn success" onclick="approve('${x.id}')">✅ تأیید</button>
+ <button class="btn danger" onclick="rejectStudent('${x.id}')">❌ رد</button>`:
+ x.status==="registered"||x.status==="approved"?`
+ <span>✅ تأیید شده</span>
+ <button class="btn danger" onclick="rejectStudent('${x.id}')">رد / حذف</button>`:
+ `<span>❌ رد شده</span><button class="btn success" onclick="approve('${x.id}')">تأیید مجدد</button>`}
+ </div></div>`).join(""):`<p class="muted">ثبت‌نامی وجود ندارد.</p>`}
+ </div>
+ <button class="btn secondary full" onclick="logout()">خروج</button>
+ </main>`;
+}
+
+async function respondRequest(id,status){
+ try{
+  const r=await db.from("teacher_requests").update({status}).eq("id",id);
+  if(r.error)throw r.error;
+  admin();
+ }catch(e){alert("خطا:\n"+e.message)}
+}
+
+async function approve(id){
+ try{
+  const r=await db.from("students").update({status:"registered"}).eq("id",id);
+  if(r.error)throw r.error;
+  admin();
+ }catch(e){alert("خطا در تأیید:\n"+e.message)}
+}
+
+async function rejectStudent(id){
+ try{
+  const r=await db.from("students").update({status:"rejected"}).eq("id",id);
+  if(r.error)throw r.error;
+  admin();
+ }catch(e){alert("خطا:\n"+e.message)}
+}
+
+/* LOGOUT */
+
+async function logout(){
+ try{await db.auth.signOut()}catch(e){}
+ S={student:null,admin:false,grade:null,lesson:null,quiz:null,xp:0,level:1,progress:{},achievements:[],exams:[]};
+ login();
+}
+
+/* START */
+
+async function startup(){
+ try{
+  const r=await db.auth.getSession();
+  const session=r.data?.session;
+  if(!session){login();return}
+  const user=session.user;
+  if((user.email||"").toLowerCase()==="alinagheli@gmail.com"){
+   S.admin=true;admin();return;
+  }
+  const st=await db.from("students").select("*").eq("auth_user_id",user.id).maybeSingle();
+  if(st.data&&["registered","approved"].includes(st.data.status)){
+   S.student=st.data;
+   await loadStudentStats();
+   home();return;
+  }
+  await db.auth.signOut();login();
+ }catch(e){
+  try{await db.auth.signOut()}catch(_){}
+  login();
+ }
+}
+
+db.auth.onAuthStateChange((event)=>{
+ if(event==="SIGNED_OUT"&&!S.admin&&!S.student)login();
+});
+
+startup();
 </script>
-
 </body>
 </html>
