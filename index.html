@@ -8,1165 +8,875 @@
 
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:Tahoma,Arial,sans-serif;background:#f5f3ff;color:#1f2937}
-body{min-height:100vh}
+html,body{margin:0;padding:0;min-height:100%;font-family:Tahoma,Arial,sans-serif;background:#f7f5ff;color:#202033}
 button,input{font-family:inherit}
+button{cursor:pointer}
 .hidden{display:none!important}
 
-#app{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+:root{
+--p:#6d28d9;
+--p2:#8b5cf6;
+--p3:#ede9fe;
+--dark:#32105f;
+--text:#202033;
+--muted:#77738a;
+--card:#fff;
+}
 
-.login-box{
-width:100%;max-width:430px;background:#fff;border-radius:28px;padding:30px 24px;
-box-shadow:0 15px 50px #4c1d9530
+body{background:linear-gradient(135deg,#f8f5ff,#eef2ff)}
+
+.screen{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:18px
+}
+
+.login{
+width:100%;
+max-width:430px;
+background:#fff;
+padding:28px 22px;
+border-radius:28px;
+box-shadow:0 20px 60px #4c1d9530
 }
 
 .logo{
-width:85px;height:85px;border-radius:25px;background:linear-gradient(135deg,#7c3aed,#4f46e5);
-color:#fff;display:flex;align-items:center;justify-content:center;
-font-size:30px;font-weight:bold;margin:0 auto 18px;
-box-shadow:0 10px 25px #6d28d950
+width:82px;height:82px;border-radius:24px;
+margin:0 auto 16px;
+display:flex;align-items:center;justify-content:center;
+background:linear-gradient(135deg,var(--p2),#4f46e5);
+color:#fff;font-size:28px;font-weight:bold
 }
 
-h1{text-align:center;margin:8px 0;font-size:25px;color:#4c1d95}
-.subtitle{text-align:center;color:#6b7280;margin-bottom:25px;font-size:14px}
+.login h1{text-align:center;color:var(--dark);margin:5px 0}
+.login p{text-align:center;color:var(--muted);font-size:13px;margin-bottom:24px}
 
-.tabs{display:flex;background:#f3f0ff;padding:5px;border-radius:15px;margin-bottom:20px}
+.tabs{
+display:flex;background:#f3f0ff;border-radius:14px;padding:4px;margin-bottom:18px
+}
+
 .tabs button{
-flex:1;border:0;background:transparent;padding:12px;border-radius:11px;
-cursor:pointer;color:#6b7280;font-weight:bold
+flex:1;border:0;background:transparent;padding:12px;border-radius:10px;
+font-weight:bold;color:var(--muted)
 }
-.tabs button.active{background:#6d28d9;color:#fff}
 
-.field{margin-bottom:15px}
-.field label{display:block;font-size:13px;margin-bottom:7px;font-weight:bold}
+.tabs button.active{background:var(--p);color:white}
+
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:bold;margin-bottom:6px}
 .field input{
-width:100%;border:1px solid #ddd6fe;border-radius:13px;padding:13px;
-font-size:15px;outline:none;direction:ltr;text-align:left
+width:100%;padding:13px;border:1px solid #ddd6fe;
+border-radius:13px;outline:none;font-size:15px;direction:ltr;text-align:left
 }
-.field input:focus{border-color:#7c3aed;box-shadow:0 0 0 3px #7c3aed18}
+.field input:focus{border-color:var(--p);box-shadow:0 0 0 3px #6d28d91a}
 
-.login-btn{
+.primary{
 width:100%;border:0;border-radius:14px;padding:14px;
-background:linear-gradient(135deg,#7c3aed,#5b21b6);
-color:#fff;font-size:16px;font-weight:bold;cursor:pointer;margin-top:5px
-}
-.login-btn:disabled{opacity:.6}
-
-.message{
-margin-top:15px;padding:11px;border-radius:12px;font-size:13px;text-align:center;display:none
-}
-.message.error{display:block;background:#fee2e2;color:#991b1b}
-.message.success{display:block;background:#dcfce7;color:#166534}
-
-#dashboard{min-height:100vh;width:100%;background:#f8f7ff}
-
-.topbar{
-height:70px;background:#fff;display:flex;align-items:center;justify-content:space-between;
-padding:0 20px;box-shadow:0 2px 15px #0000000b;position:sticky;top:0;z-index:10
+background:linear-gradient(135deg,var(--p2),var(--p));
+color:#fff;font-weight:bold;font-size:16px
 }
 
-.brand{font-size:20px;font-weight:bold;color:#5b21b6}
-.logout{
-border:0;background:#ede9fe;color:#5b21b6;padding:9px 15px;
-border-radius:10px;cursor:pointer;font-weight:bold
+.msg{margin-top:12px;padding:10px;border-radius:12px;text-align:center;font-size:12px}
+.msg.error{background:#fee2e2;color:#991b1b}
+.msg.ok{background:#dcfce7;color:#166534}
+
+#app{min-height:100vh}
+header{
+height:68px;background:#fff;display:flex;align-items:center;
+justify-content:space-between;padding:0 16px;
+box-shadow:0 3px 18px #0000000b;position:sticky;top:0;z-index:20
 }
 
-.content{max-width:1100px;margin:auto;padding:25px 18px}
+.brand{font-weight:bold;color:var(--p);font-size:18px}
+.header-actions{display:flex;gap:8px}
+.iconbtn{
+border:0;background:var(--p3);color:var(--p);
+border-radius:11px;padding:9px 12px;font-weight:bold
+}
 
-.welcome{
-background:linear-gradient(135deg,#6d28d9,#4f46e5);color:white;
-border-radius:22px;padding:25px;margin-bottom:20px
-}
-.welcome h2{margin:0 0 8px}
+main{max-width:1050px;margin:auto;padding:18px 14px 95px}
 
-.stats{
-display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px
+.hero{
+background:linear-gradient(135deg,#6d28d9,#4f46e5);
+color:#fff;border-radius:24px;padding:23px;margin-bottom:16px;
+box-shadow:0 15px 35px #6d28d935
 }
-.stat{
-background:#fff;border-radius:18px;padding:18px;box-shadow:0 5px 20px #00000008
+
+.hero h2{margin:0 0 8px;font-size:22px}
+.hero p{margin:0;font-size:13px;opacity:.9}
+
+.grid{
+display:grid;grid-template-columns:repeat(2,1fr);gap:12px
 }
-.stat strong{display:block;font-size:25px;color:#6d28d9;margin-bottom:5px}
-.stat span{font-size:12px;color:#6b7280}
 
 .card{
-background:#fff;border-radius:20px;padding:20px;
-box-shadow:0 5px 20px #00000008;margin-bottom:18px
+background:#fff;border-radius:19px;padding:17px;
+box-shadow:0 7px 25px #00000009;margin-bottom:12px
 }
-.card h3{margin-top:0;color:#4c1d95}
 
-.student{
-border:1px solid #ede9fe;border-radius:15px;padding:15px;margin-bottom:10px;
-display:flex;justify-content:space-between;align-items:center;gap:10px
+.card h3{margin:0 0 13px;color:var(--dark);font-size:16px}
+
+.stat{
+display:flex;align-items:center;gap:12px
 }
-.student-name{font-weight:bold}
-.badge{padding:6px 10px;border-radius:20px;font-size:11px;background:#ede9fe;color:#5b21b6}
-.empty{text-align:center;color:#9ca3af;padding:25px}
 
-.info-row{
+.stat-icon{
+width:45px;height:45px;border-radius:14px;
+background:var(--p3);display:flex;align-items:center;justify-content:center;
+font-size:22px
+}
+
+.stat strong{display:block;color:var(--p);font-size:20px}
+.stat span{font-size:11px;color:var(--muted)}
+
+.section-title{
+display:flex;align-items:center;justify-content:space-between;margin:20px 0 10px
+}
+
+.section-title h3{margin:0;color:var(--dark)}
+
+.lesson{
+background:#fff;border:1px solid #ede9fe;border-radius:17px;
+padding:15px;margin-bottom:10px;display:flex;
+align-items:center;justify-content:space-between;gap:10px
+}
+
+.lesson-left{display:flex;align-items:center;gap:12px}
+.lesson-number{
+width:42px;height:42px;border-radius:13px;background:var(--p3);
+color:var(--p);display:flex;align-items:center;justify-content:center;font-weight:bold
+}
+.lesson small{color:var(--muted)}
+
+.open{
+border:0;background:var(--p);color:#fff;border-radius:10px;padding:9px 13px
+}
+
+.progress{
+height:8px;background:#eee9fb;border-radius:20px;overflow:hidden;margin-top:10px
+}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,#8b5cf6,#4f46e5);width:0}
+
+.vocab{
 display:flex;justify-content:space-between;align-items:center;
-padding:14px 0;border-bottom:1px solid #f3f4f6;gap:15px
+padding:12px 0;border-bottom:1px solid #f1eff7
 }
-.info-row:last-child{border-bottom:0}
-.info-label{font-weight:bold}
-.info-value{color:#4b5563}
+.vocab:last-child{border:0}
+.en{font-weight:bold;color:var(--p);direction:ltr}
+.fa{color:var(--muted)}
 
-.loading{
-text-align:center;padding:35px;color:#6b7280
+.choice{
+width:100%;text-align:right;border:1px solid #ddd6fe;
+background:#fff;padding:13px;border-radius:12px;margin:6px 0
 }
+.choice:hover{background:#f5f3ff}
+
+.bottom{
+position:fixed;bottom:0;left:0;right:0;background:#fff;
+height:72px;display:flex;justify-content:space-around;
+align-items:center;box-shadow:0 -4px 20px #0000000d;z-index:30
+}
+
+.nav{
+border:0;background:transparent;color:#8a8797;
+font-size:11px;font-weight:bold
+}
+.nav span{display:block;font-size:22px;margin-bottom:2px}
+.nav.active{color:var(--p)}
+
+.back{
+border:0;background:var(--p3);color:var(--p);
+padding:9px 13px;border-radius:10px;font-weight:bold;margin-bottom:12px
+}
+
+.xp{
+display:inline-block;background:#fef3c7;color:#92400e;
+padding:6px 10px;border-radius:20px;font-size:11px;font-weight:bold
+}
+
+.badge{
+display:inline-block;background:var(--p3);color:var(--p);
+padding:5px 9px;border-radius:20px;font-size:10px
+}
+
+.center{text-align:center}
+.big-score{font-size:40px;color:var(--p);font-weight:bold}
 
 @media(max-width:600px){
-.stats{grid-template-columns:1fr}
-.topbar{padding:0 12px}
-.content{padding:18px 12px}
+.grid{grid-template-columns:1fr}
+main{padding-left:10px;padding-right:10px}
 }
 </style>
 </head>
 
 <body>
 
-<div id="app">
+<div id="loginScreen" class="screen">
 
-<div id="loginPage" class="login-box">
+<div class="login">
 
 <div class="logo">AN</div>
 
 <h1>AliNagheli English</h1>
-<div class="subtitle">سامانه آموزش زبان انگلیسی</div>
+<p>سامانه آموزش زبان انگلیسی</p>
 
 <div class="tabs">
-<button id="studentTab" class="active" type="button">زبان‌آموز</button>
-<button id="adminTab" type="button">مدیر</button>
+<button id="studentLoginTab" class="active">زبان‌آموز</button>
+<button id="guestLoginTab">ورود به نرم‌افزار</button>
 </div>
 
-<form id="loginForm">
-
 <div class="field">
-<label id="usernameLabel">شماره موبایل</label>
-<input
-id="username"
-type="text"
-inputmode="tel"
-autocomplete="username"
-placeholder="09123456789"
-required>
+<label>نام</label>
+<input id="loginName" placeholder="نام خود را وارد کنید">
 </div>
 
 <div class="field">
 <label>رمز عبور</label>
-<input
-id="password"
-type="password"
-autocomplete="current-password"
-placeholder="رمز عبور"
-required>
+<input id="loginPassword" type="password" placeholder="رمز عبور">
 </div>
 
-<button id="loginBtn" class="login-btn" type="submit">ورود</button>
+<button id="loginButton" class="primary">ورود</button>
 
-</form>
-
-<div id="message" class="message"></div>
+<div id="loginMessage"></div>
 
 </div>
-
 </div>
 
-<div id="dashboard" class="hidden">
 
-<div class="topbar">
+<div id="app" class="hidden">
+
+<header>
 <div class="brand">AliNagheli English</div>
-<button id="logoutBtn" class="logout" type="button">خروج</button>
+
+<div class="header-actions">
+<button class="iconbtn" id="xpHeader">⭐ 0 XP</button>
+<button class="iconbtn" id="logoutButton">خروج</button>
+</div>
+</header>
+
+<main>
+
+<section id="homePage">
+
+<div class="hero">
+<h2 id="hello">سلام 👋</h2>
+<p>به مسیر یادگیری انگلیسی خوش آمدی.</p>
 </div>
 
-<div class="content">
+<div class="grid">
 
-<div class="welcome">
-<h2 id="welcomeTitle">خوش آمدید 🌟</h2>
-<div id="welcomeText">به سامانه AliNagheli English خوش آمدید.</div>
+<div class="card stat">
+<div class="stat-icon">⭐</div>
+<div>
+<strong id="xp">0</strong>
+<span>امتیاز XP</span>
+</div>
 </div>
 
-<div id="adminPanel" class="hidden">
-
-<div class="stats">
-
-<div class="stat">
-<strong id="waitingCount">0</strong>
-<span>در صف انتظار</span>
+<div class="card stat">
+<div class="stat-icon">🔥</div>
+<div>
+<strong id="streak">0</strong>
+<span>روز متوالی</span>
+</div>
 </div>
 
-<div class="stat">
-<strong id="registeredCount">0</strong>
-<span>ثبت‌نام شده</span>
+<div class="card stat">
+<div class="stat-icon">📚</div>
+<div>
+<strong id="completed">0</strong>
+<span>درس تکمیل‌شده</span>
+</div>
 </div>
 
-<div class="stat">
-<strong id="graduateCount">0</strong>
-<span>فارغ‌التحصیل</span>
+<div class="card stat">
+<div class="stat-icon">🏆</div>
+<div>
+<strong id="record">0</strong>
+<span>رکورد مسابقه</span>
+</div>
 </div>
 
+</div>
+
+<div class="section-title">
+<h3>ادامه یادگیری</h3>
 </div>
 
 <div class="card">
-<h3>زبان‌آموزان</h3>
-<div id="studentsList"></div>
+<h3>پیشرفت دوره</h3>
+<div>
+<span id="courseProgressText">0٪</span>
+</div>
+<div class="progress">
+<i id="courseProgress"></i>
+</div>
+</div>
+
+<div class="section-title">
+<h3>دسترسی سریع</h3>
+</div>
+
+<div class="grid">
+
+<div class="card center" onclick="showPage('lessonsPage')">
+<div style="font-size:35px">📚</div>
+<strong>درس‌ها</strong>
+</div>
+
+<div class="card center" onclick="showPage('vocabPage')">
+<div style="font-size:35px">🧠</div>
+<strong>واژگان امروز</strong>
+</div>
+
+<div class="card center" onclick="showPage('testPage')">
+<div style="font-size:35px">📝</div>
+<strong>آزمون تعیین سطح</strong>
+</div>
+
+<div class="card center" onclick="showPage('gamePage')">
+<div style="font-size:35px">🎮</div>
+<strong>بازی و تمرین</strong>
 </div>
 
 </div>
 
-<div id="studentPanel" class="hidden">
+</section>
+
+
+<section id="lessonsPage" class="hidden">
+
+<button class="back" onclick="showPage('homePage')">← بازگشت</button>
+
+<div class="hero">
+<h2>📚 دوره انگلیسی</h2>
+<p>۵۰ درس مرحله‌به‌مرحله</p>
+</div>
 
 <div class="card">
-<h3>اطلاعات زبان‌آموز</h3>
-<div id="studentInfo"></div>
+<h3>مقدمه</h3>
+<p style="font-size:13px;color:#777">
+الفبای انگلیسی، حروف بزرگ و کوچک و واژگان پایه
+</p>
+<button class="open" onclick="openLesson(0)">شروع</button>
 </div>
+
+<div id="lessonList"></div>
+
+</section>
+
+
+<section id="lessonPage" class="hidden">
+
+<button class="back" onclick="showPage('lessonsPage')">← فهرست درس‌ها</button>
+
+<div class="hero">
+<h2 id="lessonTitle"></h2>
+<p id="lessonSubtitle"></p>
+</div>
+
+<div class="card">
+<h3>📖 Grammar</h3>
+<p id="lessonGrammar"></p>
+</div>
+
+<div class="card">
+<h3>🧠 Vocabulary</h3>
+<div id="lessonVocabulary"></div>
+</div>
+
+<div class="card">
+<h3>✏️ تمرین</h3>
+<div id="lessonExercise"></div>
+</div>
+
+</section>
+
+
+<section id="vocabPage" class="hidden">
+
+<button class="back" onclick="showPage('homePage')">← بازگشت</button>
+
+<div class="hero">
+<h2>🧠 واژگان امروز</h2>
+<p>هر روز چند واژه جدید یاد بگیر.</p>
+</div>
+
+<div class="card" id="dailyVocabulary"></div>
+
+</section>
+
+
+<section id="testPage" class="hidden">
+
+<button class="back" onclick="showPage('homePage')">← بازگشت</button>
+
+<div class="hero">
+<h2>📝 آزمون تعیین سطح</h2>
+<p>دانشت را بسنج.</p>
+</div>
+
+<div class="card">
+
+<div id="testQuestion"></div>
+
+<div id="testChoices"></div>
+
+<button id="nextTest" class="primary hidden">
+سؤال بعدی
+</button>
 
 </div>
 
+</section>
+
+
+<section id="gamePage" class="hidden">
+
+<button class="back" onclick="showPage('homePage')">← بازگشت</button>
+
+<div class="hero">
+<h2>🎮 بازی و تمرین</h2>
+<p>یادگیری را به بازی تبدیل کن.</p>
+</div>
+
+<div class="card center" onclick="startRecordGame()">
+<div style="font-size:45px">🏆</div>
+<h3>مسابقه رکوردی ۱۰۰ سؤالی</h3>
+<p style="font-size:12px;color:#777">
+رکورد خودت را ثبت کن!
+</p>
+<button class="open">شروع مسابقه</button>
+</div>
+
+<div class="card center" onclick="startWordGame()">
+<div style="font-size:45px">🧠</div>
+<h3>حدس معنی</h3>
+<p style="font-size:12px;color:#777">
+معنی واژه انگلیسی را انتخاب کن.
+</p>
+<button class="open">شروع بازی</button>
+</div>
+
+</section>
+
+
+<section id="recordGamePage" class="hidden">
+
+<div class="hero">
+<h2>🏆 مسابقه رکوردی</h2>
+<p id="recordQuestionNumber">سؤال ۱ از ۱۰۰</p>
+</div>
+
+<div class="card">
+<h3 id="recordQuestion"></h3>
+<div id="recordChoices"></div>
+</div>
+
+</section>
+
+
+<section id="wordGamePage" class="hidden">
+
+<button class="back" onclick="showPage('gamePage')">← بازگشت</button>
+
+<div class="hero">
+<h2>🧠 حدس معنی</h2>
+<p id="wordQuestion"></p>
+</div>
+
+<div class="card" id="wordChoices"></div>
+
+</section>
+
+
+<section id="profilePage" class="hidden">
+
+<div class="hero">
+<h2>👤 پروفایل</h2>
+<p>اطلاعات و پیشرفت تو</p>
+</div>
+
+<div class="card">
+<h3 id="profileName"></h3>
+<div class="info-row">
+<span>XP</span>
+<strong id="profileXp">0</strong>
+</div>
+<div class="info-row">
+<span>درس‌های کامل‌شده</span>
+<strong id="profileCompleted">0</strong>
+</div>
+<div class="info-row">
+<span>رکورد</span>
+<strong id="profileRecord">0</strong>
 </div>
 </div>
+
+</section>
+
+
+<section id="settingsPage" class="hidden">
+
+<div class="hero">
+<h2>⚙️ تنظیمات</h2>
+<p>تنظیمات نرم‌افزار</p>
+</div>
+
+<div class="card">
+<button class="primary" onclick="backupData()">
+💾 پشتیبان‌گیری
+</button>
+</div>
+
+<div class="card">
+<button class="primary" onclick="resetProgress()">
+🔄 صفر کردن پیشرفت
+</button>
+</div>
+
+</section>
+
+</main>
+
+
+<nav class="bottom">
+
+<button class="nav active" data-page="homePage">
+<span>🏠</span>خانه
+</button>
+
+<button class="nav" data-page="lessonsPage">
+<span>📚</span>درس‌ها
+</button>
+
+<button class="nav" data-page="gamePage">
+<span>🎮</span>بازی
+</button>
+
+<button class="nav" data-page="profilePage">
+<span>👤</span>پروفایل
+</button>
+
+<button class="nav" data-page="settingsPage">
+<span>⚙️</span>تنظیمات
+</button>
+
+</nav>
+
+</div>
+
 
 <script>
 "use strict";
 
 /* =========================================================
-   SUPABASE
+   DATA
 ========================================================= */
 
-const SUPABASE_URL =
-"https://kapzyedzjecnfxevjisq.supabase.co";
+const lessons = [
 
-const SUPABASE_KEY =
-"sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
+{
+title:"Lesson 1 - Hello",
+subtitle:"Greetings & Introductions",
+grammar:"I am / You are",
+vocab:[
+["hello","سلام"],
+["hi","سلام"],
+["name","نام"],
+["student","دانش‌آموز"],
+["teacher","معلم"]
+],
+question:"___ am Ali.",
+answers:["I","You","He","They"],
+correct:0
+},
+
+{
+title:"Lesson 2 - My Family",
+subtitle:"Family Members",
+grammar:"This is / These are",
+vocab:[
+["father","پدر"],
+["mother","مادر"],
+["brother","برادر"],
+["sister","خواهر"],
+["family","خانواده"]
+],
+question:"This ___ my mother.",
+answers:["is","are","am","be"],
+correct:0
+},
+
+{
+title:"Lesson 3 - Numbers",
+subtitle:"Numbers 1–20",
+grammar:"Plural nouns",
+vocab:[
+["one","یک"],
+["two","دو"],
+["three","سه"],
+["four","چهار"],
+["five","پنج"]
+],
+question:"I have two ___.",
+answers:["book","books","a book","bookes"],
+correct:1
+},
+
+{
+title:"Lesson 4 - Colors",
+subtitle:"Basic Colors",
+grammar:"Adjectives",
+vocab:[
+["red","قرمز"],
+["blue","آبی"],
+["green","سبز"],
+["yellow","زرد"],
+["black","مشکی"]
+],
+question:"The sky is ___.",
+answers:["blue","red","green","black"],
+correct:0
+},
+
+{
+title:"Lesson 5 - School",
+subtitle:"School Objects",
+grammar:"There is / There are",
+vocab:[
+["book","کتاب"],
+["pen","خودکار"],
+["pencil","مداد"],
+["desk","میز"],
+["bag","کیف"]
+],
+question:"There ___ a book.",
+answers:["is","are","am","be"],
+correct:0
+}
+
+];
+
+for(let i=6;i<=50;i++){
+
+lessons.push({
+title:"Lesson "+i,
+subtitle:"English Practice",
+grammar:"Grammar & Communication",
+vocab:[
+["learn","یاد گرفتن"],
+["speak","صحبت کردن"],
+["read","خواندن"],
+["write","نوشتن"],
+["practice","تمرین کردن"]
+],
+question:"I ___ English.",
+answers:["study","studies","studying","studied"],
+correct:0
+});
+
+}
+
+
+const dailyWords=[
+["beautiful","زیبا"],
+["important","مهم"],
+["different","متفاوت"],
+["learn","یاد گرفتن"],
+["practice","تمرین کردن"],
+["remember","به یاد آوردن"],
+["answer","پاسخ"],
+["question","سؤال"],
+["teacher","معلم"],
+["student","دانش‌آموز"]
+];
+
+
+const testQuestions=[
+{
+q:"Choose the correct sentence.",
+a:["I am a student.","I is a student.","I are a student.","I be a student."],
+c:0
+},
+{
+q:"She ___ my sister.",
+a:["am","is","are","be"],
+c:1
+},
+{
+q:"They ___ students.",
+a:["is","am","are","be"],
+c:2
+},
+{
+q:"Choose the plural form.",
+a:["book","books","bookes","a book"],
+c:1
+},
+{
+q:"What is the opposite of big?",
+a:["large","small","tall","long"],
+c:1
+}
+];
+
+
+const gameWords=[
+["apple","سیب"],
+["book","کتاب"],
+["house","خانه"],
+["water","آب"],
+["school","مدرسه"],
+["teacher","معلم"],
+["friend","دوست"],
+["beautiful","زیبا"],
+["happy","خوشحال"],
+["family","خانواده"]
+];
 
 
 /* =========================================================
    STATE
 ========================================================= */
 
-let loginType = "student";
-let currentSession = null;
-let currentStudent = null;
-
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const loginPage = document.getElementById("loginPage");
-const dashboard = document.getElementById("dashboard");
-
-const loginForm = document.getElementById("loginForm");
-const usernameInput = document.getElementById("username");
-const passwordInput = document.getElementById("password");
-const loginBtn = document.getElementById("loginBtn");
-
-const messageBox = document.getElementById("message");
-
-const studentTab = document.getElementById("studentTab");
-const adminTab = document.getElementById("adminTab");
-
-const usernameLabel = document.getElementById("usernameLabel");
-
-const adminPanel = document.getElementById("adminPanel");
-const studentPanel = document.getElementById("studentPanel");
-
-const welcomeTitle = document.getElementById("welcomeTitle");
-const welcomeText = document.getElementById("welcomeText");
-
-const logoutBtn = document.getElementById("logoutBtn");
-
-
-/* =========================================================
-   PHONE NORMALIZATION
-========================================================= */
-
-function normalizePhone(value){
-
-let s = String(value || "").trim();
-
-const persian =
-"۰۱۲۳۴۵۶۷۸۹";
-
-const arabic =
-"٠١٢٣٤٥٦٧٨٩";
-
-for(let i=0;i<10;i++){
-
-s = s.replaceAll(
-persian[i],
-String(i)
-);
-
-s = s.replaceAll(
-arabic[i],
-String(i)
-);
-
-}
-
-s = s.replace(/[^\d+]/g,"");
-
-if(s.startsWith("+98")){
-s = "0" + s.slice(3);
-}
-
-if(s.startsWith("0098")){
-s = "0" + s.slice(4);
-}
-
-if(s.startsWith("98") && s.length === 12){
-s = "0" + s.slice(2);
-}
-
-return s;
-}
-
-
-/* =========================================================
-   AUTH EMAIL
-========================================================= */
-
-function studentEmail(phone){
-
-const normalized =
-normalizePhone(phone);
-
-return normalized +
-"@alinagheli.com";
-}
-
-
-/* =========================================================
-   MESSAGE
-========================================================= */
-
-function showMessage(text,type="error"){
-
-messageBox.textContent = text;
-messageBox.className =
-"message " + type;
-
-}
-
-function clearMessage(){
-
-messageBox.textContent = "";
-messageBox.className = "message";
-
-}
-
-
-/* =========================================================
-   LOGIN TYPE
-========================================================= */
-
-function setLoginType(type){
-
-loginType = type;
-
-studentTab.classList.toggle(
-"active",
-type === "student"
-);
-
-adminTab.classList.toggle(
-"active",
-type === "admin"
-);
-
-usernameLabel.textContent =
-type === "student"
-? "شماره موبایل"
-: "نام کاربری مدیر";
-
-usernameInput.placeholder =
-type === "student"
-? "09123456789"
-: "admin";
-
-usernameInput.value = "";
-passwordInput.value = "";
-
-clearMessage();
-
-}
-
-studentTab.addEventListener(
-"click",
-() => setLoginType("student")
-);
-
-adminTab.addEventListener(
-"click",
-() => setLoginType("admin")
-);
-
-
-/* =========================================================
-   SUPABASE AUTH REQUEST
-========================================================= */
-
-async function authLogin(email,password){
-
-const response =
-await fetch(
-SUPABASE_URL +
-"/auth/v1/token?grant_type=password",
-{
-method:"POST",
-headers:{
-"apikey":SUPABASE_KEY,
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-email:email,
-password:password
-})
-}
-);
-
-const raw =
-await response.text();
-
-let data = {};
-
-try{
-data = raw ? JSON.parse(raw) : {};
-}catch{
-data = {};
-}
-
-if(!response.ok){
-
-throw new Error(
-data.error_description ||
-data.msg ||
-data.message ||
-"Invalid login credentials"
-);
-
-}
-
-if(!data.access_token){
-
-throw new Error(
-"Authentication failed"
-);
-
-}
-
-return data;
-}
-
-
-/* =========================================================
-   REST REQUEST
-========================================================= */
-
-async function supabaseRequest(
-path,
-options={}
-){
-
-const headers = {
-"apikey":SUPABASE_KEY,
-"Content-Type":"application/json",
-"Accept":"application/json",
-...(options.headers || {})
+let user={
+name:"",
+xp:0,
+streak:0,
+completed:[],
+record:0
 };
 
-if(currentSession &&
-currentSession.access_token){
+let currentLesson=0;
+let testIndex=0;
+let testScore=0;
 
-headers.Authorization =
-"Bearer " +
-currentSession.access_token;
+let recordIndex=0;
+let recordScore=0;
 
-}else{
-
-headers.Authorization =
-"Bearer " +
-SUPABASE_KEY;
-
-}
-
-const response =
-await fetch(
-SUPABASE_URL + path,
-{
-...options,
-headers
-}
-);
-
-const raw =
-await response.text();
-
-let data = null;
-
-try{
-data = raw ? JSON.parse(raw) : null;
-}catch{
-data = raw;
-}
-
-if(!response.ok){
-
-throw new Error(
-(data && (
-data.message ||
-data.error_description ||
-data.hint ||
-data.details
-)) ||
-"Server request failed"
-);
-
-}
-
-return data;
-
-}
+let wordIndex=0;
 
 
 /* =========================================================
-   FIND STUDENT
+   STORAGE
 ========================================================= */
 
-async function findStudent(phone){
-
-const normalized =
-normalizePhone(phone);
-
-if(!normalized){
-throw new Error("شماره موبایل نامعتبر است.");
-}
-
-const url =
-"/rest/v1/students" +
-"?select=*" +
-"&phone=eq." +
-encodeURIComponent(normalized) +
-"&limit=1";
-
-let students =
-await supabaseRequest(url);
-
-if(students && students.length){
-return students[0];
-}
-
-
-/*
-  اگر شماره در دیتابیس با فرمت متفاوت ذخیره شده باشد،
-  یک جستجوی دوم انجام می‌دهیم.
-*/
-
-const all =
-await supabaseRequest(
-"/rest/v1/students?select=*"
-);
-
-const found =
-(Array.isArray(all) ? all : [])
-.find(
-s =>
-normalizePhone(s.phone) === normalized
-);
-
-return found || null;
-
-}
-
-
-/* =========================================================
-   STUDENT LOGIN
-========================================================= */
-
-async function studentLogin(phone,password){
-
-const normalized =
-normalizePhone(phone);
-
-if(!/^09\d{9}$/.test(normalized)){
-
-throw new Error(
-"شماره موبایل باید به صورت 09123456789 وارد شود."
-);
-
-}
-
-
-/*
-  ایمیل داخلی همان ایمیلی است که برای
-  حساب زبان‌آموز ساخته شده است.
-*/
-
-const email =
-studentEmail(normalized);
-
-const auth =
-await authLogin(
-email,
-password
-);
-
-currentSession = auth;
-
-
-/*
-  بعد از Auth، دانش‌آموز را پیدا می‌کنیم.
-*/
-
-const student =
-await findStudent(normalized);
-
-if(!student){
-
-throw new Error(
-"حساب زبان‌آموز پیدا نشد."
-);
-
-}
-
-
-/*
-  اگر حساب منتظر تأیید باشد، اجازه ورود نمی‌دهیم.
-*/
-
-const status =
-String(student.status || "")
-.toLowerCase();
-
-if(
-status === "waiting" ||
-status === "pending"
-){
-
-throw new Error(
-"ثبت‌نام شما هنوز توسط مدیر تأیید نشده است."
-);
-
-}
-
-currentStudent = student;
-
-saveSession(
-"student",
-student,
-auth
-);
-
-openStudentDashboard(
-student
-);
-
-}
-
-
-/* =========================================================
-   ADMIN LOGIN
-========================================================= */
-
-async function adminLogin(username,password){
-
-let value =
-String(username || "").trim().toLowerCase();
-
-let email = value;
-
-if(!email.includes("@")){
-
-email =
-value +
-"@alinagheli.com";
-
-}
-
-const auth =
-await authLogin(
-email,
-password
-);
-
-currentSession = auth;
-
-saveSession(
-"admin",
-auth.user || {},
-auth
-);
-
-openAdminDashboard();
-
-}
-
-
-/* =========================================================
-   SAVE SESSION
-========================================================= */
-
-function saveSession(type,data,auth){
-
-const payload = {
-type:type,
-data:data,
-access_token:auth.access_token,
-refresh_token:auth.refresh_token,
-expires_at:auth.expires_at || null
-};
+function save(){
 
 localStorage.setItem(
-"alinagheli_session",
-JSON.stringify(payload)
+"AliNagheliEnglishUser",
+JSON.stringify(user)
 );
+
+}
+
+function load(){
+
+try{
+
+const saved=
+localStorage.getItem(
+"AliNagheliEnglishUser"
+);
+
+if(saved){
+
+const data=JSON.parse(saved);
+
+user={
+name:data.name || "",
+xp:Number(data.xp)||0,
+streak:Number(data.streak)||0,
+completed:Array.isArray(data.completed)
+?data.completed:[],
+record:Number(data.record)||0
+};
+
+}
+
+}catch(e){
+
+console.error(e);
+
+}
 
 }
 
 
 /* =========================================================
-   CLEAR SESSION
+   LOGIN
 ========================================================= */
 
-function clearSession(){
+const loginScreen=
+document.getElementById("loginScreen");
 
-currentSession = null;
-currentStudent = null;
+const app=
+document.getElementById("app");
 
-localStorage.removeItem(
-"alinagheli_session"
+const loginName=
+document.getElementById("loginName");
+
+const loginPassword=
+document.getElementById("loginPassword");
+
+const loginMessage=
+document.getElementById("loginMessage");
+
+document
+.getElementById("loginButton")
+.addEventListener(
+"click",
+login
 );
 
+loginPassword.addEventListener(
+"keydown",
+e=>{
+if(e.key==="Enter")login();
 }
-
-
-/* =========================================================
-   LOGIN FORM
-========================================================= */
-
-loginForm.addEventListener(
-"submit",
-async function(event){
-
-event.preventDefault();
-
-clearMessage();
-
-const user =
-usernameInput.value.trim();
-
-const pass =
-passwordInput.value;
-
-if(!user || !pass){
-
-showMessage(
-"اطلاعات ورود را کامل وارد کنید."
 );
 
+function login(){
+
+const name=
+loginName.value.trim();
+
+const password=
+loginPassword.value;
+
+if(!name){
+
+loginMessage.className="msg error";
+loginMessage.textContent=
+"لطفاً نام خود را وارد کنید.";
 return;
 
 }
 
-loginBtn.disabled = true;
-loginBtn.textContent =
-"در حال ورود...";
-
-try{
-
-if(loginType === "student"){
-
-await studentLogin(
-user,
-pass
-);
-
-}else{
-
-await adminLogin(
-user,
-pass
-);
-
-}
-
-}catch(error){
-
-console.error(
-"LOGIN ERROR:",
-error
-);
-
-showMessage(
-friendlyError(error)
-);
-
-}finally{
-
-loginBtn.disabled = false;
-loginBtn.textContent = "ورود";
-
-}
-
-});
-
-
-/* =========================================================
-   FRIENDLY ERRORS
-========================================================= */
-
-function friendlyError(error){
-
-const text =
-String(error?.message || error || "");
-
-if(
-text.toLowerCase().includes(
-"invalid login credentials"
-)
-){
-
-return "شماره موبایل یا رمز عبور اشتباه است.";
-
-}
-
-if(
-text.toLowerCase().includes(
-"failed to fetch"
-)
-){
-
-return "ارتباط با سرور برقرار نشد. دوباره تلاش کنید.";
-
-}
-
-if(
-text.toLowerCase().includes(
-"email not confirmed"
-)
-){
-
-return "ایمیل حساب هنوز تأیید نشده است.";
-
-}
-
-if(
-text.toLowerCase().includes(
-"student not found"
-)
-){
-
-return "اطلاعات زبان‌آموز پیدا نشد.";
-
-}
-
-return text ||
-"ورود ناموفق بود.";
-
-}
-
-
-/* =========================================================
-   ADMIN DASHBOARD
-========================================================= */
-
-async function openAdminDashboard(){
-
-loginPage.classList.add("hidden");
-dashboard.classList.remove("hidden");
-
-adminPanel.classList.remove("hidden");
-studentPanel.classList.add("hidden");
-
-welcomeTitle.textContent =
-"سلام مدیر عزیز 👋";
-
-welcomeText.textContent =
-"مدیریت زبان‌آموزان AliNagheli English";
-
-await loadStudents();
-
-}
-
-
-/* =========================================================
-   STUDENT DASHBOARD
-========================================================= */
-
-function openStudentDashboard(student){
-
-loginPage.classList.add("hidden");
-dashboard.classList.remove("hidden");
-
-studentPanel.classList.remove("hidden");
-adminPanel.classList.add("hidden");
-
-const name =
-(
-student.first_name ||
-"زبان‌آموز"
-).trim();
-
-welcomeTitle.textContent =
-"سلام " +
-name +
-" 👋";
-
-welcomeText.textContent =
-"به پنل زبان‌آموزی خودت خوش آمدی.";
-
-renderStudent(student);
-
-}
-
-
-/* =========================================================
-   LOAD STUDENTS
-========================================================= */
-
-async function loadStudents(){
-
-const list =
-document.getElementById(
-"studentsList"
-);
-
-list.innerHTML =
-'<div class="loading">در حال دریافت اطلاعات...</div>';
-
-try{
-
-const students =
-await supabaseRequest(
-"/rest/v1/students?select=*&order=id.desc"
-);
-
-const safeStudents =
-Array.isArray(students)
-? students
-: [];
-
-const waiting =
-safeStudents.filter(
-s => {
-const status =
-String(s.status || "").toLowerCase();
-
-return status === "waiting" ||
-status === "pending";
-}
-).length;
-
-const registered =
-safeStudents.filter(
-s =>
-String(s.status || "").toLowerCase()
-===
-"registered"
-).length;
-
-const graduate =
-safeStudents.filter(
-s => {
-
-const status =
-String(s.status || "").toLowerCase();
-
-return status === "graduate" ||
-status === "graduated";
-
-}
-).length;
-
-document.getElementById(
-"waitingCount"
-).textContent = waiting;
-
-document.getElementById(
-"registeredCount"
-).textContent = registered;
-
-document.getElementById(
-"graduateCount"
-).textContent = graduate;
-
-if(!safeStudents.length){
-
-list.innerHTML =
-'<div class="empty">هنوز زبان‌آموزی ثبت نشده است.</div>';
-
+if(!password){
+
+loginMessage.className="msg error";
+loginMessage.textContent=
+"لطفاً رمز عبور را وارد کنید.";
 return;
 
 }
 
-list.innerHTML =
-safeStudents.map(
-student => {
+load();
 
-const name =
-(
-student.first_name || ""
-) +
-" " +
-(
-student.last_name || ""
-);
+user.name=name;
 
-const status =
-student.status || "";
+save();
 
-return `
-<div class="student">
+loginScreen.classList.add("hidden");
+app.classList.remove("hidden");
 
-<div>
-<div class="student-name">
-${escapeHtml(
-name.trim() || "بدون نام"
-)}
-</div>
+updateUI();
 
-<div style="
-font-size:12px;
-color:#6b7280;
-margin-top:5px;
-direction:ltr;
-text-align:right;
-">
-${escapeHtml(
-student.phone || ""
-)}
-</div>
-</div>
-
-<div class="badge">
-${escapeHtml(
-statusText(status)
-)}
-</div>
-
-</div>
-`;
-
-}
-).join("");
-
-}catch(error){
-
-console.error(
-"STUDENTS ERROR:",
-error
-);
-
-list.innerHTML =
-'<div class="empty">دریافت اطلاعات با خطا مواجه شد.</div>';
-
-}
-
-}
-
-
-/* =========================================================
-   STUDENT INFO
-========================================================= */
-
-function renderStudent(student){
-
-const info =
-document.getElementById(
-"studentInfo"
-);
-
-const fullName =
-(
-student.first_name || ""
-) +
-" " +
-(
-student.last_name || ""
-);
-
-const fields = [
-
-[
-"نام و نام خانوادگی",
-fullName.trim() || "-"
-],
-
-[
-"شماره موبایل",
-student.phone || "-"
-],
-
-[
-"سطح",
-student.level || "-"
-],
-
-[
-"وضعیت",
-statusText(student.status)
-],
-
-[
-"کتاب",
-student.book || "-"
-]
-
-];
-
-info.innerHTML =
-fields.map(
-field => {
-
-return `
-<div class="info-row">
-
-<span class="info-label">
-${escapeHtml(field[0])}
-</span>
-
-<span class="info-value">
-${escapeHtml(
-String(field[1])
-)}
-</span>
-
-</div>
-`;
-
-}
-).join("");
-
-}
-
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-function statusText(status){
-
-const value =
-String(status || "")
-.toLowerCase();
-
-switch(value){
-
-case "waiting":
-case "pending":
-return "در صف انتظار";
-
-case "registered":
-return "ثبت‌نام شده";
-
-case "graduate":
-case "graduated":
-return "فارغ‌التحصیل";
-
-default:
-return status || "نامشخص";
-
-}
+showPage("homePage");
 
 }
 
@@ -1175,31 +885,808 @@ return status || "نامشخص";
    LOGOUT
 ========================================================= */
 
-logoutBtn.addEventListener(
+document
+.getElementById("logoutButton")
+.addEventListener(
 "click",
-function(){
+()=>{
 
-clearSession();
+app.classList.add("hidden");
+loginScreen.classList.remove("hidden");
 
-dashboard.classList.add("hidden");
-loginPage.classList.remove("hidden");
+loginName.value="";
+loginPassword.value="";
 
-usernameInput.value = "";
-passwordInput.value = "";
-
-setLoginType("student");
-
-});
-
+}
+);
 
 
 /* =========================================================
-   HTML ESCAPE
+   UI
+========================================================= */
+
+function updateUI(){
+
+document.getElementById("hello").textContent=
+"سلام " +
+(user.name || "دوست عزیز") +
+" 👋";
+
+document.getElementById("xp").textContent=
+user.xp;
+
+document.getElementById("xpHeader").textContent=
+"⭐ " + user.xp + " XP";
+
+document.getElementById("streak").textContent=
+user.streak;
+
+document.getElementById("completed").textContent=
+user.completed.length;
+
+document.getElementById("record").textContent=
+user.record;
+
+const progress=
+Math.round(
+(user.completed.length/50)*100
+);
+
+document.getElementById(
+"courseProgressText"
+).textContent=
+progress+"٪";
+
+document.getElementById(
+"courseProgress"
+).style.width=
+progress+"%";
+
+document.getElementById("profileName").textContent=
+user.name || "زبان‌آموز";
+
+document.getElementById("profileXp").textContent=
+user.xp;
+
+document.getElementById("profileCompleted").textContent=
+user.completed.length;
+
+document.getElementById("profileRecord").textContent=
+user.record;
+
+}
+
+
+function showPage(id){
+
+const pages=[
+"homePage",
+"lessonsPage",
+"lessonPage",
+"vocabPage",
+"testPage",
+"gamePage",
+"recordGamePage",
+"wordGamePage",
+"profilePage",
+"settingsPage"
+];
+
+pages.forEach(
+page=>{
+const el=
+document.getElementById(page);
+
+if(el){
+el.classList.toggle(
+"hidden",
+page!==id
+);
+}
+}
+);
+
+document
+.querySelectorAll(".nav")
+.forEach(
+button=>{
+button.classList.toggle(
+"active",
+button.dataset.page===id
+);
+}
+);
+
+if(id==="lessonsPage"){
+renderLessons();
+}
+
+if(id==="vocabPage"){
+renderDailyVocabulary();
+}
+
+if(id==="homePage"){
+updateUI();
+}
+
+}
+
+
+/* =========================================================
+   NAV
+========================================================= */
+
+document
+.querySelectorAll(".nav")
+.forEach(
+button=>{
+
+button.addEventListener(
+"click",
+()=>showPage(
+button.dataset.page
+)
+);
+
+}
+);
+
+
+/* =========================================================
+   LESSONS
+========================================================= */
+
+function renderLessons(){
+
+const list=
+document.getElementById(
+"lessonList"
+);
+
+list.innerHTML="";
+
+lessons.forEach(
+(lesson,index)=>{
+
+const done=
+user.completed.includes(index);
+
+const div=
+document.createElement("div");
+
+div.className="lesson";
+
+div.innerHTML=`
+<div class="lesson-left">
+<div class="lesson-number">
+${index+1}
+</div>
+
+<div>
+<strong>${escapeHtml(lesson.title)}</strong>
+<br>
+<small>
+${escapeHtml(lesson.subtitle)}
+</small>
+</div>
+</div>
+
+<div>
+${
+done
+?'<span class="badge">✓ تکمیل</span>'
+:'<button class="open">شروع</button>'
+}
+</div>
+`;
+
+if(!done){
+
+div
+.querySelector(".open")
+.addEventListener(
+"click",
+()=>openLesson(index)
+);
+
+}else{
+
+div.addEventListener(
+"click",
+()=>openLesson(index)
+);
+
+}
+
+list.appendChild(div);
+
+}
+);
+
+}
+
+
+function openLesson(index){
+
+currentLesson=index;
+
+const lesson=
+lessons[index];
+
+document.getElementById(
+"lessonTitle"
+).textContent=
+lesson.title;
+
+document.getElementById(
+"lessonSubtitle"
+).textContent=
+lesson.subtitle;
+
+document.getElementById(
+"lessonGrammar"
+).textContent=
+lesson.grammar;
+
+document.getElementById(
+"lessonVocabulary"
+).innerHTML=
+lesson.vocab.map(
+word=>`
+<div class="vocab">
+<span class="en">${escapeHtml(word[0])}</span>
+<span class="fa">${escapeHtml(word[1])}</span>
+</div>
+`
+).join("");
+
+const exercise=
+document.getElementById(
+"lessonExercise"
+);
+
+exercise.innerHTML=`
+<p style="font-weight:bold">
+${escapeHtml(lesson.question)}
+</p>
+<div id="lessonChoices"></div>
+`;
+
+const choices=
+document.getElementById(
+"lessonChoices"
+);
+
+lesson.answers.forEach(
+(answer,i)=>{
+
+const btn=
+document.createElement("button");
+
+btn.className="choice";
+btn.textContent=answer;
+
+btn.addEventListener(
+"click",
+()=>{
+
+if(i===lesson.correct){
+
+btn.style.background=
+"#dcfce7";
+
+btn.style.color=
+"#166534";
+
+completeLesson(index);
+
+}else{
+
+btn.style.background=
+"#fee2e2";
+
+btn.style.color=
+"#991b1b";
+
+}
+
+}
+);
+
+choices.appendChild(btn);
+
+}
+);
+
+showPage("lessonPage");
+
+}
+
+
+function completeLesson(index){
+
+if(
+!user.completed.includes(index)
+){
+
+user.completed.push(index);
+user.xp+=20;
+save();
+updateUI();
+
+}
+
+}
+
+
+/* =========================================================
+   DAILY VOCABULARY
+========================================================= */
+
+function renderDailyVocabulary(){
+
+document.getElementById(
+"dailyVocabulary"
+).innerHTML=
+dailyWords.map(
+(word,index)=>`
+<div class="vocab">
+<div>
+<div class="en">${escapeHtml(word[0])}</div>
+<div style="font-size:10px;color:#aaa">
+Word ${index+1}
+</div>
+</div>
+<div class="fa">${escapeHtml(word[1])}</div>
+</div>
+`
+).join("");
+
+}
+
+
+/* =========================================================
+   LEVEL TEST
+========================================================= */
+
+function startTest(){
+
+testIndex=0;
+testScore=0;
+
+showPage("testPage");
+
+renderTest();
+
+}
+
+
+function renderTest(){
+
+const q=
+testQuestions[testIndex];
+
+document.getElementById(
+"testQuestion"
+).innerHTML=`
+<div class="badge">
+سؤال ${testIndex+1} از ${testQuestions.length}
+</div>
+
+<h3 style="margin-top:14px">
+${escapeHtml(q.q)}
+</h3>
+`;
+
+const choices=
+document.getElementById(
+"testChoices"
+);
+
+choices.innerHTML="";
+
+q.a.forEach(
+(answer,i)=>{
+
+const btn=
+document.createElement("button");
+
+btn.className="choice";
+btn.textContent=answer;
+
+btn.onclick=()=>{
+
+Array
+.from(choices.children)
+.forEach(
+b=>b.disabled=true
+);
+
+if(i===q.c){
+
+testScore++;
+btn.style.background="#dcfce7";
+
+}else{
+
+btn.style.background="#fee2e2";
+
+choices.children[q.c]
+.style.background="#dcfce7";
+
+}
+
+document
+.getElementById("nextTest")
+.classList.remove(
+"hidden"
+);
+
+};
+
+choices.appendChild(btn);
+
+}
+);
+
+}
+
+
+document
+.getElementById("nextTest")
+.addEventListener(
+"click",
+()=>{
+
+testIndex++;
+
+if(testIndex>=testQuestions.length){
+
+finishTest();
+
+}else{
+
+document
+.getElementById("nextTest")
+.classList.add("hidden");
+
+renderTest();
+
+}
+
+}
+);
+
+
+function finishTest(){
+
+const percent=
+Math.round(
+(testScore/
+testQuestions.length)*100
+);
+
+user.xp+=percent;
+save();
+updateUI();
+
+document.getElementById(
+"testQuestion"
+).innerHTML=`
+<div class="center">
+<div class="big-score">${percent}%</div>
+<h3>آزمون تمام شد 🎉</h3>
+<p>
+امتیاز شما: ${testScore} از ${testQuestions.length}
+</p>
+</div>
+`;
+
+document.getElementById(
+"testChoices"
+).innerHTML=`
+<button class="primary"
+onclick="showPage('homePage')">
+بازگشت به خانه
+</button>
+`;
+
+document.getElementById(
+"nextTest"
+).classList.add("hidden");
+
+}
+
+
+/* =========================================================
+   GAMES
+========================================================= */
+
+function startWordGame(){
+
+wordIndex=
+Math.floor(
+Math.random()*gameWords.length
+);
+
+const word=
+gameWords[wordIndex];
+
+document.getElementById(
+"wordQuestion"
+).textContent=
+word[0];
+
+const answers=[
+word[1]
+];
+
+while(answers.length<4){
+
+const candidate=
+gameWords[
+Math.floor(
+Math.random()*gameWords.length
+)
+][1];
+
+if(!answers.includes(candidate)){
+answers.push(candidate);
+}
+
+}
+
+answers.sort(
+()=>Math.random()-.5
+);
+
+const box=
+document.getElementById(
+"wordChoices"
+);
+
+box.innerHTML="";
+
+answers.forEach(
+answer=>{
+
+const btn=
+document.createElement("button");
+
+btn.className="choice";
+btn.textContent=answer;
+
+btn.onclick=()=>{
+
+if(answer===word[1]){
+
+btn.style.background="#dcfce7";
+user.xp+=10;
+
+}else{
+
+btn.style.background="#fee2e2";
+
+}
+
+save();
+updateUI();
+
+};
+
+box.appendChild(btn);
+
+}
+);
+
+showPage("wordGamePage");
+
+}
+
+
+function startRecordGame(){
+
+recordIndex=0;
+recordScore=0;
+
+showPage("recordGamePage");
+
+renderRecordQuestion();
+
+}
+
+
+function renderRecordQuestion(){
+
+if(recordIndex>=100){
+
+finishRecordGame();
+
+return;
+
+}
+
+document.getElementById(
+"recordQuestionNumber"
+).textContent=
+"سؤال "+
+(recordIndex+1)+
+" از ۱۰۰";
+
+const data=
+lessons[
+recordIndex%lessons.length
+];
+
+document.getElementById(
+"recordQuestion"
+).textContent=
+data.question;
+
+const box=
+document.getElementById(
+"recordChoices"
+);
+
+box.innerHTML="";
+
+data.answers.forEach(
+(answer,i)=>{
+
+const btn=
+document.createElement("button");
+
+btn.className="choice";
+btn.textContent=answer;
+
+btn.onclick=()=>{
+
+Array
+.from(box.children)
+.forEach(
+b=>b.disabled=true
+);
+
+if(i===data.correct){
+
+recordScore++;
+btn.style.background="#dcfce7";
+
+}else{
+
+btn.style.background="#fee2e2";
+
+box.children[data.correct]
+.style.background="#dcfce7";
+
+}
+
+setTimeout(
+()=>{
+recordIndex++;
+renderRecordQuestion();
+},
+350
+);
+
+};
+
+box.appendChild(btn);
+
+}
+);
+
+}
+
+
+function finishRecordGame(){
+
+if(recordScore>user.record){
+
+user.record=recordScore;
+
+}
+
+user.xp+=recordScore*2;
+
+save();
+updateUI();
+
+document.getElementById(
+"recordQuestionNumber"
+).textContent=
+"مسابقه تمام شد";
+
+document.getElementById(
+"recordQuestion"
+).innerHTML=
+`
+<div class="center">
+<div class="big-score">${recordScore}</div>
+<h3>رکورد شما 🎉</h3>
+<p>از ۱۰۰ سؤال</p>
+</div>
+`;
+
+document.getElementById(
+"recordChoices"
+).innerHTML=
+`
+<button class="primary"
+onclick="showPage('gamePage')">
+بازگشت به بازی‌ها
+</button>
+`;
+
+}
+
+
+/* =========================================================
+   BACKUP
+========================================================= */
+
+function backupData(){
+
+const data=
+JSON.stringify(
+user,
+null,
+2
+);
+
+const blob=
+new Blob(
+[data],
+{type:"application/json"}
+);
+
+const url=
+URL.createObjectURL(blob);
+
+const a=
+document.createElement("a");
+
+a.href=url;
+a.download=
+"AliNagheliEnglish-backup.json";
+
+a.click();
+
+URL.revokeObjectURL(url);
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetProgress(){
+
+if(
+!confirm(
+"آیا از صفر کردن پیشرفت مطمئن هستید؟"
+)
+)return;
+
+user.xp=0;
+user.streak=0;
+user.completed=[];
+user.record=0;
+
+save();
+updateUI();
+
+}
+
+
+/* =========================================================
+   ESCAPE
 ========================================================= */
 
 function escapeHtml(value){
 
-return String(value ?? "")
+return String(value??"")
 .replace(/&/g,"&amp;")
 .replace(/</g,"&lt;")
 .replace(/>/g,"&gt;")
@@ -1210,89 +1697,36 @@ return String(value ?? "")
 
 
 /* =========================================================
-   RESTORE SESSION
+   INIT
 ========================================================= */
 
-async function restoreSession(){
+load();
 
-const raw =
-localStorage.getItem(
-"alinagheli_session"
-);
+document
+.getElementById("studentLoginTab")
+.onclick=()=>{
+document
+.getElementById("studentLoginTab")
+.classList.add("active");
 
-if(!raw){
-return;
-}
+document
+.getElementById("guestLoginTab")
+.classList.remove("active");
 
-try{
-
-const saved =
-JSON.parse(raw);
-
-if(
-!saved ||
-!saved.type ||
-!saved.data
-){
-
-throw new Error(
-"Invalid saved session"
-);
-
-}
-
-if(saved.access_token){
-
-currentSession = {
-access_token:saved.access_token,
-refresh_token:saved.refresh_token,
-expires_at:saved.expires_at
 };
 
-}
+document
+.getElementById("guestLoginTab")
+.onclick=()=>{
+document
+.getElementById("guestLoginTab")
+.classList.add("active");
 
-if(saved.type === "student"){
+document
+.getElementById("studentLoginTab")
+.classList.remove("active");
 
-currentStudent =
-saved.data;
-
-openStudentDashboard(
-saved.data
-);
-
-}else if(saved.type === "admin"){
-
-openAdminDashboard();
-
-}else{
-
-throw new Error(
-"Unknown session"
-);
-
-}
-
-}catch(error){
-
-console.error(
-"SESSION ERROR:",
-error
-);
-
-clearSession();
-
-}
-
-}
-
-
-/* =========================================================
-   START
-========================================================= */
-
-setLoginType("student");
-
-restoreSession();
+};
 
 </script>
 
