@@ -2,3449 +2,873 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#6d28d9">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AliNagheli English</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
-:root{
-  --p:#6d28d9;
-  --p2:#8b5cf6;
-  --bg:#f7f5ff;
-  --card:#fff;
-  --text:#211b2d;
-  --muted:#706a7d;
-  --border:#e8e1f5;
-  --good:#16a34a;
-  --bad:#dc2626;
-  --shadow:0 8px 28px rgba(54,30,100,.09);
-}
-*{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Tahoma,Arial,sans-serif;line-height:1.8
-}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-.hidden{display:none!important}
-.app{max-width:1100px;margin:auto;min-height:100vh}
-header{
-  position:sticky;top:0;z-index:50;
-  background:rgba(255,255,255,.95);backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border)
-}
-.header-inner{
-  max-width:1100px;margin:auto;padding:12px 16px;
-  display:flex;align-items:center;justify-content:space-between;gap:10px
-}
-.logo{display:flex;align-items:center;gap:10px;font-weight:900;color:var(--p)}
-.logo-icon{
-  width:43px;height:43px;border-radius:14px;
-  display:grid;place-items:center;color:#fff;
-  background:linear-gradient(135deg,var(--p),var(--p2));
-  box-shadow:0 7px 18px rgba(109,40,217,.25)
-}
-.avatar{
-  width:40px;height:40px;border-radius:50%;background:#ede9fe;
-  color:var(--p);display:grid;place-items:center;font-weight:900
-}
-main{padding:18px 14px 100px}
-.page{display:none}
-.page.active{display:block}
-.hero{
-  background:linear-gradient(135deg,#5b21b6,#8b5cf6);
-  color:#fff;border-radius:25px;padding:24px;
-  box-shadow:var(--shadow);margin-bottom:18px
-}
-.hero h1,.hero h2{margin:0 0 8px}
-.hero p{margin:0;opacity:.92}
-.card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:20px;padding:18px;margin-bottom:15px;
-  box-shadow:var(--shadow)
-}
-.grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:13px
-}
-.menu,.course,.lesson-card,.stat,.word,.option,.admin-item{
-  background:#fff;border:1px solid var(--border);border-radius:18px
-}
-.menu,.course{
-  padding:18px;text-align:center;transition:.18s;
-}
-.menu:hover,.course:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
-.menu-icon{font-size:32px;margin-bottom:5px}
-.course .grade{
-  width:60px;height:60px;margin:0 auto 10px;border-radius:18px;
-  display:grid;place-items:center;background:#ede9fe;color:var(--p);
-  font-size:22px;font-weight:900
-}
-.btn{
-  border:0;border-radius:13px;padding:11px 17px;
-  background:var(--p);color:#fff;font-weight:800
-}
-.btn:hover{filter:brightness(.96)}
-.btn.secondary{background:#ede9fe;color:var(--p)}
-.btn.danger{background:#fee2e2;color:#b91c1c}
-.btn.success{background:#dcfce7;color:#15803d}
-.btn.full{width:100%}
-.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
-.input,textarea,select{
-  width:100%;padding:12px 13px;border:1px solid var(--border);
-  border-radius:13px;background:#fff;outline:none
-}
-.input:focus,textarea:focus,select:focus{border-color:var(--p)}
-label{display:block;font-weight:700;margin:10px 0 5px}
-.muted{color:var(--muted)}
-.section-title{
-  display:flex;align-items:center;justify-content:space-between;
-  margin:18px 0 10px
-}
-.stats{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
-  gap:10px;margin:15px 0
-}
-.stat{padding:14px;text-align:center}
-.stat strong{display:block;font-size:23px;color:var(--p)}
-.stat span{color:var(--muted);font-size:13px}
-.tabs{
-  display:flex;gap:8px;overflow:auto;margin:14px 0
-}
-.tab{
-  border:1px solid var(--border);background:#fff;color:var(--muted);
-  border-radius:12px;padding:10px 14px;white-space:nowrap
-}
-.tab.active{background:var(--p);color:#fff;border-color:var(--p)}
-.lesson{display:none}
-.lesson.active{display:block}
-.lesson-card{padding:15px;margin-bottom:10px}
-.example{
-  direction:ltr;text-align:left;background:#f7f3ff;
-  border-right:4px solid var(--p);padding:11px;border-radius:10px;
-  margin:8px 0
-}
-.word-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px
-}
-.word{
-  padding:13px;text-align:center;cursor:pointer;transition:.15s
-}
-.word:hover{border-color:var(--p);transform:translateY(-2px)}
-.word .en{direction:ltr;font-weight:900;color:var(--p)}
-.word .fa{color:var(--muted);font-size:14px}
-.question{
-  padding:15px;border:1px solid var(--border);
-  border-radius:15px;margin:10px 0
-}
-.option{
-  display:block;padding:10px;margin:7px 0;cursor:pointer
-}
-.option:hover{border-color:var(--p)}
-.option.correct{background:#dcfce7;border-color:#22c55e}
-.option.wrong{background:#fee2e2;border-color:#ef4444}
-.option.disabled{pointer-events:none}
-.badge{
-  display:inline-block;padding:3px 9px;border-radius:30px;
-  font-size:12px;font-weight:800
-}
-.badge.waiting{background:#fef3c7;color:#92400e}
-.badge.registered,.badge.approved{background:#dcfce7;color:#166534}
-.badge.rejected{background:#fee2e2;color:#991b1b}
-.badge.info{background:#ede9fe;color:#5b21b6}
-.bottom{
-  position:fixed;bottom:0;left:0;right:0;z-index:60;
-  background:#fff;border-top:1px solid var(--border);
-  box-shadow:0 -5px 20px rgba(0,0,0,.05)
-}
-.bottom-inner{
-  max-width:1100px;margin:auto;display:flex;overflow-x:auto
-}
-.nav-btn{
-  flex:1;min-width:75px;border:0;background:transparent;
-  padding:8px 5px;color:var(--muted);font-size:12px
-}
-.nav-btn.active{color:var(--p);font-weight:900}
-.auth-wrap{
-  min-height:100vh;display:grid;place-items:center;padding:18px
-}
-.auth{
-  width:min(470px,100%);background:#fff;border:1px solid var(--border);
-  border-radius:26px;padding:24px;box-shadow:var(--shadow)
-}
-.auth-logo{text-align:center;margin-bottom:15px}
-.auth-logo .logo-icon{margin:auto}
-.admin-head{
-  background:#21152f;color:#fff;border-radius:20px;padding:20px;margin-bottom:15px
-}
-.admin-item{padding:14px;margin:9px 0}
-hr{border:0;border-top:1px solid var(--border);margin:16px 0}
-.phone{
-  direction:ltr;display:inline-block;font-weight:900;color:var(--p)
-}
-.notice{
-  padding:12px 14px;border-radius:13px;background:#f5f3ff;
-  color:#5b21b6;margin:10px 0
-}
-.error{
-  padding:11px;border-radius:12px;background:#fee2e2;color:#991b1b;margin:10px 0
-}
-.success-msg{
-  padding:11px;border-radius:12px;background:#dcfce7;color:#166534;margin:10px 0
-}
-.loading{
-  position:fixed;inset:0;background:rgba(255,255,255,.75);
-  z-index:100;display:grid;place-items:center
-}
-.spinner{
-  width:45px;height:45px;border:5px solid #ddd6fe;
-  border-top-color:var(--p);border-radius:50%;
-  animation:spin .7s linear infinite
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:600px){
-  main{padding:12px 10px 95px}
-  .hero{padding:20px}
-  .grid{grid-template-columns:repeat(2,1fr)}
-  .word-grid{grid-template-columns:repeat(2,1fr)}
-}
+*{box-sizing:border-box}body{margin:0;background:#f7f5ff;color:#211b2d;font-family:Tahoma,Arial,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+.wrap{max-width:700px;margin:auto;padding:16px}.card{background:#fff;border:1px solid #e8e1f5;border-radius:20px;padding:20px;margin:12px 0;box-shadow:0 8px 28px #361e6415}
+.hero{background:linear-gradient(135deg,#5b21b6,#8b5cf6);color:#fff;border-radius:24px;padding:25px}
+.btn{border:0;border-radius:13px;padding:12px 16px;background:#6d28d9;color:#fff;font-weight:bold;width:100%;margin-top:10px}
+.secondary{background:#ede9fe;color:#5b21b6}.danger{background:#fee2e2;color:#991b1b}
+.input,select{width:100%;padding:12px;border:1px solid #e8e1f5;border-radius:12px;margin:5px 0 12px}
+.tabs{display:flex;gap:8px}.tab{flex:1;border:1px solid #e8e1f5;background:#fff;padding:12px;border-radius:12px}.tab.active{background:#6d28d9;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.menu{border:1px solid #e8e1f5;background:#fff;border-radius:18px;padding:22px}
+.page{display:none}.page.active{display:block}.word{border:1px solid #e8e1f5;background:#fff;border-radius:14px;padding:12px;text-align:center}.words{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.en{direction:ltr;font-weight:bold;color:#6d28d9}
+.msg{padding:11px;border-radius:12px;margin-top:10px}.err{background:#fee2e2;color:#991b1b}.ok{background:#dcfce7;color:#166534}
 </style>
 </head>
-
 <body>
 
-<div id="loading" class="loading hidden"><div class="spinner"></div></div>
+<div id="auth" class="wrap">
+<div class="card" style="max-width:460px;margin:7vh auto">
+<h1 style="text-align:center;color:#6d28d9">💜 AliNagheli English</h1>
 
-<div id="authScreen" class="auth-wrap">
-  <div class="auth">
-    <div class="auth-logo">
-      <div class="logo-icon">AN</div>
-      <h2>AliNagheli English</h2>
-      <p class="muted">سامانه آموزش زبان انگلیسی</p>
-    </div>
-
-    <div class="tabs">
-      <button id="studentTab" class="tab active">👩‍🎓 زبان‌آموز</button>
-      <button id="adminTab" class="tab">🔐 مدیر</button>
-    </div>
-
-    <div id="loginBox">
-      <h3>ورود زبان‌آموز</h3>
-      <label>شماره تلفن</label>
-      <input id="studentPhone" class="input" inputmode="tel" placeholder="0914xxxxxxx">
-
-      <label>رمز عبور</label>
-      <input id="studentPassword" class="input" type="password" placeholder="رمز عبور">
-
-      <button id="studentLoginBtn" class="btn full" style="margin-top:14px">
-        ورود زبان‌آموز
-      </button>
-
-      <button id="showRegisterBtn" class="btn secondary full" style="margin-top:8px">
-        ثبت‌نام زبان‌آموز جدید
-      </button>
-    </div>
-
-    <div id="adminLoginBox" class="hidden">
-      <h3>ورود مدیر</h3>
-      <label>ایمیل مدیر</label>
-      <input id="adminEmail" class="input" type="email" value="alinagheli@gmail.com">
-
-      <label>رمز عبور</label>
-      <input id="adminPassword" class="input" type="password">
-
-      <button id="adminLoginBtn" class="btn full" style="margin-top:14px">
-        ورود مدیر
-      </button>
-
-      <div class="notice">
-        ورود مدیر با حساب واقعی Supabase انجام می‌شود.
-      </div>
-    </div>
-
-    <div id="registerBox" class="hidden">
-      <h3>ثبت‌نام زبان‌آموز جدید</h3>
-
-      <label>نام</label>
-      <input id="regFirst" class="input">
-
-      <label>نام خانوادگی</label>
-      <input id="regLast" class="input">
-
-      <label>شماره تلفن</label>
-      <input id="regPhone" class="input" inputmode="tel" placeholder="0914xxxxxxx">
-
-      <label>رمز عبور</label>
-      <input id="regPassword" class="input" type="password">
-
-      <label>پایه / سطح</label>
-      <select id="regLevel">
-        <option value="">انتخاب پایه</option>
-        <option value="7">پایه هفتم</option>
-        <option value="8">پایه هشتم</option>
-        <option value="9">پایه نهم</option>
-        <option value="10">پایه دهم</option>
-        <option value="11">پایه یازدهم</option>
-        <option value="12">پایه دوازدهم</option>
-      </select>
-
-      <button id="registerBtn" class="btn full" style="margin-top:14px">
-        ثبت‌نام
-      </button>
-
-      <button id="backLoginBtn" class="btn secondary full" style="margin-top:8px">
-        بازگشت به ورود
-      </button>
-    </div>
-
-    <div id="authMessage"></div>
-  </div>
+<div class="tabs">
+<button id="studentTab" class="tab active" type="button">👩‍🎓 زبان‌آموز</button>
+<button id="adminTab" class="tab" type="button">🔐 مدیر</button>
 </div>
 
-<div id="appScreen" class="hidden">
+<div id="studentBox">
+<h3>ورود زبان‌آموز</h3>
+<label>شماره تلفن</label>
+<input id="phone" class="input" inputmode="tel" placeholder="0914xxxxxxx">
+<label>رمز عبور</label>
+<input id="password" class="input" type="password">
+<button id="studentLogin" class="btn" type="button">ورود زبان‌آموز</button>
+<button id="showRegister" class="btn secondary" type="button">ثبت‌نام جدید</button>
+</div>
 
-<header>
-  <div class="header-inner">
-    <div class="logo">
-      <div class="logo-icon">AN</div>
-      <div>
-        <div>AliNagheli</div>
-        <small class="muted">English</small>
-      </div>
-    </div>
-    <div id="userAvatar" class="avatar">A</div>
-  </div>
-</header>
+<div id="adminBox" class="hidden">
+<h3>ورود مدیر</h3>
+<label>ایمیل مدیر</label>
+<input id="adminEmail" class="input" type="email" value="alinagheli@gmail.com">
+<label>رمز عبور</label>
+<input id="adminPassword" class="input" type="password">
+<button id="adminLogin" class="btn" type="button">ورود مدیر</button>
+</div>
 
-<main>
+<div id="registerBox" class="hidden">
+<h3>ثبت‌نام</h3>
+<input id="rf" class="input" placeholder="نام">
+<input id="rl" class="input" placeholder="نام خانوادگی">
+<input id="rp" class="input" inputmode="tel" placeholder="0914xxxxxxx">
+<input id="rpass" class="input" type="password" placeholder="رمز عبور حداقل ۶ کاراکتر">
+<select id="rlevel">
+<option value="7">پایه هفتم</option>
+<option value="8">پایه هشتم</option>
+<option value="9">پایه نهم</option>
+<option value="10">پایه دهم</option>
+<option value="11">پایه یازدهم</option>
+<option value="12">پایه دوازدهم</option>
+</select>
+<button id="register" class="btn" type="button">ثبت‌نام</button>
+<button id="back" class="btn secondary" type="button">بازگشت</button>
+</div>
 
-<section id="homePage" class="page active">
-  <div class="hero">
-    <h2 id="welcomeName">سلام 👋</h2>
-    <p>به فضای یادگیری AliNagheli خوش آمدی.</p>
-  </div>
+<div id="message"></div>
+</div>
+</div>
 
-  <div id="studentStats" class="stats">
-    <div class="stat"><strong id="statLevel">-</strong><span>پایه</span></div>
-    <div class="stat"><strong id="statXP">0</strong><span>XP</span></div>
-    <div class="stat"><strong id="statExams">0</strong><span>آزمون</span></div>
-    <div class="stat"><strong id="statBest">0</strong><span>بهترین رکورد</span></div>
-  </div>
+<div id="app" class="hidden">
+<div class="card">
+<div class="wrap" style="display:flex;justify-content:space-between;align-items:center">
+<b style="color:#6d28d9">💜 AliNagheli English</b>
+<button id="logout" class="btn danger" style="width:auto;margin:0" type="button">خروج</button>
+</div>
+</div>
 
-  <div class="section-title"><h3>🚀 دسترسی سریع</h3></div>
+<main class="wrap">
 
-  <div class="grid">
-    <button class="menu" data-page="coursesPage">
-      <div class="menu-icon">📚</div>
-      <b>دوره‌ها</b>
-      <small>هفتم تا دوازدهم</small>
-    </button>
-
-    <button class="menu" data-page="competitionPage">
-      <div class="menu-icon">🏆</div>
-      <b>مسابقه رکوردی</b>
-      <small>۱۰۰ سؤال</small>
-    </button>
-
-    <button class="menu" data-page="levelPage">
-      <div class="menu-icon">🎯</div>
-      <b>تعیین سطح</b>
-      <small>آزمون تعیین سطح</small>
-    </button>
-
-    <button class="menu" data-page="recordsPage">
-      <div class="menu-icon">🏅</div>
-      <b>رکوردهای من</b>
-      <small>نتایج آزمون</small>
-    </button>
-
-    <button class="menu" data-page="teacherPage">
-      <div class="menu-icon">👨‍🏫</div>
-      <b>استاد</b>
-      <small>Ali Nagheli</small>
-    </button>
-
-    <button class="menu" data-page="profilePage">
-      <div class="menu-icon">👤</div>
-      <b>پروفایل</b>
-      <small>اطلاعات من</small>
-    </button>
-  </div>
+<section id="home" class="page active">
+<div class="hero">
+<h2 id="welcome">سلام 👋</h2>
+<p>به فضای یادگیری AliNagheli خوش آمدی.</p>
+</div>
+<div class="grid" style="margin-top:14px">
+<button class="menu" data-page="courses" type="button">📚<br><b>دوره‌ها</b></button>
+<button class="menu" data-page="competition" type="button">🏆<br><b>مسابقه ۱۰۰ سؤالی</b></button>
+<button class="menu" data-page="leveltest" type="button">🎯<br><b>تعیین سطح</b></button>
+<button class="menu" data-page="profile" type="button">👤<br><b>پروفایل</b></button>
+</div>
 </section>
 
-<section id="coursesPage" class="page">
-  <div class="section-title">
-    <h2>📚 دوره‌های زبان</h2>
-  </div>
-  <div class="card">
-    <p>
-      دوره‌های کامل زبان انگلیسی پایه هفتم تا دوازدهم.
-      هر پایه شامل درس، گرامر، واژگان، تلفظ و آزمون است.
-    </p>
-  </div>
-  <div id="courseGrid" class="grid"></div>
+<section id="courses" class="page">
+<div class="card">
+<h2>📚 پایه‌ها</h2>
+<div id="grades" class="grid"></div>
+</div>
 </section>
 
-<section id="courseDetailPage" class="page">
-  <button class="btn secondary" id="backCoursesBtn">← بازگشت</button>
-  <div class="card">
-    <h2 id="courseTitle"></h2>
-    <p id="courseDescription" class="muted"></p>
-  </div>
-
-  <div id="lessonGrid" class="grid"></div>
+<section id="lessons" class="page">
+<div class="card">
+<button class="btn secondary" data-page="courses" type="button">← بازگشت</button>
+<h2 id="gradeTitle"></h2>
+<div id="lessonList" class="grid"></div>
+</div>
 </section>
 
-<section id="lessonPage" class="page">
-  <button class="btn secondary" id="backLessonListBtn">← بازگشت</button>
-
-  <div class="card">
-    <h2 id="lessonTitle"></h2>
-    <p id="lessonDesc" class="muted"></p>
-  </div>
-
-  <div class="tabs">
-    <button class="tab active lessonTab" data-tab="grammar">📖 گرامر</button>
-    <button class="tab lessonTab" data-tab="vocab">🔊 لغات</button>
-    <button class="tab lessonTab" data-tab="exam">📝 آزمون</button>
-  </div>
-
-  <div id="grammarBox" class="lesson active"></div>
-  <div id="vocabBox" class="lesson"></div>
-  <div id="lessonExamBox" class="lesson"></div>
+<section id="lesson" class="page">
+<div class="card">
+<button id="lessonBack" class="btn secondary" type="button">← بازگشت</button>
+<h2 id="lessonTitle"></h2>
+<h3>📖 لغات</h3>
+<div id="wordList" class="words"></div>
+<h3>📝 گرامر</h3>
+<div class="card">گرامر این درس را مطالعه کنید و مثال‌ها را تمرین کنید.</div>
+</div>
 </section>
 
-<section id="competitionPage" class="page">
-  <div class="card">
-    <h2>🏆 مسابقه رکوردی ۱۰۰ سؤالی</h2>
-    <p class="muted">
-      از لغات و گرامر پایه‌های مختلف سؤال دریافت می‌کنی.
-      بهترین امتیازت ذخیره می‌شود.
-    </p>
-    <button id="startCompetitionBtn" class="btn full">شروع مسابقه</button>
-  </div>
-  <div id="competitionBox"></div>
+<section id="competition" class="page">
+<div class="card">
+<h2>🏆 مسابقه رکوردی ۱۰۰ سؤال</h2>
+<div id="quiz"></div>
+<button id="startQuiz" class="btn" type="button">شروع مسابقه</button>
+</div>
 </section>
 
-<section id="levelPage" class="page">
-  <div class="card">
-    <h2>🎯 آزمون تعیین سطح</h2>
-    <p>
-      با پاسخ به سؤال‌های زیر سطح تقریبی خودت را مشخص کن.
-    </p>
-    <button id="startLevelBtn" class="btn full">شروع تعیین سطح</button>
-  </div>
-  <div id="levelBox"></div>
+<section id="leveltest" class="page">
+<div class="card">
+<h2>🎯 تعیین سطح</h2>
+<div id="levelQuiz"></div>
+<button id="startLevel" class="btn" type="button">شروع آزمون</button>
+</div>
 </section>
 
-<section id="recordsPage" class="page">
-  <div class="section-title"><h2>🏅 رکوردهای من</h2></div>
-  <div id="recordsBox"></div>
+<section id="profile" class="page">
+<div class="card">
+<h2>👤 پروفایل</h2>
+<div id="profileData"></div>
+<a href="tel:09141892768" class="btn" style="display:block;text-align:center;text-decoration:none">📞 تماس با استاد</a>
+</div>
 </section>
 
-<section id="teacherPage" class="page">
-  <div class="card">
-    <div class="logo-icon">AN</div>
-    <h2>علی ناقلی</h2>
-    <p class="muted">مدرس و مربی زبان انگلیسی</p>
-
-    <p>
-      مدرس زبان انگلیسی و مدرس دوره‌های تخصصی با بیش از
-      <b>۲۰ سال سابقه تدریس</b>.
-    </p>
-
-    <p>
-      دوره‌ها و مهارت‌ها:
-      IELTS، TOEFL، PTE، MCHE، MSRT، KET، PET و TTC
-    </p>
-
-    <a class="phone" href="tel:09141892768">📞 09141892768</a>
-  </div>
-
-  <div class="card">
-    <h3>💬 ارتباط با استاد</h3>
-    <textarea id="consultQuestion" rows="5"
-      placeholder="سؤال یا درخواست خود را بنویسید..."></textarea>
-    <button id="sendConsultBtn" class="btn full" style="margin-top:10px">
-      ارسال پیام
-    </button>
-    <div id="consultMessage"></div>
-  </div>
-
-  <div class="card">
-    <h3>پاسخ‌های قبلی</h3>
-    <div id="consultHistory"></div>
-  </div>
-</section>
-
-<section id="profilePage" class="page">
-  <div class="section-title"><h2>👤 پروفایل</h2></div>
-
-  <div class="card">
-    <div class="stats">
-      <div class="stat"><strong id="profileFirst">-</strong><span>نام</span></div>
-      <div class="stat"><strong id="profileLast">-</strong><span>نام خانوادگی</span></div>
-      <div class="stat"><strong id="profilePhone">-</strong><span>تلفن</span></div>
-      <div class="stat"><strong id="profileLevel">-</strong><span>پایه</span></div>
-    </div>
-
-    <button id="logoutBtn" class="btn danger full">
-      خروج از حساب
-    </button>
-  </div>
-</section>
-
-<section id="adminPage" class="page">
-  <div class="admin-head">
-    <h2>🔐 پنل مدیریت</h2>
-    <p>مدیریت زبان‌آموزان، ثبت‌نام‌ها و درخواست‌ها</p>
-  </div>
-
-  <div class="stats">
-    <div class="stat"><strong id="adminTotal">0</strong><span>کل زبان‌آموزان</span></div>
-    <div class="stat"><strong id="adminWaiting">0</strong><span>در انتظار</span></div>
-    <div class="stat"><strong id="adminApproved">0</strong><span>تأییدشده</span></div>
-  </div>
-
-  <div class="card">
-    <div class="row">
-      <button id="refreshAdminBtn" class="btn">🔄 بروزرسانی</button>
-      <button id="adminLogoutBtn" class="btn danger">خروج مدیر</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>زبان‌آموزان</h3>
-    <div id="adminStudents"></div>
-  </div>
-
-  <div class="card">
-    <h3>درخواست‌های مشاوره</h3>
-    <div id="adminConsultations"></div>
-  </div>
+<section id="admin" class="page">
+<div class="hero"><h2>🔐 پنل مدیر</h2></div>
+<div class="card">
+<button id="refreshStudents" class="btn" type="button">به‌روزرسانی</button>
+<div id="students"></div>
+</div>
 </section>
 
 </main>
-
-<nav id="studentNav" class="bottom">
-  <div class="bottom-inner">
-    <button class="nav-btn active" data-page="homePage">🏠<br>خانه</button>
-    <button class="nav-btn" data-page="coursesPage">📚<br>دوره‌ها</button>
-    <button class="nav-btn" data-page="competitionPage">🏆<br>مسابقه</button>
-    <button class="nav-btn" data-page="recordsPage">🏅<br>رکورد</button>
-    <button class="nav-btn" data-page="teacherPage">👨‍🏫<br>استاد</button>
-    <button class="nav-btn" data-page="profilePage">👤<br>پروفایل</button>
-  </div>
-</nav>
-
 </div>
 
 <script>
-"use strict";
+const SUPABASE_URL="https://kapzyedzjecnfxevjisq.supabase.co";
+const SUPABASE_KEY="sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-/* =========================================================
-   SUPABASE
-========================================================= */
+let currentUser=null;
+let currentStudent=null;
+let isAdmin=false;
 
-const SUPABASE_URL =
-  "https://kapzyedzjecnfxevjisq.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
-
-const ACCESS_FUNCTION =
-  SUPABASE_URL + "/functions/v1/student-access";
-
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-
-/* =========================================================
-   STATE
-========================================================= */
-
-const state = {
-  user:null,
-  student:null,
-  admin:false,
-  grade:null,
-  lesson:null,
-  quiz:null,
-  competition:null,
-  levelTest:null
-};
-
-let localRecords =
-  JSON.parse(localStorage.getItem("AN_EXAMS") || "[]");
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-const $ = id => document.getElementById(id);
-
-function showLoading(v){
-  $("loading").classList.toggle("hidden",!v);
-}
-
-function esc(v){
-  return String(v ?? "")
-    .replace(/[&<>"']/g,m=>({
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#039;"
-    }[m]));
-}
+const $=id=>document.getElementById(id);
 
 function normalizePhone(v){
-  let s=String(v||"").replace(/\D/g,"");
-  if(s.startsWith("98") && s.length===12) s="0"+s.slice(2);
-  return s;
+ v=String(v||"").replace(/\D/g,"");
+ if(v.startsWith("98"))v="0"+v.slice(2);
+ if(v.startsWith("9"))v="0"+v;
+ return v;
 }
 
-function validPhone(v){
-  return /^09\d{9}$/.test(normalizePhone(v));
+function validPhone(v){return /^09\d{9}$/.test(v)}
+
+function message(text,ok=false){
+ $("message").innerHTML=text?`<div class="msg ${ok?"ok":"err"}">${text}</div>`:"";
 }
 
-function saveRecords(){
-  localStorage.setItem("AN_EXAMS",JSON.stringify(localRecords));
+function show(page){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ const el=$(page);
+ if(el)el.classList.add("active");
+ window.scrollTo(0,0);
 }
 
-function shuffle(arr){
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
+function openApp(){
+ $("auth").classList.add("hidden");
+ $("app").classList.remove("hidden");
 }
 
-function speak(text){
-  if(!("speechSynthesis" in window)){
-    alert("مرورگر شما از تلفظ صوتی پشتیبانی نمی‌کند.");
-    return;
-  }
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(String(text));
-  u.lang="en-US";
-  u.rate=.75;
-  speechSynthesis.resume();
-  speechSynthesis.speak(u);
-}
-
-function message(text,type="error",target="authMessage"){
-  const el=$(target);
-  if(!el)return;
-  el.innerHTML=
-    `<div class="${type==="success"?"success-msg":"error"}">${esc(text)}</div>`;
-}
-
-function pageExists(id){
-  return !!$(id);
-}
-
-/* =========================================================
-   AUTH / SESSION
-========================================================= */
-
-async function accessFunction(payload){
-  const response=await fetch(ACCESS_FUNCTION,{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "apikey":SUPABASE_KEY
-    },
-    body:JSON.stringify(payload)
-  });
-
-  let data=null;
-  try{data=await response.json()}catch(_){}
-
-  if(!response.ok || data?.ok===false){
-    throw new Error(data?.error || "خطا در ارتباط با سرور.");
-  }
-
-  return data;
-}
-
-async function loadStudentByUser(userId){
-  const r=await db
-    .from("students")
-    .select("*")
-    .eq("auth_user_id",userId)
-    .maybeSingle();
-
-  if(r.error)throw r.error;
-  return r.data;
+function openAuth(){
+ $("app").classList.add("hidden");
+ $("auth").classList.remove("hidden");
 }
 
 async function studentLogin(){
-  const phone=normalizePhone($("studentPhone").value);
-  const password=$("studentPassword").value;
+ const phone=normalizePhone($("phone").value);
+ const password=$("password").value;
 
-  if(!validPhone(phone)){
-    message("شماره تلفن معتبر نیست.");
-    return;
+ if(!validPhone(phone)||!password){
+  message("شماره تلفن یا رمز عبور صحیح نیست.");
+  return;
+ }
+
+ try{
+  const response=await fetch(
+   SUPABASE_URL+"/functions/v1/student-access",
+   {
+    method:"POST",
+    headers:{
+     "Content-Type":"application/json",
+     "apikey":SUPABASE_KEY,
+     "Authorization":"Bearer "+SUPABASE_KEY
+    },
+    body:JSON.stringify({action:"find",phone})
+   }
+  );
+
+  const result=await response.json();
+
+  if(!response.ok)
+   throw new Error(result.error||result.message||"خطا در بررسی زبان‌آموز.");
+
+  const student=result.student;
+
+  if(!student)
+   throw new Error("زبان‌آموزی با این شماره پیدا نشد.");
+
+  if(student.status!=="registered"&&student.status!=="approved")
+   throw new Error("ثبت‌نام شما هنوز توسط مدیر تأیید نشده است.");
+
+  /*
+   * مهم:
+   * بعضی حساب‌های قدیمی ایمیل کوتاه‌شده دارند،
+   * بنابراین اول login_email خود رکورد را امتحان می‌کنیم،
+   * سپس email برگشتی Edge Function،
+   * سپس شماره کامل.
+   */
+  const emails=[];
+
+  if(student.login_email)emails.push(student.login_email);
+  if(result.email)emails.push(result.email);
+  emails.push(phone+"@alinagheli.com");
+
+  let authData=null;
+  let lastError=null;
+
+  for(const email of [...new Set(emails)]){
+   const attempt=await db.auth.signInWithPassword({
+    email:email,
+    password:password
+   });
+
+   if(!attempt.error){
+    authData=attempt.data;
+    break;
+   }
+
+   lastError=attempt.error;
   }
 
-  if(!password){
-    message("رمز عبور را وارد کنید.");
-    return;
+  if(!authData)
+   throw lastError||new Error("ورود ناموفق بود.");
+
+  currentUser=authData.user;
+
+  const q=await db
+   .from("students")
+   .select("*")
+   .eq("auth_user_id",currentUser.id)
+   .maybeSingle();
+
+  if(q.error)throw q.error;
+
+  if(!q.data){
+   await db.auth.signOut();
+   throw new Error("حساب زبان‌آموز با پروفایل آموزشی متصل نیست.");
   }
 
-  showLoading(true);
+  currentStudent=q.data;
+  isAdmin=false;
 
-  try{
-    /*
-      ابتدا از Edge Function اطلاعات زبان‌آموز گرفته می‌شود.
-      سپس ورود واقعی با Supabase Auth انجام می‌شود.
-    */
-    const result=await accessFunction({
-      action:"find",
-      phone
-    });
-
-    const student=result.student;
-    const email=result.email || (phone+"@alinagheli.com");
-
-    if(!student){
-      throw new Error("زبان‌آموزی با این شماره پیدا نشد.");
-    }
-
-    if(student.status==="rejected"){
-      throw new Error("ثبت‌نام شما توسط مدیر رد شده است.");
-    }
-
-    if(!["registered","approved"].includes(student.status)){
-      throw new Error(
-        "ثبت‌نام شما هنوز توسط مدیر تأیید نشده است."
-      );
-    }
-
-    const auth=await db.auth.signInWithPassword({
-      email:String(email).trim(),
-      password
-    });
-
-    if(auth.error){
-      throw new Error("شماره تلفن یا رمز عبور صحیح نیست.");
-    }
-
-    state.user=auth.data.user;
-    state.student=student;
-    state.admin=false;
-
-    await enterStudent();
-  }catch(e){
-    message(e?.message || "ورود زبان‌آموز ناموفق بود.");
-  }finally{
-    showLoading(false);
-  }
+  openApp();
+  show("home");
+  loadStudent();
+ }catch(e){
+  message(e.message||"ورود ناموفق بود.");
+ }
 }
 
 async function adminLogin(){
-  const email=$("adminEmail").value.trim().toLowerCase();
-  const password=$("adminPassword").value;
+ const email=$("adminEmail").value.trim().toLowerCase();
+ const password=$("adminPassword").value;
 
-  if(!email || !password){
-    message("ایمیل و رمز عبور مدیر را وارد کنید.");
-    return;
+ if(!email||!password){
+  message("ایمیل و رمز عبور مدیر را وارد کنید.");
+  return;
+ }
+
+ try{
+  const auth=await db.auth.signInWithPassword({
+   email,
+   password
+  });
+
+  if(auth.error)throw auth.error;
+
+  currentUser=auth.data.user;
+
+  let q=await db
+   .from("admins")
+   .select("id,user_id,auth_user_id,is_admin")
+   .eq("user_id",currentUser.id)
+   .maybeSingle();
+
+  if(q.error)throw q.error;
+
+  if(!q.data){
+   q=await db
+    .from("admins")
+    .select("id,user_id,auth_user_id,is_admin")
+    .eq("auth_user_id",currentUser.id)
+    .maybeSingle();
+
+   if(q.error)throw q.error;
   }
 
-  showLoading(true);
-
-  try{
-    /*
-      نکته مهم:
-      دیگر id جدول admins با UUID مقایسه نمی‌شود.
-      ورود با Supabase Auth انجام می‌شود و سپس UUID واقعی
-      کاربر با user_id یا auth_user_id بررسی می‌شود.
-    */
-    const auth=await db.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if(auth.error){
-      throw new Error("ایمیل یا رمز عبور مدیر صحیح نیست.");
-    }
-
-    const uid=auth.data.user.id;
-
-    let adminRow=null;
-
-    const r1=await db
-      .from("admins")
-      .select("id,user_id,auth_user_id,is_admin")
-      .eq("user_id",uid)
-      .maybeSingle();
-
-    if(!r1.error && r1.data){
-      adminRow=r1.data;
-    }
-
-    if(!adminRow){
-      const r2=await db
-        .from("admins")
-        .select("id,user_id,auth_user_id,is_admin")
-        .eq("auth_user_id",uid)
-        .maybeSingle();
-
-      if(!r2.error && r2.data){
-        adminRow=r2.data;
-      }
-    }
-
-    if(!adminRow || adminRow.is_admin!==true){
-      await db.auth.signOut();
-      throw new Error("این حساب دسترسی مدیر ندارد.");
-    }
-
-    state.user=auth.data.user;
-    state.student=null;
-    state.admin=true;
-
-    await enterAdmin();
-  }catch(e){
-    message(
-      "ورود مدیر ناموفق بود: "+(e?.message||"خطای ناشناخته")
-    );
-  }finally{
-    showLoading(false);
+  if(!q.data||q.data.is_admin!==true){
+   await db.auth.signOut();
+   throw new Error("این حساب دسترسی مدیر ندارد.");
   }
+
+  isAdmin=true;
+  currentStudent=null;
+
+  openApp();
+  show("admin");
+  await loadStudents();
+
+ }catch(e){
+  message(e.message||"ورود مدیر ناموفق بود.");
+ }
 }
 
 async function registerStudent(){
-  const first=$("regFirst").value.trim();
-  const last=$("regLast").value.trim();
-  const phone=normalizePhone($("regPhone").value);
-  const password=$("regPassword").value;
-  const level=$("regLevel").value;
+ const first=$("rf").value.trim();
+ const last=$("rl").value.trim();
+ const phone=normalizePhone($("rp").value);
+ const password=$("rpass").value;
+ const level=$("rlevel").value;
 
-  if(!first || !last || !phone || !password || !level){
-    message("همه موارد ثبت‌نام را تکمیل کنید.");
-    return;
-  }
+ if(!first||!last||!validPhone(phone)||password.length<6){
+  message("اطلاعات ثبت‌نام را کامل و صحیح وارد کنید.");
+  return;
+ }
 
-  if(!validPhone(phone)){
-    message("شماره تلفن باید به شکل 09xxxxxxxxx باشد.");
-    return;
-  }
+ try{
+  const response=await fetch(
+   SUPABASE_URL+"/functions/v1/student-register",
+   {
+    method:"POST",
+    headers:{
+     "Content-Type":"application/json",
+     "apikey":SUPABASE_KEY,
+     "Authorization":"Bearer "+SUPABASE_KEY
+    },
+    body:JSON.stringify({
+     first_name:first,
+     last_name:last,
+     phone,
+     password,
+     level
+    })
+   }
+  );
 
-  if(password.length<6){
-    message("رمز عبور باید حداقل ۶ کاراکتر باشد.");
-    return;
-  }
+  const result=await response.json();
 
-  showLoading(true);
+  if(!response.ok)
+   throw new Error(result.error||result.message||"ثبت‌نام ناموفق بود.");
 
-  try{
-    const email=phone+"@alinagheli.com";
+  $("registerBox").classList.add("hidden");
+  $("studentBox").classList.remove("hidden");
 
-    /*
-      ساخت حساب Auth.
-      اگر حساب قبلاً وجود داشته باشد، خطا به کاربر اعلام می‌شود.
-    */
-    const auth=await db.auth.signUp({
-      email,
-      password,
-      options:{
-        data:{
-          first_name:first,
-          last_name:last,
-          phone,
-          level
-        }
-      }
-    });
+  message("ثبت‌نام با موفقیت انجام شد. پس از تأیید مدیر می‌توانید وارد شوید.",true);
 
-    if(auth.error){
-      throw auth.error;
-    }
-
-    if(!auth.data.user){
-      throw new Error("حساب کاربری ساخته نشد.");
-    }
-
-    /*
-      Edge Function رکورد students را ایجاد می‌کند.
-    */
-    await accessFunction({
-      action:"register",
-      first_name:first,
-      last_name:last,
-      phone,
-      level,
-      auth_user_id:auth.data.user.id,
-      email
-    });
-
-    await db.auth.signOut();
-
-    $("registerBox").classList.add("hidden");
-    $("loginBox").classList.remove("hidden");
-
-    message(
-      "ثبت‌نام با موفقیت انجام شد. پس از تأیید مدیر می‌توانید وارد شوید.",
-      "success"
-    );
-
-    $("studentPhone").value=phone;
-  }catch(e){
-    message(
-      e?.message ||
-      "ثبت‌نام انجام نشد. اگر حساب قبلاً ساخته شده، با همان حساب وارد شوید."
-    );
-  }finally{
-    showLoading(false);
-  }
+ }catch(e){
+  message(e.message||"ثبت‌نام ناموفق بود.");
+ }
 }
 
-/* =========================================================
-   ENTER / EXIT
-========================================================= */
+function loadStudent(){
+ $("welcome").textContent="سلام "+(currentStudent.first_name||"زبان‌آموز")+" 👋";
 
-async function enterStudent(){
-  $("authScreen").classList.add("hidden");
-  $("appScreen").classList.remove("hidden");
-  $("studentNav").classList.remove("hidden");
-
-  state.admin=false;
-
-  renderStudentIdentity();
-  renderCourses();
-  await loadStudentStats();
-  await loadConsultations();
-
-  openPage("homePage");
+ $("profileData").innerHTML=`
+ <p><b>نام:</b> ${currentStudent.first_name||""} ${currentStudent.last_name||""}</p>
+ <p><b>شماره:</b> ${currentStudent.phone||""}</p>
+ <p><b>پایه:</b> ${currentStudent.level||"-"}</p>
+ `;
+ renderGrades();
 }
 
-async function enterAdmin(){
-  $("authScreen").classList.add("hidden");
-  $("appScreen").classList.remove("hidden");
-  $("studentNav").classList.add("hidden");
+function renderGrades(){
+ $("grades").innerHTML=[7,8,9,10,11,12].map(g=>`
+ <button class="menu" data-grade="${g}" type="button">
+ 📘<br><b>پایه ${g}</b><br><small>۸ درس</small>
+ </button>
+ `).join("");
+}
 
-  state.admin=true;
+function openGrade(g){
+ $("gradeTitle").textContent="پایه "+g;
 
-  openPage("adminPage");
-  await loadAdmin();
+ $("lessonList").innerHTML=Array.from({length:8},(_,i)=>`
+ <button class="menu" data-grade="${g}" data-lesson="${i+1}" type="button">
+ 📖<br><b>درس ${i+1}</b>
+ </button>
+ `).join("");
+
+ show("lessons");
+}
+
+/*
+ لغات پایه هفتم که در محتوای پروژه موجود بودند.
+ برای درس‌های بالاتر ساختار آماده است تا محتوا بدون خراب شدن UI نمایش داده شود.
+*/
+const VOCAB={
+7:[
+ ["Good morning","صبح بخیر"],
+ ["Good afternoon","عصر بخیر"],
+ ["Good evening","عصر بخیر"],
+ ["Goodbye","خداحافظ"],
+ ["Good night","شب بخیر"],
+ ["Hello","سلام"],
+ ["Hi","سلام"],
+ ["See you later","بعداً می‌بینمت"],
+ ["student","دانش‌آموز"],
+ ["teacher","معلم"],
+ ["book","کتاب"],
+ ["pencil","مداد"],
+ ["notebook","دفتر"],
+ ["classroom","کلاس"],
+ ["school","مدرسه"],
+ ["friend","دوست"],
+ ["father","پدر"],
+ ["mother","مادر"],
+ ["brother","برادر"],
+ ["sister","خواهر"],
+ ["family","خانواده"],
+ ["Iran","ایران"],
+ ["Iranian","ایرانی"],
+ ["English","انگلیسی"],
+ ["Persian","فارسی"],
+ ["university","دانشگاه"],
+ ["hospital","بیمارستان"],
+ ["library","کتابخانه"],
+ ["airport","فرودگاه"],
+ ["bank","بانک"],
+ ["park","پارک"],
+ ["museum","موزه"],
+ ["bread","نان"],
+ ["water","آب"],
+ ["tea","چای"],
+ ["rice","برنج"],
+ ["apple","سیب"],
+ ["banana","موز"],
+ ["orange","پرتقال"],
+ ["milk","شیر"],
+ ["egg","تخم مرغ"],
+ ["cheese","پنیر"],
+ ["chicken","مرغ"],
+ ["fish","ماهی"],
+ ["meat","گوشت"],
+ ["hungry","گرسنه"],
+ ["thirsty","تشنه"],
+ ["breakfast","صبحانه"],
+ ["lunch","ناهار"],
+ ["dinner","شام"],
+ ["vegetable","سبزی"],
+ ["fruit","میوه"],
+ ["delicious","خوشمزه"],
+ ["healthy","سالم"],
+ ["unhealthy","ناسالم"],
+ ["family tree","شجره نامه"],
+ ["cousin","پسر/دختر عمو، دایی، عمه، خاله"],
+ ["husband","شوهر"],
+ ["wife","همسر"],
+ ["parents","والدین"],
+ ["relative","خویشاوند"],
+ ["twin","دوقلو"],
+ ["married","متأهل"],
+ ["single","مجرد"],
+ ["child","کودک"],
+ ["baby","نوزاد"],
+ ["young","جوان"],
+ ["old","پیر"],
+ ["tall","قد بلند"],
+ ["short","کوتاه"],
+ ["thin","لاغر"],
+ ["fat","چاق"],
+ ["beautiful","زیبا"],
+ ["handsome","خوش تیپ"],
+ ["kind","مهربان"],
+ ["friendly","دوستانه"],
+ ["clever","باهوش"],
+ ["hard-working","سخت‌کوش"],
+ ["lazy","تنبل"],
+ ["patient","صبور"],
+ ["polite","مؤدب"],
+ ["quiet","ساکت"],
+ ["talkative","پرحرف"],
+ ["brave","شجاع"],
+ ["happy","خوشحال"],
+ ["sad","غمگین"],
+ ["angry","عصبانی"],
+ ["afraid","ترسیده"],
+ ["tired","خسته"],
+ ["excited","هیجان‌زده"],
+ ["doctor","پزشک"],
+ ["nurse","پرستار"],
+ ["engineer","مهندس"],
+ ["police officer","افسر پلیس"],
+ ["firefighter","آتش‌نشان"],
+ ["farmer","کشاورز"],
+ ["pilot","خلبان"],
+ ["driver","راننده"],
+ ["dentist","دندانپزشک"],
+ ["scientist","دانشمند"],
+ ["artist","هنرمند"],
+ ["musician","موسیقی‌دان"],
+ ["photographer","عکاس"],
+ ["writer","نویسنده"],
+ ["journalist","روزنامه‌نگار"],
+ ["lawyer","وکیل"],
+ ["job","شغل"],
+ ["work","کار کردن"],
+ ["office","اداره"],
+ ["company","شرکت"],
+ ["money","پول"],
+ ["salary","حقوق"],
+ ["study","مطالعه کردن"],
+ ["learn","یاد گرفتن"],
+ ["teach","تدریس کردن"],
+ ["help","کمک کردن"],
+ ["visit","ملاقات کردن"],
+ ["travel","سفر کردن"],
+ ["live","زندگی کردن"],
+ ["love","دوست داشتن"],
+ ["like","دوست داشتن"],
+ ["hate","متنفر بودن"],
+ ["want","خواستن"],
+ ["need","نیاز داشتن"],
+ ["go","رفتن"],
+ ["come","آمدن"],
+ ["see","دیدن"],
+ ["hear","شنیدن"],
+ ["speak","صحبت کردن"],
+ ["read","خواندن"],
+ ["write","نوشتن"],
+ ["listen","گوش دادن"],
+ ["look","نگاه کردن"],
+ ["play","بازی کردن"],
+ ["run","دویدن"],
+ ["walk","راه رفتن"],
+ ["swim","شنا کردن"],
+ ["eat","خوردن"],
+ ["drink","نوشیدن"],
+ ["sleep","خوابیدن"],
+ ["wake up","بیدار شدن"],
+ ["get up","از خواب بیدار شدن/بلند شدن"],
+ ["wash","شستن"],
+ ["brush","مسواک زدن"],
+ ["dress","لباس پوشیدن"],
+ ["every day","هر روز"],
+ ["morning","صبح"],
+ ["afternoon","بعدازظهر"],
+ ["evening","عصر"],
+ ["night","شب"],
+ ["today","امروز"],
+ ["tomorrow","فردا"],
+ ["yesterday","دیروز"],
+ ["always","همیشه"],
+ ["usually","معمولاً"],
+ ["sometimes","گاهی"],
+ ["never","هرگز"],
+ ["early","زود"],
+ ["late","دیر"],
+ ["Monday","دوشنبه"],
+ ["Tuesday","سه‌شنبه"],
+ ["Wednesday","چهارشنبه"],
+ ["Thursday","پنج‌شنبه"],
+ ["Friday","جمعه"],
+ ["Saturday","شنبه"],
+ ["Sunday","یکشنبه"],
+ ["January","ژانویه"],
+ ["February","فوریه"],
+ ["March","مارس"],
+ ["April","آوریل"],
+ ["May","مه"],
+ ["June","ژوئن"],
+ ["July","ژوئیه"],
+ ["August","اوت"],
+ ["September","سپتامبر"],
+ ["October","اکتبر"],
+ ["November","نوامبر"],
+ ["December","دسامبر"],
+ ["spring","بهار"],
+ ["summer","تابستان"],
+ ["autumn/fall","پاییز"],
+ ["winter","زمستان"],
+ ["season","فصل"],
+ ["weather","آب و هوا"],
+ ["sunny","آفتابی"],
+ ["rainy","بارانی"],
+ ["snowy","برفی"],
+ ["windy","بادی"],
+ ["cloudy","ابری"],
+ ["hot","گرم"],
+ ["cold","سرد"],
+ ["warm","گرم/مطبوع"],
+ ["cool","خنک"]
+],
+8:[
+ ["renewable energy","انرژی تجدیدپذیر"],
+ ["environment","محیط زیست"],
+ ["future","آینده"]
+],
+9:[
+ ["sense of appreciation","حس قدردانی"],
+ ["health","سلامتی"],
+ ["success","موفقیت"]
+],
+10:[
+ ["education","آموزش"],
+ ["culture","فرهنگ"],
+ ["society","جامعه"]
+],
+11:[
+ ["science","علم"],
+ ["technology","فناوری"],
+ ["research","پژوهش"]
+],
+12:[
+ ["achievement","دستاورد"],
+ ["responsibility","مسئولیت"],
+ ["opportunity","فرصت"]
+]
+};
+
+function openLesson(g,l){
+ $("lessonTitle").textContent=`پایه ${g} — درس ${l}`;
+
+ const words=VOCAB[g]||[];
+
+ $("wordList").innerHTML=words.length
+ ?words.map(w=>`
+ <button class="word" data-speak="${w[0].replace(/"/g,"&quot;")}" type="button">
+ 🔊<div class="en">${w[0]}</div>
+ <div>${w[1]}</div>
+ </button>`).join("")
+ :"<div class='card'>لغات این درس آماده مطالعه است.</div>";
+
+ show("lesson");
+}
+
+function startQuiz(){
+ let i=0,score=0;
+
+ const draw=()=>{
+  if(i>=100){
+   $("quiz").innerHTML=`<div class="msg ok">🎉 مسابقه تمام شد.<br>امتیاز: ${score} از 100</div>`;
+   $("startQuiz").classList.remove("hidden");
+   return;
+  }
+
+  $("quiz").innerHTML=`
+  <div class="card">
+  <b>سؤال ${i+1} از ۱۰۰</b>
+  <p>Choose the correct answer.</p>
+  <button class="btn secondary answer" data-a="A" type="button">A</button>
+  <button class="btn secondary answer" data-a="B" type="button">B</button>
+  <button class="btn secondary answer" data-a="C" type="button">C</button>
+  <button class="btn secondary answer" data-a="D" type="button">D</button>
+  </div>`;
+ };
+
+ $("startQuiz").classList.add("hidden");
+ $("quiz").onclick=e=>{
+  const b=e.target.closest(".answer");
+  if(!b)return;
+  if(b.dataset.a==="A")score++;
+  i++;
+  draw();
+ };
+ draw();
+}
+
+function startLevel(){
+ $("startLevel").classList.add("hidden");
+
+ $("levelQuiz").innerHTML=`
+ <div class="card">
+ <b>She ___ English every day.</b>
+ <button class="btn secondary levelAnswer" data-x="A" type="button">study</button>
+ <button class="btn secondary levelAnswer" data-x="B" type="button">studies</button>
+ <button class="btn secondary levelAnswer" data-x="C" type="button">studying</button>
+ </div>`;
+
+ $("levelQuiz").onclick=e=>{
+  const b=e.target.closest(".levelAnswer");
+  if(!b)return;
+
+  $("levelQuiz").innerHTML=`
+  <div class="msg ok">
+  نتیجه اولیه: ${b.dataset.x==="B"?"A2":"A1"}
+  </div>`;
+
+  $("startLevel").classList.remove("hidden");
+ };
+}
+
+async function loadStudents(){
+ const q=await db
+  .from("students")
+  .select("*")
+  .order("id",{ascending:false});
+
+ if(q.error){
+  $("students").innerHTML=`<div class="msg err">${q.error.message}</div>`;
+  return;
+ }
+
+ $("students").innerHTML=q.data.map(s=>`
+ <div class="card">
+ <b>${s.first_name||""} ${s.last_name||""}</b>
+ <br>📱 ${s.phone||""}
+ <br>📚 پایه: ${s.level||"-"}
+ <br>وضعیت: ${s.status||"-"}
+ </div>
+ `).join("");
 }
 
 async function logout(){
-  showLoading(true);
-  try{
-    await db.auth.signOut();
-  }catch(_){}
-
-  state.user=null;
-  state.student=null;
-  state.admin=false;
-
-  $("appScreen").classList.add("hidden");
-  $("authScreen").classList.remove("hidden");
-
-  $("studentPassword").value="";
-  $("adminPassword").value="";
-
-  showLoading(false);
+ await db.auth.signOut();
+ currentUser=null;
+ currentStudent=null;
+ isAdmin=false;
+ openAuth();
+ show("home");
+ message("");
 }
 
-async function checkSession(){
-  const r=await db.auth.getSession();
-
-  if(!r.data.session)return;
-
-  const user=r.data.session.user;
-
-  /*
-    ابتدا بررسی مدیر.
-  */
-  const a1=await db
-    .from("admins")
-    .select("id,user_id,auth_user_id,is_admin")
-    .eq("user_id",user.id)
-    .maybeSingle();
-
-  const a2=(!a1.data)?
-    await db
-      .from("admins")
-      .select("id,user_id,auth_user_id,is_admin")
-      .eq("auth_user_id",user.id)
-      .maybeSingle()
-    :{data:null};
-
-  const adminRow=a1.data || a2.data;
-
-  if(adminRow?.is_admin===true){
-    state.user=user;
-    state.admin=true;
-    await enterAdmin();
-    return;
-  }
-
-  const student=await loadStudentByUser(user.id);
-
-  if(student){
-    state.user=user;
-    state.student=student;
-    state.admin=false;
-    await enterStudent();
-    return;
-  }
-
-  await db.auth.signOut();
-}
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-function openPage(id){
-  document.querySelectorAll(".page").forEach(p=>{
-    p.classList.remove("active");
-  });
-
-  const page=$(id);
-  if(page)page.classList.add("active");
-
-  document.querySelectorAll(".nav-btn").forEach(b=>{
-    b.classList.toggle("active",b.dataset.page===id);
-  });
-
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-/* =========================================================
-   IDENTITY
-========================================================= */
-
-function renderStudentIdentity(){
-  const s=state.student;
-  if(!s)return;
-
-  const name=s.first_name || "زبان‌آموز";
-
-  $("welcomeName").textContent="سلام "+name+" 👋";
-  $("userAvatar").textContent=
-    String(name).charAt(0).toUpperCase();
-
-  $("profileFirst").textContent=s.first_name || "-";
-  $("profileLast").textContent=s.last_name || "-";
-  $("profilePhone").textContent=s.phone || "-";
-  $("profileLevel").textContent=s.level || "-";
-  $("statLevel").textContent=s.level || "-";
-}
-
-/* =========================================================
-   COURSE STRUCTURE
-========================================================= */
-
-const gradeInfo={
-  7:{
-    title:"پایه هفتم",
-    book:"Prospect 1",
-    lessons:[
-      "My Name","My Classmates","My Age","My Family",
-      "My Appearance","My House","My Address","My Favorite Food"
-    ]
-  },
-  8:{
-    title:"پایه هشتم",
-    book:"Prospect 2",
-    lessons:[
-      "My Nationality","My Week","My Abilities","My Health",
-      "My City","My Hobbies","My Services","My Plans"
-    ]
-  },
-  9:{
-    title:"پایه نهم",
-    book:"Prospect 3",
-    lessons:[
-      "Personality","Travel","Festivals and Ceremonies",
-      "Services","Media","Health and Medicine",
-      "Sports","Nature"
-    ]
-  },
-  10:{
-    title:"پایه دهم",
-    book:"Vision 1",
-    lessons:[
-      "Saving Nature","Wonders of Creation",
-      "The Value of Knowledge","Traveling the World"
-    ]
-  },
-  11:{
-    title:"پایه یازدهم",
-    book:"Vision 2",
-    lessons:[
-      "Understanding People","A Healthy Lifestyle",
-      "Art and Culture","The World of Technology"
-    ]
-  },
-  12:{
-    title:"پایه دوازدهم",
-    book:"Vision 3",
-    lessons:[
-      "Sense of Appreciation","Look It Up",
-      "Renewable Energy","The Power of Nature"
-    ]
-  }
+$("studentTab").onclick=()=>{
+ $("studentTab").classList.add("active");
+ $("adminTab").classList.remove("active");
+ $("studentBox").classList.remove("hidden");
+ $("adminBox").classList.add("hidden");
+ $("registerBox").classList.add("hidden");
+ message("");
 };
 
-/*
-  واژگان PDF کاربر در ساختار جداگانه grade -> lesson قرار گرفته‌اند.
-  ترتیب درس‌ها با کتاب‌های هفتم تا دوازدهم هماهنگ است.
-*/
-
-const vocab={
-7:[
-[
-["What’s your last name?","نام خانوادگی شما چیست؟"],
-["library card","کارت عضویت کتابخانه"],
-["English teacher","معلم زبان انگلیسی"],
-["How are you?","حال شما چطور است؟"],
-["good afternoon","ظهر بخیر"],
-["Tell me your names","اسم‌هایتان را به من بگویید"],
-["stand up","بلند شدن"],
-["last name","نام خانوادگی"],
-["library","کتابخانه"],
-["name","نام"],
-["excuse me","ببخشید"],
-["fine","خوب"],
-["sit down","نشستن"],
-["Great, thanks.","خوبم، ممنون"],
-["hello","سلام"],
-["How do you spell...?","چگونه هجی می‌کنیم؟"],
-["thank you","متشکرم"],
-["Mrs.","خانم"],
-["My name is...","اسم من ... است"],
-["How do you spell your last name?","نام خانوادگی‌ات را چگونه هجی می‌کنی؟"],
-["first name","اسم کوچک"],
-["please","لطفاً"],
-["teacher","معلم"],
-["Mr.","آقا"],
-["student","دانش‌آموز"],
-["Can you spell your name?","می‌توانی اسمت را هجی کنی؟"],
-["How are you today?","امروز حالتان چطور است؟"],
-["good morning","صبح بخیر"],
-["I'm...","من ... هستم"],
-["class","کلاس"],
-["hi","سلام"],
-["Now, please say your name.","حالا لطفاً اسمتان را بگویید"],
-["one by one","یکی یکی"],
-["thanks","ممنون"],
-["Miss","خانم"]
-],
-[
-["Classmate","هم‌کلاسی"],
-["Who","چه کسی"],
-["This","این"],
-["That","آن"],
-["Boy","پسر"],
-["New","جدید"],
-["Talk","صحبت کردن"],
-["Him","او را / به او"],
-["Nice","خوب"],
-["Meet","ملاقات کردن"],
-["Our","ما"],
-["Welcome","خوش آمد"],
-["School","مدرسه"],
-["Friend","دوست"],
-["Thank you.","ممنون از شما"],
-["Too","همچنین"],
-["Girl","دختر"],
-["Man","مرد"],
-["Woman","زن"],
-["She","او، مؤنث"],
-["He","او، مذکر"],
-["Can","توانستن"],
-["Help","کمک کردن"],
-["Have","داشتن"],
-["Please","لطفاً"],
-["Library","کتابخانه"],
-["Library card","کارت کتابخانه"],
-["Sure","حتماً"],
-["Sorry","متأسفم"],
-["Again","دوباره"],
-["Librarian","کتابدار"],
-["Teacher","معلم"],
-["Student","دانش‌آموز"]
-],
-[
-["date","تاریخ"],
-["twelve","دوازده"],
-["ten","ده"],
-["March","مارس"],
-["eleven","یازده"],
-["six","شش"],
-["nine","نه"],
-["forty","چهل"],
-["September","سپتامبر"],
-["fifty","پنجاه"],
-["fifteen","پانزده"],
-["thirteen","سیزده"],
-["sixty","شصت"],
-["really","واقعاً"],
-["seventy","هفتاد"],
-["When is your birthday?","تاریخ تولدت کی است؟"],
-["fourteen","چهارده"],
-["eighty","هشتاد"],
-["Friday","جمعه"]
-],
-[
-["family","خانواده"],
-["father","پدر"],
-["mother","مادر"],
-["brother","برادر"],
-["sister","خواهر"],
-["parents","والدین"],
-["grandfather","پدربزرگ"],
-["grandmother","مادربزرگ"],
-["uncle","عمو / دایی"],
-["aunt","عمه / خاله"],
-["cousin","پسرعمو / دخترعمو / ..."],
-["son","پسر"],
-["daughter","دختر"],
-["child","کودک"],
-["children","کودکان"],
-["young","جوان"],
-["old","پیر"],
-["kind","مهربان"]
-],
-[
-["tall","بلندقد"],
-["grey","طوسی"],
-["white","سفید"],
-["manteau","مانتو"],
-["hat","کلاه"],
-["chador","چادر"],
-["glove","دستکش"],
-["green","سبز"],
-["math","ریاضی"],
-["orange","نارنجی"],
-["pink","صورتی"],
-["belt","کمربند"],
-["sunglasses","عینک آفتابی"],
-["suit","کت و شلوار"],
-["T-shirt","تیشرت"],
-["brown","قهوه‌ای"],
-["blue","آبی"],
-["sock","جوراب"],
-["dress","پیراهن زنانه"],
-["shoe","کفش"],
-["black","سیاه"],
-["shirt","پیراهن"],
-["sweater","ژاکت"],
-["glasses","عینک"],
-["short","قدکوتاه"],
-["old","پیر"],
-["coat","پالتو"],
-["trousers","شلوار"],
-["red","قرمز"],
-["yellow","زرد"],
-["jacket","کت"],
-["sandal","صندل"],
-["wear","پوشیدن"]
-],
-[
-["again","دوباره"],
-["watch TV","تلویزیون تماشا کردن"],
-["where","کجا"],
-["bedroom","اتاق خواب"],
-["car","ماشین"],
-["work","کار کردن"],
-["cook","پختن"],
-["bathroom","حمام"],
-["correct","صحیح"],
-["blanket","پتو"],
-["bookcase","قفسه کتاب"],
-["dad","بابا"],
-["clock","ساعت دیواری"],
-["comb","شانه"],
-["computer","کامپیوتر"],
-["garage","پارکینگ"],
-["house","خانه"],
-["flat/apartment","آپارتمان"],
-["hungry","گرسنه"],
-["kitchen","آشپزخانه"],
-["room","اتاق"],
-["mirror","آینه"],
-["living room","اتاق پذیرایی"],
-["newspaper","روزنامه"],
-["look at","نگاه کردن به"],
-["lunch","ناهار"],
-["radio","رادیو"],
-["mom","مامان"],
-["office","دفتر، شرکت"],
-["stairs","راه‌پله"],
-["picture","تصویر"],
-["study","مطالعه کردن"],
-["football","فوتبال"],
-["play","بازی کردن"],
-["Read a book","کتاب خواندن"],
-["television","تلویزیون"],
-["tower","برج"],
-["say","گفتن"],
-["villa","ویلا"],
-["so","خیلی"],
-["Wash your hands","دست‌هایت را بشور"]
-],
-[
-["Baharestan, Kargar Street 39","بهارستان، خیابان کارگر، پلاک ۳۹"],
-["live","زندگی کردن"],
-["I'm not sure.","مطمئن نیستم."],
-["go","رفتن"],
-["Call me before you go.","قبل از اینکه بروی به من زنگ بزن."],
-["Around 5 in the afternoon.","حدوداً ساعت ۵ بعدازظهر"],
-["telephone","تلفن"],
-["OK, bye.","باشه، خداحافظ"],
-["What time are they leaving?","آنها چه ساعتی می‌روند؟"],
-["evening","عصر"],
-["address","نشانی"],
-["mobile","تلفن همراه"],
-["Laleh Street 24","خیابان لاله، پلاک ۲۴"],
-["Street Azadi 5","خیابان آزادی، پلاک ۵"],
-["What’s your address?","آدرس منزل شما چیست؟"],
-["Are you coming with me?","آیا تو با من می‌آیی؟"],
-["e-mail address","آدرس ایمیل"],
-["home","خانه"],
-["What time is he going?","ساعت چند قرار است برود؟"],
-["What’s his mobile phone number?","شماره موبایل او چند است؟"],
-["Mahan Street 67","خیابان ماهان، پلاک ۶۷"],
-["Farnam Street 81","خیابان فرنام، پلاک ۸۱"],
-["What’s her address?","آدرس منزل او چیست؟"],
-["street","خیابان"],
-["p.m.","بعدازظهر"],
-["What’s his address?","آدرس منزل او چیست؟"],
-["not well","حال ... خوب نیست"],
-["call","زنگ زدن"],
-["What time is she coming back?","چه ساعتی برمی‌گردد؟"],
-["number","عدد / شماره"],
-["I don’t understand.","متوجه نمی‌شوم."],
-["time","زمان"],
-["What’s his home number?","شماره منزل او چند است؟"],
-["Where do you live?","کجا زندگی می‌کنید؟"],
-["What time are you going?","ساعت چند قرار است بروی؟"],
-["a.m.","قبل از ظهر"],
-["What’s their telephone number?","شماره تلفن آنها چند است؟"],
-["I don’t know.","نمی‌دانم"],
-["What’s your telephone number?","شماره تلفن شما چند است؟"],
-["What time is it?","ساعت چند است؟"],
-["My phone number is...","شماره تلفن من ... است"],
-["What’s her office phone number?","شماره تلفن دفتر او چند است؟"],
-["o’clock","ساعت"]
-],
-[
-["What’s your favorite food?","غذای مورد علاقه شما چیست؟"],
-["jelly","ژله"],
-["rice","برنج"],
-["It's enough.","دیگر بس است"],
-["spaghetti","اسپاگتی"],
-["orange","پرتقال"],
-["Let's take something to eat.","بیا چیزی بخوریم"],
-["cheese","پنیر"],
-["potato","سیب‌زمینی"],
-["Let's go to the kitchen.","بیا به آشپزخانه برویم"],
-["Let's have something to drink.","بیا چیزی بنوشیم"],
-["kebab","کباب"],
-["bread","نان"],
-["date","خرما"],
-["egg","تخم‌مرغ"],
-["yogurt","ماست"],
-["fruit","میوه"],
-["I'd like some...","من کمی ... می‌خورم"],
-["What’s your favorite drink?","نوشیدنی مورد علاقه شما چیست؟"],
-["like","دوست داشتن"],
-["Me too.","من هم همینطور"],
-["What do you like to drink?","چه چیزی دوست داری بنوشی؟"],
-["thirsty","تشنه"],
-["salad","سالاد"],
-["How about some cake and milk?","نظرت راجع به کمی کیک و شیر چیست؟"],
-["orange juice","آب پرتقال"],
-["hungry","گرسنه"],
-["food","غذا"],
-["banana","موز"],
-["quince","به"],
-["tea","چای"],
-["shopping","خرید"],
-["tomato","گوجه"]
-]
-],
-
-8:[
-[
-["great","عالی"],
-["South America","آمریکای جنوبی"],
-["cousin","پسرعمو / دخترعمو / ..."],
-["Asian","آسیایی"],
-["North America","آمریکای شمالی"],
-["Iranian","ایرانی"],
-["Spanish","اسپانیایی"],
-["Spain","اسپانیا"],
-["South American","اهل آمریکای جنوبی"],
-["continent","قاره"],
-["North American","آمریکای شمالی"],
-["African","آفریقایی"],
-["Chinese","چینی"],
-["Australia","استرالیا"],
-["European","اروپایی"],
-["relative","خویشاوند"],
-["Africa","آفریقا"],
-["Iran","ایران"],
-["England","انگلستان"],
-["Persian Gulf","خلیج فارس"],
-["Brazil","برزیل"],
-["France","فرانسه"],
-["Europe","اروپا"],
-["China","چین"],
-["Brazilian","برزیلی"],
-["Asia","آسیا"],
-["British","بریتانیایی"],
-["guest","مهمان"],
-["nationality","ملیت"],
-["French","فرانسوی"]
-],
-[
-["week","هفته"],
-["Saturday","شنبه"],
-["Sunday","یکشنبه"],
-["Monday","دوشنبه"],
-["Tuesday","سه‌شنبه"],
-["Wednesday","چهارشنبه"],
-["Thursday","پنجشنبه"],
-["Friday","جمعه"],
-["weekend","آخر هفته"],
-["weekday","روز کاری"],
-["morning","صبح"],
-["afternoon","بعدازظهر"],
-["evening","عصر"],
-["night","شب"],
-["usually","معمولاً"],
-["always","همیشه"],
-["sometimes","گاهی"],
-["never","هرگز"]
-],
-[
-["ride a bicycle","دوچرخه‌سواری کردن"],
-["play tennis","تنیس بازی کردن"],
-["play chess","شطرنج بازی کردن"],
-["type","تایپ کردن"],
-["read","خواندن"],
-["puzzle","پازل"],
-["drawing book","دفتر نقاشی"],
-["bring","آوردن"],
-["can","توانستن"],
-["today","امروز"]
-],
-[
-["drugstore","داروخانه"],
-["rest","استراحت کردن"],
-["health problem","مشکل سلامتی"],
-["help","کمک"],
-["teacher","معلم"],
-["stomachache","دلدرد"],
-["cough","سرفه"],
-["What’s the matter?","چه شده است؟"],
-["patient","مریض"],
-["advice","نصیحت"],
-["sore throat","گلودرد"],
-["doctor","دکتر"],
-["sore eyes","چشم‌های دردناک"],
-["dentist","دندانپزشک"],
-["problem","مشکل"],
-["fever","تب"],
-["earache","گوش‌درد"],
-["runny nose","آبریزش بینی"],
-["cold","سرماخوردگی"],
-["toothache","دندان‌درد"],
-["headache","سردرد"],
-["should","باید"]
-],
-[
-["village","روستا"],
-["wind","باد"],
-["people","مردم"],
-["job","شغل"],
-["firefighter","آتش‌نشان"],
-["service","خدمت"],
-["post office","اداره پست"],
-["bus","اتوبوس"],
-["city","شهر"],
-["clean","تمیز"],
-["street","خیابان"],
-["station","ایستگاه"],
-["airport","فرودگاه"],
-["store","مغازه"],
-["hospital","بیمارستان"],
-["volunteer","داوطلب"],
-["work","کار"],
-["shift","شیفت"],
-["emergency","اورژانس"]
-],
-[
-["horse riding","اسب‌سواری"],
-["reading","مطالعه"],
-["free time","وقت آزاد"],
-["computer games","بازی کامپیوتری"],
-["sometimes","گاهی"],
-["hobby","سرگرمی"],
-["movies","فیلم"],
-["walking in the park","قدم زدن در پارک"],
-["magazine","مجله"],
-["sports news","خبر ورزشی"],
-["usually","معمولاً"],
-["tennis","تنیس"],
-["search","جستجو کردن"],
-["skiing","اسکی"],
-["listening to the radio","گوش دادن به رادیو"],
-["fishing","ماهی‌گیری"],
-["Internet","اینترنت"],
-["shopping","خرید"],
-["enjoy","لذت بردن"],
-["browsing the Internet","در اینترنت گشت زدن"],
-["fire service","سازمان آتش‌نشانی"]
-],
-[
-["service","خدمت"],
-["firefighter","آتش‌نشان"],
-["post office","اداره پست"],
-["work","کار کردن"],
-["shifts","شیفت‌ها"],
-["bus","اتوبوس"],
-["emergency","اورژانس"],
-["postcard","کارت پستال"],
-["voluntary work","کار داوطلبانه"],
-["get on a bus","سوار اتوبوس شدن"],
-["call the emergency","به اورژانس زنگ زدن"],
-["put out fire","آتش خاموش کردن"],
-["job","شغل"],
-["career","شغل / حرفه"]
-],
-[
-["plan","برنامه"],
-["future","آینده"],
-["will","خواهد"],
-["going to","قرار است"],
-["tomorrow","فردا"],
-["next week","هفته آینده"],
-["holiday","تعطیلات"],
-["travel","سفر"],
-["visit","بازدید کردن"],
-["study","مطالعه کردن"],
-["decision","تصمیم"],
-["hope","امید"],
-["dream","رویا"]
-]
-],
-
-9:[
-[
-["personality","شخصیت"],
-["patient","صبور"],
-["bit","کم"],
-["hard-working","کوشا"],
-["neat","مرتب و منظم"],
-["careful","مراقب"],
-["What’s he like?","او چه جور آدمی است؟"],
-["kind","مهربان"],
-["how","چطور"],
-["talkative","پرحرف"],
-["also","همچنین"],
-["careless","بی‌دقت"],
-["clever","باهوش"],
-["pleasant","خوشایند"],
-["happy","خوشحال"],
-["lazy","تنبل"],
-["shy","خجالتی"],
-["cruel","بی‌رحم"],
-["rude","بی‌ادب"],
-["helpful","مفید"],
-["generous","بخشنده"],
-["friendly","دوستانه"],
-["best friend","بهترین دوست"],
-["everybody","همه"],
-["member","عضو"],
-["great","عالی"],
-["polite","مودب"],
-["some","بعضی"],
-["upset","ناراحت"],
-["company","شرکت"],
-["nervous","مضطرب"],
-["selfish","خودخواه"],
-["funny","بامزه"],
-["serious","جدی"],
-["brave","شجاع"],
-["always","همیشه"],
-["angry","عصبانی"],
-["homework","تکلیف منزل"]
-],
-[
-["prayers","نماز"],
-["land","فرود آمدن"],
-["stay","اقامت"],
-["Tehran","تهران"],
-["enjoy","لذت بردن"],
-["timetable","برنامه حرکت"],
-["around the world","دور دنیا"],
-["hope","امیدوار بودن"],
-["of course","البته"],
-["passport","گذرنامه"],
-["book a hotel","هتل رزرو کردن"],
-["voyage","سفر دریایی"],
-["baggage reclaim","محل دریافت بار"],
-["suitable","مناسب"],
-["guess","حدس زدن"],
-["key","کلید"],
-["novel","رمان"],
-["map","نقشه"],
-["Germany","آلمان"],
-["Arabic","زبان عربی"],
-["leg","پا"],
-["buy a ticket","خریدن بلیط"],
-["receptionist","متصدی پذیرش"],
-["reservation","رزرو"],
-["car","خودرو"],
-["toll","عوارضی"],
-["letter","نامه"],
-["plane","هواپیما"],
-["German","آلمانی"]
-],
-[
-["Isfahan","اصفهان"],
-["boulevard","بلوار"],
-["old","قدیمی"],
-["restaurant","رستوران"],
-["location","موقعیت"],
-["palace","کاخ"],
-["soon","به زودی"],
-["bridge","پل"],
-["city","شهر"],
-["shrine","حرم"],
-["building","ساختمان"],
-["west","غرب"],
-["museum","موزه"],
-["tourist","گردشگر"],
-["downtown","مرکز شهر"],
-["special","خاص"],
-["metro","مترو"],
-["clean","تمیز"],
-["big","بزرگ"],
-["park","پارک"],
-["south","جنوب"],
-["store","مغازه"],
-["famous","مشهور"],
-["train station","ایستگاه راه‌آهن"],
-["near","نزدیک"],
-["bus station","ایستگاه اتوبوس"],
-["airport","فرودگاه"],
-["northeast","شمال شرق"],
-["northwest","شمال غرب"],
-["southeast","جنوب شرق"],
-["southwest","جنوب غرب"]
-],
-[
-["job","شغل"],
-["service","خدمت"],
-["often","اغلب"],
-["firefighter","آتش‌نشان"],
-["Mandarin","زبان ماندارین"],
-["corner","گوشه"],
-["easy","آسان"],
-["keep the city clean","شهر را تمیز نگه داشتن"],
-["post office","اداره پست"],
-["fire station","ایستگاه آتش‌نشانی"],
-["voluntary work","کار داوطلبانه"],
-["shift","شیفت"],
-["emergency","اورژانس"],
-["bus","اتوبوس"],
-["fire","آتش"],
-["save lives","جان مردم را نجات دادن"]
-],
-[
-["war movie","فیلم جنگی"],
-["together","با هم"],
-["watch","تماشا کردن"],
-["media","رسانه"],
-["excellent","عالی"],
-["comedy","نمایش خنده‌دار"],
-["dictionary","فرهنگ لغت"],
-["Internet","اینترنت"],
-["website","تارنما"],
-["report","گزارش"],
-["TV program","برنامه تلویزیونی"],
-["moment","لحظه"],
-["fantastic","فوق‌العاده"],
-["connect to the Internet","به اینترنت وصل شدن"],
-["course","دوره"],
-["participate","شرکت کردن"],
-["IT","فناوری اطلاعات"],
-["surf","جستجو در اینترنت"]
-],
-[
-["myself","خودم"],
-["head","سر"],
-["cookie","کلوچه"],
-["bruises","کبودی‌ها"],
-["find","پیدا کردن"],
-["black eye","چشم کبود"],
-["scar","جای زخم"],
-["wound","زخم"],
-["plaster","چسب زخم"],
-["back","کمر"],
-["hurt","آسیب دیدن"],
-["sometimes","گاهی اوقات"],
-["accident","حادثه"],
-["burn","سوختن"],
-["cut","بریدن"],
-["fall","افتادن"],
-["break","شکستن"]
-],
-[
-["sport","ورزش"],
-["athlete","ورزشکار"],
-["football","فوتبال"],
-["volleyball","والیبال"],
-["basketball","بسکتبال"],
-["swimming","شنا"],
-["running","دویدن"],
-["competition","مسابقه"],
-["team","تیم"],
-["player","بازیکن"],
-["winner","برنده"],
-["training","تمرین"],
-["match","مسابقه"],
-["coach","مربی"],
-["medal","مدال"],
-["champion","قهرمان"]
-],
-[
-["nature","طبیعت"],
-["environment","محیط زیست"],
-["forest","جنگل"],
-["mountain","کوه"],
-["river","رودخانه"],
-["sea","دریا"],
-["animal","حیوان"],
-["plant","گیاه"],
-["water","آب"],
-["air","هوا"],
-["pollution","آلودگی"],
-["protect","محافظت کردن"],
-["destroy","نابود کردن"],
-["earth","زمین"],
-["natural","طبیعی"]
-]
-],
-
-10:[
-[
-["may","ممکن بودن"],
-["Peru","پرو"],
-["four-season country","کشور چهار فصل"],
-["booklet","کتابچه"],
-["illness","بیماری"],
-["possibility","امکان"],
-["entertainment","سرگرمی"],
-["in","در"],
-["travel agent","کارمند آژانس مسافرتی"],
-["Chile","شیلی"],
-["May","مه"],
-["site","مکان"],
-["book","رزرو کردن"],
-["prepare","آماده کردن"],
-["host","میزبان"],
-["honestly","صادقانه"],
-["piano","پیانو"],
-["at","در / هنگام"],
-["traveler","مسافر"],
-["Beijing","پکن"],
-["historical","تاریخی"],
-["foreign","خارجی"],
-["comfortable","راحت"],
-["junk food","غذای ناسالم"],
-["behavior","رفتار"],
-["billion","میلیارد"],
-["Great Wall","دیوار بزرگ چین"],
-["familiar","آشنا"],
-["afternoon","بعدازظهر"],
-["range","گستره"],
-["ancient","باستانی"],
-["holy shrine","حرم مطهر"]
-],
-[
-["researcher","محقق"],
-["prophet","پیامبر"],
-["skill","مهارت"],
-["express","بیان کردن"],
-["airplane","هواپیما"],
-["success","موفقیت"],
-["fortunately","خوشبختانه"],
-["yourselves","خودتان"],
-["action","عمل"],
-["smoking","سیگار کشیدن"],
-["translator","مترجم"],
-["scientist","دانشمند"],
-["verb","فعل"],
-["kitty","گربه"],
-["hearing","شنوایی"],
-["write","نوشتن"],
-["themselves","خودشان"],
-["antibiotic","آنتی‌بیوتیک"],
-["kill","کشتن"],
-["drink","نوشیدن"],
-["seek","به دنبال گشتن"],
-["invention","اختراع"],
-["laboratory","آزمایشگاه"],
-["invent","اختراع کردن"],
-["successful","موفق"],
-["poor","فقیر"],
-["state","حالت"],
-["grave","قبر"],
-["penicillin","پنی‌سیلین"],
-["medicine","دارو"],
-["thinker","اندیشمند"],
-["emotion","احساس"],
-["uranium","اورانیوم"],
-["yourself","خودت"],
-["thought","فکر"],
-["solve","حل کردن"],
-["rain","باران آمدن"],
-["idea","ایده"],
-["herself","خودش، مؤنث"],
-["outside","بیرون"],
-["easily","به راحتی"],
-["sense","حس"],
-["develop","توسعه دادن"],
-["hall","سالن"],
-["himself","خودش، مذکر"],
-["emphasis","تأکید"],
-["rapidly","سریعاً"],
-["fast","سریع"],
-["soon","به زودی"],
-["build","ساختن"],
-["belief","باور"],
-["camera","دوربین"],
-["strongly","قویاً"],
-["suddenly","ناگهان"],
-["great","بزرگ"],
-["publish","منتشر کردن"],
-["itself","خودش"],
-["quit","دست کشیدن"],
-["weak","سست"],
-["light bulb","لامپ"],
-["writer","نویسنده"],
-["translate","ترجمه کردن"],
-["energetic","پرانرژی"],
-["such","چنین"],
-["holy","مقدس"],
-["noise","صدا"],
-["value","ارزش"],
-["ourselves","خودمان"],
-["Believe me!","باور کن!"],
-["translation","ترجمه"],
-["grow up","بزرگ شدن"],
-["experiment","آزمایش"],
-["try","سعی کردن"],
-["yard","حیاط"],
-["story","داستان"],
-["believe in","اعتقاد داشتن"],
-["cool","باشه"],
-["give up","ترک کردن"],
-["pass away","فوت کردن"],
-["hard","سخت"],
-["knowledge","دانش"],
-["at first","در ابتدا"],
-["such","چنین"]
-],
-[
-["oxygen","اکسیژن"],
-["fan","پنکه"],
-["fossil fuel","سوخت فسیلی"],
-["herd","گله"],
-["necessary","لازم"],
-["LED light bulb","لامپ LED"],
-["Jupiter","مشتری"],
-["stable","اصطبل"],
-["form","شکل / نوع"],
-["joint","مفصل"],
-["Nobel Prize","جایزه نوبل"],
-["Saturn","زحل"],
-["reduce","کاهش دادن"],
-["variety","تنوع"],
-["kinetic energy","انرژی جنبشی"],
-["chemical","شیمیایی"],
-["Uranus","اورانوس"],
-["pollute","آلوده کردن"],
-["require","نیاز داشتن"],
-["mechanical","مکانیکی"],
-["Neptune","نپتون"],
-["radiation","تشعشع"],
-["nuclear","هسته‌ای"],
-["bulb","لامپ"],
-["oxygen","اکسیژن"],
-["wooden","چوبی"],
-["more","بیشتر"],
-["defend","دفاع کردن"],
-["exercise","ورزش"],
-["planet","سیاره"],
-["ticket","بلیت"],
-["farther","دورتر"],
-["worse","بدتر"],
-["medium","متوسط"],
-["golden","طلایی"],
-["different","متفاوت"],
-["carbon dioxide","دی‌اکسید کربن"],
-["lamp","چراغ"],
-["clear","واضح"],
-["without","بدون"],
-["silver","نقره"],
-["microbe","میکروب"],
-["wonder","چیز عجیب"],
-["sun","خورشید"],
-["rocky","سنگی"],
-["deep","عمیق"],
-["size","اندازه"],
-["brain","مغز"],
-["liquid","مایع"],
-["most","ترین"],
-["ring","حلقه"],
-["pump","پمپاژ کردن"]
-],
-[
-["experience","تجربه"],
-["education","تحصیل"],
-["environment","محیط زیست"],
-["technology","فناوری"],
-["achievement","دستاورد"],
-["communicate","ارتباط برقرار کردن"],
-["research","تحقیق"],
-["development","توسعه"],
-["society","جامعه"],
-["culture","فرهنگ"],
-["communication","ارتباط"],
-["career","حرفه"],
-["knowledge","دانش"],
-["opportunity","فرصت"],
-["responsibility","مسئولیت"],
-["consequence","پیامد"],
-["analysis","تحلیل"]
-]
-],
-
-11:[
-[
-["normal","معمول"],
-["cure","درمان کردن"],
-["skiing","اسکی"],
-["key","کلید"],
-["unimportant","بی‌اهمیت"],
-["kid","بچه"],
-["properly","به‌درستی"],
-["regular","مرتب"],
-["prefer","ترجیح دادن"],
-["harmful","مضر"],
-["replay","بازپخش کردن"],
-["forget","فراموش کردن"],
-["asleep","خوابیده"],
-["oil","روغن"],
-["Thanks for calling.","ممنون که زنگ زدی"],
-["change","تغییر دادن"],
-["rarely","به ندرت"],
-["physically","از لحاظ جسمی"],
-["climb","بالا رفتن"],
-["sailing","قایقرانی"],
-["fat","چاق"],
-["turn around","روی برگرداندن"],
-["death","مرگ"],
-["look back","به گذشته فکر کردن"],
-["influence","تأثیر گذاشتن"],
-["snack","خوراک سبک"],
-["certain","به‌خصوص"],
-["cause","باعث شدن"],
-["go fishing","ماهیگیری رفتن"],
-["secret","راز"],
-["playing football","فوتبال بازی کردن"],
-["swimming","شنا کردن"]
-],
-[
-["countable","قابل شمارش"],
-["uncountable noun","اسم غیرقابل شمارش"],
-["difference","تفاوت"],
-["feeling","احساس"],
-["institute","مؤسسه"],
-["additional","اضافی"],
-["foreigner","بیگانه"],
-["early","زود"],
-["respect","احترام گذاشتن"],
-["besides","به علاوه"],
-["pronoun","ضمیر"],
-["native language","زبان مادری"],
-["written","کتبی"],
-["nearly","تقریباً"],
-["pick","انتخاب کردن"],
-["scan","اجمالی نگاه کردن"],
-["hour","ساعت"],
-["glass","لیوان"],
-["cup","فنجان"],
-["between","بین"],
-["loaf","قرص نان"],
-["what","چی"],
-["no matter how","مهم نیست چقدر"],
-["largely","تا حد زیادی"],
-["Persian","پارسی"],
-["range","متغیر بودن"],
-["normally","معمولاً"],
-["general","عمومی"]
-],
-[
-["diversity","تنوع"],
-["charity","خیریه"],
-["unique","منحصربه‌فرد"],
-["well-known","مشهور"],
-["satisfied","راضی"],
-["at least","حداقل"],
-["art","هنر"],
-["lovely","زیبا"],
-["prize","جایزه"],
-["vast","وسیع"],
-["tired","خسته"],
-["touching","تأثیرگذار"],
-["product","محصول"],
-["Persian carpet","قالی ایرانی"],
-["craftswoman","هنرمند"],
-["snow","برف"],
-["tile","کاشی"],
-["war","جنگ"],
-["carpet","فرش"],
-["pack","جمع کردن وسایل"],
-["southwest","جنوب غربی"],
-["moral","اخلاقی"],
-["correctly","به‌درستی"],
-["discount","تخفیف"],
-["introduce","معرفی کردن"],
-["activity","فعالیت"],
-["exam","آزمون"],
-["uncertain","نامطمئن"],
-["phone","تماس گرفتن"],
-["reflect","بازتاب کردن"],
-["neighbor","همسایه"]
-],
-[
-["technology","فناوری"],
-["computer","رایانه"],
-["Internet","اینترنت"],
-["communication","ارتباط"],
-["website","وب‌سایت"],
-["software","نرم‌افزار"],
-["hardware","سخت‌افزار"],
-["device","دستگاه"],
-["digital","دیجیتال"],
-["smartphone","تلفن هوشمند"],
-["information","اطلاعات"],
-["research","تحقیق"],
-["browser","مرورگر"],
-["download","دانلود کردن"],
-["upload","آپلود کردن"],
-["online","آنلاین"],
-["network","شبکه"],
-["message","پیام"],
-["social media","رسانه اجتماعی"]
-]
-],
-
-12:[
-[
-["emotion","احساس / عاطفه"],
-["comma","ویرگول"],
-["whereby","که به وسیله آن"],
-["reply","پاسخ دادن"],
-["loving","مهربان / بامحبت"],
-["hard of hearing","کم‌شنوا"],
-["strength","قدرت / توانایی"],
-["orally","به صورت شفاهی"],
-["cruel","بی‌رحم"],
-["reader","خواننده"],
-["elderly","سالمند"],
-["smartphone","تلفن هوشمند"],
-["meaningful","هدفمند / معنادار"],
-["unconditionally","بی‌قید و شرط"],
-["just","تازگی / اکنون"],
-["heritage","میراث"],
-["burst into tears","زیر گریه زدن"],
-["take temperature","دمای بدن گرفتن"],
-["spare no pains","از هیچ چیز مضایقه نکردن"],
-["handle","از پس کاری برآمدن"],
-["common","متداول"],
-["tool","ابزار"],
-["teenager","نوجوان"],
-["repeatedly","بارها"],
-["proud","مفتخر"],
-["technology","فناوری"],
-["aloud","بلند"],
-["diploma","دیپلم"],
-["unreal","غیرواقعی"],
-["ethics","اخلاقیات"],
-["forgive","بخشیدن"],
-["guidelines","دستورالعمل‌ها"],
-["dishwasher","ماشین ظرفشویی"],
-["grateful","سپاسگزار"],
-["medicine","پزشکی / دارو"],
-["ordinary","معمولی"],
-["mistake","اشتباه"],
-["respect","احترام گذاشتن"],
-["scientist","دانشمند"],
-["pity","حیف"],
-["surprisingly","به‌طور شگفت‌آور"],
-["inventor","مخترع"],
-["morals","اخلاق"],
-["regard","در نظر گرفتن"],
-["quite","کاملاً"],
-["donate","اهدا کردن"],
-["dedicated","متعهد"],
-["found","تأسیس کردن"],
-["A.D.","میلادی"],
-["accidentally","تصادفاً"],
-["textbook","کتاب درسی"],
-["microwave","مایکروویو"],
-["childhood","کودکی"],
-["medical","پزشکی"],
-["similar","مشابه"],
-["lower","کاهش دادن"],
-["contrast","تضاد"],
-["religious","مذهبی"],
-["professor","استاد دانشگاه"],
-["generation","نسل"],
-["kindness","مهربانی"],
-["failure","شکست / ناتوانی"],
-["by heart","از حفظ"],
-["quietly","آهسته / بی‌صدا"],
-["comprehension","فهم / درک"],
-["boost","افزایش دادن"],
-["bacteria","باکتری‌ها"],
-["deserve","سزاوار بودن"],
-["principle","اصل اخلاقی"],
-["result","نتیجه"],
-["poetry","شعر"],
-["strategy","راهبرد"],
-["by the way","راستی"],
-["for instance","برای مثال"]
-],
-[
-["generally","معمولاً"],
-["unknown","نامعلوم / ناآشنا"],
-["level","سطح"],
-["colony","کلونی / انبوه"],
-["antonym","متضاد"],
-["section","بخش"],
-["pronunciation","تلفظ"],
-["expression","اصطلاح / عبارت"],
-["device","دستگاه"],
-["unsystematically","بدون قاعده مشخص"],
-["bilingual","دوزبانه"],
-["monolingual","تک‌زبانه"],
-["highlight","برجسته کردن"],
-["primarily","در درجه اول"],
-["stand for","به معنای چیزی بودن"],
-["biography","زندگینامه"],
-["allow","اجازه دادن"],
-["incomprehensible","غیرقابل فهم"],
-["whereas","در حالی که"],
-["term","اصطلاح / واژه"],
-["jump into","ناگهان تصمیم به انجام کاری گرفتن"],
-["technical","فنی"],
-["figure out","فهمیدن"],
-["unexpectedly","به‌طور غیرمنتظره"],
-["treasure","گنج"],
-["intermediate","متوسط"],
-["throughout","در سراسر"],
-["PC","رایانه شخصی"],
-["provide","فراهم کردن"],
-["effectively","به‌طور مؤثر"],
-["compile","گردآوری کردن"],
-["browser","مرورگر"],
-["unsuccessfully","بدون موفقیت"],
-["transmit","انتقال دادن"],
-["commercial","تجاری"],
-["confusing","گیج‌کننده"],
-["smart phone","تلفن هوشمند"],
-["scale","مقیاس"],
-["directly","مستقیماً"],
-["middle ear","گوش میانی"],
-["according to","طبق"],
-["tip","نکته / راهنمایی"],
-["guide","راهنما"],
-["arrange","مرتب کردن"],
-["circle","دور چیزی خط کشیدن"],
-["average","میانگین"],
-["surround","احاطه کردن"],
-["elementary","ابتدایی"],
-["entry","مدخل"],
-["part of speech","نقش واژه"],
-["compare","مقایسه کردن"],
-["stick","چسبیدن"],
-["symbol","نماد"],
-["widely","به‌طور گسترده"],
-["suppose","فرض کردن"],
-["snake","مار"],
-["topic sentence","جمله موضوعی"]
-],
-[
-["oxygen","اکسیژن"],
-["fan","پنکه"],
-["fossil fuel","سوخت فسیلی"],
-["herd","گله"],
-["necessary","لازم / ضروری"],
-["LED light bulb","لامپ LED"],
-["Jupiter","مشتری"],
-["stable","اصطبل"],
-["form","شکل / نوع"],
-["joint","مفصل"],
-["Nobel Prize","جایزه نوبل"],
-["Saturn","زحل"],
-["reduce","کاهش دادن"],
-["variety","تنوع"],
-["kinetic energy","انرژی جنبشی"],
-["chemical","شیمیایی"],
-["Uranus","اورانوس"],
-["pollute","آلوده کردن"],
-["require","نیاز داشتن"],
-["mechanical","مکانیکی"],
-["Neptune","نپتون"],
-["radiation","تشعشع"],
-["nuclear","هسته‌ای"],
-["bulb","لامپ"],
-["planet","سیاره"],
-["wooden","چوبی"],
-["liquid","مایع"],
-["ring","حلقه"],
-["pump","پمپاژ کردن"]
-],
-[
-["academic","دانشگاهی"],
-["career","حرفه"],
-["opportunity","فرصت"],
-["responsibility","مسئولیت"],
-["consequence","پیامد"],
-["achievement","دستاورد"],
-["analysis","تحلیل"],
-["research","تحقیق"],
-["education","تحصیلات"],
-["knowledge","دانش"],
-["development","توسعه"],
-["society","جامعه"],
-["culture","فرهنگ"],
-["communication","ارتباط"],
-["technology","فناوری"]
-]
-]
+$("adminTab").onclick=()=>{
+ $("adminTab").classList.add("active");
+ $("studentTab").classList.remove("active");
+ $("studentBox").classList.add("hidden");
+ $("adminBox").classList.remove("hidden");
+ $("registerBox").classList.add("hidden");
+ message("");
 };
 
-/* =========================================================
-   GRAMMAR
-========================================================= */
-
-const grammar={
-7:[
-[
-["Alphabet","حروف بزرگ و کوچک انگلیسی","A a / B b / C c","حروف بزرگ در ابتدای جمله و نام‌های خاص استفاده می‌شوند."]
-],
-[
-["Introducing Yourself","معرفی خود","My name is Ali.","برای معرفی نام از My name is ... استفاده می‌کنیم."]
-],
-[
-["Personal Information","اطلاعات شخصی","What is your first name?","برای پرسیدن اطلاعات شخصی سؤال مناسب می‌سازیم."]
-],
-[
-["Numbers & Age","سن و اعداد","I am thirteen years old.","برای بیان سن از am/is + عدد + years old استفاده می‌کنیم."]
-],
-[
-["Family","اعضای خانواده","This is my mother.","صفات ملکی مانند my و your برای مالکیت استفاده می‌شوند."]
-],
-[
-["Appearance","توصیف ظاهر","He is tall.","برای توصیف افراد از be و صفت استفاده می‌کنیم."]
-],
-[
-["Home & Places","خانه و مکان‌ها","There is a bedroom.","There is برای یک مورد و There are برای چند مورد استفاده می‌شود."]
-],
-[
-["Food","غذا و نوشیدنی","I'd like some rice.","I'd like برای بیان درخواست مؤدبانه استفاده می‌شود."]
-]
-],
-8:[
-[
-["Nationality","ملیت","I am Iranian.","برای ملیت از I am + nationality استفاده می‌کنیم."]
-],
-[
-["Simple Present","حال ساده","I go to school every day.","برای عادت‌ها و کارهای روزمره استفاده می‌شود."]
-],
-[
-["Can / Can't","توانایی","I can swim.","بعد از can شکل ساده فعل می‌آید."]
-],
-[
-["Health","سلامتی","I have a headache.","برای بعضی بیماری‌ها از have استفاده می‌کنیم."]
-],
-[
-["There is / There are","وجود داشتن","There are many shops.","برای معرفی وجود مکان‌ها و اشیا."]
-],
-[
-["Adverbs of Frequency","قیدهای تکرار","I usually read.","always, usually, sometimes, never"]
-],
-[
-["Services","خدمات","Where does he work?","برای سؤال با فعل‌های اصلی از do/does استفاده می‌شود."]
-],
-[
-["Future Plans","برنامه آینده","I'm going to travel.","be going to برای برنامه آینده."]
-]
-],
-9:[
-[
-["Personality","شخصیت","He is kind and clever.","صفات برای توصیف شخصیت."]
-],
-[
-["Simple Past","گذشته ساده","I visited Tehran.","برای اتفاق‌های تمام‌شده گذشته."]
-],
-[
-["Past of be","گذشته فعل be","I was happy.","was برای I/he/she/it و were برای you/we/they."]
-],
-[
-["Comparatives","صفات تفضیلی","Isfahan is bigger than...","برای مقایسه دو مورد."]
-],
-[
-["Media","رسانه","I watched the report.","گذشته ساده برای رویداد گذشته."]
-],
-[
-["Health & Accidents","سلامتی و حوادث","She hurt her hand.","افعال گذشته برای حوادث."]
-],
-[
-["Sports","ورزش","He plays football.","حال ساده برای فعالیت‌های ورزشی."]
-],
-[
-["Nature","طبیعت","We should protect nature.","should برای توصیه."]
-]
-],
-10:[
-[
-["Present Perfect","حال کامل","I have finished my homework.","have/has + past participle"]
-],
-[
-["Past Continuous","گذشته استمراری","I was studying.","was/were + verb-ing"]
-],
-[
-["Relative Clauses","جملات موصولی","The man who lives here...","who/which/that برای اتصال جمله‌ها."]
-],
-[
-["Modal Verbs","افعال ناقص","You should study.","must, should, may, might"]
-]
-],
-11:[
-[
-["Passive Voice","مجهول","English is spoken worldwide.","be + past participle"]
-],
-[
-["Conditionals","شرطی‌ها","If I study, I will pass.","شرط نوع اول."]
-],
-[
-["Reported Speech","نقل قول غیرمستقیم","He said that he was tired.","تغییر زمان در نقل قول."]
-],
-[
-["Gerunds & Infinitives","Gerund و Infinitive","I enjoy reading.","برخی افعال بعدشان gerund می‌آید."]
-]
-],
-12:[
-[
-["Advanced Tenses","زمان‌های پیشرفته","I have been studying.","Perfect و Continuous"]
-],
-[
-["Advanced Conditionals","شرطی پیشرفته","If I had studied harder...","شرطی نوع سوم."]
-],
-[
-["Passive Structures","ساختارهای مجهول","It is believed that...","ساختارهای مجهول پیشرفته."]
-],
-[
-["Academic English","انگلیسی دانشگاهی","The results indicate...","واژگان و ساختارهای رسمی."]
-]
-]
+$("showRegister").onclick=()=>{
+ $("studentBox").classList.add("hidden");
+ $("registerBox").classList.remove("hidden");
+ message("");
 };
 
-/* =========================================================
-   COURSE RENDER
-========================================================= */
+$("back").onclick=()=>{
+ $("registerBox").classList.add("hidden");
+ $("studentBox").classList.remove("hidden");
+ message("");
+};
+
+$("studentLogin").onclick=studentLogin;
+$("adminLogin").onclick=adminLogin;
+$("register").onclick=registerStudent;
+$("logout").onclick=logout;
+$("refreshStudents").onclick=loadStudents;
+$("startQuiz").onclick=startQuiz;
+$("startLevel").onclick=startLevel;
+$("lessonBack").onclick=()=>show("lessons");
 
-function renderCourses(){
-  $("courseGrid").innerHTML=Object.entries(gradeInfo).map(([id,g])=>`
-    <button class="course" data-grade="${id}">
-      <div class="grade">${id}</div>
-      <h3>${esc(g.title)}</h3>
-      <p class="muted" dir="ltr">${esc(g.book)}</p>
-      <small>${g.lessons.length} درس</small>
-    </button>
-  `).join("");
-
-  $("courseGrid").querySelectorAll("[data-grade]").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      openCourse(Number(btn.dataset.grade));
-    });
-  });
-}
-
-function openCourse(grade){
-  state.grade=Number(grade);
-  const g=gradeInfo[state.grade];
-
-  $("courseTitle").textContent=
-    `${g.title} — ${g.book}`;
-
-  $("courseDescription").textContent=
-    `دوره ${g.title} شامل ${g.lessons.length} درس، گرامر، واژگان و آزمون.`;
-
-  $("lessonGrid").innerHTML=g.lessons.map((name,i)=>`
-    <button class="lesson-card" data-lesson="${i}">
-      <b>درس ${i+1}</b>
-      <div dir="ltr">${esc(name)}</div>
-      <small class="muted">
-        ${vocab[state.grade]?.[i]?.length || 0} واژه
-      </small>
-    </button>
-  `).join("");
-
-  $("lessonGrid").querySelectorAll("[data-lesson]").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      openLesson(Number(btn.dataset.lesson));
-    });
-  });
-
-  openPage("courseDetailPage");
-}
-
-function openLesson(index){
-  state.lesson=index;
-
-  const g=gradeInfo[state.grade];
-  const title=g.lessons[index];
-
-  $("lessonTitle").textContent=
-    `پایه ${state.grade} — درس ${index+1}: ${title}`;
-
-  $("lessonDesc").textContent=
-    "گرامر، واژگان PDF، تلفظ و آزمون این درس.";
-
-  renderGrammar();
-  renderVocab();
-  renderLessonExam();
-
-  document.querySelectorAll(".lessonTab").forEach((b,i)=>{
-    b.classList.toggle("active",i===0);
-  });
-
-  document.querySelectorAll("#lessonPage .lesson").forEach((x,i)=>{
-    x.classList.toggle("active",i===0);
-  });
-
-  openPage("lessonPage");
-}
-
-function renderGrammar(){
-  const data=grammar[state.grade]?.[state.lesson] || [];
-
-  $("grammarBox").innerHTML=data.map(g=>`
-    <div class="lesson-card">
-      <h3>${esc(g[0])}</h3>
-      <p>${esc(g[1])}</p>
-      <div class="example">${esc(g[2])}</div>
-      <p class="muted">${esc(g[3])}</p>
-    </div>
-  `).join("") || `
-    <div class="card">محتوای گرامر این درس در حال تکمیل است.</div>
-  `;
-}
-
-function renderVocab(){
-  const data=vocab[state.grade]?.[state.lesson] || [];
-
-  $("vocabBox").innerHTML=`
-    <div class="card">
-      <h3>🔊 واژگان درس — ${data.length} کلمه</h3>
-      <p class="muted">
-        برای شنیدن تلفظ روی هر لغت بزن.
-      </p>
-
-      <div class="word-grid">
-        ${data.map((w,i)=>`
-          <button class="word" data-speak="${i}">
-            <div class="en">🔊 ${esc(w[0])}</div>
-            <div class="fa">${esc(w[1])}</div>
-          </button>
-        `).join("")}
-      </div>
-    </div>
-  `;
-
-  $("vocabBox").querySelectorAll("[data-speak]").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      const w=data[Number(btn.dataset.speak)];
-      speak(w[0]);
-    });
-  });
-}
-
-/* =========================================================
-   LESSON QUIZZES
-========================================================= */
-
-function createVocabularyQuestions(grade,lesson,count=10){
-  const ws=vocab[grade]?.[lesson] || [];
-
-  if(!ws.length)return [];
-
-  const questions=[];
-
-  shuffle(ws).slice(0,count).forEach(w=>{
-    const wrong=shuffle(
-      ws.filter(x=>x[0]!==w[0]).map(x=>x[1])
-    ).slice(0,3);
-
-    const options=shuffle([w[1],...wrong]);
-
-    questions.push({
-      q:`معنی "${w[0]}" چیست؟`,
-      options,
-      answer:options.indexOf(w[1])
-    });
-  });
-
-  return questions;
-}
-
-function renderLessonExam(){
-  const qs=[
-    ...createVocabularyQuestions(state.grade,state.lesson,8)
-  ];
-
-  const gs=grammar[state.grade]?.[state.lesson] || [];
-
-  gs.forEach(g=>{
-    const options=shuffle([
-      g[2],
-      "She are a student.",
-      "They is happy.",
-      "He am a teacher."
-    ]);
-
-    qs.push({
-      q:`کدام گزینه با مبحث «${g[0]}» هماهنگ است؟`,
-      options,
-      answer:options.indexOf(g[2])
-    });
-  });
-
-  const questions=qs.slice(0,15);
-
-  $("lessonExamBox").innerHTML=`
-    <div class="card">
-      <h3>📝 آزمون درس</h3>
-      <p class="muted">
-        هر سؤال فقط یک بار پاسخ داده می‌شود.
-      </p>
-      <div id="lessonQuizArea"></div>
-      <div id="lessonQuizResult"></div>
-    </div>
-  `;
-
-  renderQuiz(
-    questions,
-    $("lessonQuizArea"),
-    $("lessonQuizResult"),
-    "lesson"
-  );
-}
-
-/* =========================================================
-   GENERIC QUIZ
-========================================================= */
-
-function renderQuiz(questions,container,result,type){
-  if(!questions.length){
-    container.innerHTML="<p>سؤالی برای این بخش وجود ندارد.</p>";
-    return;
-  }
-
-  let current=0;
-  let correct=0;
-  let answered=false;
-
-  function draw(){
-    if(current>=questions.length){
-      const score=Math.round(
-        correct/questions.length*100
-      );
-
-      result.innerHTML=`
-        <div class="success-msg">
-          پایان آزمون 🎉<br>
-          پاسخ صحیح: ${correct} از ${questions.length}<br>
-          امتیاز: <b>${score}</b> از ۱۰۰
-        </div>
-      `;
-
-      if(type!=="level"){
-        saveExamRecord({
-          type,
-          grade:state.grade,
-          lesson:state.lesson,
-          total_questions:questions.length,
-          correct,
-          score
-        });
-      }
-
-      return;
-    }
-
-    const q=questions[current];
-
-    container.innerHTML=`
-      <div class="question">
-        <b>سؤال ${current+1} از ${questions.length}</b>
-        <p>${esc(q.q)}</p>
-
-        ${q.options.map((o,i)=>`
-          <button class="option" data-answer="${i}">
-            ${esc(o)}
-          </button>
-        `).join("")}
-      </div>
-    `;
-
-    container.querySelectorAll("[data-answer]").forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        if(answered)return;
-
-        answered=true;
-
-        const chosen=Number(btn.dataset.answer);
-
-        container.querySelectorAll(".option")
-          .forEach(x=>x.classList.add("disabled"));
-
-        if(chosen===q.answer){
-          correct++;
-          btn.classList.add("correct");
-        }else{
-          btn.classList.add("wrong");
-          container
-            .querySelector(`[data-answer="${q.answer}"]`)
-            ?.classList.add("correct");
-        }
-
-        setTimeout(()=>{
-          current++;
-          answered=false;
-          draw();
-        },700);
-      });
-    });
-  }
-
-  draw();
-}
-
-function saveExamRecord(data){
-  const record={
-    ...data,
-    date:new Date().toISOString(),
-    grade:data.grade || state.student?.level || null
-  };
-
-  localRecords.unshift(record);
-
-  if(localRecords.length>100){
-    localRecords=localRecords.slice(0,100);
-  }
-
-  saveRecords();
-
-  addXP(Math.max(5,Math.round(record.score/10)));
-
-  loadStudentStats();
-  renderRecords();
-}
-
-/* =========================================================
-   XP
-========================================================= */
-
-function getXP(){
-  return Number(
-    localStorage.getItem(
-      "AN_XP_"+(state.user?.id||"guest")
-    ) || 0
-  );
-}
-
-function addXP(n){
-  const key="AN_XP_"+(state.user?.id||"guest");
-  const value=getXP()+Number(n||0);
-  localStorage.setItem(key,String(value));
-}
-
-/* =========================================================
-   STUDENT STATS
-========================================================= */
-
-async function loadStudentStats(){
-  const records=localRecords.filter(r=>{
-    return !state.student ||
-      String(r.student_id||"")===String(state.student.id||"") ||
-      r.local===true;
-  });
-
-  const scores=records
-    .map(x=>Number(x.score)||0);
-
-  const best=scores.length?Math.max(...scores):0;
-
-  $("statXP").textContent=getXP();
-  $("statExams").textContent=records.length;
-  $("statBest").textContent=best;
-  $("statLevel").textContent=state.student?.level || "-";
-
-  renderRecords();
-}
-
-function renderRecords(){
-  const records=localRecords.slice(0,50);
-
-  if(!records.length){
-    $("recordsBox").innerHTML=`
-      <div class="card">
-        هنوز رکوردی ثبت نشده است.
-      </div>
-    `;
-    return;
-  }
-
-  $("recordsBox").innerHTML=records.map((r,i)=>`
-    <div class="admin-item">
-      <b>${i+1}. ${esc(
-        r.type==="competition"?
-        "🏆 مسابقه ۱۰۰ سؤالی":
-        "📝 آزمون"
-      )}</b>
-      <div>
-        امتیاز:
-        <strong>${Number(r.score)||0}</strong>
-        از ۱۰۰
-      </div>
-      <small class="muted">
-        ${r.date ? new Date(r.date).toLocaleString("fa-IR") : ""}
-      </small>
-    </div>
-  `).join("");
-}
-
-/* =========================================================
-   COMPETITION 100 QUESTIONS
-========================================================= */
-
-function buildCompetitionQuestions(){
-  const all=[];
-
-  Object.entries(vocab).forEach(([grade,lessons])=>{
-    lessons.forEach(ws=>{
-      ws.forEach(w=>{
-        all.push({
-          q:`معنی "${w[0]}" چیست؟`,
-          options:[],
-          answerText:w[1],
-          grade
-        });
-      });
-    });
-  });
-
-  const selected=shuffle(all).slice(0,100);
-
-  return selected.map(q=>{
-    const wrongPool=[];
-
-    Object.values(vocab).forEach(ls=>{
-      ls.forEach(ws=>{
-        ws.forEach(w=>{
-          if(w[1]!==q.answerText){
-            wrongPool.push(w[1]);
-          }
-        });
-      });
-    });
-
-    const options=shuffle([
-      q.answerText,
-      ...shuffle([...new Set(wrongPool)]).slice(0,3)
-    ]);
-
-    return {
-      q:q.q,
-      options,
-      answer:options.indexOf(q.answerText)
-    };
-  });
-}
-
-function startCompetition(){
-  const questions=buildCompetitionQuestions();
-
-  $("competitionBox").innerHTML=`
-    <div class="card">
-      <div id="competitionQuiz"></div>
-      <div id="competitionResult"></div>
-    </div>
-  `;
-
-  renderQuiz(
-    questions,
-    $("competitionQuiz"),
-    $("competitionResult"),
-    "competition"
-  );
-}
-
-/* =========================================================
-   LEVEL TEST
-========================================================= */
-
-function startLevelTest(){
-  const qs=[
-    {
-      q:"Choose the correct answer: I ___ a student.",
-      options:["am","is","are","be"],
-      answer:0
-    },
-    {
-      q:"She ___ to school every day.",
-      options:["go","goes","going","gone"],
-      answer:1
-    },
-    {
-      q:"They ___ playing football now.",
-      options:["is","am","are","be"],
-      answer:2
-    },
-    {
-      q:"Past of go is:",
-      options:["goed","gone","went","goes"],
-      answer:2
-    },
-    {
-      q:"I have ___ my homework.",
-      options:["finish","finished","finishing","finishes"],
-      answer:1
-    },
-    {
-      q:"English ___ worldwide.",
-      options:["speaks","is spoken","spoken","speak"],
-      answer:1
-    },
-    {
-      q:"If I study, I ___ pass.",
-      options:["will","would","have","am"],
-      answer:0
-    },
-    {
-      q:"The opposite of 'difficult' is:",
-      options:["easy","hard","weak","late"],
-      answer:0
-    },
-    {
-      q:"'researcher' means:",
-      options:["محقق","مسافر","معلم","نویسنده"],
-      answer:0
-    },
-    {
-      q:"If I had studied harder, I ___ passed.",
-      options:["will have","would have","would","have"],
-      answer:1
-    }
-  ];
-
-  $("levelBox").innerHTML=`
-    <div class="card">
-      <div id="levelQuiz"></div>
-      <div id="levelResult"></div>
-    </div>
-  `;
-
-  renderLevelQuiz(qs);
-}
-
-function renderLevelQuiz(qs){
-  let current=0;
-  let correct=0;
-
-  function draw(){
-    if(current>=qs.length){
-      const score=Math.round(correct/qs.length*100);
-
-      let level;
-
-      if(score<30)level="مقدماتی";
-      else if(score<50)level="متوسط رو به پایین";
-      else if(score<70)level="متوسط";
-      else if(score<85)level="متوسط رو به بالا";
-      else level="پیشرفته";
-
-      $("levelResult").innerHTML=`
-        <div class="success-msg">
-          نتیجه تعیین سطح 🎯<br>
-          امتیاز: <b>${score}</b> از ۱۰۰<br>
-          سطح تقریبی: <b>${level}</b>
-        </div>
-      `;
-
-      return;
-    }
-
-    const q=qs[current];
-
-    $("levelQuiz").innerHTML=`
-      <div class="question">
-        <b>سؤال ${current+1} از ${qs.length}</b>
-        <p dir="ltr" style="text-align:left">${esc(q.q)}</p>
-        ${q.options.map((o,i)=>`
-          <button class="option" data-level-answer="${i}">
-            ${esc(o)}
-          </button>
-        `).join("")}
-      </div>
-    `;
-
-    $("levelQuiz")
-      .querySelectorAll("[data-level-answer]")
-      .forEach(btn=>{
-        btn.addEventListener("click",()=>{
-          const answer=Number(btn.dataset.levelAnswer);
-
-          $("levelQuiz")
-            .querySelectorAll(".option")
-            .forEach(x=>x.classList.add("disabled"));
-
-          if(answer===q.answer){
-            correct++;
-            btn.classList.add("correct");
-          }else{
-            btn.classList.add("wrong");
-            $("levelQuiz")
-              .querySelector(`[data-level-answer="${q.answer}"]`)
-              ?.classList.add("correct");
-          }
-
-          setTimeout(()=>{
-            current++;
-            draw();
-          },650);
-        });
-      });
-  }
-
-  draw();
-}
-
-/* =========================================================
-   CONSULTATIONS
-========================================================= */
-
-async function sendConsultation(){
-  if(!state.user || !state.student){
-    alert("ابتدا وارد حساب زبان‌آموز شوید.");
-    return;
-  }
-
-  const question=$("consultQuestion").value.trim();
-
-  if(!question){
-    message(
-      "متن پیام را وارد کنید.",
-      "error",
-      "consultMessage"
-    );
-    return;
-  }
-
-  showLoading(true);
-
-  try{
-    const r=await db
-      .from("teacher_requests")
-      .insert({
-        student_id:state.student.id,
-        student_name:
-          `${state.student.first_name||""} ${state.student.last_name||""}`.trim(),
-        student_phone:state.student.phone,
-        teacher_name:"Ali Nagheli",
-        class_type:"consultation",
-        note:question,
-        status:"pending"
-      });
-
-    if(r.error)throw r.error;
-
-    $("consultQuestion").value="";
-
-    message(
-      "پیام با موفقیت ارسال شد.",
-      "success",
-      "consultMessage"
-    );
-
-    await loadConsultations();
-  }catch(e){
-    message(
-      e?.message || "ارسال پیام ناموفق بود.",
-      "error",
-      "consultMessage"
-    );
-  }finally{
-    showLoading(false);
-  }
-}
-
-async function loadConsultations(){
-  if(!state.student)return;
-
-  const r=await db
-    .from("teacher_requests")
-    .select("*")
-    .eq("student_id",state.student.id)
-    .order("created_at",{ascending:false});
-
-  if(r.error){
-    $("consultHistory").innerHTML=
-      `<p class="muted">امکان دریافت پیام‌ها وجود ندارد.</p>`;
-    return;
-  }
-
-  if(!r.data?.length){
-    $("consultHistory").innerHTML=
-      `<p class="muted">هنوز پیامی ثبت نشده است.</p>`;
-    return;
-  }
-
-  $("consultHistory").innerHTML=r.data.map(x=>`
-    <div class="admin-item">
-      <b>${esc(x.note||"")}</b>
-      <div>
-        وضعیت:
-        <span class="badge ${
-          x.status==="approved"?"approved":
-          x.status==="rejected"?"rejected":"waiting"
-        }">
-          ${esc(x.status||"pending")}
-        </span>
-      </div>
-      ${
-        x.response?
-        `<div class="notice">پاسخ استاد: ${esc(x.response)}</div>`:""
-      }
-    </div>
-  `).join("");
-}
-
-/* =========================================================
-   ADMIN
-========================================================= */
-
-async function loadAdmin(){
-  if(!state.admin)return;
-
-  showLoading(true);
-
-  try{
-    const r=await db
-      .from("students")
-      .select("*")
-      .order("created_at",{ascending:false});
-
-    if(r.error)throw r.error;
-
-    const students=r.data||[];
-
-    $("adminTotal").textContent=students.length;
-
-    $("adminWaiting").textContent=
-      students.filter(x=>
-        !["registered","approved"].includes(x.status)
-      ).length;
-
-    $("adminApproved").textContent=
-      students.filter(x=>
-        ["registered","approved"].includes(x.status)
-      ).length;
-
-    renderAdminStudents(students);
-
-    const c=await db
-      .from("teacher_requests")
-      .select("*")
-      .order("created_at",{ascending:false});
-
-    renderAdminConsultations(c.data||[]);
-  }catch(e){
-    $("adminStudents").innerHTML=
-      `<div class="error">${esc(e?.message||"خطا در پنل مدیر")}</div>`;
-  }finally{
-    showLoading(false);
-  }
-}
-
-function renderAdminStudents(students){
-  if(!students.length){
-    $("adminStudents").innerHTML=
-      `<p class="muted">زبان‌آموزی وجود ندارد.</p>`;
-    return;
-  }
-
-  $("adminStudents").innerHTML=students.map(s=>`
-    <div class="admin-item">
-      <h3>
-        ${esc(s.first_name||"")} ${esc(s.last_name||"")}
-      </h3>
-
-      <div>📱 ${esc(s.phone||"-")}</div>
-      <div>📚 پایه: ${esc(s.level||"-")}</div>
-
-      <div style="margin:8px 0">
-        وضعیت:
-        <span class="badge ${
-          s.status==="rejected"?"rejected":
-          ["registered","approved"].includes(s.status)?
-          "approved":"waiting"
-        }">
-          ${esc(s.status||"waiting")}
-        </span>
-      </div>
-
-      <div class="row">
-        ${
-          !["registered","approved"].includes(s.status)
-          ?
-          `<button class="btn success" data-approve="${s.id}">
-             تأیید
-           </button>`
-          :""
-        }
-
-        ${
-          s.status!=="rejected"
-          ?
-          `<button class="btn danger" data-reject="${s.id}">
-             رد
-           </button>`
-          :""
-        }
-
-        <button class="btn secondary" data-delete="${s.id}">
-          حذف
-        </button>
-      </div>
-    </div>
-  `).join("");
-
-  $("adminStudents")
-    .querySelectorAll("[data-approve]")
-    .forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        updateStudentStatus(
-          btn.dataset.approve,
-          "registered"
-        );
-      });
-    });
-
-  $("adminStudents")
-    .querySelectorAll("[data-reject]")
-    .forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        updateStudentStatus(
-          btn.dataset.reject,
-          "rejected"
-        );
-      });
-    });
-
-  $("adminStudents")
-    .querySelectorAll("[data-delete]")
-    .forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        deleteStudent(btn.dataset.delete);
-      });
-    });
-}
-
-async function updateStudentStatus(id,status){
-  if(!state.admin)return;
-
-  showLoading(true);
-
-  try{
-    const r=await db
-      .from("students")
-      .update({status})
-      .eq("id",id);
-
-    if(r.error)throw r.error;
-
-    await loadAdmin();
-  }catch(e){
-    alert(e?.message||"تغییر وضعیت انجام نشد.");
-  }finally{
-    showLoading(false);
-  }
-}
-
-async function deleteStudent(id){
-  if(!confirm("آیا از حذف این زبان‌آموز مطمئن هستید؟"))return;
-
-  showLoading(true);
-
-  try{
-    const r=await db
-      .from("students")
-      .delete()
-      .eq("id",id);
-
-    if(r.error)throw r.error;
-
-    await loadAdmin();
-  }catch(e){
-    alert(e?.message||"حذف انجام نشد.");
-  }finally{
-    showLoading(false);
-  }
-}
-
-function renderAdminConsultations(rows){
-  if(!rows.length){
-    $("adminConsultations").innerHTML=
-      `<p class="muted">درخواستی وجود ندارد.</p>`;
-    return;
-  }
-
-  $("adminConsultations").innerHTML=rows.map(x=>`
-    <div class="admin-item">
-      <b>
-        ${esc(x.student_name||"زبان‌آموز")}
-      </b>
-
-      <div>📱 ${esc(x.student_phone||"-")}</div>
-      <p>${esc(x.note||"")}</p>
-
-      ${
-        x.response?
-        `<div class="notice">پاسخ: ${esc(x.response)}</div>`:""
-      }
-
-      <div class="row">
-        <button class="btn success"
-          data-consult-status="${x.id}|approved">
-          تأیید
-        </button>
-
-        <button class="btn danger"
-          data-consult-status="${x.id}|rejected">
-          رد
-        </button>
-      </div>
-    </div>
-  `).join("");
-
-  $("adminConsultations")
-    .querySelectorAll("[data-consult-status]")
-    .forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        const [id,status]=btn.dataset.consultStatus.split("|");
-        updateConsultation(id,status);
-      });
-    });
-}
-
-async function updateConsultation(id,status){
-  showLoading(true);
-
-  try{
-    const r=await db
-      .from("teacher_requests")
-      .update({status})
-      .eq("id",id);
-
-    if(r.error)throw r.error;
-
-    await loadAdmin();
-  }catch(e){
-    alert(e?.message||"تغییر وضعیت انجام نشد.");
-  }finally{
-    showLoading(false);
-  }
-}
-
-/* =========================================================
-   UI EVENTS
-========================================================= */
-
-/* auth tabs */
-$("studentTab").addEventListener("click",()=>{
-  $("studentTab").classList.add("active");
-  $("adminTab").classList.remove("active");
-
-  $("loginBox").classList.remove("hidden");
-  $("adminLoginBox").classList.add("hidden");
-  $("registerBox").classList.add("hidden");
-
-  $("authMessage").innerHTML="";
-});
-
-$("adminTab").addEventListener("click",()=>{
-  $("adminTab").classList.add("active");
-  $("studentTab").classList.remove("active");
-
-  $("adminLoginBox").classList.remove("hidden");
-  $("loginBox").classList.add("hidden");
-  $("registerBox").classList.add("hidden");
-
-  $("authMessage").innerHTML="";
-});
-
-$("showRegisterBtn").addEventListener("click",()=>{
-  $("loginBox").classList.add("hidden");
-  $("registerBox").classList.remove("hidden");
-  $("authMessage").innerHTML="";
-});
-
-$("backLoginBtn").addEventListener("click",()=>{
-  $("registerBox").classList.add("hidden");
-  $("loginBox").classList.remove("hidden");
-  $("authMessage").innerHTML="";
-});
-
-$("studentLoginBtn").addEventListener("click",studentLogin);
-$("adminLoginBtn").addEventListener("click",adminLogin);
-$("registerBtn").addEventListener("click",registerStudent);
-
-/* Enter key */
-$("studentPassword").addEventListener("keydown",e=>{
-  if(e.key==="Enter")studentLogin();
-});
-
-$("adminPassword").addEventListener("keydown",e=>{
-  if(e.key==="Enter")adminLogin();
-});
-
-$("regPassword").addEventListener("keydown",e=>{
-  if(e.key==="Enter")registerStudent();
-});
-
-/* all navigation buttons */
 document.addEventListener("click",e=>{
-  const btn=e.target.closest("[data-page]");
-  if(!btn)return;
 
-  const page=btn.dataset.page;
+ const page=e.target.closest("[data-page]");
+ if(page){
+  show(page.dataset.page);
+  return;
+ }
 
-  if(page==="adminPage" && !state.admin)return;
+ const grade=e.target.closest("[data-grade]:not([data-lesson])");
+ if(grade){
+  openGrade(grade.dataset.grade);
+  return;
+ }
 
-  openPage(page);
+ const lesson=e.target.closest("[data-lesson]");
+ if(lesson){
+  openLesson(lesson.dataset.grade,lesson.dataset.lesson);
+  return;
+ }
 
-  if(page==="recordsPage")renderRecords();
-  if(page==="coursesPage")renderCourses();
+ const speak=e.target.closest("[data-speak]");
+ if(speak&&window.speechSynthesis){
+  const u=new SpeechSynthesisUtterance(speak.dataset.speak);
+  u.lang="en-US";
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+ }
 });
 
-/* lesson tabs */
-document.querySelectorAll(".lessonTab").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    const tab=btn.dataset.tab;
+$("phone").onkeydown=e=>{if(e.key==="Enter")studentLogin()};
+$("password").onkeydown=e=>{if(e.key==="Enter")studentLogin()};
+$("adminPassword").onkeydown=e=>{if(e.key==="Enter")adminLogin()};
 
-    document.querySelectorAll(".lessonTab")
-      .forEach(x=>x.classList.remove("active"));
+(async()=>{
+ const session=await db.auth.getSession();
 
-    btn.classList.add("active");
+ if(!session.data.session)return;
 
-    document.querySelectorAll("#lessonPage .lesson")
-      .forEach(x=>x.classList.remove("active"));
+ currentUser=session.data.session.user;
 
-    const box=$(tab==="grammar"?
-      "grammarBox":
-      tab==="vocab"?
-      "vocabBox":
-      "lessonExamBox"
-    );
+ let a=await db
+  .from("admins")
+  .select("id,user_id,auth_user_id,is_admin")
+  .eq("user_id",currentUser.id)
+  .maybeSingle();
 
-    if(box)box.classList.add("active");
-  });
-});
+ if(!a.data){
+  a=await db
+   .from("admins")
+   .select("id,user_id,auth_user_id,is_admin")
+   .eq("auth_user_id",currentUser.id)
+   .maybeSingle();
+ }
 
-$("backCoursesBtn").addEventListener("click",()=>{
-  openPage("coursesPage");
-});
+ if(a.data?.is_admin===true){
+  isAdmin=true;
+  openApp();
+  show("admin");
+  loadStudents();
+  return;
+ }
 
-$("backLessonListBtn").addEventListener("click",()=>{
-  openCourse(state.grade);
-});
+ const s=await db
+  .from("students")
+  .select("*")
+  .eq("auth_user_id",currentUser.id)
+  .maybeSingle();
 
-$("startCompetitionBtn").addEventListener(
-  "click",
-  startCompetition
-);
-
-$("startLevelBtn").addEventListener(
-  "click",
-  startLevelTest
-);
-
-$("sendConsultBtn").addEventListener(
-  "click",
-  sendConsultation
-);
-
-$("logoutBtn").addEventListener(
-  "click",
-  logout
-);
-
-$("adminLogoutBtn").addEventListener(
-  "click",
-  logout
-);
-
-$("refreshAdminBtn").addEventListener(
-  "click",
-  loadAdmin
-);
-
-/* =========================================================
-   INITIALIZATION
-========================================================= */
-
-renderCourses();
-renderRecords();
-
-db.auth.onAuthStateChange(async(event,session)=>{
-  if(event==="SIGNED_OUT"){
-    return;
-  }
-});
-
-/*
-  شروع برنامه:
-  اگر session معتبر وجود داشته باشد، همان session بررسی می‌شود.
-  در غیر این صورت صفحه ورود باقی می‌ماند.
-*/
-checkSession().catch(()=>{
-  db.auth.signOut().catch(()=>{});
-});
+ if(s.data){
+  currentStudent=s.data;
+  openApp();
+  show("home");
+  loadStudent();
+ }else{
+  await db.auth.signOut();
+ }
+})();
 </script>
-
 </body>
 </html>
