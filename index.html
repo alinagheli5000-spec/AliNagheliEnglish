@@ -7,716 +7,817 @@
 <title>AliNagheli English</title>
 <style>
 html,body{margin:0;padding:0;background:#f5f3ff;font-family:Tahoma,Arial,sans-serif}
-#boot{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;color:#6d28d9;font-weight:bold;padding:20px}
+#boot{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;color:#6d28d9;font-weight:bold}
 </style>
 </head>
 <body>
 <div id="boot">در حال آماده‌سازی AliNagheli English…</div>
 
 <script>
-(async()=>{
-const ORIGINAL="https://raw.githubusercontent.com/alinagheli5000-spec/AliNagheliEnglish/9804b6ce02f322a1cc5f3401d9bafea9b9feb360/index.html";
+(async function(){
+
+const ORIGINAL =
+"https://raw.githubusercontent.com/alinagheli5000-spec/AliNagheliEnglish/9804b6ce02f322a1cc5f3401d9bafea9b9feb360/index.html";
 
 try{
 
-let src=await (await fetch(ORIGINAL,{cache:"no-store"})).text();
+const response = await fetch(ORIGINAL,{cache:"no-store"});
 
-const replaceBlock=(startMarker,endMarker,replacement)=>{
- const s=src.indexOf(startMarker);
- if(s<0)return false;
+if(!response.ok) throw new Error("LOAD_ERROR");
 
- const e=src.indexOf(endMarker,s);
- if(e<0)return false;
+let source = await response.text();
 
- src=src.slice(0,s)+replacement+src.slice(e);
- return true;
+/* =========================================================
+   PATCH SCRIPT
+========================================================= */
+
+const patch = `
+<script>
+(function(){
+
+"use strict";
+
+/* =========================================================
+   LEVEL CALCULATOR
+========================================================= */
+
+window.AN_getLevel = function(score,total){
+
+    score = Number(score)||0;
+    total = Number(total)||30;
+
+    const percent = total ? (score/total)*100 : 0;
+
+    if(percent < 27) return {
+        level:"A1",
+        title:"مبتدی",
+        description:"شما در سطح مقدماتی زبان انگلیسی قرار دارید."
+    };
+
+    if(percent < 47) return {
+        level:"A2",
+        title:"مقدماتی",
+        description:"شما توانایی استفاده از عبارات و جملات ساده را دارید."
+    };
+
+    if(percent < 67) return {
+        level:"B1",
+        title:"متوسط",
+        description:"شما در برقراری ارتباط در موقعیت‌های معمول توانایی خوبی دارید."
+    };
+
+    if(percent < 83) return {
+        level:"B2",
+        title:"متوسط رو به بالا",
+        description:"شما درک خوبی از زبان انگلیسی دارید و می‌توانید نسبتاً روان ارتباط برقرار کنید."
+    };
+
+    if(percent < 94) return {
+        level:"C1",
+        title:"پیشرفته",
+        description:"توانایی زبانی شما در سطح پیشرفته قرار دارد."
+    };
+
+    return {
+        level:"C2",
+        title:"تسلط کامل",
+        description:"سطح زبان شما نزدیک به تسلط کامل و حرفه‌ای است."
+    };
 };
 
 
 /* =========================================================
-   PLACEMENT TEST RESULT
+   PLACEMENT TEST
 ========================================================= */
 
-const placementStart=src.indexOf("async function placementFinish(){");
-const placementEnd=src.indexOf(
- "async function placementAnswer",
- placementStart
-);
+function installPlacementPatch(){
 
-if(placementStart>=0&&placementEnd>placementStart){
+    if(typeof window.placementFinish !== "function"){
+        setTimeout(installPlacementPatch,500);
+        return;
+    }
 
-src=src.slice(0,placementStart)+`async function placementFinish(){
+    if(window.__AN_PLACEMENT_PATCHED) return;
 
- const score=Number(S.quiz.correct||0);
- const total=Number(S.quiz.questions?.length||30);
- const wrong=Math.max(0,total-score);
- const percent=total?Math.round(score/total*100):0;
+    const originalPlacementFinish = window.placementFinish;
 
- let level;
+    window.placementFinish = async function(){
 
- if(score<=7)level="A1";
- else if(score<=13)level="A2";
- else if(score<=19)level="B1";
- else if(score<=24)level="B2";
- else if(score<=28)level="C1";
- else level="C2";
+        let result;
 
- const levelText={
-  A1:"مقدماتی — شروع مسیر یادگیری",
-  A2:"مقدماتی رو به متوسط — توانایی‌های پایه",
-  B1:"متوسط — توانایی ارتباط در موقعیت‌های روزمره",
-  B2:"متوسط رو به بالا — توانایی ارتباط نسبتاً روان",
-  C1:"پیشرفته — تسلط بالا بر زبان انگلیسی",
-  C2:"تسلط بسیار پیشرفته — نزدیک به سطح بومی"
- }[level]||"";
+        try{
+            result = originalPlacementFinish.apply(this,arguments);
+        }catch(e){
+            console.error(e);
+        }
 
- const el=document.getElementById("placementQuiz");
+        try{
+            if(result && typeof result.then==="function"){
+                await result;
+            }
+        }catch(e){
+            console.error(e);
+        }
 
- if(S.student){
+        setTimeout(function(){
 
-  try{
+            try{
 
-   await db.from("exam_results").insert({
+                let score = 0;
+                let total = 30;
 
-    user_id:S.student.auth_user_id,
+                if(window.S && S.quiz){
 
-    student_name:\`\${S.student.first_name||""} \${S.student.last_name||""}\`,
+                    if(typeof S.quiz.score==="number"){
+                        score=S.quiz.score;
+                    }
 
-    exam_type:"placement",
+                    if(typeof S.quiz.correct==="number"){
+                        score=S.quiz.correct;
+                    }
 
-    exam_title:"آزمون تعیین سطح ۳۰ سؤالی",
+                    if(Array.isArray(S.quiz.questions)){
+                        total=S.quiz.questions.length || 30;
+                    }
 
-    score,
+                }
 
-    total,
+                const existingScore =
+                    document.querySelector(".score");
 
-    percentage:percent
+                if(existingScore){
 
-   });
+                    const numbers =
+                        existingScore.textContent.match(/\\d+/g);
 
-  }catch(e){}
+                    if(numbers && numbers.length){
+                        score=Number(numbers[0]);
+                    }
 
- }
+                }
 
- if(!el)return;
+                const levelData =
+                    window.AN_getLevel(score,total);
 
- el.innerHTML=\`
+                let old =
+                    document.getElementById("AN-placement-level");
 
- <div class="card resultBox placementResultCard">
+                if(old) old.remove();
 
-  <div style="
-   text-align:center;
-   font-size:16px;
-   color:#6d28d9;
-   font-weight:bold
-  ">
-   🎉 نتیجه آزمون تعیین سطح
-  </div>
+                const box=document.createElement("div");
 
-  <div class="score">
-   \${score}/\${total}
-  </div>
+                box.id="AN-placement-level";
 
-  <div class="grid" style="margin:15px 0">
+                box.innerHTML=\`
+                <div class="AN-level-box">
 
-   <div class="item" style="text-align:center">
+                    <div class="AN-level-small">
+                        نتیجه تعیین سطح شما
+                    </div>
 
-    <div class="icon" style="font-size:28px">
-     ✅
-    </div>
+                    <div class="AN-level-score">
+                        \${score} / \${total}
+                    </div>
 
-    <b>پاسخ درست</b>
+                    <div class="AN-level-percent">
+                        \${Math.round((score/total)*100)}٪
+                    </div>
 
-    <h2 style="color:#166534;margin:6px 0">
-     \${score}
-    </h2>
+                    <div class="AN-level-title">
+                        سطح شما:
+                        <strong>\${levelData.level}</strong>
+                    </div>
 
-   </div>
+                    <div class="AN-level-name">
+                        \${levelData.title}
+                    </div>
 
+                    <div class="AN-level-description">
+                        \${levelData.description}
+                    </div>
 
-   <div class="item" style="text-align:center">
+                    <div class="AN-level-bar">
+                        <i style="width:\${Math.min(100,Math.round((score/total)*100))}%"></i>
+                    </div>
 
-    <div class="icon" style="font-size:28px">
-     ❌
-    </div>
+                    <div class="AN-level-scale">
+                        <span>A1</span>
+                        <span>A2</span>
+                        <span>B1</span>
+                        <span>B2</span>
+                        <span>C1</span>
+                        <span>C2</span>
+                    </div>
 
-    <b>پاسخ غلط</b>
+                </div>
+                \`;
 
-    <h2 style="color:#991b1b;margin:6px 0">
-     \${wrong}
-    </h2>
+                const target =
+                    document.querySelector("#placementQuiz") ||
+                    document.querySelector(".score")?.parentElement ||
+                    document.querySelector(".card");
 
-   </div>
+                if(target){
 
+                    target.insertAdjacentElement(
+                        "afterend",
+                        box
+                    );
 
-   <div class="item" style="text-align:center">
+                }else{
 
-    <div class="icon" style="font-size:28px">
-     📊
-    </div>
+                    document.getElementById("app")
+                        ?.appendChild(box);
 
-    <b>درصد</b>
+                }
 
-    <h2 style="color:#6d28d9;margin:6px 0">
-     \${percent}%
-    </h2>
+            }catch(e){
+                console.error("Placement level error:",e);
+            }
 
-   </div>
+        },300);
+    };
 
-  </div>
-
-
-  <div style="
-   text-align:center;
-   background:#ede9fe;
-   border-radius:20px;
-   padding:18px;
-   margin-top:12px
-  ">
-
-   <div style="
-    font-size:13px;
-    color:#5b21b6
-   ">
-    سطح پیشنهادی شما
-   </div>
-
-   <div style="
-    font-size:42px;
-    font-weight:900;
-    color:#6d28d9;
-    margin:4px 0
-   ">
-    \${level}
-   </div>
-
-   <b>
-    \${levelText}
-   </b>
-
-  </div>
-
-
-  <p style="
-   text-align:center;
-   line-height:2;
-   margin:16px 0 8px
-  ">
-   این سطح بر اساس تعداد پاسخ‌های درست شما در آزمون تعیین سطح محاسبه شده است.
-  </p>
-
-
-  <button
-   class="btn full"
-   onclick="home()"
-  >
-   بازگشت به خانه
-  </button>
-
- </div>
-
- \`;
-
+    window.__AN_PLACEMENT_PATCHED=true;
 }
 
-`+src.slice(placementEnd);
-
-}
+installPlacementPatch();
 
 
 /* =========================================================
-   COURSES
+   TEACHER
 ========================================================= */
 
-replaceBlock(
-"function courses(){",
-"function grade(g){",
+function installTeacherPatch(){
 
-`function courses(){
+    if(typeof window.teachers !== "function"){
+        setTimeout(installTeacherPatch,500);
+        return;
+    }
 
- render("دروس مدرسه",\`
+    if(window.__AN_TEACHER_PATCHED) return;
 
- <div class="card">
+    const originalTeachers=window.teachers;
 
-  <h2>
-   📚 کتاب‌های مدرسه
-  </h2>
+    window.teachers=function(){
 
-  <div class="grid">
+        originalTeachers.apply(this,arguments);
 
-   \${Object.keys(books).map(g=>\`
+        setTimeout(function(){
 
-    <div
-     class="item"
-     onclick="grade(\${g})"
-    >
+            try{
 
-     <div class="icon">
-      📖
-     </div>
+                if(
+                    document.getElementById("AN-teacher-elaha")
+                ) return;
 
-     <h3>
-      پایه \${g}
-     </h3>
+                const app=document.getElementById("app");
 
-     <p class="muted">
-      \${esc(books[g].title)}
-     </p>
+                if(!app) return;
 
-     <button class="btn full">
-      مشاهده درس‌ها
-     </button>
+                const cards=
+                    app.querySelectorAll(".teacherBox");
 
-    </div>
+                if(!cards.length) return;
 
-   \`).join("")}
+                const teacher=document.createElement("div");
 
-  </div>
+                teacher.id="AN-teacher-elaha";
 
- </div>
+                teacher.className="teacherBox AN-extra-teacher";
 
+                teacher.innerHTML=\`
 
- <div class="card conversationUpdateCard">
+                    <div class="teacherAvatar">👩🏻‍🏫</div>
 
-  <div style="text-align:center">
+                    <h3 style="text-align:center">
+                        الهه باغبانی
+                    </h3>
 
-   <div class="icon">
-    🗣️
-   </div>
+                    <div style="text-align:center;color:#6d28d9;font-weight:bold">
+                        کارشناس ارشد آموزش زبان انگلیسی
+                    </div>
 
-   <h2>
-    مکالمه
-   </h2>
+                    <p>
+                        با بیش از ۱۰ سال سابقه تدریس
+                        مکالمه زبان انگلیسی و دوره‌های
+                        بین‌المللی
+                        TOEFL, IELTS, KET, PET, PTE, MSRT
+                    </p>
 
-   <p class="muted">
-    بخش آموزش مکالمه به‌زودی با محتوای کامل در دسترس خواهد بود.
-   </p>
+                    <a
+                        class="btn full"
+                        href="tel:09914312534"
+                    >
+                        📞 تماس با استاد
+                    </a>
 
-   <div
-    class="notice"
-    style="margin-top:12px"
-   >
-    🚧 در حال بروز رسانی
-   </div>
+                \`;
 
-  </div>
+                const container=
+                    app.querySelector(".teacher");
 
- </div>
+                if(container){
 
- \`);
+                    container.appendChild(teacher);
 
+                }else{
+
+                    const card=
+                        app.querySelector(".card");
+
+                    if(card) card.appendChild(teacher);
+
+                }
+
+            }catch(e){
+                console.error(e);
+            }
+
+        },150);
+
+    };
+
+    window.__AN_TEACHER_PATCHED=true;
 }
 
-`
-
-);
+installTeacherPatch();
 
 
 /* =========================================================
-   HOME
+   COURSES - CONVERSATION
 ========================================================= */
 
-replaceBlock(
-"function home(){",
-"/* TEACHERS */",
+function installCoursesPatch(){
 
-`function home(){
+    if(typeof window.courses !== "function"){
+        setTimeout(installCoursesPatch,500);
+        return;
+    }
 
- const xp=S.xp||0;
+    if(window.__AN_COURSES_PATCHED) return;
 
- const level=
- S.level||
- calculateLevel(xp);
+    const originalCourses=window.courses;
 
- const base=
- xpForLevel(level);
+    window.courses=function(){
 
- const next=
- xpForLevel(level+1);
+        originalCourses.apply(this,arguments);
 
- const percent=
- Math.min(
- 100,
- Math.round(
-  ((xp-base)/(next-base))*100
- )
- );
+        setTimeout(function(){
+
+            try{
+
+                if(
+                    document.getElementById("AN-conversation-card")
+                ) return;
+
+                const app=document.getElementById("app");
+
+                if(!app) return;
+
+                const card=document.createElement("div");
+
+                card.id="AN-conversation-card";
+
+                card.className="card";
+
+                card.innerHTML=\`
+
+                    <div class="AN-conversation-card">
+
+                        <div class="AN-conversation-icon">
+                            🗣️
+                        </div>
+
+                        <div>
+                            <h2>مکالمه</h2>
+
+                            <p>
+                                تمرین‌ها و آموزش‌های مکالمه
+                                زبان انگلیسی
+                            </p>
+
+                            <div class="AN-update">
+                                🚧 در حال بروزرسانی
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                \`;
+
+                app.appendChild(card);
+
+            }catch(e){
+                console.error(e);
+            }
+
+        },150);
+
+    };
+
+    window.__AN_COURSES_PATCHED=true;
+}
+
+installCoursesPatch();
 
 
- render("خانه",\`
+/* =========================================================
+   HOME ENHANCEMENT
+========================================================= */
 
- <div class="hero hero3d homeHeroPlus">
+function installHomePatch(){
 
-  <div style="
-   position:relative;
-   z-index:2
-  ">
+    if(typeof window.home !== "function"){
+        setTimeout(installHomePatch,500);
+        return;
+    }
 
-   <div style="
+    if(window.__AN_HOME_PATCHED) return;
+
+    const originalHome=window.home;
+
+    window.home=function(){
+
+        originalHome.apply(this,arguments);
+
+        setTimeout(function(){
+
+            try{
+
+                const app=document.getElementById("app");
+
+                if(!app) return;
+
+                let hero=app.querySelector(".hero");
+
+                if(hero){
+
+                    hero.classList.add("AN-main-hero");
+
+                    if(!hero.querySelector(".AN-hero-subtitle")){
+
+                        const subtitle=
+                            document.createElement("div");
+
+                        subtitle.className="AN-hero-subtitle";
+
+                        subtitle.innerHTML=
+                        "🚀 مسیر یادگیری زبان انگلیسی تو از اینجا شروع می‌شود";
+
+                        hero.appendChild(subtitle);
+
+                    }
+
+                }
+
+                if(
+                    !document.getElementById("AN-home-welcome")
+                ){
+
+                    const welcome=document.createElement("div");
+
+                    welcome.id="AN-home-welcome";
+
+                    welcome.className="card AN-home-welcome";
+
+                    welcome.innerHTML=\`
+
+                        <div class="AN-welcome-icon">
+                            🎯
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                مسیر یادگیری تو
+                            </h2>
+
+                            <p>
+                                درس بخوان، تمرین کن،
+                                سطح خودت را بسنج و
+                                قدم‌به‌قدم پیشرفت کن.
+                            </p>
+
+                        </div>
+
+                    \`;
+
+                    const firstCard=
+                        app.querySelector(".card");
+
+                    if(firstCard){
+                        firstCard.insertAdjacentElement(
+                            "afterend",
+                            welcome
+                        );
+                    }
+
+                }
+
+            }catch(e){
+                console.error(e);
+            }
+
+        },100);
+
+    };
+
+    window.__AN_HOME_PATCHED=true;
+}
+
+installHomePatch();
+
+
+/* =========================================================
+   STYLES
+========================================================= */
+
+const style=document.createElement("style");
+
+style.textContent=\`
+
+.AN-main-hero{
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 12px 35px #6d28d944!important;
+}
+
+.AN-main-hero:before{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:#ffffff18;
+    top:-80px;
+    left:-50px;
+}
+
+.AN-hero-subtitle{
+    margin-top:14px;
+    font-size:14px;
+    line-height:2;
+    opacity:.95;
+    position:relative;
+}
+
+.AN-home-welcome{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    background:linear-gradient(
+        135deg,
+        #ffffff,
+        #f5f0ff
+    )!important;
+    border:1px solid #ddd6fe;
+}
+
+.AN-welcome-icon{
+    min-width:62px;
+    width:62px;
+    height:62px;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    background:#ede9fe;
+}
+
+.AN-home-welcome h2{
+    margin:0 0 6px;
+    color:#5b21b6;
+}
+
+.AN-home-welcome p{
+    margin:0;
+    color:#666;
     font-size:13px;
-    opacity:.85;
-    letter-spacing:1px
-   ">
-    WELCOME TO
-   </div>
+    line-height:2;
+}
 
+#AN-placement-level{
+    margin:15px 0;
+}
 
-   <h1 style="
-    font-size:34px;
-    margin:8px 0
-   ">
-    AliNagheli English 🚀
-   </h1>
+.AN-level-box{
+    background:linear-gradient(
+        135deg,
+        #312e81,
+        #6d28d9,
+        #a855f7
+    );
+    color:white;
+    border-radius:26px;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 12px 35px #6d28d944;
+}
 
+.AN-level-small{
+    font-size:13px;
+    opacity:.9;
+}
 
-   <h2>
-    سلام
-    \${esc(
-     S.student?.first_name||
-     "زبان‌آموز"
-    )}
-    👋
-   </h2>
+.AN-level-score{
+    font-size:48px;
+    font-weight:bold;
+    margin-top:5px;
+}
 
+.AN-level-percent{
+    font-size:14px;
+    opacity:.9;
+}
 
-   <p style="
-    font-size:15px;
-    line-height:2
-   ">
-    یادگیری انگلیسی را حرفه‌ای،
-    مرحله‌به‌مرحله و جذاب ادامه بده.
-   </p>
+.AN-level-title{
+    margin-top:20px;
+    font-size:18px;
+}
 
+.AN-level-title strong{
+    font-size:32px;
+    display:block;
+    margin-top:8px;
+}
 
-   <div class="levelBar">
+.AN-level-name{
+    margin-top:5px;
+    font-size:16px;
+    font-weight:bold;
+}
 
-    <i
-     style="width:\${percent}%"
-    ></i>
+.AN-level-description{
+    margin:14px auto;
+    max-width:600px;
+    font-size:13px;
+    line-height:2;
+    opacity:.95;
+}
 
-   </div>
+.AN-level-bar{
+    height:10px;
+    background:#ffffff35;
+    border-radius:99px;
+    overflow:hidden;
+    margin-top:18px;
+}
 
+.AN-level-bar i{
+    display:block;
+    height:100%;
+    background:white;
+    border-radius:99px;
+}
 
-   <div style="
+.AN-level-scale{
     display:flex;
     justify-content:space-between;
-    gap:10px;
-    flex-wrap:wrap;
-    font-weight:bold
-   ">
-
-    <span>
-     ⭐ \${xp} XP
-    </span>
-
-    <span>
-     🏅 Level \${level}
-    </span>
-
-   </div>
-
-  </div>
-
- </div>
-
-
- <div class="card homeWelcomeCard">
-
-  <h2 style="margin-top:0">
-   ✨ مسیر یادگیری تو
-  </h2>
-
-  <p class="muted">
-   یکی از بخش‌های زیر را انتخاب کن
-   و یادگیری را شروع کن.
-  </p>
-
- </div>
-
-
- <div class="grid">
-
-
-  <div class="item homeActionCard">
-
-   <div class="icon">
-    📚
-   </div>
-
-   <h3>
-    دروس مدرسه
-   </h3>
-
-   <p class="muted">
-    Prospect و Vision
-   </p>
-
-   <button
-    class="btn full"
-    onclick="courses()"
-   >
-    ورود به دروس
-   </button>
-
-  </div>
-
-
-  <div class="item homeActionCard">
-
-   <div class="icon">
-    🎯
-   </div>
-
-   <h3>
-    تعیین سطح
-   </h3>
-
-   <p class="muted">
-    ۳۰ سؤال از آسان تا خیلی سخت
-   </p>
-
-   <button
-    class="btn full"
-    onclick="placementTest()"
-   >
-    شروع تعیین سطح
-   </button>
-
-  </div>
-
-
-  <div class="item homeActionCard">
-
-   <div class="icon">
-    🗣️
-   </div>
-
-   <h3>
-    مکالمه
-   </h3>
-
-   <p class="muted">
-    Touchstone و Viewpoint
-   </p>
-
-   <button
-    class="btn full"
-    onclick="conversation()"
-   >
-    ورود به مکالمه
-   </button>
-
-  </div>
-
-
-  <div class="item homeActionCard">
-
-   <div class="icon">
-    🏆
-   </div>
-
-   <h3>
-    مسابقه
-   </h3>
-
-   <p class="muted">
-    رقابت و کسب XP
-   </p>
-
-   <button
-    class="btn full"
-    onclick="contest()"
-   >
-    ورود به مسابقه
-   </button>
-
-  </div>
-
-
-  <div class="item homeActionCard">
-
-   <div class="icon">
-    👨‍🏫
-   </div>
-
-   <h3>
-    اساتید
-   </h3>
-
-   <p class="muted">
-    رزرو کلاس با استاد
-   </p>
-
-   <button
-    class="btn full"
-    onclick="teachers()"
-   >
-    مشاهده اساتید
-   </button>
-
-  </div>
-
-
-  <div class="item homeActionCard">
-
-   <div class="icon">
-    📊
-   </div>
-
-   <h3>
-    پیشرفت من
-   </h3>
-
-   <p class="muted">
-    درصد پیشرفت و سوابق آزمون
-   </p>
-
-   <button
-    class="btn full"
-    onclick="profile()"
-   >
-    مشاهده پیشرفت
-   </button>
-
-  </div>
-
-
- </div>
-
- \`);
-
+    margin-top:8px;
+    font-size:10px;
+    opacity:.8;
+    direction:ltr;
 }
 
-
-/* TEACHERS */
-
-`
-
-);
-
-
-/* =========================================================
-   RESTORE ELAHE BAGHBANI IF NECESSARY
-========================================================= */
-
-if(!src.includes('name:"الهه باغبانی"')){
-
- const teacherMarker=
- "function teachers(){";
-
- const t=
- src.indexOf(teacherMarker);
-
- if(t>=0){
-
-  src=
-  src.slice(0,t)+`
-
-const teachersData=[
-
- {
-  name:"علی ناقلی",
-  degree:"کارشناس ارشد آموزش زبان انگلیسی",
-  phone:"09141892768",
-  icon:"👨‍🏫",
-  text:"با بیش از ۲۰ سال سابقه تدریس مکالمه زبان انگلیسی و مدرس دوره‌های TOEFL, IELTS, FCE, KET, PET, PTE, MCHE, MSRT و برگزارکننده دوره‌های حرفه‌ای TTC"
- },
-
- {
-  name:"الهه باغبانی",
-  degree:"کارشناس ارشد آموزش زبان انگلیسی",
-  phone:"09914312534",
-  icon:"👩‍🏫",
-  text:"با بیش از ۱۰ سال سابقه تدریس مکالمه زبان انگلیسی و دوره‌های بین‌المللی TOEFL, IELTS, KET, PET, PTE, MSRT"
- }
-
-];
-
-`+
-src.slice(t);
-
- }
-
+.AN-extra-teacher{
+    animation:ANFade .35s ease;
 }
 
-
-/* =========================================================
-   VISUAL IMPROVEMENTS
-========================================================= */
-
-src=
-src.replace(
-"</style>",
-
-`.conversationUpdateCard{
- border:2px dashed #c4b5fd;
- background:linear-gradient(
-  135deg,
-  #fff,
-  #faf5ff
- );
+.AN-conversation-card{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:5px;
 }
 
-.homeWelcomeCard{
- background:linear-gradient(
-  135deg,
-  #fff,
-  #faf5ff
- );
- border:1px solid #e9d5ff;
+.AN-conversation-icon{
+    width:70px;
+    height:70px;
+    min-width:70px;
+    border-radius:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:38px;
+    background:#ede9fe;
 }
 
-.homeActionCard{
- transition:
-  transform .2s,
-  box-shadow .2s;
+.AN-conversation-card h2{
+    margin:0 0 5px;
+    color:#5b21b6;
 }
 
-.homeActionCard:hover{
- transform:translateY(-5px);
- box-shadow:
-  0 14px 30px #6d28d933;
+.AN-conversation-card p{
+    margin:0 0 8px;
+    color:#777;
+    font-size:13px;
 }
 
-.homeHeroPlus{
- box-shadow:
-  0 18px 40px #6d28d955;
+.AN-update{
+    display:inline-block;
+    background:#fef3c7;
+    color:#92400e;
+    padding:8px 12px;
+    border-radius:12px;
+    font-size:12px;
+    font-weight:bold;
 }
 
-.placementResultCard{
- overflow:hidden;
+@keyframes ANFade{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
-</style>`
-);
+@media(max-width:600px){
 
+    .AN-home-welcome{
+        align-items:flex-start;
+    }
 
-/* =========================================================
-   LOAD FINAL APPLICATION
-========================================================= */
+    .AN-level-box{
+        padding:20px 15px;
+    }
 
+    .AN-level-score{
+        font-size:42px;
+    }
+
+}
+\`;
+
+document.head.appendChild(style);
+
+})();
+<\/script>
+`;
+
+/* Insert patch safely into original working app */
+if(source.includes("</body>")){
+    source=source.replace("</body>",patch+"</body>");
+}else{
+    source+=patch;
+}
+
+/* Remove old boot page from wrapper */
 document.open();
-
-document.write(src);
-
+document.write(source);
 document.close();
 
-}catch(e){
+}catch(error){
 
- document.getElementById("boot").innerHTML=
- `
- خطا در بارگذاری برنامه.
- <br>
- <small>
- لطفاً اتصال اینترنت را بررسی کنید.
- </small>
- `;
+document.body.innerHTML=\`
+<div style="
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+font-family:Tahoma,Arial;
+direction:rtl;
+background:#f5f3ff;
+padding:20px;
+">
+<div style="
+background:white;
+padding:30px;
+border-radius:25px;
+text-align:center;
+box-shadow:0 10px 30px #0001;
+">
+<h2 style="color:#6d28d9">
+خطا در بارگذاری برنامه
+</h2>
+<p>
+لطفاً اتصال اینترنت را بررسی کنید و دوباره تلاش کنید.
+</p>
+<button
+onclick="location.reload()"
+style="
+background:#6d28d9;
+color:white;
+border:0;
+padding:12px 25px;
+border-radius:12px;
+font-weight:bold;
+"
+>
+تلاش مجدد
+</button>
+</div>
+</div>
+\`;
 
 }
 
 })();
 </script>
-
 </body>
 </html>
-```0
