@@ -5,1431 +5,222 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#6d28d9">
 <title>AliNagheli English</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{font-family:Tahoma,Arial,sans-serif;background:#f5f3ff;color:#171717;padding-bottom:82px}
-button,input,select,textarea{font-family:inherit}
-button{cursor:pointer}
-.hidden{display:none!important}
-.header{background:linear-gradient(135deg,#4c1d95,#7c3aed);color:#fff;padding:15px;position:sticky;top:0;z-index:100;box-shadow:0 3px 15px #0002}
-.headerIn{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:20px;font-weight:bold}
-.container{max-width:1100px;margin:auto;padding:15px}
-.card{background:#fff;border-radius:22px;padding:20px;margin-bottom:15px;box-shadow:0 5px 25px #0000000d}
-.hero{background:linear-gradient(135deg,#312e81,#7c3aed,#a855f7);color:#fff;border-radius:25px;padding:28px;margin-bottom:15px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
-.item{background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:18px}
-.icon{font-size:40px}
-.btn{background:#6d28d9;color:#fff;border:0;border-radius:13px;padding:12px 16px;font-weight:bold}
-.btn.full{width:100%}
-.secondary{background:#ede9fe;color:#5b21b6}
-.success{background:#dcfce7;color:#166534}
-.danger{background:#fee2e2;color:#991b1b}
-.warning{background:#fef3c7;color:#92400e}
-.login{min-height:100vh;background:linear-gradient(135deg,#2e1065,#7c3aed,#a855f7);display:flex;justify-content:center;align-items:center;padding:20px}
-.loginCard{background:#fff;width:min(430px,100%);padding:25px;border-radius:28px}
-label{display:block;margin:10px 0 5px;font-weight:bold;font-size:13px}
-input,select,textarea{width:100%;border:1px solid #ddd6fe;border-radius:12px;padding:12px;background:#fff;outline:none}
-textarea{min-height:100px;resize:vertical}
-.tabs,.tabs2{display:flex;gap:8px;margin:18px 0;overflow:auto}
-.tab,.tab2{border:0;border-radius:12px;padding:12px;background:#f3f4f6;white-space:nowrap}
-.tab.active,.tab2.active{background:#ede9fe;color:#6d28d9;font-weight:bold}
-.bottom{position:fixed;bottom:0;left:0;right:0;height:78px;background:#fff;border-top:1px solid #ddd;z-index:200}
-.bottomIn{max-width:700px;height:100%;margin:auto;display:flex}
-.nav{flex:1;border:0;background:#fff;padding:7px 2px;color:#777;font-size:11px}
-.nav b{display:block;font-size:21px;margin-bottom:3px}
-.nav.active{color:#6d28d9;font-weight:bold}
-.lessonGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
-.lesson{background:#faf9ff;border:1px solid #ddd6fe;border-radius:18px;padding:17px;cursor:pointer}
-.lessonNo{font-size:30px;color:#6d28d9;font-weight:bold}
-.sec{display:none}
-.sec.active{display:block}
-.wordGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
-.word{border:1px solid #ddd6fe;background:#faf9ff;border-radius:15px;padding:13px;text-align:center;cursor:pointer}
-.en{direction:ltr;color:#5b21b6;font-weight:bold}
-.fa{font-size:11px;color:#777;margin-top:5px}
-.grammar{border:1px solid #e9e5ff;background:#faf9ff;padding:17px;border-radius:17px;margin-bottom:12px;line-height:2}
-.example{direction:ltr;text-align:left;background:#fff;border-radius:10px;padding:11px;font-family:Arial,sans-serif;border:1px solid #eee}
-.option{display:block;width:100%;text-align:right;background:#fff;border:1px solid #ddd6fe;border-radius:13px;padding:13px;margin:7px 0}
-.option.correct{background:#dcfce7;border-color:#22c55e}
-.option.wrong{background:#fee2e2;border-color:#ef4444}
-.feedback{text-align:center;border-radius:15px;padding:13px;margin-top:10px;font-weight:bold}
-.ok{background:#dcfce7;color:#166534}
-.bad{background:#fee2e2;color:#991b1b}
-.progress{height:9px;background:#eee;border-radius:99px;overflow:hidden;margin:12px 0}
-.progress i{display:block;height:100%;background:linear-gradient(90deg,#6d28d9,#a855f7)}
-.score{font-size:55px;color:#6d28d9;font-weight:bold;text-align:center}
-.adminRow{border:1px solid #e5e7eb;border-radius:16px;padding:14px;margin:9px 0}
-.muted{font-size:12px;color:#777;line-height:1.9}
-.teacher{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px}
-.teacherBox{background:linear-gradient(135deg,#faf5ff,#fff);border:1px solid #e9d5ff;border-radius:22px;padding:20px;line-height:2}
-.teacherAvatar{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:48px;background:#ede9fe;margin:auto}
-.profileStat{background:#faf9ff;border:1px solid #e9d5ff;border-radius:18px;padding:15px;text-align:center}
-.profileStat b{display:block;font-size:27px;color:#6d28d9;margin-top:5px}
-.badge{display:inline-block;padding:8px 12px;margin:4px;border-radius:20px;background:#ede9fe;color:#5b21b6;font-size:12px}
-.notice{padding:13px;border-radius:13px;background:#fff7ed;color:#9a3412;font-size:13px;line-height:1.8;margin-bottom:12px}
-.call{display:block;text-decoration:none;text-align:center;margin:12px 0}
-.request{background:#f8f5ff;border:1px solid #ddd6fe;border-radius:18px;padding:15px;margin-top:15px}
-.examRow{border:1px solid #e5e7eb;border-radius:15px;padding:14px;margin:8px 0}
-.examScore{font-size:25px;font-weight:bold;color:#6d28d9}
-.resultBox{background:#faf9ff;border:1px solid #ddd6fe;border-radius:18px;padding:18px}
-.jdate{direction:rtl;text-align:right}
-.jcalendar{border:1px solid #ddd6fe;border-radius:16px;padding:12px;background:#fff;margin-top:10px}
-.jcalendar-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.jcalendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:10px}
-.jday{padding:7px 2px;text-align:center;border-radius:9px;background:#f7f5ff;font-size:11px}
-.jday.head{background:#ede9fe;color:#5b21b6;font-weight:bold}
-.jday.selectable{cursor:pointer}
-.jday.selectable:hover{background:#ddd6fe}
-.jday.selected{background:#6d28d9;color:#fff}
-.jday.empty{background:transparent}
-.jselected{margin-top:10px;padding:9px;border-radius:10px;background:#ede9fe;color:#5b21b6;font-size:12px}
-@media(max-width:600px){.container{padding:10px}.card{padding:16px}}
+html,body{margin:0;padding:0;background:#f5f3ff;font-family:Tahoma,Arial,sans-serif}
+#boot{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;color:#6d28d9;font-weight:bold;padding:20px}
 </style>
 </head>
-
 <body>
-<div id="app"></div>
+<div id="boot">در حال آماده‌سازی AliNagheli English…</div>
 
 <script>
-"use strict";
+(async()=>{
+const ORIGINAL="https://raw.githubusercontent.com/alinagheli5000-spec/AliNagheliEnglish/9804b6ce02f322a1cc5f3401d9bafea9b9feb360/index.html";
 
-const SUPABASE_URL="https://kapzyedzjecnfxevjisq.supabase.co";
-const SUPABASE_KEY="sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
-const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-const ACCESS_FUNCTION=SUPABASE_URL+"/functions/v1/student-access";
-const ADMIN_FUNCTION=SUPABASE_URL+"/functions/v1/admin-access";
+try{
 
-let S={
- student:null,
- admin:false,
- grade:null,
- lesson:null,
- quiz:null,
- xp:0,
- level:1,
- progress:{},
- achievements:[],
- exams:[]
+let src=await (await fetch(ORIGINAL,{cache:"no-store"})).text();
+
+const replaceBlock=(startMarker,endMarker,replacement)=>{
+ const s=src.indexOf(startMarker);
+ if(s<0)return false;
+
+ const e=src.indexOf(endMarker,s);
+ if(e<0)return false;
+
+ src=src.slice(0,s)+replacement+src.slice(e);
+ return true;
 };
 
-let examRecords=[];
-try{examRecords=JSON.parse(localStorage.getItem("AN_EXAMS")||"[]")}catch(e){}
 
-function esc(x){
- return String(x??"").replace(/[&<>"']/g,m=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
- }[m]));
-}
+/* =========================================================
+   PLACEMENT TEST RESULT
+========================================================= */
 
-function normalizePhone(x){
- return String(x||"").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/\D/g,"");
-}
+const placementStart=src.indexOf("async function placementFinish(){");
+const placementEnd=src.indexOf(
+ "async function placementAnswer",
+ placementStart
+);
 
-function saveLocal(){
- localStorage.setItem("AN_EXAMS",JSON.stringify(examRecords));
-}
+if(placementStart>=0&&placementEnd>placementStart){
 
-function speak(text){
- if(!window.speechSynthesis){
-  alert("مرورگر شما از تلفظ صوتی پشتیبانی نمی‌کند.");
-  return;
+src=src.slice(0,placementStart)+`async function placementFinish(){
+
+ const score=Number(S.quiz.correct||0);
+ const total=Number(S.quiz.questions?.length||30);
+ const wrong=Math.max(0,total-score);
+ const percent=total?Math.round(score/total*100):0;
+
+ let level;
+
+ if(score<=7)level="A1";
+ else if(score<=13)level="A2";
+ else if(score<=19)level="B1";
+ else if(score<=24)level="B2";
+ else if(score<=28)level="C1";
+ else level="C2";
+
+ const levelText={
+  A1:"مقدماتی — شروع مسیر یادگیری",
+  A2:"مقدماتی رو به متوسط — توانایی‌های پایه",
+  B1:"متوسط — توانایی ارتباط در موقعیت‌های روزمره",
+  B2:"متوسط رو به بالا — توانایی ارتباط نسبتاً روان",
+  C1:"پیشرفته — تسلط بالا بر زبان انگلیسی",
+  C2:"تسلط بسیار پیشرفته — نزدیک به سطح بومی"
+ }[level]||"";
+
+ const el=document.getElementById("placementQuiz");
+
+ if(S.student){
+
+  try{
+
+   await db.from("exam_results").insert({
+
+    user_id:S.student.auth_user_id,
+
+    student_name:\`\${S.student.first_name||""} \${S.student.last_name||""}\`,
+
+    exam_type:"placement",
+
+    exam_title:"آزمون تعیین سطح ۳۰ سؤالی",
+
+    score,
+
+    total,
+
+    percentage:percent
+
+   });
+
+  }catch(e){}
+
  }
- speechSynthesis.cancel();
- const u=new SpeechSynthesisUtterance(text);
- u.lang="en-US";
- u.rate=.75;
- speechSynthesis.resume();
- speechSynthesis.speak(u);
-}
 
-function shuffle(arr){
- const a=[...arr];
- for(let i=a.length-1;i>0;i--){
-  const j=Math.floor(Math.random()*(i+1));
-  [a[i],a[j]]=[a[j],a[i]];
- }
- return a;
-}
+ if(!el)return;
 
-async function accessFunction(payload){
- const r=await fetch(ACCESS_FUNCTION,{
-  method:"POST",
-  headers:{
-   "Content-Type":"application/json",
-   "apikey":SUPABASE_KEY
-  },
-  body:JSON.stringify(payload)
- });
- const data=await r.json().catch(()=>null);
- if(!r.ok||data?.ok===false)throw new Error(data?.error||"خطا در ارتباط با سرور.");
- return data;
-}
+ el.innerHTML=\`
 
-async function adminFunction(action,payload={}){
- const session=(await db.auth.getSession()).data?.session;
- if(!session)throw new Error("نشست مدیر منقضی شده است.");
- const r=await fetch(ADMIN_FUNCTION,{
-  method:"POST",
-  headers:{
-   "Content-Type":"application/json",
-   "apikey":SUPABASE_KEY,
-   "Authorization":"Bearer "+session.access_token
-  },
-  body:JSON.stringify({action,...payload})
- });
- const data=await r.json().catch(()=>null);
- if(!r.ok||!data?.ok)throw new Error(data?.error||"عملیات انجام نشد.");
- return data;
-}
+ <div class="card resultBox placementResultCard">
 
-
-/* =========================================================
-   BOOKS
-========================================================= */
-
-const books={
- 7:{
-  title:"Prospect 1",
-  lessons:[
-   "Lesson 1: My Name",
-   "Lesson 2: My Classmates",
-   "Lesson 3: My Age",
-   "Lesson 4: My Family",
-   "Lesson 5: My Appearance",
-   "Lesson 6: My House",
-   "Lesson 7: My Address",
-   "Lesson 8: My Favorite Food"
-  ]
- },
- 8:{
-  title:"Prospect 2",
-  lessons:[
-   "Lesson 1: My Nationality",
-   "Lesson 2: My Week",
-   "Lesson 3: My Abilities",
-   "Lesson 4: My Health",
-   "Lesson 5: My City",
-   "Lesson 6: My Hobbies",
-   "Lesson 7: My Services"
-  ]
- },
- 9:{
-  title:"Prospect 3",
-  lessons:[
-   "Lesson 1: Personality",
-   "Lesson 2: Travel",
-   "Lesson 3: Festivals and Ceremonies",
-   "Lesson 4: Services",
-   "Lesson 5: Media",
-   "Lesson 6: Health and Medicine"
-  ]
- },
- 10:{
-  title:"Vision 1",
-  lessons:[
-   "Lesson 1: Saving Nature",
-   "Lesson 2: Wonders of Creation",
-   "Lesson 3: The Value of Knowledge",
-   "Lesson 4: Traveling the World"
-  ]
- },
- 11:{
-  title:"Vision 2",
-  lessons:[
-   "Lesson 1: Understanding People",
-   "Lesson 2: A Healthy Lifestyle",
-   "Lesson 3: Art and Culture"
-  ]
- },
- 12:{
-  title:"Vision 3",
-  lessons:[
-   "Lesson 1: Sense of Appreciation",
-   "Lesson 2: Look It Up",
-   "Lesson 3: Renewable Energy",
-   "Lesson 4: The Power of Nature"
-  ]
- }
-};
-
-
-/* =========================================================
-   PDF VOCABULARY
-   داده‌های PDF به تفکیک پایه و درس
-========================================================= */
-
-const wordsByGrade={
-
-"7-1":[
-["What’s your last name?","نام خانوادگی شما چیست؟"],
-["library card","کارت عضویت کتابخانه"],
-["I’m your English teacher.","من معلم زبان شما هستم"],
-["How are you?","حال شما چطور است؟"],
-["good afternoon","ظهر بهخیر"],
-["Now, you tell me your names.","حالا شما اسم‌هایتان را به من بگویید"],
-["stand up","بلند شدن"],
-["last name","نام خانوادگی"],
-["library","کتابخانه"],
-["and","و"],
-["name","نام"],
-["excuse me","ببخشید"],
-["fine","خوب"],
-["sit down","نشستن"],
-["Great, thanks.","خوبم، ممنون"],
-["hello","سلام"],
-["How do you spell …?","را چگونه هجی می‌کنیم؟"],
-["thank you","متشکرم"],
-["Mrs.","خانم"],
-["My name is …","اسم من است …"],
-["How do you spell your last name?","نام خانوادگی‌ات را چگونه هجی می‌کنی؟"],
-["first name","اسم کوچک"],
-["Fine, thanks.","خوبم، ممنون"],
-["please","لطفاً"],
-["teacher","معلم"],
-["What’s your first name?","اسم کوچک شما چیست؟"],
-["Mr.","آقا"],
-["student","دانش‌آموز"],
-["Can you spell your name?","می‌توانی اسمت را هجی کنی؟"],
-["How are you today?","امروز حالتان چطور است؟"],
-["good morning","صبح بهخیر"],
-["I’m …","من هستم …"],
-["class","کلاس"],
-["hi","سلام"],
-["Now, please say your name.","حالا لطفاً اسمتان را بگویید"],
-["one by one","یکی یکی"],
-["thanks","ممنون"],
-["Miss","خانم"]
-],
-
-"7-2":[
-["Classmate","همکلاسی"],["Who","چه کسی"],["This","این"],["That","آن"],
-["Boy","پسر"],["New","جدید"],["Talk","صحبت کردن"],["Him","او را، به او، با او"],
-["Nice","خوب"],["Meet","ملاقات کردن"],["Our","ـِ ما"],["Welcome","خوش آمدن"],
-["School","مدرسه"],["Friend","دوست"],["Thank you.","ممنون از شما"],["Too","همچنین"],
-["Girl","دختر"],["Man","مرد"],["Woman","خانم"],["She","او (مؤنث)"],
-["He","او (مذکر)"],["Can","توانستن"],["Help","کمک کردن"],["Have","داشتن"],
-["Please","لطفاً"],["Library","کتابخانه"],["Library card","کارت کتابخانه"],
-["Sure","حتماً"],["Sorry","متأسفم"],["Again","دوباره"],["Librarian","کتابدار"],
-["Teacher","معلم"],["Student","دانش‌آموز"]
-],
-
-"7-3":[
-["date","تاریخ"],["twelve","دوازده"],["ten","ده"],["March","مارس"],
-["eleven","یازده"],["six","شش"],["no","نه"],["forty","چهل"],
-["September","سپتامبر"],["fifty","پنجاه"],["fifteen","پانزده"],["thirteen","سیزده"],
-["sixty","شصت"],["really","واقعاً"],["seventy","هفتاد"],
-["When is your birthday?","روز تولد شما کی است؟"],["fourteen","چهارده"],
-["eighty","هشتاد"],["Friday","جمعه"],["Saturday","شنبه"],["Sunday","یکشنبه"],
-["Monday","دوشنبه"],["Tuesday","سه‌شنبه"],["Wednesday","چهارشنبه"],
-["Thursday","پنجشنبه"],["January","ژانویه"],["February","فوریه"],
-["April","آوریل"],["May","مه"],["June","ژوئن"],["July","ژوئیه"],
-["August","اوت"],["October","اکتبر"],["November","نوامبر"],["December","دسامبر"]
-],
-
-"7-4":[
-["family","خانواده"],["mother","مادر"],["father","پدر"],["brother","برادر"],
-["sister","خواهر"],["parents","والدین"],["grandfather","پدربزرگ"],
-["grandmother","مادربزرگ"],["uncle","عمو/دایی"],["aunt","عمه/خاله"],
-["cousin","پسرعمو/دخترعمو/پسرخاله/دخترخاله و ..."],["son","پسر"],
-["daughter","دختر"],["husband","شوهر"],["wife","همسر"],["child","کودک"],
-["children","فرزندان"],["doctor","دکتر"]
-],
-
-"7-5":[
-["tall","بلندقد"],["grey","طوسی"],["white","سفید"],["manteau","مانتو"],
-["hat","کلاه"],["chador","چادر"],["glove","دستکش"],["English teacher","معلم انگلیسی"],
-["green","سبز"],["young","جوان"],["math","ریاضی"],["orange","نارنجی"],
-["pink","صورتی"],["belt","کمربند"],["sunglasses","عینک آفتابی"],["suit","کت و شلوار"],
-["T-shirt","تی‌شرت"],["He’s wearing a grey suit.","او یک کت و شلوار طوسی پوشیده است"],
-["brown","قهوه‌ای"],["He’s over there.","او آنجا است"],["blue","آبی"],
-["sock","جوراب"],["dress","پیراهن زنانه"],["shoe","کفش"],["black","سیاه"],
-["shirt","پیراهن"],["sweater","ژاکت"],["No, my English teacher is the tall man.","نه، معلم انگلیسی من آن مرد بلند قد است"],
-["glasses","عینک"],["short","قدکوتاه"],["Let’s meet your English teacher first.","بیا ابتدا با معلم انگلیسی شما ملاقات کنیم"],
-["old","پیر"],["coat","پالتو"],["trousers","شلوار"],["red","قرمز"],
-["yellow","زرد"],["jacket","کت"],["He’s wearing a blue suit and a white shirt.","او یک کت و شلوار آبی و پیراهن سفید پوشیده است"],
-["sandal","صندل"],["which one","کدام یکی"],["wear","پوشیدن"]
-],
-
-"7-6":[
-["again","دوباره"],["watch TV","تلویزیون تماشا کردن"],["where","کجا"],["bedroom","اتاق خواب"],
-["work","کار کردن"],["car","ماشین"],["cook","پختن"],["bathroom","حمام"],
-["correct","صحیح"],["blanket","پتو"],["bookcase","قفسه کتاب"],["dad","بابا"],
-["clock","ساعت دیواری"],["do","انجام دادن"],["comb","شانه"],["fix","تعمیر کردن"],
-["computer","کامپیوتر"],["for","برای"],["garage","پارکینگ خانه"],["drink","نوشیدن"],
-["house","خانه"],["eat","خوردن"],["flat/apartment","آپارتمان"],["hungry","گرسنه"],
-["kitchen","آشپزخانه"],["I’ll call dad.","من پدر را صدا خواهم کرد"],
-["room","اتاق"],["mirror","آینه"],["living room","اتاق پذیرایی"],
-["newspaper","روزنامه"],["Look at","نگاه کردن به"],["lunch","ناهار"],["play","بازی کردن"],
-["mom","مامان"],["radio","رادیو"],["office","دفتر، شرکت"],["stairs","راه پله"],
-["picture","تصویر"],["study","مطالعه کردن"],["football","فوتبال"],["Play","بازی کردن"],
-["table","میز ناهارخوری"],["Read a book","خواندن کتاب"],["television","تلویزیون"],
-["tower","برج"],["say","گفتن"],["villa","ویلا"],["so","خیلی"],
-["Wash your hands","دست‌هایت را بشور"]
-],
-
-"7-7":[
-["Baharestan, Kargar Street 39","بهارستان، خیابان کارگر، پلاک ۳۹"],
-["live","زندگی کردن"],["I’m not sure.","مطمئن نیستم"],["go","رفتن"],
-["Call me before you go.","قبل از اینکه بروی به من زنگ بزن"],
-["address","آدرس"],["street","خیابان"],["telephone","تلفن"],
-["number","شماره"],["phone","تلفن"],["What’s your telephone number?","شماره تلفن شما چیست؟"],
-["What’s your address?","آدرس شما چیست؟"],["What time is it?","ساعت چند است؟"],
-["o’clock","ساعت"],["a.m.","قبل از ظهر"],["p.m.","بعد از ظهر"]
-],
-
-"7-8":[
-["food","غذا"],["fruit","میوه"],["vegetable","سبزیجات"],["rice","برنج"],
-["bread","نان"],["cheese","پنیر"],["egg","تخم مرغ"],["meat","گوشت"],
-["chicken","مرغ"],["fish","ماهی"],["apple","سیب"],["banana","موز"],
-["orange","پرتقال"],["carrot","هویج"],["potato","سیب‌زمینی"],["tea","چای"],
-["make tea","چای درست کردن"],["I can take good photos.","من می‌توانم خوب عکس بگیرم"],
-["speak","صحبت کردن"],["I can’t make it today.","من امروز نمی‌توانم بیایم"],
-["ride a bicycle","دوچرخه‌سواری کردن"],["play tennis","تنیس بازی کردن"],
-["play chess","شطرنج بازی کردن"],["type","تایپ کردن"],["read","خواندن"],
-["puzzle","پازل"],["You can bring your drawing book too.","می‌توانی دفتر نقاشی‌ات را هم همراه خودت بیاوری"],
-["thirsty","تشنه"],["shopping","خرید رفتن"],["I’d like some tea with my cake.","من دوست دارم کمی چای با کیکم بخورم"],
-["tomato","گوجه"]
-],
-
-"8-1":[
-["Iran","ایران"],["South America","آمریکای جنوبی"],["cousin","پسرعمو/دخترعمو/پسرخاله/دخترخاله و ..."],
-["Asian","آسیایی"],["North America","آمریکای شمالی"],["Spanish","اسپانیایی‌ها"],
-["Spain","اسپانیا"],["South American","اهل آمریکای جنوبی"],["continent","قاره"],
-["Where is he from?","او اهل کجاست؟"],["North American","آمریکای شمالی"],["African","آفریقایی"],
-["Chinese","چینی"],["Australia","استرالیا"],["They’re from Spain.","آنها اهل اسپانیا هستند"],
-["European","اروپایی"],["relative","خویشاوند"],["Africa","آفریقا"],["Iranian","ایرانی"],
-["She’s from England.","او اهل انگلستان است"],["How do you like it in Iran?","ایران را چطور دیدی؟"],
-["Persian Gulf","خلیج فارس"],["Brazil","برزیل"],["France","فرانسه"],["Europe","اروپا"],
-["Are you from Iran?","آیا اهل ایران هستید؟"],["I live in France.","من در فرانسه زندگی می‌کنم"],
-["China","چین"],["Brazilian","برزیلی"],["He’s from France.","او اهل فرانسه است"],
-["Where are they from?","آنها اهل کجا هستند؟"],["Asia","آسیا"],["British","بریتانیایی"],
-["guest","مهمان"],["French","فرانسوی"]
-],
-
-"8-2":[
-["week","هفته"],["day","روز"],["Saturday","شنبه"],["Sunday","یکشنبه"],
-["Monday","دوشنبه"],["Tuesday","سه‌شنبه"],["Wednesday","چهارشنبه"],["Thursday","پنجشنبه"],
-["Friday","جمعه"],["weekend","آخر هفته"],["today","امروز"],["tomorrow","فردا"],
-["yesterday","دیروز"],["always","همیشه"],["usually","معمولاً"],["sometimes","گاهی"],
-["never","هرگز"],["morning","صبح"],["afternoon","بعدازظهر"],["evening","عصر"],
-["night","شب"],["school","مدرسه"],["class","کلاس"],["home","خانه"]
-],
-
-"8-3":[
-["ability","مهارت"],["can","توانستن"],["cannot","نتوانستن"],["draw","نقاشی کشیدن"],
-["photos","عکس"],["take photos","عکس گرفتن"],["puzzle","پازل"],["computer","کامپیوتر"],
-["ping-pong","پینگ‌پنگ"],["tennis","تنیس"],["chess","شطرنج"],["type","تایپ کردن"],
-["read","خواندن"],["speak","صحبت کردن"],["ride a bicycle","دوچرخه‌سواری کردن"],
-["good at","خوب بودن در"],["drawing","نقاشی"],["cook","آشپزی کردن"],["bring","آوردن"]
-],
-
-"8-4":[
-["drugstore","داروخانه"],["You should go home and rest.","باید به خانه بروی و استراحت کنی"],
-["health problem","مشکل سلامتی"],["You should rest.","باید استراحت کنی"],
-["Thanks for your help.","ممنون بابت کمک شما"],["I’ll talk to your teacher.","من با معلمت صحبت خواهم کرد"],
-["stomachache","دل‌درد"],["cough","سرفه"],["What’s the matter?","چه شده است؟"],
-["patient","مریض"],["advice","نصیحت"],["I have a sore throat.","من گلودرد دارم"],
-["Why don’t you see a doctor?","چرا دکتر نمی‌روی؟"],["sore eyes","چشم‌های خون‌افتاده"],
-["Go to the dentist.","به دندانپزشکی برو"],["What is the problem?","چه مشکلی پیش آمده است؟"],
-["have a fever","داشتن تب"],["earache","گوش‌درد"],["What’s wrong?","چه شده است؟"],
-["running nose","آبریزش بینی"],["Let’s go to the office and call your parents first.","بیا اول به دفتر برویم و به پدر و مادرت زنگ بزنیم"],
-["Why don’t you get some rest?","چرا کمی استراحت نمی‌کنی؟"],["cold","سرماخوردگی"],
-["Is she all right?","آیا او حالش خوب است؟"],["sore throat","گلودرد"],["Are you OK?","خوبی؟"],
-["I’ll be back in a minute.","من یک دقیقه‌ای برمی‌گردم"],["You should see a doctor.","باید بروی دکتر"],
-["toothache","دندان‌درد"],["rest","استراحت کردن"],["I have a headache.","من سردرد دارم"],
-["headache","سردرد"],["measles","سرخک"],["health","سلامتی"],["have a temperature","داشتن تب"],
-["backache","کمردرد"],["We have one more class.","ما یک کلاس دیگر هم داریم"],["sore eyes","چشم‌های خون‌افتاده"],
-["Czech","اهل جمهوری چک"],["I have a toothache.","من دندان‌درد دارم"],["Is he OK?","آیا او حالش خوب است؟"],
-["I have a cold.","من سرما خورده‌ام"],["parent","والد"],["hospital","بیمارستان"],
-["don’t worry","نگران نباش"],["quiet","ساکت"],["sneeze","عطسه"],["Be quiet!","ساکت باشید!"],
-["flu","آنفلوآنزا"],["mumps","اوریون"],["I have a running nose.","من آبریزش بینی دارم"]
-],
-
-"8-5":[
-["mosque","مسجد"],["actually","درواقع"],["cinema","سینما"],["minaret","مناره"],
-["center","مرکز"],["east","شرق"],["zoo","باغ وحش"],["stadium","ورزشگاه"],
-["Isfahan’s an old city in the center of Iran.","اصفهان شهری قدیمی در مرکز ایران است"],
-["many","چندین"],["boulevard","بلوار"],["What’s it like?","چگونه است؟"],
-["old","قدیمی"],["Please say it again.","لطفاً دوباره بگو"],["restaurant","رستوران"],
-["location","موقعیت"],["palace","کاخ"],["Where is it?","آن کجاست؟"],
-["I should see the city soon.","من به زودی از شهر دیدن خواهم کرد"],["bridge","پل"],
-["city","شهر"],["shrine","حرم"],["building","ساختمان"],["west","غرب"],
-["Are there any museums?","آیا موزه هم دارد؟"],["What is it famous for?","آن شهر برای چه چیزی معروف است؟"],
-["We can have special food downtown.","ما می‌توانیم در مرکز شهر غذای ویژه بخوریم"],
-["church","کلیسا"],["capital","پایتخت"],["Tell me about Isfahan.","راجع به اصفهان برایم بگو"],
-["north","شمال"],["museum","موزه"],["tourist","گردشگر"],["downtown","مرکز شهر"],
-["special","خاص"],["metro","مترو"],["clean","تمیز"],["It’s a big and clean city.","آن شهری بزرگ و تمیز است"],
-["big","بزرگ"],["park","پارک"],["south","جنوب"],["store","مغازه"],
-["famous","مشهور"],["Isfahan is very famous for its mosques and palaces.","اصفهان بابت مساجد و کاخ‌هایش بسیار مشهور است"],
-["train station","ایستگاه راه‌آهن"],["near","نزدیک"],["Any famous buildings?","ساختمان‌های معروفی دارد؟"],
-["bus station","ایستگاه اتوبوس"],["airport","فرودگاه"],["north-east","شمال شرق"],
-["north-west","شمال غرب"],["south-east","جنوب شرقی"],["south-west","جنوب غربی"]
-],
-
-"8-6":[
-["village","روستا"],["wind","باد"],["What’s the people’s job?","شغل مردم آن چیست؟"],
-["It sounds a very interesting place.","به نظر می‌رسد مکان بسیار جالبی است"],
-["hen","مرغ"],["winter","زمستان"],["fall","پاییز"],
-["Can you give me some examples?","می‌توانید چند مثال برای من بزنید؟"],["icy","یخ‌زده"],
-["hot","داغ"],["raise","پرورش دادن"],["rain","باران"],["cow","گاو"],
-["Are there many people in the village?","آیا مردم زیادی در روستا زندگی می‌کنند؟"],
-["It’s a mountain village with many trees and flowers.","آن یک روستای کوهستانی با درختان و گل‌های بسیار است"],
-["What’s the weather like in ...?","آب و هوا در ... چگونه است؟"],["summer","تابستان"],
-["tree","درخت"],["warm","گرم"],["cold","سرد"],["farm","مزرعه"],["spring","بهار"],
-["hill","تپه"],["Are there any fields?","آیا مزارع هم دارد؟"],["thermometer","دماسنج"],
-["weather","آب‌وهوا"],["field","مزرعه"],["There’s a lot of wind in summer, fall and winter.","در تابستان، پاییز و زمستان باد بسیار زیاد می‌وزد"],
-["Is it near the city?","آیا نزدیک شهر است؟"],["flower","گل"],["Is it cold in winter?","آیا در زمستان سرد می‌شود؟"],
-["Is there much rain in spring?","آیا در بهار باران زیاد می‌بارد؟"],["dry","خشک"],["rainy","بارانی"],
-["Is there a river?","آیا رودخانه دارد؟"],["animal","حیوان"],["interesting","جالب"],
-["sunny","آفتابی"],["plow","گاوآهن"],["place","مکان"],["horse","اسب"],
-["mountain","کوه"],["chicken","مرغ"],["Where are you from?","شما اهل کجا هستید؟"],
-["It’s famous for its sunflower fields.","آنجا به خاطر مزارع گل‌های آفتابگردانش معروف است"],
-["river","رود"],["cattle","گاوها"],["dog","سگ"],["sunflower","آفتابگردان"],
-["What about the weather?","آب‌وهوایش چطور است؟"],["snowy","برفی"],["very","خیلی"],
-["tractor","تراکتور"],["They work on farms and raise animals.","آنها در مزرعه کار می‌کنند و دام پرورش می‌دهند"]
-],
-
-"8-7":[
-["poem","شعر"],["horse riding","اسب‌سواری"],["reading","مطالعه"],["What do you like to do in your free time?","دوست دارید در اوقات فراغت خود چه کاری کنید؟"],
-["playing computer games","بازی کامپیوتری بازی کردن"],["sometimes","گاهی"],["What’s your hobby?","سرگرمی شما چیست؟"],
-["What sort of things do you read?","چه جور چیزهایی می‌خوانی؟"],["Do you have any hobbies?","آیا هیچ سرگرمی‌ای داری؟"],
-["watching movies","فیلم تماشا کردن"],["walking in the park","قدم زدن در پارک"],["magazine","مجله"],
-["sports news","خبر ورزشی"],["What do you do as a hobby?","برای سرگرمی چه کاری انجام می‌دهی؟"],
-["usually","معمولاً"],["I watch movies as a hobby.","من به عنوان سرگرمی تلویزیون تماشا می‌کنم"],
-["playing tennis","تنیس بازی کردن"],["search","جستجو کردن"],["skiing","اسکی"],
-["listening to the radio","گوش دادن به رادیو"],["fishing","ماهی‌گیری"],["Net","اینترنت"],
-["Do you like reading?","مطالعه کردن را دوست داری؟"],["I don’t have any hobbies.","من هیچ سرگرمی‌ای ندارم"],
-["shopping","خرید"],["hobby","سرگرمی"],["free time","وقت آزاد"],
-["going to the movies","رفتن به سینما"],["I love reading.","من عاشق مطالعه هستم"],
-["working in the garden","در باغ کار کردن"],["enjoy","لذت بردن"],["browsing the internet","در اینترنت گشت زدن"],
-["I usually go to the gym in my free time.","من معمولاً در وقت آزادم به باشگاه می‌روم"],
-["What do you do in your free time?","در اوقات فراغت خود چه می‌کنی؟"],["fire service","سازمان آتش‌نشانی"]
-],
-
-"9-1":[
-["patient","صبور"],["bit","کم"],["personality","شخصیت"],["hard-working","کوشا"],
-["neat","مرتب و منظم"],["careful","مراقب"],["What’s he like?","او چه جور آدمی است؟"],
-["kind","مهربان"],["how","چطور"],["talkative","پرحرف"],["also","همچنین"],
-["careless","بی‌دقت"],["clever","باهوش"],["Is he hard-working too?","آیا او هم کوشا است؟"],
-["pleasant","خوشایند"],["happy","خوشحال"],["lazy","تنبل"],["shy","خجالتی"],
-["He always helps me with my lessons.","او همیشه به من در درس‌هایم کمک می‌کند"],
-["What is your friend like?","دوستت چه جور آدمی است؟"],["cruel","بی‌رحم"],
-["rude","بی‌ادب"],["I do my homework.","من تکالیفم را انجام می‌دهم"],["helpful","مفید"],
-["generous","بخشنده"],["friendly","دوستانه"],["Let me check it in the dictionary.","اجازه بدهید این واژه را در فرهنگ لغت چک کنم"],
-["best friend","بهترین دوست"],["everybody","همه"],["member","عضو"],["great","عالی"],
-["polite","مؤدب"],["Oh, he is really great!","اوه! او واقعاً آدم خوبی است!"],["some","بعضی از"],
-["upset","ناراحت"],["company","شرکت"],["nervous","مضطرب"],["She works for a company.","او برای یک شرکت کار می‌کند"],
-["And she’s always very helpful.","و او همیشه خیلی کمک‌کننده است"],["Who is your best friend at school?","چه کسی دوست صمیمی تو در مدرسه است؟"],
-["selfish","خودخواه"],["funny","بامزه"],["serious","جدی"],["brave","شجاع"],
-["He’s kind and clever.","او باهوش و مهربان است"],["always","همیشه"],["angry","عصبانی"],["homework","تکلیف منزل"]
-],
-
-"9-2":[
-["say prayers","نماز خواندن"],["land","فرود آمدن"],["Hope you enjoy your stay in Tehran.","امیدوارم از اقامت‌تان در تهران لذت ببرید"],
-["check the timetable","چک کردن برنامه حرکت"],["around the World","دور دنیا"],["hope","امیدوار بودن"],
-["of course","البته"],["check the passport","گذرنامه چک کردن"],["book a hotel","هتل رزرو کردن"],
-["make a voyage","سفر دریایی رفتن"],["reclaim baggage","محل دریافت بار"],["suitable","مناسب"],
-["My wife and I are visiting Tehran for three days.","من و همسرم به مدت سه روز از تهران بازدید می‌کنیم"],
-["guess","حدس زدن"],["key","کلید"],["novel","رمان"],["map","نقشه"],
-["Germany","آلمان"],["Arabic","زبان عربی"],["leg","پایه"],["buy a ticket","خریدن بلیت"],
-["talk to a receptionist","با متصدی پذیرش صحبت کردن"],["I have a reservation here.","من اینجا اتاق رزرو کرده‌ام"],
-["Are you staying here for two nights?","آیا به مدت دو شب اینجا می‌مانید؟"],["car","خودرو"],
-["pay toll","عوارضی پرداخت کردن"],["Are you working with the computer now?","آیا الان داری با کامپیوتر کار می‌کنی؟"],
-["letter","نامه"],["board the plane","سوار هواپیما شدن"],["German","آلمانی"],["take off","از زمین بلند شدن"],
-["Here is her passport.","بفرمایید، این هم پاسپورت او"],["pray","دعا کردن"],["take an express train","قطار سریع‌السیر سوار شدن"],
-["wheel","چرخ"],["guide book","کتابچه راهنما"],["I need to check her passport.","من باید گذرنامه‌اش را چک کنم"],
-["pack for a trip","برای سفر وسیله گرفتن"],["This is your key.","این کلید شماست"],
-["reservation","رزرو"],["fill out the form","پر کردن فرم"],["possible","امکان‌پذیر"],
-["tourist","گردشگر"],["check in","پذیرش شدن"],["here","اینجا"],["short story","داستان کوتاه"],
-["Is it possible to book it online?","آیا ممکن است که آنلاین رزرو کنی؟"],["I’m searching for a hotel in ...","من دارم دنبال هتلی در ... می‌گردم"],
-["weigh the baggage","بار وزن کردن"],["exchange money","پول و ارز تبدیل کردن"],
-["gift shop","کادوسرا"],["online","آنلاین"],["I see!","متوجه‌ام!"]
-],
-
-"9-3":[
-["holiday","روز تعطیل"],["Do you and your cousins set the Haft Seen table?","آیا شما و خویشاوندان شما سفره هفت‌سین می‌چینید؟"],
-["celebrate a religious holiday","تعطیلات مذهبی را جشن گرفتن"],["I just love New Year holidays!","من واقعاً تعطیلات سال نو را دوست دارم!"],
-["Do you get New Year gifts too?","آیا هدیه سال نو هم می‌گیرید؟"],["set the table","چیدن میز غذا"],
-["Commemorate NE martyrs","گرامیداشت شهدای انرژی هسته‌ای"],["They say their Eid prayers before noon.","آنها نماز عیدشان را قبل از ظهر می‌خوانند"],
-["Do young children color the eggs?","آیا بچه‌های کوچک تخم‌مرغ رنگ می‌کنند؟"],["clear the table","میز غذا را جمع کردن"],
-["I really like Fajr Film Festival.","من واقعاً جشنواره فیلم فجر را دوست دارم"],["go out on Nature Day","بیرون رفتن در روز طبیعت"],
-["watch fireworks","آتش‌بازی تماشا کردن"],["watch military parade","تماشای رژه نظامی"],
-["In all Muslim countries people hold the same ceremony.","در تمام کشورهای اسلامی مسلمانان مراسم یکسانی برگزار می‌کنند"],
-["gold fish","ماهی قرمز"],["Does he recite the Holy Quran at the turn of the year?","آیا او در آغاز سال قرآن مجید قرائت می‌کند؟"],
-["Turkey","ترکیه"],["wear special clothes","لباس‌های مخصوص پوشیدن"],
-["Nature Day","روز طبیعت"],["Happy New Year!","سال نو مبارک!"],["national","ملی"],
-["dish","ظرف"],["Iranian-Islamic culture","فرهنگ اسلامی-ایرانی"],["sing the national anthem","سرود ملی خواندن"],
-["New Year","سال نو"],["clothes","لباس"],["fun","سرگرمی"],["normally","معمولاً"],
-["bake a cake","پختن کیک"],["gift","کادو"],["Muslim","مسلمان"],["Do you buy new clothes for the New Year?","آیا برای سال جدید لباس‌های نو می‌خرید؟"],
-["We usually get money.","ما معمولاً پول می‌گیریم"],["meal","وعده غذایی"],["make lunch","ناهار درست کردن"],
-["On Eid Fitr, Muslims don’t fast.","در عید فطر، مسلمانان روزه نمی‌گیرند"],["international","بین‌المللی"],
-["hold a ceremony","جشن برپا کردن"],["fast","روزه گرفتن"],["Does your grandmother cook the New Year meal?","آیا مادربزرگت غذای سال نو را درست می‌کند؟"],
-["We always go to my grandparents’ houses.","ما همیشه به خانه پدربزرگ و مادربزرگم می‌رویم"],
-["Eid Fitr is an important religious holiday.","عید فطر یک تعطیلات مذهبی مهم است"],
-["Do Chinese people buy gold fish for the New Year?","آیا چینی‌ها برای سال نو ماهی قرمز می‌خرند؟"],
-["grandparent","پدربزرگ یا مادربزرگ"],["anniversary revolution Islamic","سالگرد انقلاب اسلامی"],
-["It’s fun!","خوش می‌گذرد!"],["make dinner","شام درست کردن"],
-["We normally visit our relatives in Norooz.","ما معمولاً در نوروز به دید و بازدید فامیل می‌رویم"],
-["Wish you a great holiday!","برای شما تعطیلات خوبی آرزو دارم!"],
-["eat nuts","آجیل خوردن"],["ceremony","مراسم"],["festival","جشنواره"],["read poems of Hafiz","حافظ اشعار خواندن"]
-],
-
-"9-4":[
-["recharge the e-ticket","شارژ مجدد بلیت الکترونیک"],["gas station","جایگاه سوخت"],
-["He often plays outside.","او اغلب بیرون از خانه بازی می‌کند"],["What does a firefighter do?","یک آتش‌نشان چه کار می‌کند؟"],
-["never","هرگز"],["Is there a fire station near here?","آیا در نزدیکی اینجا اداره آتش‌نشانی هست؟"],
-["What is her job?","شغل او چیست؟"],["Thanks a lot!","خیلی ممنون"],["fast","سریع"],
-["When is the break?","زنگ تفریح کی است؟"],["When does a firefighter go to work?","یک آتش‌نشان چه زمانی به سرکار می‌رود؟"],
-["How do you come to school?","شما چطور به مدرسه می‌آیید؟"],["firefighter","آتش‌نشان"],
-["fire station","ایستگاه آتش‌نشانی"],["cheap","ارزان"],["stamp","تمبر"],
-["send an e-mail","فرستادن ایمیل"],["open an account","باز کردن حساب بانکی"],
-["Because it’s fast and cheap.","چون سریع و ارزان است"],["I’m lost.","من گم شده‌ام"],
-["get off a bus","از اتوبوس پیاده شدن"],["envelope","پاکت نامه"],["help charity","به مؤسسه خیریه کمک کردن"],
-["donate blood","خون اهدا کردن"],["take out money","پول برداشت کردن"],["break","وقت استراحت"],
-["What can I do for you?","چه کاری از دست من برمی‌آید؟"],["Who helps lost children?","چه کسی به کودکان گمشده کمک می‌کند؟"],
-["They never come late.","آنها هیچ‌وقت دیر نمی‌آیند"],["hire a taxi","گرفتن تاکسی"],["because","چون"],
-["wake up","از خواب بیدار شدن"],["Actually it’s near here.","درواقع آن نزدیک به اینجاست"],
-["service","خدمت"],["What time does it open?","چه ساعتی باز می‌شود؟"],
-["I can take you home.","من می‌توانم تو را به خانه برسانم"],["often","اغلب"],
-["He puts out fire and saves people’s lives.","او آتش را خاموش می‌کند و جان مردم را نجات می‌دهد"],
-["Mandarin","زبان ماندارین"],["corner","گوشه"],["And is it an easy job?","و آیا آن شغل آسانی است؟"],
-["keep the city clean","شهر را تمیز نگه داشتن"],["What’s your favorite job?","شغل مورد علاقه شما چیست؟"],
-["post office","اداره پست"],["I’d like to be a firefighter.","من دوست دارم آتش‌نشان شوم"],
-["I think he goes to work on shifts.","من فکر می‌کنم او شیفتی کار می‌کند"],["I take a bus.","من سوار اتوبوس می‌شوم"],
-["She always studies hard.","او همیشه بسیار درس می‌خواند"],["bring to the ER","آوردن به اورژانس"],
-["postcard","کارت پستال"],["do voluntary work","کار داوطلبانه انجام دادن"],["shift","شیفت"],
-["Where does he work?","او کجا کار می‌کند؟"],["get on a bus","سوار اتوبوس شدن"],
-["call the emergency","به اورژانس زنگ زدن"],["It’s just round the corner.","آن درست سر پیچ است"],
-["Why does he go to work by bus?","چرا او با اتوبوس به سر کار می‌رود؟"],
-["You can get them from a post office.","می‌توانید آنها را از اداره پست بخرید"],
-["put out fire","آتش خاموش کردن"]
-],
-
-"9-5":[
-["see a war movie","یک فیلم جنگی دیدن"],["We can watch it together.","می‌توانیم با همدیگر تماشا کنیم"],
-["event","رویداد"],["update a blog","به‌روز کردن یک وبلاگ"],
-["look at the newsstand","به دکه روزنامه‌فروشی نگاهی انداختن"],["wonderful","شگفت‌انگیز"],
-["watch a quiz show","مسابقه تلویزیونی تماشا کردن"],["interview somebody","با شخصی مصاحبه کردن"],
-["attend","حضور داشتن"],["Change the TV channels","شبکه تلویزیون را عوض کردن"],
-["text a message","پیامک فرستادن"],["cartoon","کارتون"],["busy","پرمشغله"],
-["yesterday","دیروز"],["install an antivirus program","برنامه آنتی‌ویروس نصب کردن"],
-["I attended Fajr International Film Festival.","من در جشنواره بین‌المللی فیلم فجر شرکت کردم"],
-["movie","فیلم"],["amazing","شگفت‌آور"],["receive an e-mail","دریافت ایمیل کردن"],
-["It’s amazing!","محشره"],["There is a football match on TV tonight.","امشب در تلویزیون مسابقه فوتبالی پخش می‌شود"],
-["How fantastic!","چقدر جالب!"],["That’s great!","عالیه"],["Well done!","آفرین"],
-["That’s great news!","عجب خبر خوبی"],["use information technology","استفاده کردن از فناوری اطلاعات"],
-["Download something from the Internet","چیزی را از اینترنت دانلود کردن"],
-["Did you enjoy your weekend?","آیا از آخر هفته لذت بردی؟"],["text","پیام دادن"],
-["What a wonderful day!","چه روز قشنگی"],["excellent","عالی"],["comedy","نمایش خنده‌دار"],
-["install a computer dictionary","نصب کردن یک فرهنگ لغت کامپیوتری"],["media","رسانه"],
-["surf","جست‌وجو کردن در اینترنت"],["fantastic","فوق‌العاده"],
-["I am also interested in its events and movies.","من همچنین علاقه‌مند به جشنواره‌ها و فیلم سینمایی هستم"],
-["Connect to the Internet","به اینترنت وصل شدن"],["Please buy some fruits.","لطفاً مقداری میوه بخر"],
-["brilliant","عالی"],["participate in an online course","شرکت کردن در یک دوره آموزشی آنلاین"],
-["website","تارنما"],["report","گزارش"],["I get home at ...","من ... ساعت به خانه می‌رسم"],
-["Attend a TV program","در یک برنامه تلویزیونی شرکت کردن"],["Just a moment.","یک لحظه صبر کنید"],
-["That’s really nice!","عالیه واقعاً"],["That’ll be all fun!","خیلی خوش خواهد گذشت"],
-["You can surf its website if you like.","می‌توانی اگر دوست داشتی سری به وب‌سایت آنجا بزنی"],
-["IT","فناوری اطلاعات"],["Could you please give me the website address?","می‌توانید لطفاً آدرس وب‌سایت را به من بدهید؟"],
-["Did you watch the reports on TV last night?","آیا دیشب گزارش‌های تلویزیونی را تماشا کردی؟"]
-],
-
-"9-6":[
-["myself","ضمیر انعکاسی اول شخص مفرد"],["She burned her hand.","او دستش را سوزاند"],
-["head","سر"],["cookie","کلوچه"],["He hit his head on the door.","او سرش را به در زد"],
-["bruises","کبودی"],["find","پیدا کردن"],["He has a black eye.","او زیر چشمش کبود شده است"],
-["He has a scar.","او جای زخم دارد"],["Please stick a plaster on the wound.","لطفاً روی زخم چسب زخم بچسبانید"],
-["Did you hurt your back?","به کمرت آسیب رسیده است؟"],["It sometimes happens.","برخی اوقات پیش می‌آید"],
-["plan","برنامه‌ریزی کردن"],["injury","صدمه"],["She cut her finger.","او انگشتش را برید"],
-["to have an accident","کردن تصادف"],["fall down","به زمین افتادن"],["school trips","اردوهای مدرسه"],
-["I don’t like school trips.","من اردوهای مدرسه را دوست ندارم"],["That’s too bad!","چقدر بد"],
-["Last summer I fell and broke my leg.","تابستان گذشته افتادم و پایم شکست"],
-["We plan to go to the lake.","ما برنامه داریم به دریاچه برویم"],
-["Does anyone have a plaster?","آیا کسی چسب زخم دارد؟"],["It hurts a lot.","خیلی درد می‌کند"],
-["take care","مراقب بودن"],["He broke his leg.","او پایش شکست"],
-["She takes care of her mother.","او از مادرش مراقبت می‌کند"],
-["I learnt how to take care of myself.","من یاد گرفتم چگونه از خودم مراقبت کنم"],
-["Let me see.","بگذار ببینم"],["He had a car crash.","او با اتومبیل تصادف کرد"],
-["It is bleeding.","دارد خون می‌آید"],["back","پشت"],["Here you are.","بفرمایید"],
-["I participated in Helal-e-Ahmar first aid classes.","من در کلاس‌های کمک‌های اولیه هلال احمر شرکت کردم"],
-["I hurt my knee.","زانویم صدمه دیده است"],["Can you give me some advice?","می‌توانید کمی من را نصیحت کنید؟"],
-["twist","پیچ خوردن"],["He has his leg in a cast.","او پایش را گچ گرفته است"],
-["after","بعد از"],["Just a second!","فقط یک لحظه!"],["Do you want to come?","می‌خواهی بیایی؟"],
-["Please hurry up!","لطفاً عجله کنید!"],["I stayed home for two weeks!","من دو هفته در خانه ماندم!"],
-["lake","دریاچه"],["leg","پا"],["I didn’t know that.","من آن موضوع را نمی‌دانستم"],
-["She had a heart attack.","او سکته قلبی کرد"],["She takes care of her child.","او از کودکش مراقبت می‌کند"],
-["happen","اتفاق افتادن"],["break","شکستن"],["ankle","مچ پا"],
-["I twisted my ankle last winter.","زمستان گذشته مچ پایم پیچ خورد"],["cut","بریدن"]
-],
-
-"10-1":[
-["Avicenna","ابن سینا"],["leopard","پلنگ"],["box","جعبه"],["laptop","لپ‌تاپ"],
-["visitor","ملاقات‌کننده"],["die out","منقرض شدن"],["cut","قطع کردن"],["elephant","فیل"],
-["foot","پا"],["human","انسان"],["will","فعل کمکی زمان آینده"],["trip","سفر"],
-["earth","زمین"],["duck","اردک"],["travel","سفر کردن"],["life","زندگی"],
-["mean","به معنی چیزی بودن"],["endangered","در معرض انقراض"],["small","کوچک"],
-["gazelle","غزال"],["hurt","زخمی کردن"],["person","فرد"],["alive","زنده"],
-["plain","جلگه"],["tiger","ببر"],["instead","در عوض"],["sky","آسمان"],
-["information","اطلاعات"],["increase","افزایش یافتن"],["around","دور"],["future","آینده"],
-["wild","وحشی"],["dolphin","دلفین"],["injured","آسیب‌دیده"],["learn","یاد گرفتن"],
-["hear","شنیدن"],["hunter","شکارچی"],["today","امروز"],["Pay attention!","توجه کنید!"],
-["destroy","نابود کردن"],["among","درمیان"],["protect","محافظت کردن"],["hunt","شکار کردن"],
-["low","کم"],["save","نجات دادن"],["nowadays","امروزه"],["jungle","جنگل"],
-["for example","برای مثال"],["goat","بز"],["road","جاده"],["world","جهان"],
-["nature","طبیعت"],["high","بلند"],["beautiful","زیبا"],["zookeeper","نگهبان باغ وحش"],
-["natural","طبیعی"],["pain","درد"],["program","برنامه"],["whale","نهنگ"],
-["forest","جنگل"],["bear","خرس"],["bird","پرنده"],["boring","خسته‌کننده"],
-["wildlife","حیات وحش"],["attention","توجه"],["recently","اخیراً"],["safe","امن"],
-["lose","گم کردن"],["go out","بیرون رفتن"],["giraffe","زرافه"],["anymore","دیگر"],
-["wolf","گرگ"],["cheetah","یوزپلنگ"],["danger","خطر"],["plant","گیاه"],
-["cat","گربه"],["noun","اسم"],["hopefully","ان‌شاءالله"],["lion","شیر"],
-["zebra","گورخر"],["a few","تعدادی"],["movies","سینما"],["panda","پاندا"]
-],
-
-"10-2":[
-["orbit","مدار"],["large","بزرگ"],["expensive","گران"],["telescope","تلسکوپ"],
-["long","بلند"],["quality","ویژگی"],["fact","حقیقت"],["daily","روزانه"],
-["microscope","میکروسکوپ"],["Neptune","نپتون"],["powerful","نیرومند"],["dark","تیره"],
-["farthest","دورترین"],["far","دور"],["real","واقعی"],["opinion","نظر"],
-["thousand","هزار"],["easy","ساده"],["better","بهتر"],["Mars","مریخ"],
-["type","نوع"],["plasma","پلاسما"],["interested","علاقه‌مند"],["people","مردم"],
-["tall","مرتفع"],["best","بهترین"],["fatty","چرب"],["pepper","فلفل"],["much","زیاد"],
-["liquid","نقد"],["material","ماده"],["heavens","آسمان‌ها"],["camel","شتر"],
-["bad","بد"],["alike","شبیه"],["gold","طلا"],["ugly","زشت"],["Saturn","زحل"],
-["cloudy","ابری"],["oxygen","اکسیژن"],["wooden","چوبی"],["more","بیشتر"],
-["exercise","ورزش"],["planet","سیاره"],["ticket","بلیت"],["worse","بدتر"],
-["medium","متوسط"],["golden","طلایی"],["different","متفاوت"],["carbon dioxide","دی‌اکسید کربن"],
-["without","بدون"],["silver","نقره"],["microbe","میکروب"],["wonder","چیز عجیب"],
-["sun","خورشید"],["rocky","سنگی"],["worst","بدترین"],["brain","مغز"],
-["above","بالای"],["most","ترین"],["ring","حلقه"],["pump","پمپاژ کردن"],
-["million","میلیون"],["heart","قلب"],["plastic","پلاستیکی"],["true","واقعی"],
-["as","به اندازه"],["body","بدن"],["round","دور"],["Mercury","عطارد"],["ball","توپ"],
-["fresh","تازه"],["around go","حول چیزی گشتن"],["paint","رنگ"],["seafood","غذای دریایی"],
-["organ","عضو"],["donate","اهدا کردن"],["moon","ماه"],["healthy","سالم"],
-["color","رنگ"],["modern","مدرن"],["light","روشن کردن"],["delicious","خوشمزه"],
-["Venus","زهره"],["fast food","فست فود"],["defend","دفاع کردن"],["system","سیستم"],
-["Allah","الله"],["carry","حمل کردن"],["farther","دورتر"],["adjective","صفت"],
-["cell","سلول"],["observatory","رصدخانه"],["lamp","چراغ"],["clear","واضح"],
-["Jupiter","مشتری"],["collect","جمع‌آوری کردن"],["sign","نشانه"],["important","مهم"],
-["deep","عمیق"],["size","اندازه"]
-],
-
-"10-3":[
-["sadly","با ناراحتی"],["love","عاشق بودن"],["researcher","محقق"],["prophet","پیامبر"],
-["skill","مهارت"],["express","بیان کردن"],["airplane","هواپیما"],["success","موفقیت"],
-["fortunately","خوشبختانه"],["yourselves","ضمیر انعکاسی دوم شخص جمع"],["action","عمل"],
-["smoking","سیگار کشیدن"],["translator","مترجم"],["scientist","دانشمند"],["verb","فعل"],
-["kitty","گربه"],["hearing","شنوایی"],["write","نوشتن"],["themselves","ضمیر انعکاسی سوم شخص جمع"],
-["antibiotic","آنتی‌بیوتیک"],["kill","کشتن"],["drink","نوشیدن"],["seek","به‌دنبال گشتن"],
-["invention","اختراع"],["laboratory","آزمایشگاه"],["invent","اختراع کردن"],
-["No pain no gain.","نابرده رنج گنج میسر نمی‌شود"],["short","کوتاه"],["cradle","گهواره"],
-["at first","در ابتدا"],["successful","موفق"],["poor","فقیر"],["PBUH","صلی الله علیه و آله"],
-["state","حالت"],["same","همان"],["grave","قبر"],["penicillin","پنیسیلین"],
-["medicine","دارو"],["end","پایان"],["thinker","اندیشمند"],["emotion","احساس"],
-["uranium","اورانیوم"],["get around","رفت‌وآمد کردن"],["yourself","ضمیر انعکاسی دوم شخص"],
-["thought","فکر"],["solve","حل کردن"],["rain","باران آمدن"],["idea","ایده"],
-["herself","ضمیر انعکاسی سوم شخص مؤنث"],["outside","بیرون"],["easily","به راحتی"],
-["sense","حس"],["develop","توسعه دادن"],["hall","سالن"],["himself","ضمیر انعکاسی سوم شخص مذکر"],
-["emphasis","تأکید"],["rapidly","سریعاً"],["fast","سریع"],["soon","به زودی"],
-["build","ساختن"],["belief","باور"],["camera","دوربین"],["strongly","قویاً"],
-["suddenly","ناگهان"],["great","بزرگ"],["publish","منتشر کردن"],["itself","ضمیر انعکاسی سوم شخص خنثی"],
-["quit","دست کشیدن"],["weak","سست"],["light bulb","لامپ"],["writer","نویسنده"],
-["translate","ترجمه کردن"],["energetic","پرانرژی"],["such","چنین"],["holy","مقدس"],
-["noise","صدا"],["value","ارزش"],["ourselves","ضمیر انعکاسی اول شخص جمع"],
-["Believe me!","باور کن!"],["translation","ترجمه"],["grow up","بزرگ شدن"],
-["experiment","آزمایش"],["try","سعی کردن"],["yard","حیاط"],["story","داستان"],
-["believe in","اعتقاد داشتن"],["cool","باشه"],["give up","ترک کردن"],["pass away","فوت کردن"],
-["hard","سخت"],["knowledge","دانش"]
-],
-
-"10-4":[
-["may","ممکن بودن"],["Peru","پرو"],["four-season country","کشور چهار فصل"],["booklet","کتابچه"],
-["illness","بیماری"],["possibility","امکان"],["entertainment","سرگرمی"],["in","در"],
-["travel agent","کارمند آژانس مسافرتی"],["Chile","شیلی"],["May","مه"],["site","مکان"],
-["prepare","آماده کردن"],["host","میزبان"],["honestly","صادقانه"],["piano","پیانو"],
-["at","در (زمان)"],["rudely","گستاخانه"],["choice","انتخاب"],["vacation","مرخصی"],
-["home-made","خانگی"],["abroad","خارج"],["quickly","سریع"],["own","خود"],
-["probably","احتمالاً"],["ski","اسکی کردن"],["domestic","مربوط به خانه"],["often","اغلب"],
-["next to","کنار"],["can","توانستن"],["hospitable","مهمان‌نواز"],["on","در (زمان)"],
-["spend","صرف کردن"],["flight","پرواز"],["attraction","جذابیت"],["vegetable","سبزیجات"],
-["in front of","مقابل"],["popular","پرطرفدار"],["happily","با خوشحالی"],["possibly","احتمالاً"],
-["attractive","جذاب"],["sandwich","ساندویچ"],["culture","فرهنگ"],["carefully","بادقت"],
-["pyramid","هرم"],["destination","مقصد"],["suggestion","پیشنهاد"],["embassy","سفارت"],
-["remember","به یاد آوردن"],["risk","خطر"],["historical","تاریخی"],["foreign","خارجی"],
-["comfortable","راحت"],["junk food","غذای ناسالم"],["behavior","رفتار"],["billion","میلیارد"],
-["Great Wall","دیوار بزرگ چین"],["morning","صبح"],["familiar","آشنا"],["afternoon","بعدازظهر"],
-["range","گستره"],["reservation","رزرو کردن"],["Italy","ایتالیا"],["ancient","باستان"],
-["holy shrine","حرم مطهر"],["traveler","مسافر"],["Beijing","پکن"],["neatly","مرتب"],
-["actual","واقعی"],["image","وجهه"],["traditional","سنتی"],["inside","داخل"],
-["safely","به سلامت"],["India","هندوستان"],["loud","بلند"],["nicely","به خوبی"],
-["adverb","قید"],["paradise","بهشت"],["hard","سخت"],["bravely","شجاعانه"],
-["wind tower","بادگیر"],["Egypt","مصر"],["must","باید"],["late","دیر"],["should","بایستن"],
-["cannot","can + not"],["attract","جذب کردن"],["well","به‌خوبی"]
-],
-
-"11-1":[
-["general","معمولاً"],["generally","معمولاً، غالباً"],["knowledge","دانش"],["people","مردم"],
-["person","شخص"],["understanding","درک"],["relationship","رابطه"],["society","جامعه"],
-["respect","احترام گذاشتن"],["responsibility","مسئولیت"],["behavior","رفتار"],["communication","ارتباط"],
-["culture","فرهنگ"],["different","متفاوت"],["similar","مشابه"],["kindness","مهربانی"]
-],
-
-"11-2":[
-["healthy","سالم"],["lifestyle","سبک زندگی"],["exercise","ورزش"],["nutrition","تغذیه"],
-["food","غذا"],["health","سلامت"],["disease","بیماری"],["medicine","پزشکی"],
-["habit","عادت"],["sleep","خواب"],["stress","استرس"],["mental","ذهنی"],["physical","جسمی"],
-["prevent","جلوگیری کردن"],["treatment","درمان"],["patient","بیمار"]
-],
-
-"11-3":[
-["art","هنر"],["craftswoman","هنرمند"],["prize","جایزه"],["lovely","زیبا"],
-["vast","وسیع"],["touching","تأثیرگذار"],["Persian carpet","قالی ایرانی"],
-["tile","کاشی"],["carpet","فرش"],["pack","جمع کردن وسایل"],["southwest","جنوب غربی"],
-["moral","اخلاقی"],["correctly","به درستی"],["discount","تخفیف"],["introduce","معرفی کردن"],
-["diversity","تنوع"],["etc.","و غیره"],["charity","خیریه"],["unique","منحصربه‌فرد"],
-["well-known","مشهور"],["satisfied","راضی"],["at least","حداقل"],["product","محصول"],
-["neighbor","همسایه"],["activity","فعالیت"],["exam","آزمون"],["uncertain","نامطمئن"],
-["phone","تماس گرفتن"],["reflect","بازتاب کردن"]
-],
-
-"12-1":[
-["emotion","احساس، عاطفه"],["Comma","ویرگول"],["Whereby","که به وسیله آن، که به موجب آن"],
-["Reply","پاسخ دادن"],["Loving","مهربان، بامحبت"],["hard of hearing","سنگین‌گوش، کم‌شنوا"],
-["Strength","قدرت، توانایی"],["Orally","به صورت شفاهی"],["Cruel","بی‌رحم، ظالم"],
-["Reader","خواننده (کتاب و ...)"],["Elderly","سالمند"],["smart phone","تلفن هوشمند"],
-["meaningful","هدفمند، معنی‌دار"],["unconditionally","بی‌قید و شرط"],["just","تازگی، الان، چند لحظه پیش"],
-["heritage","میراث، یادگار"],["burst into tears","زیر گریه زدن، شروع به گریه کردن"],
-["take temperature","درجه حرارت بدن کسی را اندازه گرفتن"],["spare no pains","از هیچ چیز مضایقه نکردن"],
-["handle","از پس کاری برآمدن"],["common","متداول، رایج"],["tool","ابزار، وسیله"],
-["teenager","نوجوان"],["repeatedly","بارها، مکرر"],["proud","مفتخر، خشنود"],
-["technology","فناوری، تکنولوژی"],["aloud","بلند"],["diploma","دیپلم، مدرک تحصیلی"],
-["unreal","غیرواقعی، خیالی"],["ethics","فلسفه اخلاق، علم اخلاق، اخلاقیات"],
-["forgive","بخشیدن"],["guidelines","دستورالعمل‌ها، رهنمودها"],["dishwasher","ماشین ظرفشویی"],
-["grateful","سپاسگزار، قدردان، ممنون"],["medicine","پزشکی"],["ordinary","معمولی، عادی"],
-["mistake","اشتباه"],["respect","احترام گذاشتن"],["scientist","دانشمند"],["pity","حیف"],
-["surprisingly","به طور شگفت‌آور"],["inventor","مخترع، مبدع، نوآفرین"],["morals","اخلاق، اخلاقیات"],
-["regard","در نظر گرفتن، محسوب شدن"],["quite","کاملاً"],["donate","اهدا کردن"],
-["dedicated","متعهد، وفادار"],["found","بنا نهادن، تأسیس کردن"],["A.D.","پس از میلاد مسیح، میلادی"],
-["accidentally","تصادفاً، اتفاقی"],["textbook","کتاب درسی"],["microwave","مایکروویو"],
-["childhood","کودکی، بچگی"],["medical","پزشکی"],["similar","مشابه، شبیه"],
-["lower","کاهش دادن، کم کردن"],["contrast","تضاد، کنتراست"],["religious","مذهبی"],
-["professor","استاد دانشگاه"],["generation","نسل"],["kindness","مهربانی"],
-["failure","شکست، ناتوانی"],["by heart","از حفظ، از بر"],["quietly","آهسته، بی‌صدا"],
-["comprehension","فهم، درک"],["boost","بالا بردن، افزایش دادن، تقویت کردن، بهبود دادن"],
-["polite","مودب، مودبانه"],["bacteria","باکتری‌ها"],["deserve","سزاوار بودن، لایق بودن"],
-["principle","اصل اخلاقی"],["result","نتیجه، نتایج"],["poetry","شعر، اشعار"],
-["strategy","راهبرد، استراتژی"],["by the way","راستی"],["for instance","برای مثال"]
-],
-
-"12-2":[
-["generally","معمولاً، غالباً"],["unknown","نامعلوم، ناآشنا"],["level","سطح"],["colony","کلونی، انبوه"],
-["antonym","متضاد، مخالف"],["section","بخش، قسمت، ناحیه"],["pronunciation","تلفظ"],
-["expression","اصطلاح، عبارت"],["device","دستگاه، وسیله، ابزار"],["unsystematically","بدون قاعده مشخص، غیرسیستماتیک"],
-["bilingual","دوزبانه، مسلط به دو زبان"],["monolingual","تک‌زبانه"],["highlight","برجسته کردن، مورد تأکید قرار دادن، مشخص کردن"],
-["primarily","در درجه اول، عمدتاً، بیشتر"],["stand for","به معنای چیزی بودن، علامت چیزی بودن"],
-["biography","زندگینامه"],["allow","اجازه دادن"],["incomprehensible","غیرقابل فهم، مبهم"],
-["whereas","در حالی که"],["term","اصطلاح، واژه"],["jump into","ناگهان تصمیم به انجام کاری گرفتن"],
-["technical","فنی"],["figure out","فهمیدن، سر درآوردن"],["unexpectedly","به طور غیرمنتظره‌ای"],
-["treasure","گنج، گنجینه"],["mistake","اشتباه"],["respect","احترام گذاشتن"],
-["scientist","دانشمند"],["pity","حیف"],["surprisingly","به طور شگفت‌آور"],
-["inventor","مخترع، مبدع، نوآفرین"],["morals","اخلاق، اخلاقیات"],["regard","در نظر گرفتن"],
-["quite","کاملاً"],["donate","اهدا کردن"],["dedicated","متعهد، وفادار"],
-["found","بنا نهادن، تأسیس کردن"],["A.D.","میلادی"],["accidentally","تصادفاً، اتفاقی"],
-["textbook","کتاب درسی"],["microwave","مایکروویو"],["childhood","کودکی، بچگی"],
-["medical","پزشکی"],["similar","مشابه، شبیه"],["lower","کاهش دادن، کم کردن"],
-["contrast","تضاد، کنتراست"],["religious","مذهبی"],["professor","استاد دانشگاه"],
-["generation","نسل"],["kindness","مهربانی"],["failure","شکست، ناتوانی"],
-["by heart","از حفظ، از بر"],["quietly","آهسته، بی‌صدا"],["comprehension","فهم، درک"],
-["boost","بالا بردن، تقویت کردن"],["polite","مودب، مودبانه"],["bacteria","باکتری‌ها"],
-["deserve","سزاوار بودن"],["principle","اصل اخلاقی"],["result","نتیجه"],["poetry","شعر"],
-["strategy","راهبرد، استراتژی"],["by the way","راستی"],["for instance","برای مثال"]
-],
-
-"12-3":[
-["oxygen","اکسیژن"],["fan","پنکه"],["God helps those who help themselves","از تو حرکت از خدا برکت"],
-["fossil fuel","سوخت فسیلی"],["herd","گله"],["necessary","لازم، ضروری"],
-["LED light bulb","لامپ ال‌ای‌دی"],["Jupiter","مشتری"],["stable","اصطبل"],["form","شکل، نوع"],
-["joint","مفصل"],["Nobel Prize","جایزه نوبل"],["Saturn","زحل"],["reduce","کاهش دادن، کم کردن"],
-["Cut your coat according to your cloth","پا را به اندازه گلیم خود دراز کن"],
-["variety","تنوع، گستره"],["kinetic energy","انرژی جنبشی"],["chemical","شیمیایی"],
-["Uranus","اورانوس"],["pollute","آلوده کردن"],["require","نیاز داشتن، ملزم بودن"],
-["Absence makes the heart grow fonder","دوری و دوستی"],["mechanical","مکانیکی"],
-["Neptune","نپتون"],["radiation","تشعشع، تابش، پرتوافکنی"],["nuclear","هسته‌ای"],
-["light bulb","لامپ حبابی"],["energy","انرژی"],["environment","محیط زیست"],
-["renewable","تجدیدپذیر"],["resource","منبع"],["solar","خورشیدی"],
-["wind energy","انرژی باد"],["pollution","آلودگی"],["protect","محافظت کردن"]
-],
-
-"12-4":[
-["nature","طبیعت"],["natural","طبیعی"],["environment","محیط زیست"],["energy","انرژی"],
-["renewable energy","انرژی تجدیدپذیر"],["sense of appreciation","حس قدردانی"],
-["resource","منبع"],["pollution","آلودگی"],["climate","آب‌وهوا، اقلیم"],["global","جهانی"],
-["earth","زمین"],["future","آینده"],["protect","محافظت کردن"],["reduce","کاهش دادن"],
-["save","نجات دادن، صرفه‌جویی کردن"],["danger","خطر"],["wildlife","حیات وحش"],
-["forest","جنگل"],["plant","گیاه"],["animal","حیوان"]
-]
-};
-
-
-/* =========================================================
-   GRAMMAR — درس به درس
-========================================================= */
-
-const grammarByLesson={
-
-"7-1":[
-["Subject Pronouns","I, You, He, She, It, We, They","I am Ali. / She is Sara.","ضمیر فاعلی قبل از فعل قرار می‌گیرد و نشان می‌دهد چه کسی یا چه چیزی انجام‌دهنده جمله است."],
-["Verb to be","am / is / are","I am a student. / He is a teacher.","برای معرفی، بیان هویت، شغل و حالت از am/is/are استفاده می‌کنیم."],
-["Short Answers","Yes, I am. / No, I’m not.","Are you a student? — Yes, I am.","در پاسخ کوتاه، شکل مناسب فعل to be تکرار می‌شود."]
-],
-
-"7-2":[
-["This / That","This = این، That = آن","This is my book. / That is Ali.","This برای نزدیک و That برای دور به کار می‌رود."],
-["Possessive Adjectives","my, your, his, her, our, their","This is my class.","صفت ملکی مالکیت را نشان می‌دهد و قبل از اسم می‌آید."],
-["Who","Who + be ...?","Who is that boy? — He is Ali.","برای پرسیدن درباره هویت یک شخص از Who استفاده می‌کنیم."]
-],
-
-"7-3":[
-["How old","How old + be + subject?","How old are you? — I’m thirteen.","برای پرسیدن سن از How old استفاده می‌کنیم."],
-["Numbers","one, two, three ...","I’m twelve years old.","اعداد برای بیان سن و اطلاعات عددی استفاده می‌شوند."],
-["Dates and Days","day / month / date","My birthday is on Friday.","برای بیان تاریخ تولد و روزهای هفته از ساختارهای مربوط به تاریخ استفاده می‌شود."]
-],
-
-"7-4":[
-["Have / Has","I/You/We/They have — He/She/It has","She has two brothers.","برای بیان داشتن و مالکیت از have/has استفاده می‌کنیم."],
-["Possessive 's","Ali’s father / Sara’s sister","This is Mary’s mother.","برای نشان دادن مالکیت شخصی از 's استفاده می‌شود."]
-],
-
-"7-5":[
-["Adjectives","tall, short, young, old ...","He is tall. / She is young.","صفت برای توصیف اسم یا شخص استفاده می‌شود و بعد از to be نیز می‌تواند بیاید."],
-["Present Continuous","am/is/are + verb-ing","He is wearing a blue suit.","برای کاری که در زمان صحبت در حال انجام است از حال استمراری استفاده می‌کنیم."],
-["Questions with What / Which","What / Which + noun ...?","Which one is your math teacher?","What برای پرسش عمومی و Which برای انتخاب از میان گزینه‌ها کاربرد دارد."]
-],
-
-"7-6":[
-["There is / There are","There is + singular / There are + plural","There is a bed in the bedroom.","برای بیان وجود چیزی در یک مکان از There is/There are استفاده می‌کنیم."],
-["Present Continuous","am/is/are + V-ing","She is cooking.","برای کاری که اکنون در حال انجام است استفاده می‌شود."],
-["Prepositions of Place","in, on, under, near","The car is in the garage.","حروف اضافه مکان جایگاه اشیا و افراد را مشخص می‌کنند."]
-],
-
-"7-7":[
-["Prepositions of Place","in, on, near","The school is on Imam Street.","برای بیان آدرس و مکان از حروف اضافه استفاده می‌شود."],
-["Telling Time","It is + time","It is seven o’clock.","برای پرسیدن و گفتن ساعت از What time is it? و It is ... استفاده می‌کنیم."],
-["a.m. / p.m.","a.m. / p.m.","It is 8 a.m.","a.m. برای قبل از ظهر و p.m. برای بعد از ظهر استفاده می‌شود."]
-],
-
-"7-8":[
-["Like","like + noun / like + V-ing","I like apples. / I like swimming.","برای بیان علاقه از like استفاده می‌کنیم."],
-["Would like","would like + noun / to + verb","I’d like some tea.","Would like برای بیان خواسته به شکل مؤدبانه استفاده می‌شود."],
-["Suggestions","Let’s + base verb","Let’s play chess.","برای پیشنهاد انجام کاری با هم از Let’s استفاده می‌کنیم."]
-],
-
-"8-1":[
-["Be with Nationalities","am / is / are","I’m Iranian. / She is French.","برای بیان ملیت و معرفی افراد از فعل be استفاده می‌شود."],
-["Where ... from?","Where + be + subject + from?","Where are they from?","برای پرسیدن ملیت یا کشور مبدأ از این ساختار استفاده می‌کنیم."]
-],
-
-"8-2":[
-["Simple Present","subject + base verb / s","I go to school every day.","حال ساده برای عادت‌ها و کارهای تکراری استفاده می‌شود."],
-["Time Expressions","every day, usually, always, sometimes, never","I usually study at night.","قیدها و عبارت‌های زمانی تکرار یا زمان انجام کار را نشان می‌دهند."]
-],
-
-"8-3":[
-["Can / Cannot","can + base verb / cannot + base verb","I can swim. / I can’t draw.","can برای توانایی و cannot/can’t برای ناتوانی استفاده می‌شود."],
-["Questions with Can","Can + subject + base verb?","Can you play chess?","در سؤال با can، can قبل از فاعل می‌آید."]
-],
-
-"8-4":[
-["Should / Shouldn’t","should + base verb","You should rest.","Should برای توصیه و پیشنهاد مناسب استفاده می‌شود."],
-["Have / Has","have / has","I have a headache. / She has a fever.","برای بیان داشتن بیماری یا علائم جسمی از have/has استفاده می‌کنیم."],
-["Why don’t you ...?","Why don’t you + base verb?","Why don’t you see a doctor?","برای پیشنهاد یا توصیه می‌توان از Why don’t you ...? استفاده کرد."]
-],
-
-"8-5":[
-["There is / There are","There is + singular / There are + plural","There are many museums.","برای بیان وجود مکان‌ها و بناها استفاده می‌شود."],
-["What’s it like?","What is + subject + like?","What’s Isfahan like?","برای پرسیدن درباره ویژگی یا خصوصیات یک مکان استفاده می‌شود."],
-["Prepositions of Place","in, near, downtown, north of ...","The city is in the center of Iran.","برای بیان موقعیت جغرافیایی از حروف اضافه مکان استفاده می‌شود."]
-],
-
-"8-6":[
-["Weather with be","It is + adjective","It is cold in winter.","برای توصیف آب‌وهوا معمولاً از It is استفاده می‌شود."],
-["There is / There are","There is / There are","There is a river near the village.","برای بیان وجود عناصر طبیعی از There is/There are استفاده می‌شود."]
-],
-
-"8-7":[
-["Gerund after Like/Love","like/love + V-ing","I love reading.","پس از like و love برای بیان علاقه به فعالیت، شکل ing به کار می‌رود."],
-["Adverbs of Frequency","always, usually, sometimes, never","I usually go to the gym.","قیدهای تکرار معمولاً قبل از فعل اصلی قرار می‌گیرند."]
-],
-
-"9-1":[
-["Adjectives","kind, clever, patient, shy ...","He is kind and clever.","برای توصیف شخصیت از صفت استفاده می‌کنیم."],
-["What ... like?","What + be + person + like?","What is your friend like?","برای پرسیدن ویژگی‌های شخصیتی یک نفر استفاده می‌شود."],
-["Adverbs of Frequency","always, usually, often, never","She always helps me.","قید تکرار میزان تکرار یک عمل را نشان می‌دهد."]
-],
-
-"9-2":[
-["Present Continuous","am/is/are + V-ing","Are you working with the computer now?","برای کاری که در زمان حال در حال انجام است استفاده می‌شود."],
-["Travel Expressions","book, reservation, check in, board ...","I have a reservation here.","عبارت‌های مربوط به رزرو، هتل، فرودگاه و سفر در این درس کاربرد دارند."]
-],
-
-"9-3":[
-["Simple Present","do/does + base verb","Do you buy new clothes?","برای عادت‌ها، برنامه‌های تکراری و مراسم سالانه از حال ساده استفاده می‌شود."],
-["Yes/No Questions","Do/Does + subject + verb?","Does your grandmother cook the New Year meal?","برای سؤال‌های بله/خیر در حال ساده از Do و Does استفاده می‌کنیم."]
-],
-
-"9-4":[
-["Simple Present Questions","Do/Does + subject + base verb?","What does a firefighter do?","برای پرسیدن درباره شغل، فعالیت و کارهای روزمره استفاده می‌شود."],
-["Wh- Questions","What, When, Where, Why, How","When does he go to work?","کلمات پرسشی اطلاعات مشخصی درباره زمان، مکان، علت یا شیوه می‌گیرند."],
-["Adverbs of Frequency","often, never, always","He often plays outside.","قیدهای تکرار معمولاً قبل از فعل اصلی قرار می‌گیرند."]
-],
-
-"9-5":[
-["Simple Past","subject + V2","I attended the festival.","برای رویدادهای کامل‌شده در گذشته استفاده می‌شود."],
-["Past Time Expressions","yesterday, last night, last week","Did you watch the reports last night?","عبارت‌های زمانی گذشته به تشخیص زمان رویداد کمک می‌کنند."],
-["Past Questions","Did + subject + base verb?","Did you enjoy your weekend?","در سؤال گذشته ساده از Did و شکل ساده فعل استفاده می‌شود."]
-],
-
-"9-6":[
-["Simple Past","regular/irregular verbs","I fell and broke my leg.","برای رویدادهای کامل‌شده در گذشته استفاده می‌شود."],
-["Irregular Verbs","fall → fell, break → broke, have → had","She had a heart attack.","افعال بی‌قاعده در گذشته شکل ویژه خود را دارند."],
-["Object Pronouns","me, you, him, her, it, us, them","She takes care of him.","ضمیر مفعولی بعد از فعل یا حرف اضافه قرار می‌گیرد."]
-],
-
-"10-1":[
-["Future with Will","will + base verb","I will travel tomorrow.","Will برای پیش‌بینی، تصمیم یا اتفاق آینده استفاده می‌شود."],
-["Be Going To","am/is/are going to + base verb","I’m going to visit the forest.","برای برنامه یا قصد آینده از be going to استفاده می‌شود."],
-["Nouns","singular / plural / proper / common","A tiger is an endangered animal.","اسم‌ها می‌توانند مفرد، جمع، خاص یا عام باشند."]
-],
-
-"10-2":[
-["Adjectives","beautiful, large, powerful ...","Jupiter is a large planet.","صفات ویژگی‌های اسم را بیان می‌کنند."],
-["Comparative","adjective + er / more + adjective","Mars is smaller than Jupiter.","برای مقایسه دو چیز از صفت تفضیلی استفاده می‌کنیم."],
-["Superlative","the + adjective-est / the most + adjective","Jupiter is the largest planet.","برای مقایسه یک مورد با یک گروه از صفت عالی استفاده می‌کنیم."]
-],
-
-"10-3":[
-["Reflexive Pronouns","myself, yourself, himself, herself, itself, ourselves, yourselves, themselves","He taught himself.","ضمیر انعکاسی زمانی استفاده می‌شود که فاعل و مفعول یک نفر یا یک چیز باشند."],
-["Simple Past","V2","He invented penicillin.","برای بیان رویدادهای گذشته استفاده می‌شود."],
-["Adverbs","sadly, fortunately, rapidly, suddenly ...","Fortunately, he succeeded.","قیدها فعل، صفت یا کل جمله را توصیف می‌کنند."]
-],
-
-"10-4":[
-["Modal Verbs","can, may, must, should","You must follow the rules.","افعال وجهی توانایی، امکان، الزام یا توصیه را بیان می‌کنند."],
-["Adverbs","quickly, carefully, happily ...","She answered politely.","قیدها نحوه انجام عمل را مشخص می‌کنند."],
-["Prepositions","in, on, at, next to, in front of","The hotel is next to the museum.","حروف اضافه رابطه مکان، زمان یا موقعیت را مشخص می‌کنند."]
-],
-
-"11-1":[
-["Countable / Uncountable Nouns","a/an, some, much, many","Many people study English.","اسم‌های قابل شمارش و غیرقابل شمارش با تعیین‌کننده‌های متفاوت می‌آیند."],
-["Quantifiers","many, much, a lot of, few, little","There are many students.","برای بیان مقدار یا تعداد از Quantifier استفاده می‌شود."]
-],
-
-"11-2":[
-["Present Perfect","have/has + past participle","I have finished my homework.","حال کامل برای تجربه، نتیجه حال یا کاری که از گذشته تا حال ادامه داشته است استفاده می‌شود."],
-["Since / For","since + starting point / for + duration","I have lived here since 2020. / I have lived here for six years.","Since نقطه شروع و For مدت زمان را نشان می‌دهد."],
-["Ever / Never / Already / Yet","ever, never, already, yet","Have you ever visited Tehran?","این قیدها برای تجربه و وضعیت انجام‌شدن کار در حال کامل استفاده می‌شوند."]
-],
-
-"11-3":[
-["Gerund","verb + ing as noun","Reading is useful.","Gerund شکل ing فعل است که نقش اسم پیدا می‌کند."],
-["Present Participle","verb + ing","The smiling girl is my sister.","Present participle می‌تواند برای توصیف اسم یا ساخت زمان استمراری استفاده شود."],
-["Past Participle","V3","The broken window was repaired.","شکل سوم فعل در زمان‌های کامل و ساخت مجهول کاربرد دارد."]
-],
-
-"12-1":[
-["Present Perfect","have/has + past participle","She has already finished her work.","حال کامل برای تجربه، نتیجه حال و کارهایی که زمان دقیقشان مهم نیست استفاده می‌شود."],
-["Perfect Time Expressions","already, yet, ever, never, just, for, since","I have just called him.","این کلمات زمان و وضعیت عمل را در حال کامل مشخص می‌کنند."],
-["Past Participle","V3","He has written a letter.","در ساخت حال کامل از شکل سوم فعل استفاده می‌شود."]
-],
-
-"12-2":[
-["Parts of Speech","noun, verb, adjective, adverb ...","Knowledge is important.","شناخت نقش واژه‌ها برای تحلیل و درک ساختار جمله ضروری است."],
-["Relative Clauses","who, which, that","The man who lives here is a doctor.","عبارت موصولی درباره یک اسم اطلاعات بیشتری می‌دهد."],
-["Word Formation","prefix / suffix","unusual, meaningful, carefully","با افزودن پیشوند یا پسوند می‌توان نقش یا معنای واژه را تغییر داد."]
-],
-
-"12-3":[
-["Passive Voice","be + past participle","Energy is produced by the sun.","در مجهول تمرکز روی عمل یا نتیجه است، نه انجام‌دهنده عمل."],
-["Modal Passive","modal + be + past participle","Energy should be saved.","پس از فعل وجهی در ساخت مجهول از be + V3 استفاده می‌کنیم."],
-["Relative Clauses","who, which, that","The planet which we study is Mars.","عبارت موصولی برای اتصال اطلاعات درباره اسم استفاده می‌شود."]
-],
-
-"12-4":[
-["Second Conditional","If + past simple, would + base verb","If I had more time, I would study nature.","شرط نوع دوم برای موقعیت فرضی یا غیرواقعی در زمان حال یا آینده استفاده می‌شود."],
-["Past Perfect","had + past participle","They had left before I arrived.","Past Perfect برای عملی که قبل از عمل دیگری در گذشته اتفاق افتاده است استفاده می‌شود."],
-["Question Tags","statement + short question","It is cold, isn’t it?","Question Tag برای گرفتن تأیید یا اطمینان از درستی یک جمله استفاده می‌شود."]
-]
-};
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-function login(){
- document.body.innerHTML=`
- <div class="login">
-  <div class="loginCard">
-   <div style="text-align:center;font-size:55px">🎓</div>
-   <h1 style="text-align:center;color:#6d28d9">AliNagheli English</h1>
-   <p class="muted" style="text-align:center">سامانه آموزش زبان انگلیسی</p>
-
-   <div class="tabs">
-    <button id="studentTab" class="tab active" onclick="showLogin('student')">👨‍🎓 زبان‌آموز</button>
-    <button id="adminTab" class="tab" onclick="showLogin('admin')">👨‍💼 مدیر</button>
-   </div>
-
-   <div id="loginMessage"></div>
-
-   <div id="studentLogin">
-    <label>شماره موبایل</label>
-    <input id="loginPhone" inputmode="tel" placeholder="0914...">
-
-    <label>رمز عبور</label>
-    <input id="loginPassword" type="password" placeholder="رمز عبور">
-
-    <button class="btn full" onclick="studentLogin()">ورود زبان‌آموز</button>
-
-    <button class="btn secondary full" style="margin-top:8px" onclick="registerForm()">
-     ثبت‌نام زبان‌آموز جدید
-    </button>
-   </div>
-
-   <div id="adminLogin" class="hidden">
-    <label>ایمیل مدیر</label>
-    <input id="adminEmail" type="email" placeholder="ایمیل">
-
-    <label>رمز عبور</label>
-    <input id="adminPassword" type="password" placeholder="رمز عبور">
-
-    <button class="btn full" onclick="adminLogin()">ورود مدیر</button>
-   </div>
+  <div style="
+   text-align:center;
+   font-size:16px;
+   color:#6d28d9;
+   font-weight:bold
+  ">
+   🎉 نتیجه آزمون تعیین سطح
   </div>
- </div>`;
-}
 
-function showLogin(type){
- document.getElementById("studentLogin").classList.toggle("hidden",type!=="student");
- document.getElementById("adminLogin").classList.toggle("hidden",type!=="admin");
- document.getElementById("studentTab").classList.toggle("active",type==="student");
- document.getElementById("adminTab").classList.toggle("active",type==="admin");
-}
+  <div class="score">
+   \${score}/\${total}
+  </div>
 
-function loginMessage(text,type="bad"){
- const e=document.getElementById("loginMessage");
- if(!e)return;
- e.innerHTML=`<div class="feedback ${type}">${esc(text)}</div>`;
-}
+  <div class="grid" style="margin:15px 0">
 
+   <div class="item" style="text-align:center">
 
-/* =========================================================
-   REGISTER
-========================================================= */
+    <div class="icon" style="font-size:28px">
+     ✅
+    </div>
 
-function registerForm(){
- document.getElementById("studentLogin").innerHTML=`
- <h3>📝 ثبت‌نام زبان‌آموز</h3>
+    <b>پاسخ درست</b>
 
- <label>نام</label>
- <input id="regFirst">
+    <h2 style="color:#166534;margin:6px 0">
+     \${score}
+    </h2>
 
- <label>نام خانوادگی</label>
- <input id="regLast">
-
- <label>شماره موبایل</label>
- <input id="regPhone" inputmode="tel" placeholder="0914...">
-
- <label>پایه / سطح</label>
- <select id="regLevel">
-  <option value="7">پایه هفتم</option>
-  <option value="8">پایه هشتم</option>
-  <option value="9">پایه نهم</option>
-  <option value="10">پایه دهم</option>
-  <option value="11">پایه یازدهم</option>
-  <option value="12">پایه دوازدهم</option>
-  <option value="A1">A1</option>
-  <option value="A2">A2</option>
-  <option value="B1">B1</option>
-  <option value="B2">B2</option>
-  <option value="C1">C1</option>
-  <option value="C2">C2</option>
- </select>
-
- <label>رمز عبور</label>
- <input id="regPassword" type="password">
-
- <button class="btn full" onclick="registerStudent()">ارسال درخواست ثبت‌نام</button>
- <button class="btn secondary full" style="margin-top:8px" onclick="login()">بازگشت</button>`;
-}
-
-async function registerStudent(){
- const first=document.getElementById("regFirst").value.trim();
- const last=document.getElementById("regLast").value.trim();
- const phone=normalizePhone(document.getElementById("regPhone").value);
- const level=document.getElementById("regLevel").value;
- const password=document.getElementById("regPassword").value;
-
- if(!first||!last||!phone||!password){
-  alert("همه اطلاعات را کامل کنید.");
-  return;
- }
-
- try{
-  const r=await accessFunction({
-   action:"register",
-   first_name:first,
-   last_name:last,
-   phone,
-   level,
-   password
-  });
-
-  alert(r.message||"درخواست ثبت‌نام ارسال شد.");
-  login();
- }catch(e){
-  alert(e.message);
- }
-}
-
-
-/* =========================================================
-   AUTH
-========================================================= */
-
-async function studentLogin(){
- const phone=normalizePhone(document.getElementById("loginPhone").value);
- const password=document.getElementById("loginPassword").value;
-
- if(!phone||!password){
-  loginMessage("شماره موبایل و رمز عبور را وارد کنید.");
-  return;
- }
-
- try{
-  const found=await accessFunction({action:"find",phone});
-
-  if(!found.student){
-   loginMessage("زبان‌آموزی با این شماره پیدا نشد.");
-   return;
-  }
-
-  if(found.student.status!=="registered"){
-   loginMessage("حساب شما هنوز توسط مدیر تأیید نشده است.");
-   return;
-  }
-
-  const email=found.student.login_email||
-   `${phone}@alinagheli.com`;
-
-  const r=await db.auth.signInWithPassword({
-   email,
-   password
-  });
-
-  if(r.error)throw r.error;
-
-  S.student=found.student;
-  S.admin=false;
-
-  await loadStudentStats();
-  home();
-
- }catch(e){
-  loginMessage(e.message||"ورود انجام نشد.");
- }
-}
-
-async function adminLogin(){
- const email=document.getElementById("adminEmail").value.trim();
- const password=document.getElementById("adminPassword").value;
-
- try{
-  const r=await db.auth.signInWithPassword({
-   email,
-   password
-  });
-
-  if(r.error)throw r.error;
-
-  const session=r.data.session;
-  const check=await fetch(ADMIN_FUNCTION,{
-   method:"POST",
-   headers:{
-    "Content-Type":"application/json",
-    "apikey":SUPABASE_KEY,
-    "Authorization":"Bearer "+session.access_token
-   },
-   body:JSON.stringify({action:"list"})
-  });
-
-  const data=await check.json().catch(()=>null);
-
-  if(!check.ok||!data?.ok){
-   await db.auth.signOut();
-   throw new Error("این حساب دسترسی مدیر ندارد.");
-  }
-
-  S.admin=true;
-  S.student=null;
-
-  renderAdmin(data.students||[],data.requests||[]);
-
- }catch(e){
-  loginMessage(e.message||"ورود مدیر انجام نشد.");
- }
-}
-
-
-/* =========================================================
-   HEADER / RENDER
-========================================================= */
-
-function header(title){
- return `
- <header class="header">
-  <div class="headerIn">
-   <div>
-    <div class="logo">AliNagheli English</div>
-    <div class="muted" style="color:#ddd">${esc(title)}</div>
    </div>
-   <button class="btn secondary" onclick="logout()">خروج</button>
+
+
+   <div class="item" style="text-align:center">
+
+    <div class="icon" style="font-size:28px">
+     ❌
+    </div>
+
+    <b>پاسخ غلط</b>
+
+    <h2 style="color:#991b1b;margin:6px 0">
+     \${wrong}
+    </h2>
+
+   </div>
+
+
+   <div class="item" style="text-align:center">
+
+    <div class="icon" style="font-size:28px">
+     📊
+    </div>
+
+    <b>درصد</b>
+
+    <h2 style="color:#6d28d9;margin:6px 0">
+     \${percent}%
+    </h2>
+
+   </div>
+
   </div>
- </header>`;
-}
 
-function render(title,content){
- document.body.innerHTML=
- header(title)+
- `<main class="container">${content}</main>`+
- (S.student?bottomNav():"");
-}
 
-function bottomNav(){
- return `
- <nav class="bottom">
-  <div class="bottomIn">
-   <button class="nav active" onclick="home()"><b>🏠</b>خانه</button>
-   <button class="nav" onclick="courses()"><b>📚</b>دروس</button>
-   <button class="nav" onclick="records()"><b>🏆</b>رکوردها</button>
-   <button class="nav" onclick="profile()"><b>👤</b>پروفایل</button>
-   <button class="nav" onclick="teachers()"><b>👨‍🏫</b>استاد</button>
+  <div style="
+   text-align:center;
+   background:#ede9fe;
+   border-radius:20px;
+   padding:18px;
+   margin-top:12px
+  ">
+
+   <div style="
+    font-size:13px;
+    color:#5b21b6
+   ">
+    سطح پیشنهادی شما
+   </div>
+
+   <div style="
+    font-size:42px;
+    font-weight:900;
+    color:#6d28d9;
+    margin:4px 0
+   ">
+    \${level}
+   </div>
+
+   <b>
+    \${levelText}
+   </b>
+
   </div>
- </nav>`;
-}
 
 
-/* =========================================================
-   HOME
-========================================================= */
+  <p style="
+   text-align:center;
+   line-height:2;
+   margin:16px 0 8px
+  ">
+   این سطح بر اساس تعداد پاسخ‌های درست شما در آزمون تعیین سطح محاسبه شده است.
+  </p>
 
-async function home(){
- if(!S.student){
-  login();
-  return;
- }
 
- const name=
- `${S.student.first_name||""} ${S.student.last_name||""}`.trim();
+  <button
+   class="btn full"
+   onclick="home()"
+  >
+   بازگشت به خانه
+  </button>
 
- render("خانه",`
- <div class="hero">
-  <h2>سلام ${esc(name)} 👋</h2>
-  <p>به فضای یادگیری AliNagheli خوش آمدی.</p>
  </div>
 
- ${await reservationNoticeHTML()}
+ \`;
 
- <div class="grid">
-  <div class="profileStat">
-   وضعیت ثبت‌نام
-   <b>${esc(S.student.status||"-")}</b>
-  </div>
-  <div class="profileStat">
-   پایه / سطح
-   <b>${esc(S.student.level||"-")}</b>
-  </div>
-  <div class="profileStat">
-   XP
-   <b>${S.xp}</b>
-  </div>
-  <div class="profileStat">
-   Level
-   <b>${S.level}</b>
-  </div>
- </div>
-
- <div class="card">
-  <h3>🚀 شروع سریع</h3>
-  <div class="grid">
-   <div class="item" onclick="courses()">
-    <div class="icon">📚</div>
-    <h3>کتاب‌های مدرسه</h3>
-    <p class="muted">پایه‌های هفتم تا دوازدهم</p>
-   </div>
-
-   <div class="item" onclick="placementTest()">
-    <div class="icon">🎯</div>
-    <h3>تعیین سطح</h3>
-    <p class="muted">آزمون ۳۰ سؤالی</p>
-   </div>
-
-   <div class="item" onclick="startContest()">
-    <div class="icon">🏆</div>
-    <h3>مسابقه رکوردی</h3>
-    <p class="muted">۱۰۰ سؤال</p>
-   </div>
-
-   <div class="item" onclick="teachers()">
-    <div class="icon">👨‍🏫</div>
-    <h3>رزرو کلاس</h3>
-    <p class="muted">درخواست زمان کلاس</p>
-   </div>
-  </div>
- </div>
- `);
 }
 
-async function reservationNoticeHTML(){
- try{
-  const r=await db.from("teacher_requests")
-   .select("*")
-   .eq("student_id",S.student.id)
-   .order("created_at",{ascending:false});
+`+src.slice(placementEnd);
 
-  if(r.error||!r.data?.length)return "";
-
-  const latest=r.data[0];
-
-  if(latest.status==="approved"){
-   return `
-   <div class="feedback ok">
-    درخواست رزرو شما توسط استاد تأیید شد، لطفاً برای هماهنگی با استاد تماس بگیرید.
-    <br><br>
-    <a class="btn success" href="tel:09141892768">📞 تماس با استاد</a>
-   </div>`;
-  }
-
-  if(latest.status==="rejected"){
-   return `
-   <div class="feedback bad">
-    درخواست رزرو شما توسط استاد رد شد، لطفاً برای هماهنگی با استاد تماس بگیرید.
-    <br><br>
-    <a class="btn danger" href="tel:09141892768">📞 تماس با استاد</a>
-   </div>`;
-  }
-
-  return `
-  <div class="notice">
-   ⏳ درخواست رزرو شما در انتظار بررسی مدیر است.
-  </div>`;
-
- }catch(e){
-  return "";
- }
 }
 
 
@@ -1437,1209 +228,495 @@ async function reservationNoticeHTML(){
    COURSES
 ========================================================= */
 
-function courses(){
- render("دروس مدرسه",`
+replaceBlock(
+"function courses(){",
+"function grade(g){",
+
+`function courses(){
+
+ render("دروس مدرسه",\`
+
  <div class="card">
-  <h2>📚 کتاب‌های مدرسه</h2>
+
+  <h2>
+   📚 کتاب‌های مدرسه
+  </h2>
+
   <div class="grid">
-   ${Object.keys(books).map(g=>`
-   <div class="item" onclick="grade(${g})">
-    <div class="icon">📖</div>
-    <h3>پایه ${g}</h3>
-    <p class="muted">${esc(books[g].title)}</p>
-    <button class="btn full">مشاهده درس‌ها</button>
-   </div>
-   `).join("")}
-  </div>
- </div>
- `);
-}
 
-function grade(g){
- S.grade=g;
+   \${Object.keys(books).map(g=>\`
 
- render("پایه "+g,`
- <div class="card">
-  <button class="btn secondary" onclick="courses()">← بازگشت</button>
-  <h2>پایه ${g} — ${esc(books[g].title)}</h2>
+    <div
+     class="item"
+     onclick="grade(\${g})"
+    >
 
-  <div class="lessonGrid">
-   ${books[g].lessons.map((x,i)=>{
-    const p=S.progress[`${g}-${i}`]||{progress:0,completed:false};
-
-    return `
-    <div class="lesson" onclick="openLesson(${i})">
-     <div class="lessonNo">${i+1}</div>
-     <h3>${esc(x)}</h3>
-     <p class="muted">گرامر · لغات PDF · آزمون · مکالمه</p>
-     <div class="progress">
-      <i style="width:${p.progress||0}%"></i>
+     <div class="icon">
+      📖
      </div>
-     <small>${p.completed?"✅ تکمیل شده":"⏳ "+(p.progress||0)+"%"}</small>
-    </div>`;
-   }).join("")}
-  </div>
- </div>
- `);
-}
 
-function openLesson(i){
- S.lesson=i;
+     <h3>
+      پایه \${g}
+     </h3>
 
- const no=i+1;
- const key=`${S.grade}-${no}`;
- const book=books[S.grade];
- const g=grammarByLesson[key]||[];
- const vocab=wordsByGrade[key]||[];
+     <p class="muted">
+      \${esc(books[g].title)}
+     </p>
 
- render("درس "+no,`
- <div class="card">
+     <button class="btn full">
+      مشاهده درس‌ها
+     </button>
 
-  <button class="btn secondary" onclick="grade(${S.grade})">
-   ← بازگشت
-  </button>
-
-  <h2>${esc(book.lessons[i])}</h2>
-
-  <div class="tabs2">
-   <button class="tab2 active" onclick="lessonTab(0)">📘 گرامر</button>
-   <button class="tab2" onclick="lessonTab(1)">🔊 لغات</button>
-   <button class="tab2" onclick="lessonTab(2)">🗣️ مکالمه</button>
-   <button class="tab2" onclick="lessonTab(3)">📝 آزمون</button>
-  </div>
-
-  <div id="s0" class="sec active">
-   ${g.length?g.map(x=>`
-   <div class="grammar">
-    <h3>${esc(x[0])}</h3>
-    <p>${esc(x[3])}</p>
-    <div class="example">${esc(x[1])}</div>
-    <p><b>مثال:</b> ${esc(x[2])}</p>
-   </div>
-   `).join(""):
-   `<div class="notice">محتوای گرامر این درس در حال بروزرسانی است.</div>`}
-
-   <button class="btn full" onclick="completeLesson('${S.grade}-${i}')">
-    ✅ تکمیل مطالعه این درس
-   </button>
-  </div>
-
-  <div id="s1" class="sec">
-   <h3>🔊 واژگان دقیق PDF — ${vocab.length} مورد</h3>
-   <p class="muted">روی هر واژه بزن تا تلفظ انگلیسی پخش شود.</p>
-
-   <div class="wordGrid">
-    ${vocab.map(w=>`
-    <div class="word" onclick='speak(${JSON.stringify(w[0])})'>
-     <div class="en">🔊 ${esc(w[0])}</div>
-     <div class="fa">${esc(w[1])}</div>
     </div>
-    `).join("")}
-   </div>
-  </div>
 
-  <div id="s2" class="sec">
-   <div class="notice">درحال بروزرسانی</div>
-  </div>
+   \`).join("")}
 
-  <div id="s3" class="sec">
-   <div id="lessonQuiz"></div>
   </div>
 
  </div>
- `);
+
+
+ <div class="card conversationUpdateCard">
+
+  <div style="text-align:center">
+
+   <div class="icon">
+    🗣️
+   </div>
+
+   <h2>
+    مکالمه
+   </h2>
+
+   <p class="muted">
+    بخش آموزش مکالمه به‌زودی با محتوای کامل در دسترس خواهد بود.
+   </p>
+
+   <div
+    class="notice"
+    style="margin-top:12px"
+   >
+    🚧 در حال بروز رسانی
+   </div>
+
+  </div>
+
+ </div>
+
+ \`);
+
 }
 
-function lessonTab(n){
- document.querySelectorAll(".sec").forEach((x,i)=>{
-  x.classList.toggle("active",i===n);
- });
- document.querySelectorAll(".tab2").forEach((x,i)=>{
-  x.classList.toggle("active",i===n);
- });
- if(n===3)startLessonQuiz();
-}
+`
 
-async function completeLesson(key){
- await saveProgress(key,100,true);
- await addXP(20);
- alert("درس با موفقیت تکمیل شد! ⭐ +20 XP");
- openLesson(S.lesson);
-}
+);
 
 
 /* =========================================================
-   PROGRESS / XP
+   HOME
 ========================================================= */
 
-function calculateLevel(xp){
- return Math.max(1,Math.floor(Number(xp||0)/100)+1);
-}
+replaceBlock(
+"function home(){",
+"/* TEACHERS */",
 
-async function loadStudentStats(){
- if(!S.student)return;
+`function home(){
 
- S.xp=0;
- S.level=1;
- S.progress={};
- S.achievements=[];
- S.exams=[];
+ const xp=S.xp||0;
 
- try{
-  const r=await db.from("student_xp")
-   .select("xp,level")
-   .eq("student_id",S.student.id)
-   .maybeSingle();
+ const level=
+ S.level||
+ calculateLevel(xp);
 
-  if(r.data){
-   S.xp=Number(r.data.xp||0);
-   S.level=Number(r.data.level||calculateLevel(S.xp));
-  }
- }catch(e){}
+ const base=
+ xpForLevel(level);
 
- try{
-  const r=await db.from("student_progress")
-   .select("lesson_id,progress,completed")
-   .eq("student_id",S.student.id);
+ const next=
+ xpForLevel(level+1);
 
-  (r.data||[]).forEach(x=>{
-   S.progress[x.lesson_id]={
-    progress:Number(x.progress||0),
-    completed:Boolean(x.completed)
-   };
-  });
- }catch(e){}
-
- try{
-  const r=await db.from("student_achievements")
-   .select("achievement_key,title")
-   .eq("student_id",S.student.id);
-
-  S.achievements=r.data||[];
- }catch(e){}
-
- try{
-  const r=await db.from("exam_results")
-   .select("*")
-   .eq("user_id",S.student.auth_user_id)
-   .order("created_at",{ascending:false});
-
-  S.exams=r.data||[];
- }catch(e){}
-}
-
-async function addXP(amount){
- if(!S.student)return;
-
- S.xp+=Number(amount||0);
- S.level=calculateLevel(S.xp);
-
- try{
-  await db.from("student_xp").upsert({
-   student_id:S.student.id,
-   xp:S.xp,
-   level:S.level,
-   updated_at:new Date().toISOString()
-  },{onConflict:"student_id"});
- }catch(e){}
-}
-
-async function saveProgress(key,progress,completed){
- S.progress[key]={progress,completed};
-
- if(!S.student)return;
-
- try{
-  await db.from("student_progress").upsert({
-   student_id:S.student.id,
-   lesson_id:key,
-   progress,
-   completed
-  },{onConflict:"student_id,lesson_id"});
- }catch(e){}
-}
+ const percent=
+ Math.min(
+ 100,
+ Math.round(
+  ((xp-base)/(next-base))*100
+ )
+ );
 
 
-/* =========================================================
-   LESSON QUIZ
-========================================================= */
+ render("خانه",\`
 
-function makeLessonQuestions(){
- const key=`${S.grade}-${S.lesson+1}`;
- const ws=wordsByGrade[key]||[];
- const gs=grammarByLesson[key]||[];
- const arr=[];
+ <div class="hero hero3d homeHeroPlus">
 
- ws.slice(0,10).forEach((w,i)=>{
-  const others=shuffle(
-   ws.filter((_,j)=>j!==i).map(x=>x[1])
-  ).slice(0,3);
+  <div style="
+   position:relative;
+   z-index:2
+  ">
 
-  const opts=shuffle([w[1],...others]);
+   <div style="
+    font-size:13px;
+    opacity:.85;
+    letter-spacing:1px
+   ">
+    WELCOME TO
+   </div>
 
-  arr.push({
-   q:`معنی "${w[0]}" چیست؟`,
-   options:opts,
-   answer:opts.indexOf(w[1])
-  });
- });
 
- gs.forEach(g=>{
-  arr.push({
-   q:`کدام گزینه مربوط به «${g[0]}» است؟`,
-   options:shuffle([
-    g[1],
-    "She are happy.",
-    "They is students.",
-    "He am a teacher."
-   ]),
-   answer:0
-  });
- });
+   <h1 style="
+    font-size:34px;
+    margin:8px 0
+   ">
+    AliNagheli English 🚀
+   </h1>
 
- return arr.slice(0,15);
-}
 
-function startLessonQuiz(){
- S.quiz={
-  type:"lesson",
-  title:`پایه ${S.grade} - ${books[S.grade].lessons[S.lesson]}`,
-  questions:makeLessonQuestions(),
-  i:0,
-  correct:0,
-  wrong:0
- };
+   <h2>
+    سلام
+    \${esc(
+     S.student?.first_name||
+     "زبان‌آموز"
+    )}
+    👋
+   </h2>
 
- quizRender("lessonQuiz");
-}
 
-function quizRender(id){
- const q=S.quiz?.questions[S.quiz?.i];
+   <p style="
+    font-size:15px;
+    line-height:2
+   ">
+    یادگیری انگلیسی را حرفه‌ای،
+    مرحله‌به‌مرحله و جذاب ادامه بده.
+   </p>
 
- if(!q){
-  quizFinish(id);
-  return;
- }
 
- const el=document.getElementById(id);
- if(!el)return;
+   <div class="levelBar">
 
- el.innerHTML=`
- <div class="card">
-  <b>سؤال ${S.quiz.i+1} از ${S.quiz.questions.length}</b>
+    <i
+     style="width:\${percent}%"
+    ></i>
 
-  <div class="progress">
-   <i style="width:${S.quiz.i/S.quiz.questions.length*100}%"></i>
+   </div>
+
+
+   <div style="
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+    font-weight:bold
+   ">
+
+    <span>
+     ⭐ \${xp} XP
+    </span>
+
+    <span>
+     🏅 Level \${level}
+    </span>
+
+   </div>
+
   </div>
 
-  <div style="font-size:18px;font-weight:bold;line-height:2;margin:15px 0">
-   ${esc(q.q)}
-  </div>
+ </div>
 
-  ${q.options.map((x,i)=>`
-   <button class="option" onclick="answer(${i},'${id}')">
-    ${esc(x)}
-   </button>
-  `).join("")}
 
-  <div id="fb"></div>
- </div>`;
-}
+ <div class="card homeWelcomeCard">
 
-function answer(i,id){
- const q=S.quiz.questions[S.quiz.i];
- const opts=document.querySelectorAll(".option");
+  <h2 style="margin-top:0">
+   ✨ مسیر یادگیری تو
+  </h2>
 
- opts.forEach(x=>x.disabled=true);
-
- if(i===q.answer){
-  S.quiz.correct++;
-  opts[i].classList.add("correct");
-  document.getElementById("fb").className="feedback ok";
-  document.getElementById("fb").textContent="✅ آفرین! پاسخ درست است.";
- }else{
-  S.quiz.wrong++;
-  opts[i].classList.add("wrong");
-  opts[q.answer].classList.add("correct");
-  document.getElementById("fb").className="feedback bad";
-  document.getElementById("fb").textContent="❌ پاسخ اشتباه است.";
- }
-
- setTimeout(()=>{
-  S.quiz.i++;
-  quizRender(id);
- },650);
-}
-
-async function quizFinish(id){
- const total=S.quiz.questions.length;
- const percent=total?
-  Math.round(S.quiz.correct/total*100):0;
-
- examRecords.unshift({
-  student:S.student?.phone||"",
-  title:S.quiz.title,
-  score:percent,
-  date:new Date().toISOString()
- });
-
- saveLocal();
-
- if(S.student){
-  try{
-   await db.from("exam_results").insert({
-    user_id:S.student.auth_user_id,
-    student_name:`${S.student.first_name||""} ${S.student.last_name||""}`,
-    exam_type:S.quiz.type,
-    exam_title:S.quiz.title,
-    lesson:S.lesson+1,
-    score:S.quiz.correct,
-    total,
-    percentage:percent
-   });
-  }catch(e){}
-
-  await addXP(Math.max(10,percent));
-
-  if(S.quiz.type==="lesson"){
-   await saveProgress(`${S.grade}-${S.lesson}`,100,true);
-  }
- }
-
- const el=document.getElementById(id);
- if(!el)return;
-
- el.innerHTML=`
- <div class="card">
-  <div class="score">${percent}%</div>
-  <h2 style="text-align:center">آزمون تمام شد 🎉</h2>
-  <p style="text-align:center">
-   ${S.quiz.correct} پاسخ درست از ${total}
+  <p class="muted">
+   یکی از بخش‌های زیر را انتخاب کن
+   و یادگیری را شروع کن.
   </p>
-  <button class="btn full" onclick="profile()">مشاهده پیشرفت</button>
- </div>`;
-}
 
-
-/* =========================================================
-   100 QUESTION CONTEST
-========================================================= */
-
-function startContest(){
- const all=[];
-
- Object.keys(wordsByGrade).forEach(key=>{
-  wordsByGrade[key].forEach(w=>{
-   all.push({
-    q:`معنی "${w[0]}" چیست؟`,
-    options:shuffle([
-     w[1],
-     ...shuffle(
-      Object.values(wordsByGrade)
-       .flat()
-       .filter(x=>x!==w)
-       .map(x=>x[1])
-     ).slice(0,3)
-    ]),
-    answer:0
-   });
-  });
- });
-
- const questions=shuffle(all).slice(0,100).map(q=>{
-  const correct=q.options[0];
-  const options=shuffle(q.options);
-  return{
-   q:q.q,
-   options,
-   answer:options.indexOf(correct)
-  };
- });
-
- S.quiz={
-  type:"contest",
-  title:"مسابقه رکوردی ۱۰۰ سؤالی",
-  questions,
-  i:0,
-  correct:0,
-  wrong:0
- };
-
- render("مسابقه رکوردی",`<div id="contestQuiz"></div>`);
- quizRender("contestQuiz");
-}
-
-
-/* =========================================================
-   PLACEMENT
-========================================================= */
-
-const placementQuestions=[
- {q:"She ___ a teacher.",o:["is","are","am","be"],a:0},
- {q:"They ___ students.",o:["is","are","am","be"],a:1},
- {q:"I ___ English every day.",o:["study","studies","studying","studied"],a:0},
- {q:"He ___ football every Friday.",o:["plays","play","playing","played"],a:0},
- {q:"___ old are you?",o:["How","What","Where","Who"],a:0},
- {q:"Where ___ you live?",o:["do","does","are","is"],a:0},
- {q:"She ___ two brothers.",o:["has","have","having","had"],a:0},
- {q:"There ___ a book on the table.",o:["is","are","am","be"],a:0},
- {q:"The book is ___ the table.",o:["on","at","to","from"],a:0},
- {q:"I can ___ English.",o:["speak","speaks","speaking","spoke"],a:0},
- {q:"Look! She ___.",o:["is running","runs","run","ran"],a:0},
- {q:"I ___ to school yesterday.",o:["went","go","goes","going"],a:0},
- {q:"We ___ dinner when he arrived.",o:["were having","have","had","are having"],a:0},
- {q:"She has ___ her homework.",o:["finished","finish","finishing","finishes"],a:0},
- {q:"This is the ___ book.",o:["best","better","good","well"],a:0},
- {q:"If it rains, we ___ at home.",o:["will stay","stayed","stay","would stay"],a:0},
- {q:"The letters ___ every morning.",o:["are delivered","delivers","delivered","is deliver"],a:0},
- {q:"I have lived here ___ 2018.",o:["since","for","at","from"],a:0},
- {q:"If I had more time, I ___ another language.",o:["would learn","will learn","learned","would learned"],a:0},
- {q:"The man ___ lives next door is a doctor.",o:["who","where","when","what"],a:0},
- {q:"She said that she ___ tired.",o:["was","is","were","be"],a:0},
- {q:"By next year, I ___ this course.",o:["will have completed","complete","completed","am completing"],a:0},
- {q:"If they had studied harder, they ___ the exam.",o:["would have passed","will pass","would pass","passed"],a:0},
- {q:"The problem ___ yesterday.",o:["was discussed","discussed","is discuss","has discuss"],a:0},
- {q:"He should ___ more carefully.",o:["listen","listens","listening","listened"],a:0},
- {q:"Never ___ such a beautiful place.",o:["have I seen","I have seen","did I saw","I saw"],a:0},
- {q:"The technology, ___ was developed recently, saves energy.",o:["which","where","who","what"],a:0},
- {q:"I ___ breakfast every morning.",o:["eat","eats","eating","ate"],a:0},
- {q:"They ___ already finished.",o:["have","has","are","did"],a:0}
-];
-
-function placementTest(){
- S.quiz={
-  type:"placement",
-  title:"آزمون تعیین سطح ۳۰ سؤالی",
-  questions:placementQuestions.map(x=>{
-   const options=shuffle(x.o);
-   return{
-    q:x.q,
-    options,
-    answer:options.indexOf(x.o[x.a])
-   };
-  }),
-  i:0,
-  correct:0,
-  wrong:0
- };
-
- render("تعیین سطح",`<div id="placementQuiz"></div>`);
- quizRender("placementQuiz");
-}
-
-
-/* =========================================================
-   RECORDS
-========================================================= */
-
-function records(){
- render("رکوردهای من",`
- <div class="card">
-  <h2>🏆 رکوردهای من</h2>
-
-  ${S.exams.length?
-   S.exams.map(x=>`
-   <div class="examRow">
-    <b>${esc(x.exam_title||"آزمون")}</b>
-    <div class="examScore">
-     ${esc(x.percentage??"-")}%
-    </div>
-    <div class="muted">
-     ${esc(x.created_at||"")}
-    </div>
-   </div>
-   `).join(""):
-   `<p class="muted">هنوز نتیجه‌ای ثبت نشده است.</p>`
-  }
  </div>
 
- <div class="card">
-  <h3>🏅 رکوردهای محلی</h3>
-  ${examRecords.filter(x=>x.student===S.student?.phone).slice(0,30).map(x=>`
-   <div class="examRow">
-    <b>${esc(x.title)}</b>
-    <div class="examScore">${x.score}%</div>
+
+ <div class="grid">
+
+
+  <div class="item homeActionCard">
+
+   <div class="icon">
+    📚
    </div>
-  `).join("")||`<p class="muted">رکوردی وجود ندارد.</p>`}
- </div>
- `);
-}
 
+   <h3>
+    دروس مدرسه
+   </h3>
 
-/* =========================================================
-   PROFILE
-========================================================= */
+   <p class="muted">
+    Prospect و Vision
+   </p>
 
-function profile(){
- render("پروفایل",`
- <div class="card">
-  <h2>👤 ${esc((S.student?.first_name||"")+" "+(S.student?.last_name||""))}</h2>
+   <button
+    class="btn full"
+    onclick="courses()"
+   >
+    ورود به دروس
+   </button>
 
-  <div class="grid">
-   <div class="profileStat">پایه / سطح<b>${esc(S.student?.level||"-")}</b></div>
-   <div class="profileStat">XP<b>${S.xp}</b></div>
-   <div class="profileStat">Level<b>${S.level}</b></div>
-   <div class="profileStat">آزمون‌ها<b>${S.exams.length}</b></div>
   </div>
- </div>
 
- <div class="card">
-  <h3>📈 پیشرفت دروس</h3>
-  ${Object.keys(S.progress).map(k=>`
-   <div class="examRow">
-    <b>${esc(k)}</b>
-    <div class="progress">
-     <i style="width:${S.progress[k].progress||0}%"></i>
-    </div>
+
+  <div class="item homeActionCard">
+
+   <div class="icon">
+    🎯
    </div>
-  `).join("")||`<p class="muted">هنوز پیشرفتی ثبت نشده است.</p>`}
+
+   <h3>
+    تعیین سطح
+   </h3>
+
+   <p class="muted">
+    ۳۰ سؤال از آسان تا خیلی سخت
+   </p>
+
+   <button
+    class="btn full"
+    onclick="placementTest()"
+   >
+    شروع تعیین سطح
+   </button>
+
+  </div>
+
+
+  <div class="item homeActionCard">
+
+   <div class="icon">
+    🗣️
+   </div>
+
+   <h3>
+    مکالمه
+   </h3>
+
+   <p class="muted">
+    Touchstone و Viewpoint
+   </p>
+
+   <button
+    class="btn full"
+    onclick="conversation()"
+   >
+    ورود به مکالمه
+   </button>
+
+  </div>
+
+
+  <div class="item homeActionCard">
+
+   <div class="icon">
+    🏆
+   </div>
+
+   <h3>
+    مسابقه
+   </h3>
+
+   <p class="muted">
+    رقابت و کسب XP
+   </p>
+
+   <button
+    class="btn full"
+    onclick="contest()"
+   >
+    ورود به مسابقه
+   </button>
+
+  </div>
+
+
+  <div class="item homeActionCard">
+
+   <div class="icon">
+    👨‍🏫
+   </div>
+
+   <h3>
+    اساتید
+   </h3>
+
+   <p class="muted">
+    رزرو کلاس با استاد
+   </p>
+
+   <button
+    class="btn full"
+    onclick="teachers()"
+   >
+    مشاهده اساتید
+   </button>
+
+  </div>
+
+
+  <div class="item homeActionCard">
+
+   <div class="icon">
+    📊
+   </div>
+
+   <h3>
+    پیشرفت من
+   </h3>
+
+   <p class="muted">
+    درصد پیشرفت و سوابق آزمون
+   </p>
+
+   <button
+    class="btn full"
+    onclick="profile()"
+   >
+    مشاهده پیشرفت
+   </button>
+
+  </div>
+
+
  </div>
 
- <div class="card">
-  <h3>🏆 دستاوردها</h3>
-  ${S.achievements.length?
-   S.achievements.map(a=>`
-    <span class="badge">🏆 ${esc(a.title)}</span>
-   `).join(""):
-   `<p class="muted">هنوز دستاوردی کسب نکرده‌ای.</p>`}
- </div>
- `);
+ \`);
+
 }
 
 
+/* TEACHERS */
+
+`
+
+);
+
+
 /* =========================================================
-   TEACHERS
+   RESTORE ELAHE BAGHBANI IF NECESSARY
 ========================================================= */
+
+if(!src.includes('name:"الهه باغبانی"')){
+
+ const teacherMarker=
+ "function teachers(){";
+
+ const t=
+ src.indexOf(teacherMarker);
+
+ if(t>=0){
+
+  src=
+  src.slice(0,t)+`
 
 const teachersData=[
+
  {
   name:"علی ناقلی",
   degree:"کارشناس ارشد آموزش زبان انگلیسی",
   phone:"09141892768",
   icon:"👨‍🏫",
-  text:"با بیش از ۲۰ سال سابقه تدریس مکالمه زبان انگلیسی و مدرس دوره‌های TOEFL, IELTS, FCE, KET, PET, PTE, MCHE, MSRT"
+  text:"با بیش از ۲۰ سال سابقه تدریس مکالمه زبان انگلیسی و مدرس دوره‌های TOEFL, IELTS, FCE, KET, PET, PTE, MCHE, MSRT و برگزارکننده دوره‌های حرفه‌ای TTC"
+ },
+
+ {
+  name:"الهه باغبانی",
+  degree:"کارشناس ارشد آموزش زبان انگلیسی",
+  phone:"09914312534",
+  icon:"👩‍🏫",
+  text:"با بیش از ۱۰ سال سابقه تدریس مکالمه زبان انگلیسی و دوره‌های بین‌المللی TOEFL, IELTS, KET, PET, PTE, MSRT"
  }
+
 ];
 
-function teachers(){
- render("اساتید",`
- <div class="card">
-  <h2>👨‍🏫 استاد AliNagheli English</h2>
-  <p class="muted">
-   استاد مورد نظر خود را انتخاب کنید و درخواست رزرو کلاس بفرستید.
-  </p>
- </div>
+`+
+src.slice(t);
 
- <div class="teacher">
- ${teachersData.map((t,i)=>`
-  <div class="teacherBox">
-   <div class="teacherAvatar">${t.icon}</div>
+ }
 
-   <h2 style="text-align:center">${esc(t.name)}</h2>
-   <p style="text-align:center"><b>${esc(t.degree)}</b></p>
-   <p>${esc(t.text)}</p>
-
-   <a class="btn success call" href="tel:${t.phone}">
-    📞 تماس با استاد<br>${t.phone}
-   </a>
-
-   <div class="request">
-    <h3>📅 رزرو تایم کلاس</h3>
-
-    <label>تاریخ پیشنهادی</label>
-
-    <div id="jalaliCalendar${i}" class="jcalendar"></div>
-
-    <input id="td${i}" type="hidden">
-
-    <label>ساعت پیشنهادی</label>
-    <input id="tt${i}" type="time">
-
-    <label>نوع کلاس</label>
-    <select id="ttype${i}">
-     <option>کلاس مکالمه</option>
-     <option>کلاس خصوصی</option>
-     <option>آمادگی IELTS</option>
-     <option>آمادگی TOEFL</option>
-     <option>آمادگی KET / PET</option>
-     <option>سایر</option>
-    </select>
-
-    <label>توضیحات</label>
-    <textarea id="tn${i}" placeholder="توضیحات یا زمان جایگزین..."></textarea>
-
-    <button class="btn full" onclick="requestTeacher(${i})">
-     📨 ارسال درخواست رزرو
-    </button>
-   </div>
-  </div>
- `).join("")}
- </div>
- `);
-
- teachersData.forEach((_,i)=>renderJalaliCalendar(i));
 }
 
 
 /* =========================================================
-   JALALI CALENDAR
+   VISUAL IMPROVEMENTS
 ========================================================= */
 
-const jMonths=[
- "فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور",
- "مهر","آبان","آذر","دی","بهمن","اسفند"
-];
+src=
+src.replace(
+"</style>",
 
-const jWeek=[
- "شنبه","یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه"
-];
-
-function gregorianToJalali(gy,gm,gd){
- const g_d_m=[0,31,59,90,120,151,181,212,243,273,304,334];
- let jy=(gy<=1600)?0:979;
- gy-=(gy<=1600)?621:1600;
- let gy2=(gm>2)?gy+1:gy;
- let days=
-  365*gy+
-  Math.floor((gy2+3)/4)-
-  Math.floor((gy2+99)/100)+
-  Math.floor((gy2+399)/400)-
- 80+gd+g_d_m[gm-1];
-
- jy+=33*Math.floor(days/12053);
- days%=12053;
- jy+=4*Math.floor(days/1461);
- days%=1461;
-
- if(days>365){
-  jy+=Math.floor((days-1)/365);
-  days=(days-1)%365;
- }
-
- const jm=days<186?
-  1+Math.floor(days/31):
-  7+Math.floor((days-186)/30);
-
- const jd=1+(days<186?days%31:(days-186)%30);
-
- return[jy,jm,jd];
-}
-
-function jalaliToGregorian(jy,jm,jd){
- let gy=jy<=979?621:1600;
- jy-=jy<=979?0:979;
-
- let days=
-  365*jy+
-  Math.floor(jy/33)*8+
-  Math.floor((jy%33+3)/4)+
-  78+jd+
-  (jm<7?(jm-1)*31:(jm-7)*30+186);
-
- gy+=400*Math.floor(days/146097);
- days%=146097;
-
- if(days>36524){
-  gy+=100*Math.floor(--days/36524);
-  days%=36524;
-  if(days>=365)days++;
- }
-
- gy+=4*Math.floor(days/1461);
- days%=1461;
-
- if(days>365){
-  gy+=Math.floor((days-1)/365);
-  days=(days-1)%365;
- }
-
- const gd=days+1;
- const leap=(gy%4===0&&gy%100!==0)||gy%400===0;
-
- const monthDays=[
-  31,
-  leap?29:28,
-  31,30,31,30,31,31,30,31,30,31
- ];
-
- let gm=1;
- let rem=gd;
-
- while(rem>monthDays[gm-1]){
-  rem-=monthDays[gm-1];
-  gm++;
- }
-
- return[gy,gm,rem];
-}
-
-function todayJalali(){
- const d=new Date();
- return gregorianToJalali(
-  d.getFullYear(),
-  d.getMonth()+1,
-  d.getDate()
+`.conversationUpdateCard{
+ border:2px dashed #c4b5fd;
+ background:linear-gradient(
+  135deg,
+  #fff,
+  #faf5ff
  );
 }
 
-function jMonthDays(y,m){
- if(m<=6)return 31;
- if(m<=11)return 30;
- return (
-  (y%33===1||y%33===5||y%33===9||y%33===13||
-   y%33===17||y%33===22||y%33===26||y%33===30)?30:29
+.homeWelcomeCard{
+ background:linear-gradient(
+  135deg,
+  #fff,
+  #faf5ff
  );
+ border:1px solid #e9d5ff;
 }
 
-function jalaliWeekDay(y,m,d){
- const g=jalaliToGregorian(y,m,d);
- const date=new Date(g[0],g[1]-1,g[2]);
- return (date.getDay()+1)%7;
+.homeActionCard{
+ transition:
+  transform .2s,
+  box-shadow .2s;
 }
 
-function renderJalaliCalendar(index){
- const el=document.getElementById("jalaliCalendar"+index);
- if(!el)return;
-
- const today=todayJalali();
-
- let state={
-  y:today[0],
-  m:today[1],
-  d:null
- };
-
- function draw(){
-  const first=jalaliWeekDay(state.y,state.m,1);
-  const total=jMonthDays(state.y,state.m);
-
-  let html=`
-  <div class="jcalendar-head">
-   <button class="btn secondary small" id="jp${index}">ماه قبل</button>
-   <b>${jMonths[state.m-1]} ${state.y}</b>
-   <button class="btn secondary small" id="jn${index}">ماه بعد</button>
-  </div>
-
-  <div class="jcalendar-grid">
-   ${jWeek.map(x=>`<div class="jday head">${x}</div>`).join("")}
-  `;
-
-  for(let i=0;i<first;i++){
-   html+=`<div class="jday empty"></div>`;
-  }
-
-  for(let d=1;d<=total;d++){
-   const past=
-    state.y<today[0]||
-    (state.y===today[0]&&state.m<today[1])||
-    (state.y===today[0]&&state.m===today[1]&&d<today[2]);
-
-   const selected=state.d===d;
-
-   html+=`
-   <div
-    class="jday selectable ${selected?"selected":""}"
-    ${past?"style='opacity:.35;pointer-events:none'":""}
-    data-day="${d}">
-    ${d}
-   </div>`;
-  }
-
-  html+=`</div>`;
-
-  if(state.d){
-   html+=`
-   <div class="jselected">
-    تاریخ انتخاب‌شده:
-    ${state.d} ${jMonths[state.m-1]} ${state.y}
-   </div>`;
-  }
-
-  el.innerHTML=html;
-
-  document.getElementById("jp"+index).onclick=()=>{
-   state.m--;
-   if(state.m<1){state.m=12;state.y--}
-   state.d=null;
-   draw();
-  };
-
-  document.getElementById("jn"+index).onclick=()=>{
-   state.m++;
-   if(state.m>12){state.m=1;state.y++}
-   state.d=null;
-   draw();
-  };
-
-  el.querySelectorAll("[data-day]").forEach(x=>{
-   x.onclick=()=>{
-    state.d=Number(x.dataset.day);
-
-    const g=jalaliToGregorian(
-     state.y,state.m,state.d
-    );
-
-    const iso=
-     `${g[0]}-${String(g[1]).padStart(2,"0")}-${String(g[2]).padStart(2,"0")}`;
-
-    document.getElementById("td"+index).value=iso;
-
-    draw();
-   };
-  });
- }
-
- draw();
+.homeActionCard:hover{
+ transform:translateY(-5px);
+ box-shadow:
+  0 14px 30px #6d28d933;
 }
+
+.homeHeroPlus{
+ box-shadow:
+  0 18px 40px #6d28d955;
+}
+
+.placementResultCard{
+ overflow:hidden;
+}
+
+</style>`
+);
 
 
 /* =========================================================
-   REQUEST
+   LOAD FINAL APPLICATION
 ========================================================= */
 
-async function requestTeacher(i){
- if(!S.student){
-  alert("ابتدا وارد حساب زبان‌آموز شوید.");
-  return;
- }
+document.open();
 
- const date=document.getElementById("td"+i).value;
- const time=document.getElementById("tt"+i).value;
- const type=document.getElementById("ttype"+i).value;
- const note=document.getElementById("tn"+i).value.trim();
+document.write(src);
 
- if(!date||!time){
-  alert("تاریخ و ساعت را انتخاب کنید.");
-  return;
- }
+document.close();
 
- try{
-  const r=await db.from("teacher_requests").insert({
-   student_id:S.student.id,
-   student_name:`${S.student.first_name||""} ${S.student.last_name||""}`,
-   student_phone:S.student.phone,
-   teacher_name:teachersData[i].name,
-   requested_date:date,
-   requested_time:time,
-   class_type:type,
-   note,
-   status:"pending"
-  });
+}catch(e){
 
-  if(r.error)throw r.error;
+ document.getElementById("boot").innerHTML=
+ `
+ خطا در بارگذاری برنامه.
+ <br>
+ <small>
+ لطفاً اتصال اینترنت را بررسی کنید.
+ </small>
+ `;
 
-  alert("درخواست شما با موفقیت برای استاد ارسال شد. ✅");
-  home();
-
- }catch(e){
-  alert("ارسال درخواست انجام نشد:\n"+e.message);
- }
 }
 
-
-/* =========================================================
-   ADMIN
-========================================================= */
-
-async function admin(){
- try{
-  const r=await adminFunction("list");
-  renderAdmin(r.students||[],r.requests||[]);
- }catch(e){
-  document.body.innerHTML=`
-  <div class="container">
-   <div class="card">
-    <h2>خطا در پنل مدیر</h2>
-    <p>${esc(e.message)}</p>
-    <button class="btn" onclick="admin()">تلاش مجدد</button>
-   </div>
-  </div>`;
- }
-}
-
-function renderAdmin(students,requests){
- document.body.innerHTML=`
- ${header("پنل مدیریت")}
- <main class="container">
-
-  <div class="hero">
-   <h2>👨‍💼 پنل مدیریت</h2>
-   <p>مدیریت زبان‌آموزان و درخواست‌های رزرو کلاس</p>
-  </div>
-
-  <div class="grid">
-   <div class="item">
-    <div class="icon">👥</div>
-    <h3>کل زبان‌آموزان</h3>
-    <b>${students.length}</b>
-   </div>
-
-   <div class="item">
-    <div class="icon">⏳</div>
-    <h3>در انتظار</h3>
-    <b>${students.filter(x=>x.status==="waiting").length}</b>
-   </div>
-
-   <div class="item">
-    <div class="icon">✅</div>
-    <h3>تأیید شده</h3>
-    <b>${students.filter(x=>["registered","approved"].includes(x.status)).length}</b>
-   </div>
-
-   <div class="item">
-    <div class="icon">📅</div>
-    <h3>درخواست رزرو</h3>
-    <b>${requests.filter(x=>x.status==="pending").length}</b>
-   </div>
-  </div>
-
-  <div class="card">
-   <h3>📅 درخواست‌های رزرو کلاس</h3>
-
-   ${requests.length?
-    requests.map(x=>`
-    <div class="adminRow">
-
-     <b>${esc(x.student_name||"")}</b>
-
-     <div class="muted">
-      📱 ${esc(x.student_phone||"")}<br>
-      👨‍🏫 استاد: ${esc(x.teacher_name||"")}<br>
-      📅 ${esc(x.requested_date||"")}
-      ⏰ ${esc(x.requested_time||"")}<br>
-      📘 ${esc(x.class_type||"")}<br>
-      📝 ${esc(x.note||"")}
-     </div>
-
-     <div style="margin-top:10px">
-
-      ${x.status==="pending"?`
-       <button class="btn success"
-        onclick="respondRequest('${x.id}','approved')">
-        ✅ تأیید
-       </button>
-
-       <button class="btn danger"
-        onclick="respondRequest('${x.id}','rejected')">
-        ❌ رد
-       </button>
-      `:`
-       <b>
-        ${x.status==="approved"?
-         "✅ تأیید شده":
-         "❌ رد شده"}
-       </b>
-      `}
-     </div>
-    </div>
-    `).join(""):
-    `<p class="muted">درخواستی وجود ندارد.</p>`
-   }
-  </div>
-
-  <div class="card">
-   <h3>👥 ثبت‌نام‌ها</h3>
-
-   ${students.length?
-    students.map(x=>`
-    <div class="adminRow">
-
-     <b>${esc(x.first_name||"")} ${esc(x.last_name||"")}</b>
-
-     <div class="muted">
-      📱 ${esc(x.phone||"")}<br>
-      🎓 پایه: ${esc(x.level||"-")}<br>
-      وضعیت: ${esc(x.status||"-")}
-     </div>
-
-     <div style="margin-top:10px">
-
-      ${x.status==="waiting"?`
-       <button class="btn success"
-        onclick="approve('${x.id}')">
-        ✅ تأیید
-       </button>
-
-       <button class="btn danger"
-        onclick="rejectStudent('${x.id}')">
-        ❌ رد
-       </button>
-      `:
-      x.status==="registered"||x.status==="approved"?`
-       <span>✅ تأیید شده</span>
-
-       <button class="btn danger"
-        onclick="rejectStudent('${x.id}')">
-        رد / حذف
-       </button>
-      `:`
-       <span>❌ رد شده</span>
-
-       <button class="btn success"
-        onclick="approve('${x.id}')">
-        تأیید مجدد
-       </button>
-      `}
-     </div>
-    </div>
-    `).join(""):
-    `<p class="muted">ثبت‌نامی وجود ندارد.</p>`
-   }
-  </div>
-
-  <button class="btn danger full" onclick="logout()">
-   خروج مدیر
-  </button>
-
- </main>`;
-}
-
-async function respondRequest(id,status){
- try{
-  await adminFunction("teacher_request",{id,status});
-  await admin();
- }catch(e){
-  alert(e.message||"خطا");
- }
-}
-
-async function approve(id){
- try{
-  await adminFunction("approve",{id});
-  await admin();
- }catch(e){
-  alert(e.message||"خطا در تأیید");
- }
-}
-
-async function rejectStudent(id){
- try{
-  await adminFunction("reject",{id});
-  await admin();
- }catch(e){
-  alert(e.message||"خطا در رد");
- }
-}
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-async function logout(){
- try{
-  await db.auth.signOut();
- }catch(e){}
-
- S={
-  student:null,
-  admin:false,
-  grade:null,
-  lesson:null,
-  quiz:null,
-  xp:0,
-  level:1,
-  progress:{},
-  achievements:[],
-  exams:[]
- };
-
- login();
-}
-
-
-/* =========================================================
-   STARTUP
-========================================================= */
-
-async function startup(){
- try{
-  const r=await db.auth.getSession();
-  const session=r.data?.session;
-
-  if(!session){
-   login();
-   return;
-  }
-
-  const user=session.user;
-
-  try{
-   const ar=await fetch(ADMIN_FUNCTION,{
-    method:"POST",
-    headers:{
-     "Content-Type":"application/json",
-     "apikey":SUPABASE_KEY,
-     "Authorization":"Bearer "+session.access_token
-    },
-    body:JSON.stringify({action:"list"})
-   });
-
-   const ad=await ar.json().catch(()=>null);
-
-   if(ar.ok&&ad?.ok){
-    S.admin=true;
-    S.student=null;
-    renderAdmin(
-     Array.isArray(ad.students)?ad.students:[],
-     Array.isArray(ad.requests)?ad.requests:[]
-    );
-    return;
-   }
-  }catch(_){}
-
-  const phone=
-   normalizePhone(
-    user.user_metadata?.phone||
-    user.email?.split("@")[0]||
-    ""
-   );
-
-  if(phone){
-   const found=
-    await accessFunction({
-     action:"find",
-     phone
-    });
-
-   if(
-    found.student&&
-    ["registered","approved"].includes(found.student.status)
-   ){
-    S.student=found.student;
-    S.admin=false;
-
-    await loadStudentStats();
-    home();
-    return;
-   }
-  }
-
-  await db.auth.signOut();
-  login();
-
- }catch(e){
-  try{
-   await db.auth.signOut();
-  }catch(_){}
-
-  login();
- }
-}
-
-db.auth.onAuthStateChange((event)=>{
- if(
-  event==="SIGNED_OUT"&&
-  !S.admin&&
-  !S.student
- ){
-  login();
- }
-});
-
-startup();
-
+})();
 </script>
+
 </body>
 </html>
 ```0
