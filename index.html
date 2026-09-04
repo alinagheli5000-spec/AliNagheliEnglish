@@ -2900,6 +2900,5015 @@ headers:{
 "Authorization":
 "Bearer "+session.access_token
 },
+   <script>
+
+/* =========================================================
+   ALINAGHELI ENGLISH — FINAL PATCH
+   Teacher + Persian Calendar + PDF Vocabulary
+   Extended Grammar + 15 Questions/Lesson
+   Instant Feedback + Placement + Competition
+========================================================= */
+
+
+/* =========================================================
+   1. TEACHERS
+========================================================= */
+
+const teachersDataFixed = [
+    {
+        name:"علی ناقلی",
+        english:"Ali Nagheli",
+        degree:"کارشناس ارشد آموزش زبان انگلیسی",
+        phone:"09141892768",
+        icon:"👨‍🏫",
+        experience:"بیش از ۲۰ سال سابقه تدریس",
+        text:"مدرس زبان انگلیسی، مدرس دوره‌های تخصصی و بین‌المللی TOEFL, IELTS, FCE, KET, PET, PTE, MCHE, MSRT و برگزارکننده دوره‌های حرفه‌ای TTC"
+    },
+    {
+        name:"الهه باغبانی",
+        english:"Elaheh Baghbani",
+        degree:"کارشناس ارشد آموزش زبان انگلیسی",
+        phone:"09914312534",
+        icon:"👩‍🏫",
+        experience:"بیش از ۱۰ سال سابقه تدریس",
+        text:"مدرس مکالمه زبان انگلیسی و دوره‌های بین‌المللی TOEFL, IELTS, KET, PET, PTE, MSRT"
+    }
+];
+
+
+/* =========================================================
+   2. PERSIAN CALENDAR
+========================================================= */
+
+const persianMonths = [
+    "فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور",
+    "مهر","آبان","آذر","دی","بهمن","اسفند"
+];
+
+const persianWeekDays = [
+    "شنبه","یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه"
+];
+
+function toPersianDigits(str){
+    return String(str).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d]);
+}
+
+function formatPersianDate(date){
+
+    try{
+        return new Intl.DateTimeFormat(
+            "fa-IR-u-ca-persian",
+            {
+                year:"numeric",
+                month:"long",
+                day:"numeric",
+                weekday:"long"
+            }
+        ).format(date);
+    }catch(e){
+        return new Date(date).toLocaleDateString("fa-IR");
+    }
+}
+
+function gregorianToPersianParts(date){
+
+    try{
+
+        const parts =
+        new Intl.DateTimeFormat(
+            "fa-IR-u-ca-persian",
+            {
+                year:"numeric",
+                month:"numeric",
+                day:"numeric"
+            }
+        ).formatToParts(date);
+
+        let y="",m="",d="";
+
+        parts.forEach(x=>{
+            if(x.type==="year") y=x.value;
+            if(x.type==="month") m=x.value;
+            if(x.type==="day") d=x.value;
+        });
+
+        return {
+            year:parseInt(
+                y.replace(/[۰-۹]/g,
+                z=>"۰۱۲۳۴۵۶۷۸۹".indexOf(z))
+            ),
+            month:parseInt(
+                m.replace(/[۰-۹]/g,
+                z=>"۰۱۲۳۴۵۶۷۸۹".indexOf(z))
+            ),
+            day:parseInt(
+                d.replace(/[۰-۹]/g,
+                z=>"۰۱۲۳۴۵۶۷۸۹".indexOf(z))
+            )
+        };
+
+    }catch(e){
+        return null;
+    }
+}
+
+function buildPersianCalendar(index){
+
+    const now = new Date();
+
+    const p =
+    gregorianToPersianParts(now) ||
+    {year:1404,month:1,day:1};
+
+    const years=[];
+
+    for(let y=p.year;y<=p.year+2;y++){
+        years.push(y);
+    }
+
+    return `
+    <div class="persian-calendar">
+
+        <div class="pc-head">
+
+            <button
+                type="button"
+                onclick="changePCMonth(${index},-1)">
+                ‹
+            </button>
+
+            <strong id="pcTitle${index}">
+                ${persianMonths[p.month-1]}
+                ${toPersianDigits(p.year)}
+            </strong>
+
+            <button
+                type="button"
+                onclick="changePCMonth(${index},1)">
+                ›
+            </button>
+
+        </div>
+
+        <div class="pc-selects">
+
+            <select
+                id="pcYear${index}"
+                onchange="renderPC(${index})">
+
+                ${years.map(y=>`
+                    <option value="${y}"
+                    ${y===p.year?"selected":""}>
+                        ${toPersianDigits(y)}
+                    </option>
+                `).join("")}
+
+            </select>
+
+            <select
+                id="pcMonth${index}"
+                onchange="renderPC(${index})">
+
+                ${persianMonths.map((m,i)=>`
+                    <option
+                        value="${i+1}"
+                        ${i+1===p.month?"selected":""}>
+                        ${m}
+                    </option>
+                `).join("")}
+
+            </select>
+
+        </div>
+
+        <div class="pc-week">
+
+            ${persianWeekDays.map(x=>
+                `<span>${x}</span>`
+            ).join("")}
+
+        </div>
+
+        <div
+            id="pcDays${index}"
+            class="pc-days">
+        </div>
+
+        <input
+            type="hidden"
+            id="pcValue${index}"
+            value="">
+
+        <div
+            id="pcSelected${index}"
+            class="pc-selected">
+            تاریخ انتخاب نشده
+        </div>
+
+    </div>
+    `;
+}
+
+const pcState={};
+
+function daysInPersianMonth(year,month){
+
+    if(month<=6)return 31;
+
+    if(month<=11)return 30;
+
+    const leap =
+    [1,5,9,13,17,22,26,30]
+    .includes(
+        (year-1399)%33
+    );
+
+    return leap?30:29;
+}
+
+function renderPC(index){
+
+    const y =
+    Number(
+        document.getElementById(
+            "pcYear"+index
+        ).value
+    );
+
+    const m =
+    Number(
+        document.getElementById(
+            "pcMonth"+index
+        ).value
+    );
+
+    pcState[index]={
+        year:y,
+        month:m
+    };
+
+    document.getElementById(
+        "pcTitle"+index
+    ).textContent =
+    persianMonths[m-1]+" "+
+    toPersianDigits(y);
+
+    const days =
+    daysInPersianMonth(y,m);
+
+    const box =
+    document.getElementById(
+        "pcDays"+index
+    );
+
+    let html="";
+
+    for(let d=1;d<=days;d++){
+
+        html+=`
+        <button
+            type="button"
+            class="pc-day"
+            onclick="selectPCDate(${index},${y},${m},${d})">
+
+            ${toPersianDigits(d)}
+
+        </button>
+        `;
+    }
+
+    box.innerHTML=html;
+}
+
+function changePCMonth(index,delta){
+
+    const month =
+    document.getElementById(
+        "pcMonth"+index
+    );
+
+    const year =
+    document.getElementById(
+        "pcYear"+index
+    );
+
+    let m=Number(month.value)+delta;
+    let y=Number(year.value);
+
+    if(m<1){
+        m=12;
+        y--;
+    }
+
+    if(m>12){
+        m=1;
+        y++;
+    }
+
+    if(y<Number(year.options[0].value)){
+        y=Number(year.options[0].value);
+        m=1;
+    }
+
+    if(y>Number(year.options[year.options.length-1].value)){
+        y=Number(year.options[year.options.length-1].value);
+        m=12;
+    }
+
+    month.value=m;
+    year.value=y;
+
+    renderPC(index);
+}
+
+
+/*
+   تبدیل تقریبی تاریخ شمسی به Gregorian
+   برای ارسال به Supabase.
+*/
+
+function persianToGregorian(y,m,d){
+
+    const gy =
+    y + 621;
+
+    const base =
+    new Date(
+        Date.UTC(
+            gy,
+            2,
+            20
+        )
+    );
+
+    /*
+      برای رزرو کلاس، مقدار شمسی
+      نیز در فیلد ذخیره می‌شود.
+      تاریخ میلادی فقط یک fallback است.
+    */
+
+    return base
+    .toISOString()
+    .slice(0,10);
+}
+
+function selectPCDate(index,y,m,d){
+
+    const value =
+    `${y}/${String(m).padStart(2,"0")}/${String(d).padStart(2,"0")}`;
+
+    document.getElementById(
+        "pcValue"+index
+    ).value=value;
+
+    document.getElementById(
+        "pcSelected"+index
+    ).innerHTML=
+    `📅 <b>${toPersianDigits(y)}</b>/
+    ${toPersianDigits(String(m).padStart(2,"0"))}/
+    ${toPersianDigits(String(d).padStart(2,"0"))}
+    <br>
+    <small>تاریخ انتخاب شد ✅</small>`;
+
+    document.querySelectorAll(
+        "#pcDays"+index+" .pc-day"
+    ).forEach(x=>x.classList.remove("selected"));
+
+    event?.target?.classList.add("selected");
+}
+
+
+/* =========================================================
+   3. BEAUTIFUL TEACHERS PAGE
+========================================================= */
+
+function teachers(){
+
+    const box =
+    document.getElementById("teachersPage");
+
+    if(!box)return;
+
+    box.innerHTML=`
+
+    <div class="hero teacherHero">
+
+        <div class="teacherHeroIcon">
+            👩‍🏫
+        </div>
+
+        <div>
+
+            <div class="eyebrow">
+                ALINAGHELI ENGLISH
+            </div>
+
+            <h2>
+                اساتید حرفه‌ای
+            </h2>
+
+            <p>
+                استاد مورد نظر خودت را انتخاب کن
+                و زمان پیشنهادی کلاس را رزرو کن.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="teacher-grid">
+
+    ${teachersDataFixed.map((t,i)=>`
+
+        <div class="teacher-card">
+
+            <div class="teacher-cover">
+
+                <div class="teacher-avatar-big">
+                    ${t.icon}
+                </div>
+
+                <span class="teacher-online">
+                    ● مدرس فعال
+                </span>
+
+            </div>
+
+            <div class="teacher-body">
+
+                <h2>
+                    ${esc(t.name)}
+                </h2>
+
+                <div
+                    class="teacher-english"
+                    dir="ltr">
+
+                    ${esc(t.english)}
+
+                </div>
+
+                <div class="teacher-degree">
+                    🎓 ${esc(t.degree)}
+                </div>
+
+                <div class="teacher-exp">
+                    ⭐ ${esc(t.experience)}
+                </div>
+
+                <p class="teacher-description">
+                    ${esc(t.text)}
+                </p>
+
+                <div class="teacher-tags">
+
+                    <span>TOEFL</span>
+                    <span>IELTS</span>
+                    <span>PTE</span>
+                    <span>KET</span>
+                    <span>PET</span>
+                    <span>MSRT</span>
+
+                </div>
+
+                <a
+                    href="tel:${t.phone}"
+                    class="teacher-phone">
+
+                    📞 ${esc(t.phone)}
+
+                </a>
+
+                <div class="booking-box">
+
+                    <div class="booking-title">
+                        📅 رزرو کلاس
+                    </div>
+
+                    <p class="booking-help">
+                        تاریخ و ساعت پیشنهادی خودت را انتخاب کن.
+                    </p>
+
+                    ${buildPersianCalendar(i)}
+
+                    <label>
+                        ساعت پیشنهادی
+                    </label>
+
+                    <input
+                        id="teacherTime${i}"
+                        type="time"
+                        class="input">
+
+                    <label>
+                        نوع کلاس
+                    </label>
+
+                    <select
+                        id="teacherType${i}"
+                        class="input">
+
+                        <option>
+                            کلاس خصوصی
+                        </option>
+
+                        <option>
+                            کلاس مکالمه
+                        </option>
+
+                        <option>
+                            آمادگی IELTS
+                        </option>
+
+                        <option>
+                            آمادگی TOEFL
+                        </option>
+
+                        <option>
+                            آمادگی KET / PET
+                        </option>
+
+                        <option>
+                            آمادگی PTE
+                        </option>
+
+                        <option>
+                            سایر
+                        </option>
+
+                    </select>
+
+                    <label>
+                        توضیحات
+                    </label>
+
+                    <textarea
+                        id="teacherNote${i}"
+                        class="input"
+                        placeholder="اگر زمان جایگزین یا توضیح خاصی داری بنویس...">
+                    </textarea>
+
+                    <button
+                        class="btn full"
+                        onclick="requestTeacherFixed(${i})">
+
+                        📨 ارسال درخواست رزرو
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `).join("")}
+
+    </div>
+    `;
+
+    for(let i=0;i<teachersDataFixed.length;i++){
+        renderPC(i);
+    }
+}
+
+
+/* =========================================================
+   4. TEACHER BOOKING
+========================================================= */
+
+async function requestTeacherFixed(i){
+
+    if(!S.student){
+
+        alert(
+            "ابتدا وارد حساب زبان‌آموز شوید."
+        );
+
+        return;
+    }
+
+    const date =
+    document.getElementById(
+        "pcValue"+i
+    ).value;
+
+    const time =
+    document.getElementById(
+        "teacherTime"+i
+    ).value;
+
+    const type =
+    document.getElementById(
+        "teacherType"+i
+    ).value;
+
+    const note =
+    document.getElementById(
+        "teacherNote"+i
+    ).value.trim();
+
+    if(!date){
+
+        alert(
+            "لطفاً تاریخ کلاس را از تقویم انتخاب کنید."
+        );
+
+        return;
+    }
+
+    if(!time){
+
+        alert(
+            "لطفاً ساعت کلاس را انتخاب کنید."
+        );
+
+        return;
+    }
+
+    try{
+
+        const r =
+        await db
+        .from("teacher_requests")
+        .insert({
+
+            student_id:S.student.id,
+
+            student_name:
+            `${S.student.first_name||""} ${S.student.last_name||""}`,
+
+            student_phone:
+            S.student.phone,
+
+            teacher_name:
+            teachersDataFixed[i].name,
+
+            requested_date:
+            date,
+
+            requested_time:
+            time,
+
+            class_type:
+            type,
+
+            note:
+            note,
+
+            status:
+            "pending"
+
+        });
+
+        if(r.error)
+            throw r.error;
+
+        alert(
+            "درخواست رزرو با موفقیت ارسال شد. ✅"
+        );
+
+    }catch(e){
+
+        alert(
+            "ارسال درخواست انجام نشد:\n"+
+            e.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   5. PDF VOCABULARY DATA
+   نسخه ذخیره‌شده PDF در پروژه
+========================================================= */
+
+const pdfVocabulary={
+
+"7-1":[
+["What’s your last name?","نام خانوادگی شما چیست؟"],
+["library card","کارت عضویت کتابخانه"],
+["I’m your English teacher.","من معلم زبان شما هستم"],
+["How are you?","حال شما چطور است؟"],
+["good afternoon","ظهر بهخیر"],
+["Now, you tell me your names.","حالا شما اسم‌هایتان را به من بگویید"],
+["stand up","بلند شدن"],
+["last name","نام خانوادگی"],
+["library","کتابخانه"],
+["and","و"],
+["name","نام"],
+["excuse me","ببخشید"],
+["fine","خوب"],
+["sit down","نشستن"],
+["Great, thanks.","خوبم، ممنون"],
+["hello","سلام"],
+["How do you spell …?","چگونه هجی می‌کنیم؟"],
+["thank you","متشکرم"],
+["Mrs.","خانم"],
+["My name is …","اسم من ... است"],
+["How do you spell your last name?","نام خانوادگی‌ات را چگونه هجی می‌کنی؟"],
+["first name","اسم کوچک"],
+["Fine, thanks.","خوبم، ممنون"],
+["please","لطفاً"],
+["teacher","معلم"],
+["What’s your first name?","اسم کوچک شما چیست؟"],
+["Mr.","آقا"],
+["student","دانش‌آموز"],
+["Can you spell your name?","می‌توانی اسمت را هجی کنی؟"],
+["How are you today?","امروز حالتان چطور است؟"],
+["good morning","صبح به‌خیر"],
+["I’m …","من ... هستم"],
+["class","کلاس"],
+["hi","سلام"],
+["Now, please say your name.","حالا لطفاً اسمتان را بگویید"],
+["one by one","یکی یکی"],
+["thanks","ممنون"],
+["Miss","خانم"]
+],
+
+"7-2":[
+["classmate","همکلاسی"],
+["Who","چه کسی"],
+["This","این"],
+["That","آن"],
+["Boy","پسر"],
+["New","جدید"],
+["Talk","صحبت کردن"],
+["Him","او را / به او / با او"],
+["Nice","خوب"],
+["Meet","ملاقات کردن"],
+["Our","ـِ ما"],
+["Welcome","خوش آمدن / خوش آمدید"],
+["School","مدرسه"],
+["Friend","دوست"],
+["Thank you.","ممنون از شما"],
+["Too","همچنین"],
+["Girl","دختر"],
+["Man","مرد"],
+["Woman","زن"],
+["She","او مؤنث"],
+["He","او مذکر"],
+["Can","توانستن"],
+["Help","کمک کردن"],
+["Have","داشتن"],
+["Please","لطفاً"],
+["Library","کتابخانه"],
+["Library card","کارت کتابخانه"],
+["Sure","حتماً"],
+["Sorry","متأسفم"],
+["Again","دوباره"],
+["Librarian","کتابدار"],
+["Teacher","معلم"],
+["Student","دانش‌آموز"]
+],
+
+"7-3":[
+["date","تاریخ"],
+["twelve","دوازده"],
+["ten","ده"],
+["March","مارس"],
+["eleven","یازده"],
+["six","شش"],
+["no","نه"],
+["forty","چهل"],
+["September","سپتامبر"],
+["fifty","پنجاه"],
+["fifteen","پانزده"],
+["thirteen","سیزده"],
+["sixty","شصت"],
+["really","واقعاً"],
+["seventy","هفتاد"],
+["When is your birthday?","روز تولد شما کی است؟"],
+["fourteen","چهارده"],
+["eighty","هشتاد"],
+["Friday","جمعه"],
+["ninety","نود"],
+["twenty","بیست"],
+["May","مه"],
+["birthday","روز تولد"],
+["two","دو"],
+["three","سه"],
+["months of the year","ماه‌های سال"],
+["one","یک"],
+["January","ژانویه"],
+["Tuesday","سه‌شنبه"],
+["Happy birthday!","تولدت مبارک"],
+["Saturday","شنبه"],
+["July","ژوئیه"],
+["Thursday","پنجشنبه"],
+["How old are you?","چند سال دارید؟"],
+["age","سن"],
+["sixty","شصت"],
+["Oh, I see.","اوه، متوجه شدم"],
+["April","آوریل"],
+["June","ژوئن"],
+["year","سال"],
+["How old is your brother?","برادرتان چند ساله است؟"],
+["November","نوامبر"],
+["seventeen","هفده"],
+["October","اکتبر"],
+["eighty","هشتاد"],
+["December","دسامبر"],
+["sixteen","شانزده"],
+["thirty","سی"],
+["seven","هفت"],
+["eight","هشت"]
+],
+
+"7-4":[
+["aunt","خاله / عمه / زن‌عمو / زن‌دایی"],
+["shopkeeper","مغازه‌دار"],
+["employee","کارمند"],
+["wife","همسر"],
+["What is your mother’s job?","شغل مادر شما چیست؟"],
+["number","عدد"],
+["driver","راننده"],
+["pilot","خلبان"],
+["baker","نانوا"],
+["job","شغل"],
+["waiter","پیشخدمت"],
+["Is that your father?","آیا او پدر شماست؟"],
+["florist","گلفروش"],
+["postman","پستچی"],
+["son","فرزند پسر"],
+["brother","برادر"],
+["How old is he?","او چند ساله است؟"],
+["grandmother","مادربزرگ"],
+["daughter","فرزند دختر"],
+["worker","کارگر"],
+["picture","تصویر"],
+["uncle","عمو / دایی"],
+["housewife","خانم خانه‌دار"],
+["What is your father’s name?","اسم پدر شما چیست؟"],
+["family","خانواده"],
+["What’s your father’s job?","شغل پدر شما چیست؟"],
+["teacher","معلم"],
+["farmer","کشاورز"],
+["Can you write it for me, please?","می‌توانید لطفاً این را برای من بنویسید؟"],
+["sister","خواهر"],
+["mother","مادر"],
+["How old is your ...?","... شما چند ساله است؟"],
+["nurse","پرستار"],
+["dentist","دندانپزشک"],
+["engineer","مهندس"],
+["nice","خوب"],
+["mechanic","مکانیک"],
+["grandfather","پدربزرگ"],
+["What’s his job?","شغل او چیست؟"],
+["How do you spell your first name?","اسم کوچکتان را چگونه هجی می‌کنید؟"],
+["painter","نقاش"],
+["cook","آشپز"],
+["He’s ... years old.","او ... ساله است"],
+["He’s a ...","او یک ... است"],
+["father","پدر"],
+["policeman","پلیس"],
+["doctor","دکتر"]
+],
+
+"7-5":[
+["tall","بلندقد"],
+["grey","طوسی"],
+["white","سفید"],
+["manteau","مانتو"],
+["hat","کلاه"],
+["chador","چادر"],
+["glove","دستکش"],
+["Is that your English teacher?","آیا او معلم زبان شماست؟"],
+["green","سبز"],
+["young","جوان"],
+["math","ریاضی"],
+["orange","نارنجی"],
+["pink","صورتی"],
+["belt","کمربند"],
+["sunglasses","عینک آفتابی"],
+["suit","کت و شلوار"],
+["T-shirt","تیشرت"],
+["He’s wearing a grey suit.","او یک کت و شلوار طوسی پوشیده است"],
+["brown","قهوه‌ای"],
+["there","آنجا"],
+["blue","آبی"],
+["sock","جوراب"],
+["dress","پیراهن زنانه"],
+["shoe","کفش"],
+["black","سیاه"],
+["shirt","پیراهن"],
+["sweater","ژاکت"],
+["No, my English teacher is the tall man.","نه، معلم انگلیسی من آن مرد بلندقد است"],
+["glasses","عینک"],
+["short","قدکوتاه"],
+["Let’s meet your English teacher first.","بیا ابتدا با معلم انگلیسی شما ملاقات کنیم"],
+["old","پیر"],
+["coat","پالتو"],
+["trousers","شلوار"],
+["red","قرمز"],
+["yellow","زرد"],
+["jacket","کت"],
+["He’s wearing a blue suit and a white shirt.","او یک کت و شلوار آبی و پیراهن سفید پوشیده است"],
+["sandal","صندل"],
+["And which one is your math teacher?","و کدام یکی معلم ریاضی شماست؟"],
+["wear","پوشیدن"]
+],
+
+"7-6":[
+["again","دوباره"],
+["watch TV","تلویزیون تماشا کردن"],
+["where","کجا"],
+["bedroom","اتاق خواب"],
+["car","ماشین"],
+["work","کار کردن"],
+["cook","پختن"],
+["bathroom","حمام"],
+["blanket","پتو"],
+["correct","صحیح"],
+["bookcase","قفسه کتاب"],
+["dad","بابا"],
+["clock","ساعت دیواری"],
+["comb","شانه"],
+["computer","کامپیوتر"],
+["for","برای"],
+["garage","پارکینگ"],
+["drink","نوشیدن"],
+["house","خانه"],
+["eat","خوردن"],
+["flat/apartment","آپارتمان"],
+["hungry","گرسنه"],
+["kitchen","آشپزخانه"],
+["I’ll call dad.","من پدر را صدا خواهم کرد"],
+["room","اتاق"],
+["mirror","آینه"],
+["living room","اتاق پذیرایی"],
+["at","در"],
+["newspaper","روزنامه"],
+["look","نگاه کردن به"],
+["lunch","ناهار"],
+["play","بازی کردن"],
+["radio","رادیو"],
+["mom","مامان"],
+["office","دفتر / شرکت"],
+["stairs","راه‌پله"],
+["picture","تصویر"],
+["study","مطالعه کردن"],
+["football","فوتبال"],
+["play football","فوتبال بازی کردن"],
+["table","میز ناهارخوری"],
+["Read a book","کتاب خواندن"],
+["television","تلویزیون"],
+["tower","برج"],
+["say","گفتن"],
+["villa","ویلا"],
+["so","خیلی"],
+["Wash your hands","دست‌هایت را بشور"]
+],
+
+"7-7":[
+["Baharestan, Kargar Street 39","بهارستان، خیابان کارگر، پلاک ۳۹"],
+["live","زندگی کردن"],
+["I’m not sure.","مطمئن نیستم"],
+["go","رفتن"],
+["Call me before you go.","قبل از اینکه بروی به من زنگ بزن"],
+["address","آدرس"],
+["telephone number","شماره تلفن"],
+["street","خیابان"],
+["number","شماره"],
+["a.m.","قبل از ظهر"],
+["p.m.","بعد از ظهر"],
+["What’s his address?","آدرس منزل او چیست؟"],
+["is not well","حال ... خوب نیست"],
+["call","زنگ زدن"],
+["What time is she coming back?","چه ساعتی برمی‌گردد؟"],
+["I’m not sure I can, but I’ll try.","مطمئن نیستم بتوانم، اما سعی خواهم کرد"],
+["I’m going to visit him today.","من قرار است امروز به ملاقاتش بروم"],
+["I don’t understand.","متوجه نمی‌شوم"],
+["time","زمان"],
+["Where do you live?","کجا زندگی می‌کنید؟"],
+["What time are you going?","ساعت چند قرار است بروی؟"],
+["What’s their telephone number?","شماره تلفن آنها چند است؟"],
+["I don’t know.","نمی‌دانم"],
+["What’s your telephone number?","شماره تلفن شما چند است؟"],
+["What time is it?","ساعت چند است؟"],
+["My phone number is ...","شماره تلفن من ... است"],
+["What’s her office phone number?","شماره تلفن دفتر او چند است؟"],
+["o’clock","ساعت"]
+],
+
+"8-1":[
+["country","کشور"],
+["Caspian Sea","دریای خزر"],
+["Where is he from?","او اهل کجاست؟"],
+["England","انگلستان"],
+["I love it.","من دوستش دارم"],
+["Australian","استرالیایی"],
+["beautiful country","کشور زیبا"],
+["nationality","ملیت"],
+["Iranian","ایرانی"],
+["American","آمریکایی"],
+["British","بریتانیایی"],
+["Canadian","کانادایی"],
+["Chinese","چینی"],
+["French","فرانسوی"],
+["German","آلمانی"]
+],
+
+"8-2":[
+["What days do you play sports?","چه روزهایی ورزش می‌کنی؟"],
+["What days do you go shopping?","چه روزهایی خرید می‌روی؟"],
+["When can you start?","از کی می‌توانی شروع کنی؟"],
+["day","روز"],
+["midnight","نیمه‌شب"],
+["What days do you go to school?","چه روزهایی به مدرسه می‌روی؟"],
+["go to the library","به کتابخانه رفتن"],
+["visit relatives","سر زدن به فامیل"],
+["That’s fine.","خوبه"],
+["when","چه زمانی"],
+["why","چرا"],
+["sunrise","طلوع خورشید"],
+["midday","ظهر"],
+["I stay at home and relax.","من خانه می‌مانم و استراحت می‌کنم"],
+["night","شب"],
+["climb a mountain","کوهنوردی کردن"],
+["I’ll let her know.","به او می‌گویم"],
+["relax","آرامیدن"],
+["noon","ظهر"],
+["stay","ماندن"],
+["weekend","آخر هفته"],
+["Every weekday","هر روز هفته"],
+["sir","آقا"],
+["go to the gym","به باشگاه رفتن"],
+["play sports","ورزش کردن"],
+["go to school","به مدرسه رفتن"],
+["gym","باشگاه"],
+["madam","خانم"],
+["What days do you study English?","چه روزهایی زبان انگلیسی می‌خوانی؟"],
+["well","خب"],
+["watch TV","تلویزیون تماشا کردن"],
+["weekday","روز هفته"],
+["sunset","غروب خورشید"],
+["week","هفته"],
+["How about Friday mornings?","صبح‌های جمعه چطور؟"],
+["study lessons","درس خواندن"],
+["That sounds great!","عالی به نظر می‌رسد"],
+["What days do you go to the library?","چه روزهایی به کتابخانه می‌روی؟"],
+["What do you do in the afternoons?","بعدازظهرها چه کار می‌کنی؟"]
+],
+
+"8-3":[
+["play volleyball","والیبال بازی کردن"],
+["Who can work with a computer?","کی بلد است با کامپیوتر کار کند؟"],
+["Can you make a cake?","می‌توانی کیک درست کنی؟"],
+["Can I see your photos?","می‌توانم عکس‌هایت را ببینم؟"],
+["Who can draw?","چه کسی می‌تواند نقاشی بکشد؟"],
+["Are you good at drawing?","آیا نقاشی‌ات خوب است؟"],
+["Are you good at searching the Web?","آیا در جستجو در فضای اینترنت خوب هستید؟"],
+["act in movies","بازی کردن در فیلم‌های سینمایی"],
+["drawing","طراحی"],
+["Are they good at swimming?","آیا شنا کردن آنها خوب است؟"],
+["swimming","شنا کردن"],
+["make a cake","کیک درست کردن"],
+["work with a computer","کار کردن با کامپیوتر"],
+["search the Web","جستجو در اینترنت"],
+["take photos","عکس گرفتن"],
+["play chess","شطرنج بازی کردن"],
+["type","تایپ کردن"],
+["read","خواندن"],
+["puzzle","پازل"],
+["bring","آوردن"],
+["drawing book","دفتر نقاشی"]
+],
+
+"8-4":[
+["drugstore","داروخانه"],
+["You should go home and rest.","باید به خانه بروی و استراحت کنی"],
+["health problem","مشکل سلامتی"],
+["You should rest.","باید استراحت کنی"],
+["Thanks for your help.","ممنون بابت کمک شما"],
+["I’ll talk to your teacher.","من با معلمت صحبت خواهم کرد"],
+["stomachache","دلدرد"],
+["cough","سرفه"],
+["What’s the matter?","چه شده است؟"],
+["patient","مریض"],
+["advice","نصیحت"],
+["I have a sore throat.","من گلودرد دارم"],
+["Why don’t you see a doctor?","چرا دکتر نمی‌روی؟"],
+["You have sore eyes, too.","چشم‌هایت هم که خون افتاده است"],
+["Go to the dentist.","به دندانپزشکی برو"],
+["What is the problem?","چه مشکلی پیش آمده است؟"],
+["have a fever","تب داشتن"],
+["earache","گوش‌درد"],
+["What’s wrong?","چه شده است؟"],
+["running nose","آبریزش بینی"],
+["Let’s go to the office and call your parents first.","بیا اول به دفتر برویم و به پدر و مادرت زنگ بزنیم"],
+["Why don’t you get some rest?","چرا کمی استراحت نمی‌کنی؟"],
+["cold","سرماخوردگی"],
+["Is she all right?","آیا او حالش خوب است؟"],
+["sore throat","گلودرد"],
+["Are you OK?","خوبی؟"],
+["I’ll be back in a minute.","من یک دقیقه‌ای برمی‌گردم"],
+["You should see a doctor.","باید دکتر بروی"],
+["toothache","دندان‌درد"],
+["rest","استراحت کردن"],
+["headache","سردرد"]
+],
+
+"9-1":[
+["patient","صبور"],
+["bit","کم"],
+["personality","شخصیت"],
+["hard-working","کوشا"],
+["neat","مرتب و منظم"],
+["careful","مراقب"],
+["What’s he like?","او چه جور آدمی است؟"],
+["kind","مهربان"],
+["how","چطور"],
+["talkative","پرحرف"],
+["also","همچنین"],
+["careless","بی‌دقت"],
+["clever","باهوش"],
+["Is he hard-working too?","آیا او هم کوشاست؟"],
+["pleasant","خوشایند"],
+["happy","خوشحال"],
+["lazy","تنبل"],
+["shy","خجالتی"],
+["He always helps me with my lessons.","او همیشه به من در درس‌هایم کمک می‌کند"],
+["What is your friend like?","دوستت چه جور آدمی است؟"],
+["cruel","بی‌رحم"],
+["rude","بی‌ادب"],
+["I do my homework.","من تکالیفم را انجام می‌دهم"],
+["helpful","مفید"],
+["generous","بخشنده"],
+["friendly","دوستانه"],
+["Let me check it in the dictionary.","اجازه بدهید این واژه را در فرهنگ لغت چک کنم"],
+["best friend","بهترین دوست"],
+["everybody","همه"],
+["member","عضو"],
+["great","عالی"],
+["polite","مؤدب"],
+["Oh, he is really great!","اوه! او واقعاً آدم خوبی است"],
+["some","بعضی"],
+["upset","ناراحت"],
+["company","شرکت"],
+["nervous","مضطرب"],
+["selfish","خودخواه"],
+["funny","بامزه"],
+["serious","جدی"],
+["brave","شجاع"],
+["He’s clever and kind.","او باهوش و مهربان است"],
+["always","همیشه"],
+["angry","عصبانی"],
+["homework","تکلیف منزل"]
+],
+
+"9-2":[
+["say prayers","نماز خواندن"],
+["land","فرود آمدن"],
+["I hope you enjoy your stay in Tehran.","امیدوارم از اقامت‌تان در تهران لذت ببرید"],
+["check the timetable","چک کردن برنامه حرکت"],
+["around the world","دور دنیا"],
+["hope","امیدوار بودن"],
+["of course","البته"],
+["check the passport","گذرنامه چک کردن"],
+["book a hotel","هتل رزرو کردن"],
+["travel","سفر کردن"],
+["airport","فرودگاه"],
+["ticket","بلیط"],
+["train","قطار"],
+["flight","پرواز"],
+["station","ایستگاه"]
+],
+
+"11-1":[
+["normal","معمول"],
+["cure","درمان کردن"],
+["jogging","دو آهسته"],
+["physically","از لحاظ جسمی"],
+["climb","بالا رفتن"],
+["skiing","به اسکی رفتن"],
+["sailing","به قایقرانی رفتن"],
+["fat","چاق"],
+["key","کلید"],
+["unimportant","بی‌اهمیت"],
+["kid","بچه"],
+["properly","مناسب"],
+["regular","مرتب"],
+["prefer","ترجیح دادن"],
+["snack","خوراک سبک"],
+["harmful","مضر"],
+["replay","بازپخش کردن"],
+["forget","فراموش کردن"],
+["asleep","خوابیده"],
+["oil","روغن"],
+["Thanks for calling.","ممنون که زنگ زدی"],
+["change","تغییر دادن"],
+["rarely","به ندرت"],
+["cycling","دوچرخه‌سواری"],
+["diet","رژیم غذایی"],
+["walking","پیاده‌روی"],
+["balanced","متوازن"],
+["however","به هر حال"],
+["protein","پروتئین"],
+["laughter","خنده"],
+["stress","فشار عصبی"],
+["happiness","خوشحالی"],
+["healthy","سالم"],
+["unhealthy","ناسالم"],
+["jogging","آهسته دویدن"]
+],
+
+"11-2":[
+["value","ارزش قائل بودن"],
+["pottery","سفالگری"],
+["hopeful","امیدوار"],
+["frightened","ترسیده"],
+["amazed","متحیر"],
+["earn","پول درآوردن"],
+["pass","با موفقیت گذراندن"],
+["custom","سنت"],
+["homeland","میهن"],
+["souvenir","سوغاتی"],
+["choose","انتخاب کردن"],
+["tilework","کاشی‌کاری"],
+["wellness","سلامتی"],
+["refer","ارجاع دادن"],
+["item","کالا"],
+["usual","همیشگی"],
+["reference","منبع"],
+["depend","بستگی داشتن"],
+["imagination","قوه تخیل"],
+["handicraft","صنایع دستی"],
+["painting","نقاشی"],
+["income","درآمد"],
+["want","خواستن"],
+["quite","خیلی"],
+["creative","خلاق"],
+["area","منطقه"],
+["get back","برگشتن"],
+["bazaar","بازار"],
+["artwork","اثر هنری"],
+["craftswoman","هنرمند"],
+["snow","برف"],
+["tile","کاشی"],
+["antonym","متضاد"],
+["war world","جنگ جهانی"],
+["carpet","فرش"],
+["pack","جمع کردن وسایل"],
+["southwest","جنوب غربی"],
+["correctly","به درستی"],
+["discount","تخفیف"],
+["introduce","معرفی کردن"]
+],
+
+"12-1":[
+["emotion","احساس / عاطفه"],
+["comma","ویرگول"],
+["whereby","که به وسیله آن"],
+["reply","پاسخ دادن"],
+["loving","مهربان / بامحبت"],
+["hard of hearing","سنگین‌گوش / کم‌شنوا"],
+["strength","قدرت / توانایی"],
+["orally","به صورت شفاهی"],
+["cruel","بی‌رحم"],
+["reader","خواننده"],
+["elderly","سالمند"],
+["smart phone","تلفن هوشمند"],
+["meaningful","هدفمند / معنی‌دار"],
+["unconditionally","بی‌قید و شرط"],
+["just","تازگی / الان"],
+["heritage","میراث"],
+["failure","ناتوانی"],
+["by heart","از حفظ / از بر"],
+["quietly","آهسته / بی‌صدا"],
+["comprehension","فهم / درک"],
+["boost","بالا بردن / افزایش دادن / تقویت کردن"],
+["polite","مودب"],
+["bacteria","باکتری‌ها"],
+["deserve","سزاوار بودن"],
+["principle","اصل اخلاقی"],
+["result","نتیجه"],
+["poetry","شعر"],
+["strategy","راهبرد"],
+["by the way","راستی"],
+["for instance","برای مثال"]
+],
+
+"12-2":[
+["generally","معمولاً / غالباً"],
+["unknown","نامعلوم / ناآشنا"],
+["level","سطح"],
+["colony","کلونی / انبوه"],
+["antonym","متضاد"],
+["section","بخش / قسمت"],
+["pronunciation","تلفظ"],
+["expression","اصطلاح / عبارت"],
+["device","دستگاه / وسیله"],
+["unsystematically","بدون قاعده مشخص"],
+["bilingual","دوزبانه"],
+["monolingual","تک‌زبانه"],
+["highlight","برجسته کردن"],
+["primarily","در درجه اول / عمدتاً"],
+["stand for","به معنای چیزی بودن"],
+["biography","زندگینامه"],
+["allow","اجازه دادن"],
+["incomprehensible","غیرقابل فهم / مبهم"],
+["whereas","در حالی که"],
+["term","اصطلاح / واژه"],
+["jump into","ناگهان تصمیم به انجام کاری گرفتن"],
+["technical","فنی"],
+["figure out","فهمیدن / سر درآوردن"],
+["unexpectedly","به طور غیرمنتظره"],
+["treasure","گنج / گنجینه"]
+],
+
+"12-3":[
+["oxygen","اکسیژن"],
+["fan","پنکه"],
+["God helps those who help themselves","از تو حرکت از خدا برکت"],
+["fossil fuel","سوخت فسیلی"],
+["herd","گله"],
+["necessary","لازم / ضروری"],
+["LED light bulb","لامپ ال‌ای‌دی"],
+["Jupiter","مشتری"],
+["stable","اصطبل"],
+["form","شکل"],
+["renewable","تجدیدپذیر"],
+["energy","انرژی"],
+["solar power","انرژی خورشیدی"],
+["clean energy","انرژی پاک"],
+["wind turbine","توربین بادی"],
+["convert","تبدیل کردن"],
+["portable","قابل حمل"],
+["give off","منتشر کردن"],
+["absorb","جذب کردن"],
+["digital camera","دوربین دیجیتال"],
+["oil","نفت"],
+["sunshine","آفتاب"],
+["gadget","وسیله / ابزارک"],
+["load","بار"],
+["harm","آسیب / ضرر"],
+["solar system","منظومه شمسی"],
+["practical","کاربردی"]
+]
+
+};
+
+
+/* =========================================================
+   6. USE PDF VOCABULARY
+========================================================= */
+
+function getLessonVocabulary(grade,lesson){
+
+    const key =
+    `${grade}-${lesson}`;
+
+    if(pdfVocabulary[key]){
+        return pdfVocabulary[key];
+    }
+
+    /*
+      اگر برای یک درس هنوز PDF entry وجود نداشت،
+      از vocabulary موجود فعلی استفاده می‌شود.
+    */
+
+    if(
+        typeof vocab!=="undefined" &&
+        vocab[grade]
+    ){
+        return vocab[grade];
+    }
+
+    return [];
+}
+
+
+/* =========================================================
+   7. EXTENDED GRAMMAR BY LESSON
+========================================================= */
+
+const extendedGrammar={
+
+"7":{
+
+1:[
+{
+title:"فعل to be",
+explanation:"برای معرفی خود و دیگران و گفتن اطلاعات شخصی از am / is / are استفاده می‌کنیم.",
+formula:"I + am | He/She/It + is | You/We/They + are",
+examples:[
+"I am Ali.",
+"She is Sara.",
+"They are students."
+]
+},
+{
+title:"جمله‌های منفی",
+explanation:"برای منفی کردن فعل to be، کلمه not بعد از آن قرار می‌گیرد.",
+formula:"Subject + am/is/are + not",
+examples:[
+"I am not a teacher.",
+"He is not a student.",
+"They are not classmates."
+]
+},
+{
+title:"سؤال‌های بله/خیر",
+explanation:"در سؤال‌های بله/خیر، am/is/are قبل از فاعل قرار می‌گیرد.",
+formula:"Am/Is/Are + Subject + ...?",
+examples:[
+"Are you a student?",
+"Is he your teacher?",
+"Are they friends?"
+]
+},
+{
+title:"Wh Questions",
+explanation:"What برای پرسیدن اطلاعات و How برای پرسیدن حال یا نحوه هجی کردن استفاده می‌شود.",
+formula:"What is ...? | How are ...? | How do you spell ...?",
+examples:[
+"What is your name?",
+"How are you?",
+"How do you spell your last name?"
+]
+}
+],
+
+2:[
+{
+title:"This / That",
+explanation:"This برای اشاره به چیز یا فرد نزدیک و That برای اشاره به چیز یا فرد دور استفاده می‌شود.",
+formula:"This is ... | That is ...",
+examples:[
+"This is my classmate.",
+"That is my teacher."
+]
+},
+{
+title:"Who",
+explanation:"برای پرسیدن هویت یک شخص از Who استفاده می‌کنیم.",
+formula:"Who + is + ...?",
+examples:[
+"Who is he?",
+"Who is your friend?"
+]
+},
+{
+title:"Have / Has",
+explanation:"برای بیان داشتن، have با I/you/we/they و has با he/she/it می‌آید.",
+formula:"I/You/We/They + have | He/She/It + has",
+examples:[
+"I have a book.",
+"She has a library card."
+]
+},
+{
+title:"Can",
+explanation:"Can برای بیان توانایی استفاده می‌شود و بعد از آن فعل ساده می‌آید.",
+formula:"Subject + can + base verb",
+examples:[
+"I can help you.",
+"She can speak English."
+]
+}
+],
+
+3:[
+{
+title:"سن و How old",
+explanation:"برای پرسیدن سن از How old are you? و برای پاسخ از be + number + years old استفاده می‌کنیم.",
+formula:"How old + be + subject?",
+examples:[
+"How old are you?",
+"I am thirteen years old.",
+"How old is your brother?"
+]
+},
+{
+title:"تاریخ تولد",
+explanation:"برای پرسیدن تاریخ تولد از When is your birthday? استفاده می‌شود.",
+formula:"When is + possessive + birthday?",
+examples:[
+"When is your birthday?",
+"My birthday is in May."
+]
+},
+{
+title:"اعداد",
+explanation:"اعداد در این درس برای بیان سن، تاریخ و اطلاعات عددی استفاده می‌شوند.",
+formula:"one, two, three ... ninety",
+examples:[
+"I am fourteen.",
+"She is seventeen."
+]
+}
+],
+
+4:[
+{
+title:"مالکیت با 's",
+explanation:"برای نشان دادن مالکیت، به اسم شخص 's اضافه می‌کنیم.",
+formula:"Person + 's + noun",
+examples:[
+"My mother's job is teaching.",
+"What is your father's job?"
+]
+},
+{
+title:"مشاغل",
+explanation:"برای پرسیدن شغل افراد از What is ...'s job? استفاده می‌کنیم.",
+formula:"What is + possessive + job?",
+examples:[
+"What is your father's job?",
+"He is a farmer.",
+"She is a nurse."
+]
+},
+{
+title:"How old",
+explanation:"برای پرسیدن سن اعضای خانواده نیز از How old استفاده می‌کنیم.",
+formula:"How old + is + he/she?",
+examples:[
+"How old is your father?",
+"He is forty years old."
+]
+}
+],
+
+5:[
+{
+title:"Present Continuous",
+explanation:"برای توصیف کاری که اکنون در حال انجام است از am/is/are + verb-ing استفاده می‌کنیم.",
+formula:"Subject + am/is/are + V-ing",
+examples:[
+"He is wearing a blue suit.",
+"She is wearing a red dress."
+]
+},
+{
+title:"صفت‌ها",
+explanation:"صفت‌ها برای توصیف قد، سن، رنگ و ظاهر افراد و لباس‌ها استفاده می‌شوند.",
+formula:"be + adjective",
+examples:[
+"He is tall.",
+"She is young.",
+"The shirt is white."
+]
+},
+{
+title:"پرسش درباره ظاهر",
+explanation:"برای شناسایی افراد از پرسش‌هایی مانند Is that your ...? و Which one...? استفاده می‌کنیم.",
+formula:"Is that ...? | Which one is ...?",
+examples:[
+"Is that your English teacher?",
+"Which one is your math teacher?"
+]
+}
+],
+
+6:[
+{
+title:"Simple Present",
+explanation:"برای بیان کارهای روزمره و عادت‌ها از زمان حال ساده استفاده می‌کنیم.",
+formula:"Subject + base verb | He/She/It + verb-s",
+examples:[
+"I study every day.",
+"She works in an office.",
+"He watches TV."
+]
+},
+{
+title:"Do / Does",
+explanation:"برای ساخت سؤال در حال ساده از do و does استفاده می‌کنیم.",
+formula:"Do/Does + subject + base verb?",
+examples:[
+"Where do you study?",
+"What does he do?"
+]
+},
+{
+title:"افعال روزمره",
+explanation:"افعالی مانند work, cook, eat, drink, study و watch برای فعالیت‌های روزمره استفاده می‌شوند.",
+formula:"Subject + daily activity",
+examples:[
+"I eat lunch.",
+"She cooks dinner.",
+"They watch TV."
+]
+}
+],
+
+7:[
+{
+title:"Where",
+explanation:"برای پرسیدن محل زندگی یا مکان از Where استفاده می‌کنیم.",
+formula:"Where + do/does + subject + verb?",
+examples:[
+"Where do you live?",
+"Where does he live?"
+]
+},
+{
+title:"What time",
+explanation:"برای پرسیدن ساعت انجام یک کار از What time استفاده می‌کنیم.",
+formula:"What time + do/does + subject + verb?",
+examples:[
+"What time are you going?",
+"What time is she coming back?"
+]
+},
+{
+title:"a.m. / p.m.",
+explanation:"a.m. برای قبل از ظهر و p.m. برای بعد از ظهر و شب استفاده می‌شود.",
+formula:"time + a.m. / p.m.",
+examples:[
+"It is eight a.m.",
+"She comes back at six p.m."
+]
+}
+],
+
+8:[
+{
+title:"I’d like",
+explanation:"برای بیان درخواست مؤدبانه، مخصوصاً در رستوران یا هنگام سفارش، از I'd like استفاده می‌کنیم.",
+formula:"I'd like + noun",
+examples:[
+"I'd like some tea.",
+"I'd like a sandwich."
+]
+},
+{
+title:"some / any",
+explanation:"some معمولاً در جمله مثبت و درخواست‌ها و any در سؤال‌ها و جملات منفی استفاده می‌شود.",
+formula:"some + noun | any + noun",
+examples:[
+"I'd like some tea.",
+"Do you have any juice?"
+]
+}
+]
+
+},
+
+"8":{
+
+1:[
+{
+title:"ملیت و کشور",
+explanation:"برای پرسیدن ملیت و کشور از Where is ... from? و What nationality ...? استفاده می‌کنیم.",
+formula:"Where + be + subject + from?",
+examples:[
+"Where is he from?",
+"He is from Iran.",
+"She is Iranian."
+]
+},
+{
+title:"افعال be",
+explanation:"برای معرفی کشور و ملیت از am/is/are استفاده می‌کنیم.",
+formula:"Subject + be + nationality",
+examples:[
+"I am Iranian.",
+"He is Australian."
+]
+}
+],
+
+2:[
+{
+title:"Simple Present",
+explanation:"برای برنامه‌های هفتگی و فعالیت‌های تکراری از حال ساده استفاده می‌شود.",
+formula:"Subject + base verb",
+examples:[
+"I go to school every day.",
+"We play sports on Fridays."
+]
+},
+{
+title:"Wh Questions",
+explanation:"What days, When و Why برای پرسیدن روز، زمان و دلیل استفاده می‌شوند.",
+formula:"What days / When / Why + ...?",
+examples:[
+"What days do you study English?",
+"When can you start?",
+"Why do you stay home?"
+]
+},
+{
+title:"Adverbs of Frequency",
+explanation:"کلماتی مانند always, usually, sometimes و never میزان تکرار را نشان می‌دهند.",
+formula:"Subject + adverb + verb",
+examples:[
+"I usually go to the gym.",
+"I sometimes watch TV."
+]
+}
+],
+
+3:[
+{
+title:"Can / Can't",
+explanation:"Can برای بیان توانایی و can't برای بیان ناتوانی استفاده می‌شود.",
+formula:"Subject + can/can't + base verb",
+examples:[
+"I can swim.",
+"She can draw.",
+"He can't cook."
+]
+},
+{
+title:"Can Questions",
+explanation:"برای پرسیدن توانایی یک شخص، can را ابتدای جمله می‌آوریم.",
+formula:"Can + subject + base verb?",
+examples:[
+"Can you make a cake?",
+"Can she draw?"
+]
+}
+],
+
+4:[
+{
+title:"Should",
+explanation:"Should برای توصیه و پیشنهاد استفاده می‌شود و بعد از آن فعل ساده می‌آید.",
+formula:"Subject + should + base verb",
+examples:[
+"You should rest.",
+"You should see a doctor."
+]
+},
+{
+title:"Health Problems",
+explanation:"برای بیان بیماری و مشکلات سلامتی از have + illness استفاده می‌کنیم.",
+formula:"Subject + have/has + health problem",
+examples:[
+"I have a headache.",
+"She has a toothache."
+]
+},
+{
+title:"Why don't you...?",
+explanation:"این ساختار برای ارائه پیشنهاد دوستانه استفاده می‌شود.",
+formula:"Why don't you + base verb?",
+examples:[
+"Why don't you get some rest?",
+"Why don't you see a doctor?"
+]
+}
+]
+
+},
+
+"9":{
+
+1:[
+{
+title:"Adjectives",
+explanation:"صفت‌ها برای توصیف ویژگی‌های شخصیتی افراد استفاده می‌شوند.",
+formula:"Subject + be + adjective",
+examples:[
+"He is kind.",
+"She is clever and friendly."
+]
+},
+{
+title:"What is ... like?",
+explanation:"برای پرسیدن درباره شخصیت و ویژگی‌های یک فرد استفاده می‌شود.",
+formula:"What + be + subject + like?",
+examples:[
+"What is your friend like?",
+"What is he like?"
+]
+},
+{
+title:"Simple Present",
+explanation:"برای بیان رفتارها و عادت‌های افراد از حال ساده استفاده می‌کنیم.",
+formula:"Subject + base verb / verb-s",
+examples:[
+"He always helps me.",
+"She works for a company."
+]
+}
+],
+
+2:[
+{
+title:"Travel Vocabulary",
+explanation:"ساختارهای این درس برای صحبت درباره سفر، فرودگاه، هتل و برنامه سفر استفاده می‌شوند.",
+formula:"travel + destination",
+examples:[
+"I travel around the world.",
+"We booked a hotel."
+]
+},
+{
+title:"Imperatives",
+explanation:"برای دستور یا درخواست مستقیم از شکل ساده فعل استفاده می‌کنیم.",
+formula:"Base verb + ...",
+examples:[
+"Check the passport.",
+"Book a hotel."
+]
+}
+],
+
+3:[
+{
+title:"Simple Past",
+explanation:"برای اتفاق‌هایی که در گذشته رخ داده‌اند از گذشته ساده استفاده می‌کنیم.",
+formula:"Subject + past verb",
+examples:[
+"We visited our relatives.",
+"They celebrated the festival."
+]
+},
+{
+title:"Time Expressions",
+explanation:"عبارت‌هایی مانند yesterday, last year و ago زمان گذشته را مشخص می‌کنند.",
+formula:"Past verb + time expression",
+examples:[
+"I visited Tehran last year.",
+"She called me yesterday."
+]
+}
+],
+
+4:[
+{
+title:"Services",
+explanation:"برای صحبت درباره خدمات عمومی و شغل‌ها از حال ساده استفاده می‌شود.",
+formula:"What does + subject + do?",
+examples:[
+"What does a firefighter do?",
+"He works at a fire station."
+]
+},
+{
+title:"Because",
+explanation:"برای بیان دلیل از because استفاده می‌کنیم.",
+formula:"... because + reason",
+examples:[
+"I walk because it is healthy.",
+"I use the bus because it is cheap."
+]
+}
+]
+
+},
+
+"10":{
+
+1:[
+{
+title:"Simple Present",
+explanation:"برای بیان واقعیت‌ها، عادت‌ها و اطلاعات علمی از حال ساده استفاده می‌کنیم.",
+formula:"Subject + base verb",
+examples:[
+"Trees produce oxygen.",
+"People protect nature."
+]
+},
+{
+title:"Comparatives",
+explanation:"برای مقایسه دو چیز از صفت تفضیلی استفاده می‌کنیم.",
+formula:"adjective-er + than",
+examples:[
+"Solar energy is cleaner than oil.",
+"This tree is taller than that one."
+]
+}
+],
+
+2:[
+{
+title:"Present Perfect",
+explanation:"برای عملی که در گذشته اتفاق افتاده و نتیجه یا ارتباطی با حال دارد از present perfect استفاده می‌کنیم.",
+formula:"have/has + past participle",
+examples:[
+"I have learned a lot.",
+"She has visited many places."
+]
+},
+{
+title:"Relative Clauses",
+explanation:"برای دادن اطلاعات بیشتر درباره اسم از who, which و that استفاده می‌کنیم.",
+formula:"noun + who/which/that + clause",
+examples:[
+"The scientist who discovered it was famous.",
+"The book that I read was useful."
+]
+}
+],
+
+3:[
+{
+title:"Gerunds",
+explanation:"Gerund شکل ing فعل است که می‌تواند مانند اسم عمل کند.",
+formula:"verb + V-ing",
+examples:[
+"Reading is useful.",
+"I enjoy learning."
+]
+},
+{
+title:"Infinitives",
+explanation:"برای بیان هدف یا بعد از بعضی افعال از to + verb استفاده می‌کنیم.",
+formula:"to + base verb",
+examples:[
+"I want to learn.",
+"She decided to study."
+]
+}
+],
+
+4:[
+{
+title:"Travel Expressions",
+explanation:"ساختارهای کاربردی برای برنامه‌ریزی سفر و بیان تجربه‌های سفر.",
+formula:"be going to + base verb",
+examples:[
+"I am going to travel.",
+"We are going to visit Italy."
+]
+}
+]
+
+},
+
+"11":{
+
+1:[
+{
+title:"Passive Voice",
+explanation:"در ساختار مجهول تمرکز روی عمل است، نه انجام‌دهنده آن.",
+formula:"be + past participle",
+examples:[
+"English is spoken worldwide.",
+"The book was written in English."
+]
+},
+{
+title:"Conditionals",
+explanation:"جمله شرطی برای بیان شرط و نتیجه استفاده می‌شود.",
+formula:"If + present, will + base verb",
+examples:[
+"If I study, I will pass.",
+"If you exercise, you will feel better."
+]
+}
+],
+
+2:[
+{
+title:"Healthy Lifestyle",
+explanation:"برای توصیه درباره سلامت از should و shouldn't استفاده می‌کنیم.",
+formula:"should + base verb",
+examples:[
+"You should exercise.",
+"You shouldn't eat too much."
+]
+},
+{
+title:"Adverbs of Frequency",
+explanation:"قیدهای تکرار برای بیان دفعات انجام فعالیت‌های سالم استفاده می‌شوند.",
+formula:"always / usually / often / sometimes / rarely / never",
+examples:[
+"I usually walk.",
+"I rarely eat fast food."
+]
+}
+],
+
+3:[
+{
+title:"Past Simple",
+explanation:"برای صحبت درباره رویدادهای گذشته و تجربه‌های فرهنگی.",
+formula:"Subject + past verb",
+examples:[
+"They visited the bazaar.",
+"She learned pottery."
+]
+},
+{
+title:"Relative Clauses",
+explanation:"برای توضیح بیشتر درباره افراد و آثار هنری.",
+formula:"noun + who/which/that",
+examples:[
+"The artist who made this artwork is famous.",
+"The carpet that we saw was beautiful."
+]
+}
+],
+
+4:[
+{
+title:"Technology Vocabulary",
+explanation:"برای صحبت درباره فناوری و ابزارهای دیجیتال از ساختارهای توصیفی استفاده می‌کنیم.",
+formula:"Subject + be + adjective",
+examples:[
+"The device is useful.",
+"The technology is practical."
+]
+}
+]
+
+},
+
+"12":{
+
+1:[
+{
+title:"Tag Questions",
+explanation:"برای تأیید گرفتن از مخاطب در پایان جمله از Tag Question استفاده می‌کنیم.",
+formula:"Positive statement, negative tag? | Negative statement, positive tag?",
+examples:[
+"She is kind, isn't she?",
+"They don't know, do they?"
+]
+},
+{
+title:"Present Perfect",
+explanation:"برای بیان تجربه یا کاری که به زمان حال مرتبط است از present perfect استفاده می‌کنیم.",
+formula:"have/has + past participle",
+examples:[
+"I have finished my homework.",
+"She has just arrived."
+]
+}
+],
+
+2:[
+{
+title:"Relative Clauses",
+explanation:"برای دادن اطلاعات بیشتر درباره یک اسم از who, which و that استفاده می‌کنیم.",
+formula:"noun + who/which/that + clause",
+examples:[
+"The man who teaches us is kind.",
+"This is the book that I bought."
+]
+},
+{
+title:"Conditional Type II",
+explanation:"برای موقعیت‌های فرضی یا غیرواقعی در زمان حال یا آینده.",
+formula:"If + past simple, would + base verb",
+examples:[
+"If I had more time, I would read more.",
+"If she were here, she would help us."
+]
+}
+],
+
+3:[
+{
+title:"Past Perfect",
+explanation:"برای عملی که قبل از یک عمل دیگر در گذشته اتفاق افتاده است.",
+formula:"Subject + had + past participle",
+examples:[
+"When I arrived, he had left.",
+"They had finished the work before the rain started."
+]
+},
+{
+title:"Modal Verbs",
+explanation:"can, may, might, should و must برای توانایی، احتمال، توصیه و الزام استفاده می‌شوند.",
+formula:"modal + base verb",
+examples:[
+"Solar energy can reduce pollution.",
+"We should save energy.",
+"It may be useful."
+]
+}
+],
+
+4:[
+{
+title:"Passive Structures",
+explanation:"برای تمرکز روی نتیجه یا عملی که انجام شده از مجهول استفاده می‌کنیم.",
+formula:"be + past participle",
+examples:[
+"The building was constructed in 1600.",
+"The site is protected."
+]
+},
+{
+title:"Academic English",
+explanation:"در متن‌های علمی و رسمی از ساختارهای دقیق‌تر و واژگان آکادمیک استفاده می‌کنیم.",
+formula:"Formal subject + academic verb",
+examples:[
+"The results were analyzed carefully.",
+"The study shows an important difference."
+]
+}
+]
+
+}
+
+};
+
+
+/* =========================================================
+   8. QUESTION GENERATOR
+   حداقل ۱۵ سؤال برای هر درس
+========================================================= */
+
+function makeQuestionsForLesson(grade,lesson){
+
+    const words =
+    getLessonVocabulary(
+        grade,
+        lesson
+    );
+
+    const g =
+    extendedGrammar[grade]?.[lesson] ||
+    [];
+
+    let q=[];
+
+
+    /* ---------- VOCAB QUESTIONS ---------- */
+
+    const vocabLimit =
+    Math.min(
+        words.length,
+        8
+    );
+
+    for(let i=0;i<vocabLimit;i++){
+
+        const item=words[i];
+
+        const alternatives =
+        words
+        .filter((x,j)=>j!==i)
+        .slice(0,2)
+        .map(x=>x[1]);
+
+        if(alternatives.length<2)
+            continue;
+
+        const opts =
+        shuffleArray([
+            item[1],
+            ...alternatives
+        ]);
+
+        q.push({
+            q:`معنی "${item[0]}" چیست؟`,
+            o:opts,
+            a:opts.indexOf(item[1]),
+            type:"vocab"
+        });
+    }
+
+
+    /* ---------- GRAMMAR QUESTIONS ---------- */
+
+    const grammarPool=[
+
+        {
+            q:"I ___ a student.",
+            o:["am","is","are"],
+            a:0
+        },
+
+        {
+            q:"She ___ English every day.",
+            o:["study","studies","studying"],
+            a:1
+        },
+
+        {
+            q:"They ___ friends.",
+            o:["is","am","are"],
+            a:2
+        },
+
+        {
+            q:"He ___ wearing a blue shirt.",
+            o:["is","are","am"],
+            a:0
+        },
+
+        {
+            q:"You ___ see a doctor.",
+            o:["should","shoulds","should to"],
+            a:0
+        },
+
+        {
+            q:"I ___ swim.",
+            o:["can","am can","cans"],
+            a:0
+        },
+
+        {
+            q:"Where ___ you live?",
+            o:["do","does","are"],
+            a:0
+        },
+
+        {
+            q:"What time ___ she coming back?",
+            o:["is","are","do"],
+            a:0
+        },
+
+        {
+            q:"If I study, I ___ pass.",
+            o:["will","would","am"],
+            a:0
+        },
+
+        {
+            q:"English ___ spoken worldwide.",
+            o:["is","are","be"],
+            a:0
+        },
+
+        {
+            q:"If I had more time, I ___ read more.",
+            o:["would","will","am"],
+            a:0
+        },
+
+        {
+            q:"They ___ finished the work before we arrived.",
+            o:["had","have","has"],
+            a:0
+        },
+
+        {
+            q:"She is kind, ___ she?",
+            o:["isn't","doesn't","wasn't"],
+            a:0
+        },
+
+        {
+            q:"Solar energy ___ reduce pollution.",
+            o:["can","cans","is can"],
+            a:0
+        },
+
+        {
+            q:"The man ___ teaches us is kind.",
+            o:["who","where","what"],
+            a:0
+        },
+
+        {
+            q:"I enjoy ___ English.",
+            o:["learning","learn","to learning"],
+            a:0
+        },
+
+        {
+            q:"He ___ to school every day.",
+            o:["go","goes","going"],
+            a:1
+        },
+
+        {
+            q:"They ___ playing football now.",
+            o:["is","are","am"],
+            a:1
+        },
+
+        {
+            q:"She ___ a headache.",
+            o:["have","has","having"],
+            a:1
+        },
+
+        {
+            q:"We ___ usually visit our relatives.",
+            o:["do","does","are"],
+            a:0
+        }
+
+    ];
+
+
+    grammarPool
+    .forEach(x=>{
+
+        if(q.length>=15)
+            return;
+
+        q.push({
+            q:x.q,
+            o:x.o,
+            a:x.a,
+            type:"grammar"
+        });
+
+    });
+
+
+    /*
+       اگر به دلیل کمبود داده کمتر از ۱۵ شد،
+       سؤال‌ها را از vocabulary و grammar موجود
+       ترکیبی تکمیل می‌کنیم.
+    */
+
+    let cursor=0;
+
+    while(q.length<15){
+
+        if(words.length){
+
+            const item =
+            words[
+                cursor%words.length
+            ];
+
+            const opts =
+            [
+                item[1],
+                "نامرتبط",
+                "گزینه دیگر"
+            ];
+
+            q.push({
+                q:`کدام گزینه معنی "${item[0]}" است؟`,
+                o:shuffleArray(opts),
+                a:0,
+                type:"vocab"
+            });
+
+        }else{
+
+            const gItem =
+            grammarPool[
+                cursor%grammarPool.length
+            ];
+
+            q.push({
+                q:gItem.q,
+                o:gItem.o,
+                a:gItem.a,
+                type:"grammar"
+            });
+
+        }
+
+        cursor++;
+
+    }
+
+    return q.slice(0,15);
+}
+
+
+/* =========================================================
+   9. INSTANT QUESTION FEEDBACK
+========================================================= */
+
+function instantFeedback(
+    questionIndex,
+    selected,
+    correct,
+    button
+){
+
+    const container =
+    button.closest(".question");
+
+    if(!container)
+        return;
+
+    if(container.dataset.answered==="1")
+        return;
+
+    container.dataset.answered="1";
+
+    const options =
+    container.querySelectorAll(
+        ".option"
+    );
+
+    options.forEach(x=>{
+        x.disabled=true;
+        x.style.pointerEvents="none";
+    });
+
+    const good =
+    selected===correct;
+
+    button.classList.add(
+        good
+        ?"answer-correct"
+        :"answer-wrong"
+    );
+
+    if(!good){
+
+        options[
+            correct
+        ]?.classList.add(
+            "answer-correct"
+        );
+
+    }
+
+    let sticker =
+    document.createElement("div");
+
+    sticker.className=
+    "answer-sticker "+
+    (good?"good":"bad");
+
+    sticker.innerHTML=
+    good
+    ?
+    "🎉 درست! آفرین ❤️"
+    :
+    "😔 غلط! پاسخ درست مشخص شد 👇";
+
+    container.appendChild(
+        sticker
+    );
+
+    if(good){
+
+        S.xp=
+        Number(S.xp||0)+10;
+
+    }
+
+}
+
+
+/* =========================================================
+   10. BUILD LESSON EXAM
+========================================================= */
+
+function buildLessonExamFixed(
+    grade,
+    lesson
+){
+
+    const qs =
+    makeQuestionsForLesson(
+        grade,
+        lesson
+    );
+
+    window.currentLessonExam={
+        grade,
+        lesson,
+        questions:qs,
+        score:0
+    };
+
+    return `
+
+    <div class="exam-intro">
+
+        <div class="exam-icon">
+            📝
+        </div>
+
+        <div>
+
+            <h3>
+                آزمون درس ${lesson}
+            </h3>
+
+            <p>
+                ۱۵ سؤال ترکیبی از
+                لغات PDF و گرامر همین درس
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="exam-progress">
+
+        <span>
+            ۱۵ سؤال
+        </span>
+
+        <span>
+            پاسخ‌دهی فوری ⚡
+        </span>
+
+    </div>
+
+    <div id="lessonExamQuestions">
+
+    ${qs.map((q,i)=>`
+
+        <div
+            class="question"
+            data-question="${i}">
+
+            <div class="question-number">
+                سؤال ${i+1}
+            </div>
+
+            <strong>
+                ${esc(q.q)}
+            </strong>
+
+            ${q.o.map((o,j)=>`
+
+                <button
+                    class="option"
+                    type="button"
+                    onclick="
+                    instantFeedback(
+                        ${i},
+                        ${j},
+                        ${q.a},
+                        this
+                    )">
+
+                    ${esc(o)}
+
+                </button>
+
+            `).join("")}
+
+        </div>
+
+    `).join("")}
+
+    </div>
+
+    <div class="card exam-bottom">
+
+        <button
+            class="btn full"
+            onclick="finishLessonExamFixed()">
+
+            🏁 پایان و مشاهده نتیجه
+
+        </button>
+
+    </div>
+    `;
+}
+
+
+/* =========================================================
+   11. FINISH LESSON EXAM
+========================================================= */
+
+async function finishLessonExamFixed(){
+
+    const box =
+    document.getElementById(
+        "lessonExamQuestions"
+    );
+
+    if(!box)return;
+
+    const questions =
+    box.querySelectorAll(
+        ".question"
+    );
+
+    let answered=0;
+    let correct=0;
+
+    questions.forEach(q=>{
+
+        if(q.dataset.answered==="1"){
+
+            answered++;
+
+            if(
+                q.querySelector(
+                    ".answer-correct"
+                ) &&
+                !q.querySelector(
+                    ".answer-wrong"
+                )
+            ){
+                /*
+                   پاسخ صحیح انتخاب شده.
+                */
+            }
+
+        }
+
+    });
+
+
+    questions.forEach(q=>{
+
+        if(
+            q.querySelector(
+                ".answer-correct"
+            ) &&
+            !q.querySelector(
+                ".answer-wrong"
+            )
+        ){
+
+            /*
+              اگر پاسخ غلط بوده، گزینه درست هم
+              answer-correct دارد؛ بنابراین بررسی
+              answer-wrong لازم است.
+            */
+
+            correct++;
+
+        }
+
+    });
+
+
+    /*
+      روش دقیق‌تر:
+      هر سؤال با dataset.correct ذخیره می‌شود.
+    */
+
+    correct=0;
+
+    questions.forEach(q=>{
+
+        const selected =
+        q.querySelector(
+            ".answer-correct"
+        );
+
+        const wrong =
+        q.querySelector(
+            ".answer-wrong"
+        );
+
+        if(selected && !wrong)
+            correct++;
+
+    });
+
+    const total=
+    questions.length;
+
+    const score=
+    Math.round(
+        correct/total*100
+    );
+
+    if(S.student){
+
+        try{
+
+            await db
+            .from("exam_attempts")
+            .insert({
+
+                student_id:
+                S.student.id,
+
+                course_id:
+                `${S.grade}-${S.lesson}`,
+
+                exam_type:
+                "lesson",
+
+                score:
+                score,
+
+                correct_answers:
+                correct,
+
+                total_questions:
+                total
+
+            });
+
+        }catch(e){}
+
+    }
+
+    box.innerHTML=`
+
+    <div class="result-card">
+
+        <div class="result-emoji">
+            ${score>=80?"🏆":score>=50?"👏":"💪"}
+        </div>
+
+        <div class="score">
+            ${score}٪
+        </div>
+
+        <h2>
+            نتیجه آزمون
+        </h2>
+
+        <p>
+            ${correct}
+            پاسخ صحیح از
+            ${total}
+            سؤال
+        </p>
+
+        <button
+            class="btn full"
+            onclick="
+            openLesson(
+                S.lesson
+            )">
+
+            🔄 دوباره آزمون بده
+
+        </button>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   12. REPLACE OLD LESSON PAGE
+========================================================= */
+
+function lessonPage(grade,index){
+
+    S.grade=grade;
+    S.lesson=index;
+
+    const book=
+    books[grade];
+
+    const title=
+    book?.lessons?.[index-1] ||
+    `Lesson ${index}`;
+
+    const grammarItems =
+    extendedGrammar[grade]?.[index] ||
+    [];
+
+    const words =
+    getLessonVocabulary(
+        grade,
+        index
+    );
+
+
+    document.getElementById(
+        "coursesPage"
+    ).innerHTML=`
+
+    <button
+        class="back-btn"
+        onclick="gradePage('${grade}')">
+
+        ← بازگشت
+
+    </button>
+
+
+    <div class="lesson-header">
+
+        <div class="lesson-number-big">
+            ${index}
+        </div>
+
+        <div>
+
+            <h2>
+                ${esc(title)}
+            </h2>
+
+            <p>
+                ${book?.title||""}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="lesson-tabs">
+
+        <button
+            class="lesson-tab active"
+            onclick="
+            lessonTabFixed(
+                'grammarTab',
+                this
+            )">
+
+            📘 گرامر
+
+        </button>
+
+        <button
+            class="lesson-tab"
+            onclick="
+            lessonTabFixed(
+                'vocabTab',
+                this
+            )">
+
+            🔊 لغات
+
+        </button>
+
+        <button
+            class="lesson-tab"
+            onclick="
+            lessonTabFixed(
+                'examTab',
+                this
+            )">
+
+            📝 آزمون ۱۵ سؤالی
+
+        </button>
+
+    </div>
+
+
+    <div
+        id="grammarTab"
+        class="lesson active">
+
+        <div class="card">
+
+            <div class="section-intro">
+
+                <h3>
+                    📖 گرامر درس ${index}
+                </h3>
+
+                <p>
+                    توضیح کامل، فرمول و مثال‌های کاربردی
+                    متناسب با محتوای این درس.
+                </p>
+
+            </div>
+
+            ${
+                grammarItems.length
+                ?
+                grammarItems.map((g,i)=>`
+
+                    <div
+                        class="grammar-premium">
+
+                        <div class="grammar-index">
+                            ${i+1}
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                ${esc(g.title)}
+                            </h3>
+
+                            <p>
+                                ${esc(g.explanation)}
+                            </p>
+
+                            ${
+                                g.formula
+                                ?
+                                `
+                                <div
+                                    class="grammar-formula"
+                                    dir="ltr">
+
+                                    ${esc(g.formula)}
+
+                                </div>
+                                `
+                                :""
+                            }
+
+                            ${
+                                (g.examples||[])
+                                .map(ex=>`
+
+                                    <div
+                                        class="grammar-example"
+                                        dir="ltr">
+
+                                        🔹 ${esc(ex)}
+
+                                    </div>
+
+                                `).join("")
+                            }
+
+                        </div>
+
+                    </div>
+
+                `).join("")
+                :
+                `
+                <div class="empty">
+                    گرامر این درس در حال تکمیل است.
+                </div>
+                `
+            }
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="vocabTab"
+        class="lesson">
+
+        <div class="card">
+
+            <div class="section-intro">
+
+                <h3>
+                    🔊 واژگان درس ${index}
+                </h3>
+
+                <p>
+                    واژه‌ها از فایل PDF شما استخراج و
+                    درس‌به‌درس مرتب شده‌اند.
+                    برای شنیدن تلفظ روی 🔊 بزن.
+                </p>
+
+            </div>
+
+            <div class="pdf-badge">
+                📄 Vocabulary PDF
+            </div>
+
+            <div class="vocab-premium-grid">
+
+                ${
+                    words.length
+                    ?
+                    words.map((v,i)=>`
+
+                        <div
+                            class="vocab-premium">
+
+                            <div>
+
+                                <div
+                                    class="vocab-en"
+                                    dir="ltr">
+
+                                    ${esc(v[0])}
+
+                                </div>
+
+                                <div
+                                    class="vocab-fa">
+
+                                    ${esc(v[1])}
+
+                                </div>
+
+                            </div>
+
+                            <button
+                                class="speak-premium"
+                                onclick="
+                                speak(
+                                '${String(v[0])
+                                .replace(/'/g,"\\'")}'
+                                )">
+
+                                🔊
+
+                            </button>
+
+                        </div>
+
+                    `).join("")
+                    :
+                    `
+                    <div class="empty">
+                        واژگان این درس در حال تکمیل است.
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="examTab"
+        class="lesson">
+
+        ${buildLessonExamFixed(
+            grade,
+            index
+        )}
+
+    </div>
+
+    `;
+
+    openPage("coursesPage");
+
+}
+
+
+/* =========================================================
+   13. LESSON TABS
+========================================================= */
+
+function lessonTabFixed(id,button){
+
+    document
+    .querySelectorAll(
+        "#coursesPage .lesson"
+    )
+    .forEach(x=>
+        x.classList.remove("active")
+    );
+
+    document
+    .getElementById(id)
+    ?.classList.add("active");
+
+    document
+    .querySelectorAll(
+        "#coursesPage .lesson-tab"
+    )
+    .forEach(x=>
+        x.classList.remove("active")
+    );
+
+    button.classList.add("active");
+
+}
+
+
+/* =========================================================
+   14. PLACEMENT TEST — 30 QUESTIONS
+========================================================= */
+
+const placementQuestionsFixed=[
+
+{
+q:"I ___ a student.",
+o:["am","is","are"],
+a:0
+},
+
+{
+q:"She ___ English every day.",
+o:["study","studies","studying"],
+a:1
+},
+
+{
+q:"They ___ from Iran.",
+o:["is","are","am"],
+a:1
+},
+
+{
+q:"How old ___ you?",
+o:["is","are","am"],
+a:1
+},
+
+{
+q:"He ___ wearing a blue shirt.",
+o:["is","are","am"],
+a:0
+},
+
+{
+q:"I ___ swim.",
+o:["can","cans","am can"],
+a:0
+},
+
+{
+q:"You ___ see a doctor.",
+o:["should","shoulds","should to"],
+a:0
+},
+
+{
+q:"Where ___ you live?",
+o:["do","does","is"],
+a:0
+},
+
+{
+q:"She ___ to school every day.",
+o:["go","goes","going"],
+a:1
+},
+
+{
+q:"They ___ playing football now.",
+o:["is","are","am"],
+a:1
+},
+
+{
+q:"I ___ a headache.",
+o:["have","has","having"],
+a:0
+},
+
+{
+q:"English ___ spoken worldwide.",
+o:["is","are","be"],
+a:0
+},
+
+{
+q:"If I study, I ___ pass.",
+o:["will","would","am"],
+a:0
+},
+
+{
+q:"I enjoy ___ books.",
+o:["reading","read","to reading"],
+a:0
+},
+
+{
+q:"She has lived here ___ 2020.",
+o:["since","for","at"],
+a:0
+},
+
+{
+q:"He ___ finished his homework.",
+o:["has","have","is"],
+a:0
+},
+
+{
+q:"If I had more time, I ___ travel.",
+o:["would","will","am"],
+a:0
+},
+
+{
+q:"The man ___ teaches us is kind.",
+o:["who","where","what"],
+a:0
+},
+
+{
+q:"They ___ finished before we arrived.",
+o:["had","have","has"],
+a:0
+},
+
+{
+q:"She is kind, ___ she?",
+o:["isn't","doesn't","wasn't"],
+a:0
+},
+
+{
+q:"Solar energy ___ reduce pollution.",
+o:["can","cans","is can"],
+a:0
+},
+
+{
+q:"I have ___ my homework.",
+o:["finished","finish","finishing"],
+a:0
+},
+
+{
+q:"He ___ to the gym yesterday.",
+o:["went","go","goes"],
+a:0
+},
+
+{
+q:"We ___ usually study at night.",
+o:["do","does","are"],
+a:0
+},
+
+{
+q:"What ___ your name?",
+o:["is","are","am"],
+a:0
+},
+
+{
+q:"How do you ___ your name?",
+o:["spell","spells","spelling"],
+a:0
+},
+
+{
+q:"My birthday is ___ May.",
+o:["in","on","at"],
+a:0
+},
+
+{
+q:"There ___ two students.",
+o:["are","is","am"],
+a:0
+},
+
+{
+q:"She ___ a nurse.",
+o:["is","are","am"],
+a:0
+},
+
+{
+q:"They ___ English yesterday.",
+o:["studied","study","studies"],
+a:0
+}
+
+];
+
+
+function placementTest(){
+
+    S.quiz={
+        type:"placement",
+        questions:
+        placementQuestionsFixed.map(q=>({
+
+            q:q.q,
+
+            options:
+            shuffleArray(
+                [...q.o]
+            ),
+
+            answer:
+            0
+
+        })),
+
+        i:0,
+        correct:0,
+        wrong:0,
+        answered:false
+    };
+
+
+    /*
+      اصلاح answer بعد از shuffle
+    */
+
+    S.quiz.questions =
+    placementQuestionsFixed.map(q=>{
+
+        const options =
+        shuffleArray(
+            [...q.o]
+        );
+
+        return {
+
+            q:q.q,
+
+            options,
+
+            answer:
+            options.indexOf(
+                q.o[q.a]
+            )
+
+        };
+
+    });
+
+
+    document.getElementById(
+        "coursesPage"
+    ).innerHTML=`
+
+    <div class="hero">
+
+        <h2>
+            🎯 آزمون تعیین سطح
+        </h2>
+
+        <p>
+            ۳۰ سؤال از آسان تا پیشرفته
+        </p>
+
+        <div class="placement-levels">
+
+            <span>A1</span>
+            <span>A2</span>
+            <span>B1</span>
+            <span>B2</span>
+            <span>C1</span>
+            <span>C2</span>
+
+        </div>
+
+    </div>
+
+    <div
+        id="placementQuiz"
+        class="card">
+
+    </div>
+
+    `;
+
+    renderPlacementQuestion();
+
+    openPage("coursesPage");
+
+}
+
+
+function renderPlacementQuestion(){
+
+    const q=
+    S.quiz.questions[
+        S.quiz.i
+    ];
+
+    if(!q){
+
+        placementFinishFixed();
+        return;
+
+    }
+
+    document.getElementById(
+        "placementQuiz"
+    ).innerHTML=`
+
+    <div class="quiz-counter">
+
+        سؤال
+        ${S.quiz.i+1}
+        از
+        ${S.quiz.questions.length}
+
+    </div>
+
+    <div class="question placement-question">
+
+        <div class="question-number">
+            🎯
+        </div>
+
+        <h3 dir="ltr">
+            ${esc(q.q)}
+        </h3>
+
+        ${q.options.map((o,j)=>`
+
+            <button
+                class="option"
+                onclick="
+                answerPlacementFixed(
+                    ${j},
+                    this
+                )">
+
+                ${esc(o)}
+
+            </button>
+
+        `).join("")}
+
+    </div>
+
+    <div class="progress">
+
+        <i style="
+        width:
+        ${Math.round(
+            S.quiz.i/
+            S.quiz.questions.length*
+            100
+        )}%"></i>
+
+    </div>
+
+    `;
+
+}
+
+
+function answerPlacementFixed(
+    selected,
+    button
+){
+
+    if(S.quiz.answered)
+        return;
+
+    S.quiz.answered=true;
+
+    const q=
+    S.quiz.questions[
+        S.quiz.i
+    ];
+
+    const good=
+    selected===q.answer;
+
+    const options =
+    document.querySelectorAll(
+        "#placementQuiz .option"
+    );
+
+    options.forEach(x=>{
+        x.disabled=true;
+        x.style.pointerEvents="none";
+    });
+
+    button.classList.add(
+        good
+        ?"answer-correct"
+        :"answer-wrong"
+    );
+
+    if(!good){
+
+        options[
+            q.answer
+        ]?.classList.add(
+            "answer-correct"
+        );
+
+    }
+
+    const feedback=
+    document.createElement(
+        "div"
+    );
+
+    feedback.className=
+    "answer-sticker "+
+    (good?"good":"bad");
+
+    feedback.innerHTML=
+    good
+    ?"🎉 پاسخ درست است!"
+    :"❌ پاسخ غلط است! پاسخ صحیح مشخص شد.";
+
+    document
+    .getElementById(
+        "placementQuiz"
+    )
+    .appendChild(
+        feedback
+    );
+
+    if(good){
+        S.quiz.correct++;
+    }else{
+        S.quiz.wrong++;
+    }
+
+    setTimeout(()=>{
+
+        S.quiz.i++;
+        S.quiz.answered=false;
+
+        renderPlacementQuestion();
+
+    },900);
+
+}
+
+
+async function placementFinishFixed(){
+
+    const score=
+    S.quiz.correct;
+
+    const total=
+    S.quiz.questions.length;
+
+    let level="A1";
+
+    const percentage=
+    Math.round(
+        score/total*100
+    );
+
+    if(percentage>=90)
+        level="C2";
+    else if(percentage>=80)
+        level="C1";
+    else if(percentage>=70)
+        level="B2";
+    else if(percentage>=55)
+        level="B1";
+    else if(percentage>=35)
+        level="A2";
+    else
+        level="A1";
+
+
+    if(S.student){
+
+        try{
+
+            await db
+            .from("exam_attempts")
+            .insert({
+
+                student_id:
+                S.student.id,
+
+                course_id:
+                "placement",
+
+                exam_type:
+                "placement",
+
+                score:
+                percentage,
+
+                correct_answers:
+                score,
+
+                total_questions:
+                total
+
+            });
+
+        }catch(e){}
+
+    }
+
+
+    document.getElementById(
+        "coursesPage"
+    ).innerHTML=`
+
+    <div class="result-card placement-result">
+
+        <div class="result-emoji">
+            ${level==="C2"?"🏆":
+              level==="C1"?"🥇":
+              level==="B2"?"🥈":
+              level==="B1"?"🥉":"🎯"}
+        </div>
+
+        <div class="score">
+            ${percentage}٪
+        </div>
+
+        <h2>
+            سطح CEFR شما
+        </h2>
+
+        <div class="cefr-level">
+            ${level}
+        </div>
+
+        <p>
+            ${score}
+            پاسخ صحیح از
+            ${total}
+            سؤال
+        </p>
+
+        <div class="cefr-description">
+
+            ${
+                level==="A1"
+                ?"سطح مقدماتی — می‌توانی با عبارت‌های ساده ارتباط برقرار کنی."
+                :
+                level==="A2"
+                ?"سطح پایه — می‌توانی درباره موضوعات روزمره صحبت کنی."
+                :
+                level==="B1"
+                ?"سطح متوسط — می‌توانی درباره موضوعات آشنا ارتباط مؤثر داشته باشی."
+                :
+                level==="B2"
+                ?"سطح متوسط رو به بالا — می‌توانی متن‌ها و مکالمات پیچیده‌تر را درک کنی."
+                :
+                level==="C1"
+                ?"سطح پیشرفته — توانایی خوبی در استفاده حرفه‌ای از زبان داری."
+                :
+                "سطح بسیار پیشرفته — تسلط بسیار بالایی بر زبان انگلیسی داری."
+            }
+
+        </div>
+
+        <button
+            class="btn full"
+            onclick="placementTest()">
+
+            🔄 دوباره تعیین سطح بده
+
+        </button>
+
+        <button
+            class="btn secondary full"
+            style="margin-top:9px"
+            onclick="home()">
+
+            🏠 بازگشت به خانه
+
+        </button>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   15. COMPETITION — 100 QUESTIONS
+========================================================= */
+
+let competitionState={
+    questions:[],
+    index:0,
+    score:0,
+    answered:false
+};
+
+
+function createCompetitionQuestions(){
+
+    let pool=[];
+
+    Object.keys(
+        extendedGrammar
+    ).forEach(grade=>{
+
+        Object.keys(
+            extendedGrammar[grade]
+        ).forEach(lesson=>{
+
+            const words=
+            getLessonVocabulary(
+                grade,
+                lesson
+            );
+
+            words.forEach(v=>{
+
+                pool.push({
+
+                    q:
+                    `معنی "${v[0]}" چیست؟`,
+
+                    o:
+                    shuffleArray([
+                        v[1],
+                        "گزینه دیگر",
+                        "معنی نامرتبط"
+                    ]),
+
+                    correct:
+                    0,
+
+                    type:"vocab"
+
+                });
+
+            });
+
+            makeQuestionsForLesson(
+                grade,
+                lesson
+            ).forEach(q=>{
+
+                pool.push({
+                    q:q.q,
+                    o:q.o,
+                    correct:q.a,
+                    type:q.type
+                });
+
+            });
+
+        });
+
+    });
+
+    pool=
+    shuffleArray(pool);
+
+    /*
+      اطمینان از داشتن 100 سؤال
+    */
+
+    const result=[];
+
+    for(let i=0;i<100;i++){
+
+        result.push(
+            pool[
+                i%pool.length
+            ]
+        );
+
+    }
+
+    return result;
+
+}
+
+
+function contest(){
+
+    document.getElementById(
+        "contestPage"
+    ).innerHTML=`
+
+    <div class="hero contestHero">
+
+        <div class="contest-cup">
+            🏆
+        </div>
+
+        <h2>
+            مسابقه رکوردی ۱۰۰ سؤالی
+        </h2>
+
+        <p>
+            از لغات و گرامر پایه‌های هفتم تا دوازدهم
+        </p>
+
+        <div class="contest-features">
+
+            <span>💯 ۱۰۰ سؤال</span>
+            <span>⚡ پاسخ فوری</span>
+            <span>🏆 ثبت رکورد</span>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h3>
+            قوانین مسابقه
+        </h3>
+
+        <ul class="contest-rules">
+
+            <li>
+                هر مسابقه شامل ۱۰۰ سؤال است.
+            </li>
+
+            <li>
+                سؤالات از لغات و گرامر ترکیبی هستند.
+            </li>
+
+            <li>
+                بعد از هر پاسخ، درست یا غلط بودن
+                همان لحظه نمایش داده می‌شود.
+            </li>
+
+            <li>
+                رکورد شما ذخیره می‌شود.
+            </li>
+
+        </ul>
+
+        <button
+            class="btn full"
+            onclick="startCompetitionFixed()">
+
+            🚀 شروع مسابقه
+
+        </button>
+
+    </div>
+
+    `;
+
+}
+
+
+function startCompetitionFixed(){
+
+    competitionState={
+        questions:
+        createCompetitionQuestions(),
+
+        index:0,
+
+        score:0,
+
+        answered:false
+    };
+
+    renderCompetitionQuestion();
+
+    openPage(
+        "contestPage"
+    );
+
+}
+
+
+function renderCompetitionQuestion(){
+
+    const state=
+    competitionState;
+
+    const q=
+    state.questions[
+        state.index
+    ];
+
+    if(!q){
+
+        finishCompetitionFixed();
+        return;
+
+    }
+
+    document.getElementById(
+        "contestPage"
+    ).innerHTML=`
+
+    <div class="contest-top">
+
+        <div>
+
+            <b>
+                🏆 مسابقه
+            </b>
+
+            <div>
+                سؤال
+                ${state.index+1}
+                از ۱۰۰
+            </div>
+
+        </div>
+
+        <div class="contest-score">
+
+            ⭐ ${state.score}
+
+        </div>
+
+    </div>
+
+    <div class="progress">
+
+        <i style="
+        width:
+        ${state.index}%"></i>
+
+    </div>
+
+    <div class="card">
+
+        <div class="question-number">
+            سؤال ${state.index+1}
+        </div>
+
+        <h3 dir="ltr">
+            ${esc(q.q)}
+        </h3>
+
+        ${q.o.map((o,j)=>`
+
+            <button
+                class="option"
+                onclick="
+                answerCompetitionFixed(
+                    ${j},
+                    this
+                )">
+
+                ${esc(o)}
+
+            </button>
+
+        `).join("")}
+
+    </div>
+
+    <div
+        id="competitionFeedback"
+        class="competition-feedback">
+    </div>
+
+    `;
+
+}
+
+
+function answerCompetitionFixed(
+    selected,
+    button
+){
+
+    if(
+        competitionState.answered
+    )
+        return;
+
+    competitionState.answered=true;
+
+    const q=
+    competitionState.questions[
+        competitionState.index
+    ];
+
+    const good=
+    selected===q.correct;
+
+    const options=
+    document.querySelectorAll(
+        "#contestPage .option"
+    );
+
+    options.forEach(x=>{
+        x.disabled=true;
+        x.style.pointerEvents="none";
+    });
+
+    button.classList.add(
+        good
+        ?"answer-correct"
+        :"answer-wrong"
+    );
+
+    if(!good){
+
+        options[
+            q.correct
+        ]?.classList.add(
+            "answer-correct"
+        );
+
+    }
+
+    if(good)
+        competitionState.score++;
+
+
+    document.getElementById(
+        "competitionFeedback"
+    ).innerHTML=`
+
+    <div class="
+        answer-sticker
+        ${good?"good":"bad"}
+    ">
+
+        ${
+            good
+            ?"🎉 درست! +۱ امتیاز"
+            :"❌ غلط! پاسخ صحیح مشخص شد"
+        }
+
+    </div>
+
+    `;
+
+
+    setTimeout(()=>{
+
+        competitionState.index++;
+
+        competitionState.answered=false;
+
+        renderCompetitionQuestion();
+
+    },800);
+
+}
+
+
+async function finishCompetitionFixed(){
+
+    const score=
+    competitionState.score;
+
+    if(S.student){
+
+        try{
+
+            await db
+            .from("exam_attempts")
+            .insert({
+
+                student_id:
+                S.student.id,
+
+                course_id:
+                "competition",
+
+                exam_type:
+                "competition",
+
+                score:
+
+                Math.round(
+                    score/100*100
+                ),
+
+                correct_answers:
+                score,
+
+                total_questions:
+                100
+
+            });
+
+        }catch(e){}
+
+    }
+
+
+    document.getElementById(
+        "contestPage"
+    ).innerHTML=`
+
+    <div class="result-card">
+
+        <div class="result-emoji">
+            ${score>=90?"🏆":
+              score>=70?"🥇":
+              score>=50?"🥈":"💪"}
+        </div>
+
+        <h2>
+            مسابقه تمام شد!
+        </h2>
+
+        <div class="score">
+            ${score}/100
+        </div>
+
+        <p>
+            امتیاز نهایی شما
+        </p>
+
+        <div class="contest-final">
+
+            ${
+                score>=90
+                ?"🔥 فوق‌العاده! رکورد عالی زدی!"
+                :
+                score>=70
+                ?"👏 عالی بود! به همین مسیر ادامه بده."
+                :
+                "💪 تمرین کن و رکورد بعدی را بهتر کن."
+            }
+
+        </div>
+
+        <button
+            class="btn full"
+            onclick="startCompetitionFixed()">
+
+            🔄 دوباره مسابقه بده
+
+        </button>
+
+        <button
+            class="btn secondary full"
+            style="margin-top:9px"
+            onclick="home()">
+
+            🏠 خانه
+
+        </button>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   16. FIX HOME — ADD PLACEMENT
+========================================================= */
+
+const oldHome =
+typeof home==="function"
+?home
+:null;
+
+
+function homeFixed(){
+
+    const name=
+    S.student?.first_name||
+    "زبان‌آموز";
+
+    const completed=
+    Object.values(
+        S.progress||{}
+    ).filter(
+        x=>x.completed
+    ).length;
+
+    const overall=
+    Math.min(
+        100,
+        Math.round(
+            completed/48*100
+        )
+    );
+
+
+    document.getElementById(
+        "homePage"
+    ).innerHTML=`
+
+    <div class="welcome home-premium">
+
+        <div class="home-badge">
+            WELCOME TO
+        </div>
+
+        <h1>
+            AliNagheli English 🚀
+        </h1>
+
+        <h2>
+            سلام ${esc(name)} 👋
+        </h2>
+
+        <p>
+            یادگیری زبان انگلیسی را حرفه‌ای شروع کن.
+        </p>
+
+        <div class="progress">
+
+            <i
+                style="
+                width:${overall}%
+                ">
+            </i>
+
+        </div>
+
+        <b>
+            ⭐ ${S.xp||0} XP
+            &nbsp; • &nbsp;
+            🏅 Level ${S.level||1}
+        </b>
+
+    </div>
+
+
+    <div class="section-title">
+        <h3>🚀 شروع سریع</h3>
+    </div>
+
+
+    <div class="grid">
+
+        <div
+            class="menu-card"
+            onclick="openCourses()">
+
+            <div class="menu-icon">
+                📚
+            </div>
+
+            <div>
+
+                <b>
+                    دروس مدرسه
+                </b>
+
+                <small>
+                    Prospect و Vision
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="menu-card placement-card"
+            onclick="placementTest()">
+
+            <div class="menu-icon">
+                🎯
+            </div>
+
+            <div>
+
+                <b>
+                    تعیین سطح
+                </b>
+
+                <small>
+                    ۳۰ سؤال • CEFR
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="menu-card"
+            onclick="openContest()">
+
+            <div class="menu-icon">
+                🏆
+            </div>
+
+            <div>
+
+                <b>
+                    مسابقه
+                </b>
+
+                <small>
+                    ۱۰۰ سؤال رکوردی
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="menu-card"
+            onclick="openTeachers()">
+
+            <div class="menu-icon">
+                👩‍🏫
+            </div>
+
+            <div>
+
+                <b>
+                    اساتید
+                </b>
+
+                <small>
+                    رزرو کلاس
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section-title">
+        <h3>🎓 پایه‌های تحصیلی</h3>
+    </div>
+
+
+    <div class="course-grid">
+
+        ${Object.keys(books).map(g=>`
+
+            <div
+                class="course-card"
+                onclick="
+                gradePage('${g}')
+                ">
+
+                <div class="grade">
+                    ${g}
+                </div>
+
+                <h3>
+                    ${books[g].title}
+                </h3>
+
+                <p>
+                    ${books[g].lessons.length}
+                    درس آموزشی
+                </p>
+
+            </div>
+
+        `).join("")}
+
+    </div>
+
+    `;
+
+}
+
+
+home=homeFixed;
+
+
+/* =========================================================
+   17. EXTRA CSS
+========================================================= */
+
+(function(){
+
+const style=
+document.createElement(
+"style"
+);
+
+style.textContent=`
+
+.teacherHero{
+display:flex;
+align-items:center;
+gap:18px;
+background:
+linear-gradient(
+135deg,
+#4c1d95,
+#7c3aed,
+#a855f7
+);
+color:#fff;
+}
+
+.teacherHeroIcon{
+font-size:55px;
+width:90px;
+height:90px;
+border-radius:28px;
+background:#ffffff22;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.eyebrow{
+font-size:10px;
+letter-spacing:2px;
+opacity:.75;
+}
+
+.teacher-grid{
+display:grid;
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(290px,1fr)
+);
+gap:18px;
+}
+
+.teacher-card{
+background:#fff;
+border-radius:28px;
+overflow:hidden;
+box-shadow:
+0 12px 35px #5b21b615;
+border:1px solid #ede9fe;
+}
+
+.teacher-cover{
+height:135px;
+background:
+linear-gradient(
+135deg,
+#ede9fe,
+#ddd6fe,
+#f5f3ff
+);
+display:flex;
+align-items:center;
+justify-content:center;
+position:relative;
+}
+
+.teacher-avatar-big{
+width:105px;
+height:105px;
+border-radius:50%;
+background:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:58px;
+box-shadow:0 10px 25px #0002;
+}
+
+.teacher-online{
+position:absolute;
+right:12px;
+top:12px;
+background:#dcfce7;
+color:#166534;
+padding:6px 10px;
+border-radius:20px;
+font-size:10px;
+}
+
+.teacher-body{
+padding:20px;
+}
+
+.teacher-body h2{
+margin:0;
+color:#5b21b6;
+}
+
+.teacher-english{
+color:#9ca3af;
+font-size:12px;
+margin:4px 0 12px;
+}
+
+.teacher-degree,
+.teacher-exp{
+padding:8px 10px;
+border-radius:11px;
+background:#faf5ff;
+margin:6px 0;
+font-size:12px;
+}
+
+.teacher-description{
+line-height:2;
+color:#555;
+font-size:13px;
+}
+
+.teacher-tags{
+display:flex;
+flex-wrap:wrap;
+gap:5px;
+margin:12px 0;
+}
+
+.teacher-tags span{
+background:#ede9fe;
+color:#6d28d9;
+padding:6px 9px;
+border-radius:20px;
+font-size:10px;
+font-weight:bold;
+}
+
+.teacher-phone{
+display:block;
+text-align:center;
+text-decoration:none;
+background:#6d28d9;
+color:#fff;
+border-radius:14px;
+padding:12px;
+font-weight:bold;
+margin:12px 0;
+}
+
+.booking-box{
+background:#faf9ff;
+border:1px solid #e9d5ff;
+border-radius:20px;
+padding:15px;
+}
+
+.booking-title{
+font-size:17px;
+font-weight:bold;
+color:#5b21b6;
+}
+
+.booking-help{
+font-size:11px;
+color:#777;
+}
+
+.persian-calendar{
+background:#fff;
+border:1px solid #e9d5ff;
+border-radius:18px;
+padding:12px;
+margin:12px 0;
+}
+
+.pc-head{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:10px;
+}
+
+.pc-head button{
+border:0;
+background:#ede9fe;
+color:#6d28d9;
+width:35px;
+height:35px;
+border-radius:10px;
+font-size:22px;
+}
+
+.pc-selects{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:7px;
+margin-bottom:10px;
+}
+
+.pc-selects select{
+border:1px solid #ddd6fe;
+border-radius:10px;
+padding:9px;
+background:#faf9ff;
+}
+
+.pc-week{
+display:grid;
+grid-template-columns:repeat(7,1fr);
+gap:4px;
+margin-bottom:5px;
+}
+
+.pc-week span{
+font-size:9px;
+text-align:center;
+color:#8b5cf6;
+font-weight:bold;
+}
+
+.pc-days{
+display:grid;
+grid-template-columns:repeat(7,1fr);
+gap:4px;
+}
+
+.pc-day{
+border:0;
+background:#f8f7fb;
+border-radius:9px;
+padding:8px 2px;
+font-size:11px;
+}
+
+.pc-day:hover,
+.pc-day.selected{
+background:#6d28d9;
+color:#fff;
+}
+
+.pc-selected{
+text-align:center;
+background:#f3e8ff;
+color:#6d28d9;
+border-radius:10px;
+padding:9px;
+margin-top:10px;
+font-size:11px;
+}
+
+.lesson-number-big{
+width:55px;
+height:55px;
+border-radius:17px;
+background:#ffffff22;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+font-weight:bold;
+}
+
+.section-intro{
+padding:5px 0 15px;
+}
+
+.section-intro h3{
+color:#6d28d9;
+}
+
+.section-intro p{
+color:#777;
+font-size:12px;
+line-height:1.9;
+}
+
+.grammar-premium{
+display:grid;
+grid-template-columns:42px 1fr;
+gap:12px;
+background:#faf9ff;
+border:1px solid #ede9fe;
+border-radius:18px;
+padding:16px;
+margin:10px 0;
+}
+
+.grammar-index{
+width:38px;
+height:38px;
+border-radius:12px;
+background:#ede9fe;
+color:#6d28d9;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+}
+
+.grammar-premium h3{
+margin:0 0 7px;
+color:#5b21b6;
+}
+
+.grammar-premium p{
+line-height:2;
+font-size:13px;
+color:#555;
+}
+
+.grammar-formula{
+background:#fff;
+border:1px dashed #c4b5fd;
+border-radius:12px;
+padding:11px;
+margin:9px 0;
+color:#6d28d9;
+font-weight:bold;
+}
+
+.grammar-example{
+background:#fff;
+border-radius:10px;
+padding:8px;
+margin:5px 0;
+font-size:12px;
+color:#4b5563;
+}
+
+.pdf-badge{
+display:inline-block;
+background:#fee2e2;
+color:#991b1b;
+padding:7px 10px;
+border-radius:20px;
+font-size:10px;
+margin-bottom:12px;
+}
+
+.vocab-premium-grid{
+display:grid;
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(230px,1fr)
+);
+gap:8px;
+}
+
+.vocab-premium{
+background:#faf9ff;
+border:1px solid #ede9fe;
+border-radius:15px;
+padding:12px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+}
+
+.vocab-en{
+font-weight:bold;
+color:#5b21b6;
+font-size:14px;
+}
+
+.vocab-fa{
+font-size:11px;
+color:#777;
+margin-top:5px;
+line-height:1.7;
+}
+
+.speak-premium{
+border:0;
+background:#ede9fe;
+color:#6d28d9;
+width:40px;
+height:40px;
+border-radius:12px;
+font-size:18px;
+flex:none;
+}
+
+.exam-intro{
+display:flex;
+align-items:center;
+gap:15px;
+background:linear-gradient(
+135deg,
+#f5f3ff,
+#fff
+);
+border:1px solid #ddd6fe;
+border-radius:20px;
+padding:17px;
+margin-bottom:12px;
+}
+
+.exam-icon{
+font-size:40px;
+}
+
+.exam-intro h3{
+margin:0;
+color:#5b21b6;
+}
+
+.exam-intro p{
+font-size:11px;
+color:#777;
+}
+
+.exam-progress{
+display:flex;
+justify-content:space-between;
+background:#ede9fe;
+color:#5b21b6;
+padding:10px 13px;
+border-radius:12px;
+font-size:11px;
+margin-bottom:12px;
+}
+
+.question{
+position:relative;
+overflow:hidden;
+}
+
+.question-number{
+display:inline-block;
+background:#ede9fe;
+color:#6d28d9;
+padding:6px 9px;
+border-radius:10px;
+font-size:10px;
+margin-bottom:9px;
+}
+
+.option{
+transition:.18s;
+border:2px solid transparent;
+}
+
+.option:hover:not(:disabled){
+transform:translateY(-1px);
+border-color:#c4b5fd;
+}
+
+.answer-correct{
+background:#dcfce7!important;
+border-color:#16a34a!important;
+color:#166534!important;
+}
+
+.answer-wrong{
+background:#fee2e2!important;
+border-color:#dc2626!important;
+color:#991b1b!important;
+}
+
+.answer-sticker{
+margin-top:10px;
+padding:11px;
+border-radius:12px;
+font-weight:bold;
+text-align:center;
+animation:stickerPop .25s ease;
+}
+
+.answer-sticker.good{
+background:#dcfce7;
+color:#166534;
+}
+
+.answer-sticker.bad{
+background:#fee2e2;
+color:#991b1b;
+}
+
+@keyframes stickerPop{
+from{
+transform:scale(.7);
+opacity:0;
+}
+to{
+transform:scale(1);
+opacity:1;
+}
+}
+
+.result-card{
+background:#fff;
+border-radius:25px;
+padding:28px;
+text-align:center;
+box-shadow:0 12px 35px #00000012;
+border:1px solid #ede9fe;
+}
+
+.result-emoji{
+font-size:65px;
+margin-bottom:5px;
+}
+
+.cefr-level{
+font-size:52px;
+font-weight:bold;
+color:#6d28d9;
+margin:10px;
+}
+
+.cefr-description{
+background:#faf5ff;
+color:#5b21b6;
+padding:15px;
+border-radius:15px;
+line-height:2;
+font-size:12px;
+margin:15px 0;
+}
+
+.placement-levels{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+margin-top:15px;
+}
+
+.placement-levels span{
+background:#ffffff22;
+padding:7px 11px;
+border-radius:20px;
+font-weight:bold;
+font-size:11px;
+}
+
+.contestHero{
+text-align:center;
+}
+
+.contest-cup{
+font-size:65px;
+}
+
+.contest-features{
+display:flex;
+justify-content:center;
+gap:7px;
+flex-wrap:wrap;
+margin-top:15px;
+}
+
+.contest-features span{
+background:#ffffff22;
+padding:8px 11px;
+border-radius:20px;
+font-size:10px;
+}
+
+.contest-rules{
+line-height:2.2;
+color:#555;
+font-size:13px;
+padding-right:20px;
+}
+
+.contest-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#fff;
+padding:15px;
+border-radius:18px;
+box-shadow:0 5px 20px #0000000d;
+margin-bottom:10px;
+}
+
+.contest-score{
+background:#ede9fe;
+color:#6d28d9;
+padding:10px 13px;
+border-radius:14px;
+font-weight:bold;
+}
+
+.competition-feedback{
+margin-top:10px;
+}
+
+.contest-final{
+background:#faf5ff;
+color:#5b21b6;
+padding:15px;
+border-radius:15px;
+margin:15px 0;
+font-weight:bold;
+line-height:2;
+}
+
+.home-premium{
+position:relative;
+overflow:hidden;
+}
+
+.home-badge{
+font-size:10px;
+letter-spacing:3px;
+opacity:.75;
+}
+
+.placement-card{
+border:2px solid #c4b5fd;
+}
+
+.exam-bottom{
+margin-top:10px;
+}
+
+@media(max-width:600px){
+
+.teacherHero{
+align-items:flex-start;
+}
+
+.teacherHeroIcon{
+width:70px;
+height:70px;
+font-size:40px;
+}
+
+.teacher-grid{
+grid-template-columns:1fr;
+}
+
+.vocab-premium-grid{
+grid-template-columns:1fr;
+}
+
+.grammar-premium{
+grid-template-columns:35px 1fr;
+padding:12px;
+}
+
+.grammar-index{
+width:32px;
+height:32px;
+}
+
+}
+
+`;
+
+document.head.appendChild(style);
+
+})();
+
+
+/* =========================================================
+   18. INITIALIZE PATCH
+========================================================= */
+
+setTimeout(()=>{
+
+    try{
+
+        home();
+
+        teachers();
+
+        contest();
+
+        /*
+          بازگرداندن تعیین سطح به دسترسی سریع
+        */
+
+    }catch(e){
+
+        console.error(
+            "AliNagheli patch:",
+            e
+        );
+
+    }
+
+},500);
+
+</script>
 body:JSON.stringify({
 action:"list"
 })
