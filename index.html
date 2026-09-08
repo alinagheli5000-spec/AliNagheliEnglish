@@ -1,19 +1,3 @@
-بسیار خب! کد شما رو کامل بررسی کردم. مشکل اصلی اینه که صفحه ورود (Login) به درستی کار نمی‌کنه و بعد از لاگین، محتوای اصلی نمایش داده نمیشه.
-
----
-
-🐛 اشکالات اصلی:
-
-1. تابع render و nav - منوی پایین درست کار نمی‌کنه
-2. home() بعد از لاگین - محتوای خانه نمایش داده نمی‌شه
-3. دکمه‌های منو - به درستی به صفحات اشاره نمی‌کنند
-4. ظاهر ساده - نیاز به زیباسازی بیشتر داره
-
----
-
-✅ کد اصلاح‌شده + زیباسازی:
-
-```html
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
@@ -24,168 +8,85 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-/* ===== RESET & BASE ===== */
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:linear-gradient(135deg,#f5f3ff,#ede9fe);color:#1a1a2e;padding-bottom:80px;transition:all .3s}
-button,input,select,textarea{font-family:inherit;outline:none}
-button{cursor:pointer;transition:all .2s}
-a{text-decoration:none;color:inherit}
-
-/* ===== SCROLLBAR ===== */
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:#f0f0f0;border-radius:99px}
-::-webkit-scrollbar-thumb{background:linear-gradient(135deg,#6d28d9,#a855f7);border-radius:99px}
-
-/* ===== HEADER ===== */
-.header{background:linear-gradient(135deg,#4c1d95,#7c3aed,#a855f7);color:#fff;padding:14px 20px;position:sticky;top:0;z-index:100;box-shadow:0 4px 25px rgba(109,40,217,0.3)}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:Tahoma,Arial,sans-serif;background:#f5f3ff;color:#171717;padding-bottom:82px}
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.header{background:linear-gradient(135deg,#4c1d95,#7c3aed);color:#fff;padding:15px;position:sticky;top:0;z-index:100;box-shadow:0 3px 15px #0002}
 .headerIn{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:22px;font-weight:bold;display:flex;align-items:center;gap:10px}
-.logo span{font-size:12px;opacity:.8;font-weight:normal}
-.logo .icon{font-size:28px}
-.logoutBtn{background:rgba(255,255,255,0.15);color:#fff;border:2px solid rgba(255,255,255,0.2);border-radius:12px;padding:8px 16px;font-weight:bold;backdrop-filter:blur(10px);transition:all .3s}
-.logoutBtn:hover{background:rgba(255,255,255,0.25);transform:scale(1.05)}
-
-/* ===== CONTAINER ===== */
+.logo{font-size:20px;font-weight:bold}
 .container{max-width:1100px;margin:auto;padding:15px}
-
-/* ===== CARDS ===== */
-.card{background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);border-radius:24px;padding:22px;margin-bottom:16px;box-shadow:0 4px 25px rgba(109,40,217,0.08);border:1px solid rgba(255,255,255,0.5);transition:all .3s}
-.card:hover{box-shadow:0 8px 40px rgba(109,40,217,0.12);transform:translateY(-2px)}
-
-/* ===== HERO ===== */
-.hero{background:linear-gradient(135deg,#312e81,#6d28d9,#a855f7);color:#fff;border-radius:25px;padding:32px 28px;margin-bottom:16px;box-shadow:0 15px 45px rgba(109,40,217,0.25);position:relative;overflow:hidden}
-.hero:before{content:"";position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.05);left:-60px;top:-80px}
-.hero:after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,0.04);right:-100px;bottom:-150px}
-.hero h1{font-size:30px;margin:6px 0;position:relative;z-index:2}
-.hero p{position:relative;z-index:2;opacity:.9;font-size:15px}
-.hero .sub{font-size:13px;opacity:.7}
-.hero .levelBar{margin:12px 0}
-
-/* ===== GRID ===== */
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:14px}
-.item{background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border:1px solid rgba(221,214,254,0.5);border-radius:20px;padding:20px 14px;transition:all .3s;cursor:pointer;text-align:center}
-.item:hover{transform:translateY(-5px);box-shadow:0 12px 35px rgba(109,40,217,0.15);border-color:#7c3aed}
-.item .icon{font-size:38px;margin-bottom:8px}
-.item h3{font-size:15px;margin:6px 0;color:#1a1a2e}
-.item .muted{font-size:11px;color:#888}
-
-/* ===== BUTTONS ===== */
-.btn{background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#fff;border:0;border-radius:14px;padding:12px 20px;font-weight:bold;box-shadow:0 4px 15px rgba(109,40,217,0.2);transition:all .3s;display:inline-flex;align-items:center;gap:8px;justify-content:center}
-.btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(109,40,217,0.35)}
-.btn:active{transform:scale(.97)}
+.card{background:#fff;border-radius:22px;padding:20px;margin-bottom:15px;box-shadow:0 5px 25px #0000000d}
+.hero{background:linear-gradient(135deg,#312e81,#7c3aed,#a855f7);color:#fff;border-radius:25px;padding:28px;margin-bottom:15px;box-shadow:0 15px 35px #6d28d944}
+.hero3d{position:relative;overflow:hidden}
+.hero3d:before,.hero3d:after{content:"";position:absolute;border-radius:50%;background:#ffffff18}
+.hero3d:before{width:180px;height:180px;left:-50px;top:-70px}
+.hero3d:after{width:250px;height:250px;right:-100px;bottom:-150px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.item{background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:18px;transition:.2s}
+.item:hover{transform:translateY(-3px);box-shadow:0 10px 25px #6d28d933}
+.icon{font-size:40px}
+.btn{background:#6d28d9;color:#fff;border:0;border-radius:13px;padding:12px 16px;font-weight:bold}
 .btn.full{width:100%}
-.btn.secondary{background:linear-gradient(135deg,#ede9fe,#ddd6fe);color:#5b21b6;box-shadow:none}
-.btn.secondary:hover{background:linear-gradient(135deg,#ddd6fe,#c4b5fd)}
-.btn.success{background:linear-gradient(135deg,#10b981,#059669);color:#fff}
-.btn.danger{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
-.btn.warning{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
-.btn.outline{background:transparent;border:2px solid #6d28d9;color:#6d28d9;box-shadow:none}
-.btn.outline:hover{background:#6d28d9;color:#fff}
-
-/* ===== LOGIN ===== */
-.login{min-height:100vh;background:linear-gradient(135deg,#2e1065,#4c1d95,#7c3aed,#a855f7);display:flex;justify-content:center;align-items:center;padding:20px}
-.loginCard{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);width:min(440px,100%);padding:30px;border-radius:30px;box-shadow:0 25px 70px rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.3)}
-.loginCard .logoBig{font-size:60px;text-align:center;display:block;margin-bottom:10px}
-.loginCard h2{text-align:center;font-size:24px;color:#1a1a2e;margin-bottom:4px}
-.loginCard .subtitle{text-align:center;color:#888;font-size:13px}
-
-/* ===== FORM ===== */
-label{display:block;margin:12px 0 5px;font-weight:bold;font-size:13px;color:#4a4a6a}
-input,select,textarea{width:100%;border:2px solid #e5e7eb;border-radius:14px;padding:13px 16px;background:#faf9ff;transition:all .3s;font-size:14px}
-input:focus,select:focus,textarea:focus{border-color:#7c3aed;box-shadow:0 0 0 4px rgba(109,40,217,0.1);background:#fff}
+.secondary{background:#ede9fe;color:#5b21b6}
+.success{background:#dcfce7;color:#166534}
+.danger{background:#fee2e2;color:#991b1b}
+.warning{background:#fef3c7;color:#92400e}
+.login{min-height:100vh;background:linear-gradient(135deg,#2e1065,#7c3aed,#a855f7);display:flex;justify-content:center;align-items:center;padding:20px}
+.loginCard{background:#fff;width:min(430px,100%);padding:25px;border-radius:28px;box-shadow:0 20px 60px #0004}
+label{display:block;margin:10px 0 5px;font-weight:bold;font-size:13px}
+input,select,textarea{width:100%;border:1px solid #ddd6fe;border-radius:12px;padding:12px;background:#fff;outline:none}
 textarea{min-height:100px;resize:vertical}
-
-/* ===== TABS ===== */
-.tabs{display:flex;gap:10px;margin:20px 0}
-.tab{flex:1;border:0;border-radius:14px;padding:13px;background:#f3f4f6;font-weight:bold;transition:all .3s;font-size:14px}
-.tab:hover{background:#ede9fe}
-.tab.active{background:linear-gradient(135deg,#ede9fe,#ddd6fe);color:#6d28d9;box-shadow:0 4px 15px rgba(109,40,217,0.1)}
-
-/* ===== BOTTOM NAV ===== */
-.bottom{position:fixed;bottom:0;left:0;right:0;height:72px;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-top:1px solid rgba(221,214,254,0.3);z-index:200;box-shadow:0 -4px 25px rgba(0,0,0,0.05)}
+input:focus,select:focus,textarea:focus{border-color:#7c3aed}
+.tabs{display:flex;gap:8px;margin:18px 0}
+.tab{flex:1;border:0;border-radius:12px;padding:12px;background:#f3f4f6}
+.tab.active{background:#ede9fe;color:#6d28d9;font-weight:bold}
+.bottom{position:fixed;bottom:0;left:0;right:0;height:78px;background:#fff;border-top:1px solid #ddd;z-index:200;box-shadow:0 -3px 15px #0000000d}
 .bottomIn{max-width:700px;height:100%;margin:auto;display:flex}
-.nav{flex:1;border:0;background:transparent;padding:6px 2px;color:#999;font-size:10px;transition:all .3s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:12px;margin:4px}
-.nav:hover{color:#6d28d9;background:rgba(109,40,217,0.05)}
-.nav b{font-size:20px;margin-bottom:1px}
-.nav.active{color:#6d28d9;font-weight:bold;background:rgba(109,40,217,0.08)}
-
-/* ===== LESSONS ===== */
-.lessonGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
-.lesson{background:rgba(250,249,255,0.9);border:1px solid #ddd6fe;border-radius:18px;padding:18px;cursor:pointer;transition:all .3s}
-.lesson:hover{background:#f3efff;transform:translateY(-3px);box-shadow:0 8px 25px rgba(109,40,217,0.1)}
+.nav{flex:1;border:0;background:#fff;padding:7px 2px;color:#777;font-size:11px}
+.nav b{display:block;font-size:21px;margin-bottom:3px}
+.nav.active{color:#6d28d9;font-weight:bold}
+.lessonGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.lesson{background:#faf9ff;border:1px solid #ddd6fe;border-radius:18px;padding:17px;cursor:pointer}
+.lesson:hover{background:#f3efff}
 .lessonNo{font-size:30px;color:#6d28d9;font-weight:bold}
-.lesson h3{font-size:15px;margin:6px 0}
-
-/* ===== TABS2 ===== */
-.tabs2{display:flex;gap:8px;overflow:auto;margin-bottom:16px;padding-bottom:4px}
-.tab2{padding:10px 18px;border:0;border-radius:12px;background:#f3f4f6;white-space:nowrap;transition:all .3s;font-weight:bold;font-size:13px}
-.tab2:hover{background:#ede9fe}
-.tab2.active{background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#fff;box-shadow:0 4px 15px rgba(109,40,217,0.25)}
+.tabs2{display:flex;gap:7px;overflow:auto;margin-bottom:15px}
+.tab2{padding:11px 15px;border:0;border-radius:12px;background:#eee;white-space:nowrap}
+.tab2.active{background:#6d28d9;color:#fff}
 .sec{display:none}.sec.active{display:block}
-
-/* ===== WORDS ===== */
-.wordGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
-.word{border:2px solid #e5e7eb;background:#faf9ff;border-radius:15px;padding:14px;text-align:center;cursor:pointer;transition:all .3s}
-.word:hover{background:#ede9fe;border-color:#7c3aed;transform:scale(1.04)}
-.en{direction:ltr;color:#5b21b6;font-weight:bold;font-size:15px}
-.fa{font-size:12px;color:#888;margin-top:6px}
-
-/* ===== GRAMMAR ===== */
-.grammar{border:2px solid #e9e5ff;background:#faf9ff;padding:18px;border-radius:17px;margin-bottom:14px;line-height:2}
-.grammar h3{color:#5b21b6}
-.example{direction:ltr;text-align:left;background:#fff;border-radius:10px;padding:12px;border:1px solid #e5e7eb;font-family:monospace;font-size:14px;margin:8px 0}
-
-/* ===== QUIZ ===== */
-.option{display:block;width:100%;text-align:right;background:#fff;border:2px solid #e5e7eb;border-radius:13px;padding:13px 16px;margin:8px 0;transition:all .3s;font-size:14px}
-.option:hover:not(:disabled){background:#f3efff;border-color:#7c3aed}
-.option:disabled{opacity:.6;cursor:not-allowed}
+.wordGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+.word{border:1px solid #ddd6fe;background:#faf9ff;border-radius:15px;padding:13px;text-align:center;cursor:pointer}
+.en{direction:ltr;color:#5b21b6;font-weight:bold}
+.fa{font-size:11px;color:#777;margin-top:5px}
+.grammar{border:1px solid #e9e5ff;background:#faf9ff;padding:17px;border-radius:17px;margin-bottom:12px;line-height:2}
+.example{direction:ltr;text-align:left;background:#fff;border-radius:10px;padding:11px;font-family:Arial,sans-serif;border:1px solid #eee}
+.option{display:block;width:100%;text-align:right;background:#fff;border:1px solid #ddd6fe;border-radius:13px;padding:13px;margin:7px 0}
 .option.correct{background:#dcfce7;border-color:#22c55e}
 .option.wrong{background:#fee2e2;border-color:#ef4444}
-.feedback{text-align:center;border-radius:15px;padding:14px;margin-top:12px;font-weight:bold}
-.ok{background:#dcfce7;color:#166534}
-.bad{background:#fee2e2;color:#991b1b}
-
-/* ===== PROGRESS ===== */
-.progress{height:10px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin:10px 0}
-.progress i{display:block;height:100%;background:linear-gradient(90deg,#6d28d9,#a855f7);transition:width .5s}
-.levelBar{height:12px;background:rgba(255,255,255,0.15);border-radius:99px;overflow:hidden;margin:10px 0}
-.levelBar i{display:block;height:100%;background:linear-gradient(90deg,#fcd34d,#f59e0b,#fbbf24);border-radius:99px}
-
-/* ===== PROFILE ===== */
-.profileStat{background:#faf9ff;border:2px solid #e9d5ff;border-radius:18px;padding:16px;text-align:center}
-.profileStat b{display:block;font-size:28px;color:#6d28d9;margin-top:5px}
-.badge{display:inline-block;padding:6px 14px;margin:4px;border-radius:20px;background:#ede9fe;color:#5b21b6;font-size:12px;font-weight:bold}
-.score{font-size:52px;color:#6d28d9;font-weight:bold;text-align:center}
-
-/* ===== TEACHERS ===== */
-.teacher{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.teacherBox{background:linear-gradient(135deg,#faf5ff,#fff);border:2px solid #e9d5ff;border-radius:22px;padding:22px;line-height:2}
-.teacherAvatar{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:44px;background:#ede9fe;margin:auto}
-.request{background:#f8f5ff;border:1px solid #ddd6fe;border-radius:18px;padding:16px;margin-top:15px}
-
-/* ===== MISC ===== */
-.muted{font-size:12px;color:#888;line-height:1.8}
-.examRow{border:1px solid #e5e7eb;border-radius:15px;padding:14px;margin:8px 0}
-.examScore{font-size:24px;font-weight:bold;color:#6d28d9}
+.feedback{text-align:center;border-radius:15px;padding:13px;margin-top:10px;font-weight:bold}
+.ok{background:#dcfce7;color:#166534}.bad{background:#fee2e2;color:#991b1b}
+.progress{height:9px;background:#eee;border-radius:99px;overflow:hidden;margin:12px 0}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,#6d28d9,#a855f7);transition:.3s}
+.score{font-size:55px;color:#6d28d9;font-weight:bold;text-align:center}
 .adminRow{border:1px solid #e5e7eb;border-radius:16px;padding:14px;margin:9px 0}
-.call{display:block;text-align:center;margin:12px 0}
-.hidden{display:none!important}
-
-/* ===== RESPONSIVE ===== */
-@media(max-width:600px){
- .container{padding:10px}
- .card{padding:16px;border-radius:18px}
- .hero{padding:22px 18px}
- .hero h1{font-size:22px}
- .grid{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
- .lessonGrid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
- .wordGrid{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
- .bottom{height:64px}
- .nav{font-size:9px}
- .nav b{font-size:17px}
- .loginCard{padding:22px}
-}
+.muted{font-size:12px;color:#777;line-height:1.9}
+.teacher{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px}
+.teacherBox{background:linear-gradient(135deg,#faf5ff,#fff);border:1px solid #e9d5ff;border-radius:22px;padding:20px;line-height:2}
+.teacherAvatar{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:48px;background:#ede9fe;margin:auto}
+.profileStat{background:#faf9ff;border:1px solid #e9d5ff;border-radius:18px;padding:15px;text-align:center}
+.profileStat b{display:block;font-size:27px;color:#6d28d9;margin-top:5px}
+.levelBar{height:12px;background:#eee;border-radius:99px;overflow:hidden;margin:10px 0}
+.levelBar i{display:block;height:100%;background:#7c3aed}
+.badge{display:inline-block;padding:8px 12px;margin:4px;border-radius:20px;background:#ede9fe;color:#5b21b6;font-size:12px}
+.notice{padding:13px;border-radius:13px;background:#fff7ed;color:#9a3412;font-size:13px;line-height:1.8;margin-bottom:12px}
+.call{display:block;text-decoration:none;text-align:center;margin:12px 0}
+.request{background:#f8f5ff;border:1px solid #ddd6fe;border-radius:18px;padding:15px;margin-top:15px}
+.examRow{border:1px solid #e5e7eb;border-radius:15px;padding:14px;margin:8px 0}
+.examScore{font-size:25px;font-weight:bold;color:#6d28d9}
+.resultBox{background:#faf9ff;border:1px solid #ddd6fe;border-radius:18px;padding:18px}
+@media(max-width:600px){.container{padding:10px}.card{padding:16px;border-radius:18px}.hero{padding:20px}}
 </style>
 </head>
 
@@ -210,7 +111,6 @@ function esc(x){
 }
 function normalizePhone(x){return String(x||"").replace(/\D/g,"")}
 function saveLocal(){localStorage.setItem("AN_EXAMS",JSON.stringify(examRecords))}
-
 function speak(text){
  if(!window.speechSynthesis){alert("مرورگر شما از تلفظ صوتی پشتیبانی نمی‌کند.");return}
  speechSynthesis.cancel();
@@ -218,7 +118,6 @@ function speak(text){
  u.lang="en-US";u.rate=.75;
  speechSynthesis.resume();speechSynthesis.speak(u);
 }
-
 async function accessFunction(payload){
  const r=await fetch(ACCESS_FUNCTION,{
   method:"POST",
@@ -255,7 +154,7 @@ const books={
 "Lesson 3: Renewable Energy","Lesson 4: The Power of Nature"]}
 };
 
-/* WORDS - از فایل PDF درس 1 هفتم */
+/* WORDS - درس 1 هفتم از PDF */
 const words={
 // درس 1: My Name - از فایل PDF
 1:[
@@ -298,7 +197,6 @@ const words={
 ["thanks","ممنون"],
 ["Miss","خانم"]
 ],
-// درس‌های دیگر (همان داده‌های قبلی)
 2:[
 ["classmate","هم‌کلاسی"],["who","چه کسی"],["this","این (اشاره به نزدیک)"],["that","آن (اشاره به دور)"],
 ["boy","پسر"],["new","جدید"],["talk","صحبت کردن"],["him","او را، به او، با او"],
@@ -401,7 +299,6 @@ const words={
 ["enough","به اندازه کافی"],["fish","گوشت ماهی"],["I am thirsty.","من تشنه هستم"],["tea","چای"],
 ["go shopping","به خرید رفتن"],["I'd like some tea with my cake.","من دوست دارم کمی چای با کیکم بخورم"],["tomato","گوجه"]
 ],
-// بقیه درس‌ها (همان داده‌های قبلی)
 9:[
 ["Iran is great!","ایران عالی است"],["South America","آمریکای جنوبی"],["cousin","پسرعمو/دخترعمو"],["Asian","آسیایی"],
 ["North American","آمریکای شمالی"],["He speaks French, English, and a little Persian.","او به فرانسه، انگلیسی و کمی به فارسی صحبت می‌کند"],["I'm originally Iranian.","من اصالتاً ایرانی هستم"],["Spanish","اسپانیایی‌ها"],
@@ -503,7 +400,6 @@ const words={
 ["I love reading.","من عاشق مطالعه هستم"],["working in the garden","در باغ کار کردن"],["enjoy","لذت بردن"],["browsing the internet","در اینترنت گشت زدن"],
 ["I usually go to the gym in my free time.","من معمولاً در وقت آزادم به باشگاه می‌روم"],["What do you do in your free time?","در اوقات فراغت خود چه می‌کنید؟"],["fire service","سازمان آتش‌نشانی"]
 ],
-// پایه نهم تا دوازدهم (سایر لغات)
 16:[
 ["patient","صبور"],["bit","کم"],["personality","شخصیت"],["hard-working","کوشا"],
 ["neat","مرتب و منظم"],["careful","مراقب"],["What's he like?","او چه جور آدمی است؟"],["kind","مهربان"],
@@ -916,7 +812,6 @@ const words={
 
 /* GRAMMAR - درس 1 هفتم از PDF */
 const grammar={
-// درس 1 هفتم - از فایل PDF
 1:[
 ["نکته اول: بزرگ نوشتن حرف اول اسم و فامیل",
  "در نوشتن اسم و فامیل همیشه اولین حرف را بزرگ می‌نویسیم.\nمثال: Narges Ebrahimi ✓",
@@ -1082,9 +977,11 @@ function login(){
  document.body.innerHTML=`
  <div class="login">
  <div class="loginCard">
- <span class="logoBig">📚</span>
+ <div style="text-align:center">
+ <div style="font-size:55px">📚</div>
  <h2>AliNagheli English</h2>
- <p class="subtitle">سامانه آموزش زبان انگلیسی</p>
+ <p class="muted">سامانه آموزش زبان انگلیسی</p>
+ </div>
  <div class="tabs">
  <button id="st" class="tab active" onclick="loginTab('student')">🎓 زبان‌آموز</button>
  <button id="ad" class="tab" onclick="loginTab('admin')">👨‍💼 مدیر</button>
@@ -1109,7 +1006,7 @@ function loginTab(type){
  <label>رمز عبور</label>
  <input id="pass" type="password">
  <button class="btn full" onclick="studentLogin()">ورود زبان‌آموز</button>
- <button class="btn secondary full" style="margin-top:10px" onclick="registerForm()">ثبت‌نام زبان‌آموز جدید</button>`;
+ <button class="btn secondary full" style="margin-top:8px" onclick="registerForm()">ثبت‌نام زبان‌آموز جدید</button>`;
 }
 
 async function studentLogin(){
@@ -1159,7 +1056,7 @@ function registerForm(){
  <option value="11">پایه یازدهم</option><option value="12">پایه دوازدهم</option>
  </select>
  <button class="btn full" onclick="register()">ثبت‌نام</button>
- <button class="btn secondary full" style="margin-top:10px" onclick="login()">بازگشت</button>`;
+ <button class="btn secondary full" style="margin-top:8px" onclick="login()">بازگشت</button>`;
 }
 
 async function register(){
@@ -1196,8 +1093,8 @@ async function register(){
 /* LAYOUT */
 function header(title){
  return `<header class="header"><div class="headerIn">
- <div class="logo"><span class="icon">📚</span> ${esc(title)} <span>AliNagheli English</span></div>
- <button class="logoutBtn" onclick="logout()">🚪 خروج</button>
+ <div><div class="logo">${esc(title)}</div><div style="font-size:10px;opacity:.8">AliNagheli English</div></div>
+ <button onclick="logout()" style="background:#ffffff22;color:white;border:0;border-radius:10px;padding:9px">خروج</button>
  </div></header>`;
 }
 
@@ -1222,10 +1119,10 @@ function home(){
  const base=xpForLevel(level),next=xpForLevel(level+1);
  const percent=Math.min(100,Math.round(((xp-base)/(next-base))*100));
  render("خانه",`
- <div class="hero">
+ <div class="hero hero3d">
  <div style="position:relative;z-index:2">
- <div class="sub">WELCOME TO</div>
- <h1>AliNagheli English 🚀</h1>
+ <div style="font-size:13px;opacity:.85">WELCOME TO</div>
+ <h1 style="font-size:32px;margin:8px 0">AliNagheli English 🚀</h1>
  <h2>سلام ${esc(S.student?.first_name||"زبان‌آموز")} 👋</h2>
  <p>یادگیری انگلیسی را حرفه‌ای شروع کن.</p>
  <div class="levelBar"><i style="width:${percent}%"></i></div>
@@ -1234,11 +1131,11 @@ function home(){
 
  <div class="grid">
  <div class="item" onclick="courses()"><div class="icon">📚</div><h3>دروس مدرسه</h3><p class="muted">Prospect و Vision</p><button class="btn full">ورود</button></div>
- <div class="item" onclick="placementTest()"><div class="icon">🎯</div><h3>تعیین سطح</h3><p class="muted">۳۰ سؤال</p><button class="btn full">شروع</button></div>
+ <div class="item" onclick="placementTest()"><div class="icon">🎯</div><h3>تعیین سطح</h3><p class="muted">۳۰ سؤال از آسان تا خیلی سخت</p><button class="btn full">شروع تعیین سطح</button></div>
  <div class="item" onclick="conversation()"><div class="icon">🗣️</div><h3>مکالمه</h3><p class="muted">Touchstone و Viewpoint</p><button class="btn full">ورود</button></div>
  <div class="item" onclick="contest()"><div class="icon">🏆</div><h3>مسابقه</h3><p class="muted">رقابت و کسب XP</p><button class="btn full">ورود</button></div>
- <div class="item" onclick="teachers()"><div class="icon">👨‍🏫</div><h3>اساتید</h3><p class="muted">رزرو کلاس</p><button class="btn full">مشاهده</button></div>
- <div class="item" onclick="profile()"><div class="icon">📊</div><h3>پیشرفت من</h3><p class="muted">درصد پیشرفت و آزمون‌ها</p><button class="btn full">مشاهده</button></div>
+ <div class="item" onclick="teachers()"><div class="icon">👨‍🏫</div><h3>اساتید</h3><p class="muted">رزرو کلاس با استاد</p><button class="btn full">مشاهده اساتید</button></div>
+ <div class="item" onclick="profile()"><div class="icon">📊</div><h3>پیشرفت من</h3><p class="muted">درصد پیشرفت و سوابق آزمون</p><button class="btn full">مشاهده</button></div>
  </div>`);
 }
 
@@ -1273,7 +1170,7 @@ function teachers(){
  <h2 style="text-align:center">${esc(t.name)}</h2>
  <p style="text-align:center"><b>${esc(t.degree)}</b></p>
  <p>${esc(t.text)}</p>
- <a class="btn call" href="tel:${t.phone}" style="display:block;text-align:center;margin:12px 0">📞 تماس با ${esc(t.name)}<br>${t.phone}</a>
+ <a class="btn call" href="tel:${t.phone}">📞 تماس با ${esc(t.name)}<br>${t.phone}</a>
  <div class="request">
  <h3>📅 رزرو تایم کلاس با استاد</h3>
  <label>تاریخ پیشنهادی</label>
@@ -1843,4 +1740,3 @@ startup();
 </script>
 </body>
 </html>
-```
