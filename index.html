@@ -121,15 +121,582 @@ input:focus,select:focus,textarea:focus{border-color:#7c3aed;background:#fff;box
 </head>
 <body>
 <div id="app"></div>
-
-<!-- داده‌ها: اگر data.js موجود بود از آن استفاده می‌شود، وگرنه از مقدار پیش‌فرض -->
-<script src="data.js" onerror="window.__dataMissing=true"></script>
 <script>
-/* اگر data.js لود نشد، words و grammar خالی ساخته می‌شوند تا کد خطا ندهد */
-if(typeof window.words==="undefined"){window.words={}}
-if(typeof window.grammar==="undefined"){window.grammar={}}
-var words=window.words;
-var grammar=window.grammar;
+var words={};
+var grammar={};
+
+/* ==================== پایه هفتم ==================== */
+grammar[0]=[
+ ["Capital Letters","My name is Amirreza.","اسم من امیررضا است.","اول حرف جمله، اسم و فامیل باید بزرگ نوشته شود."],
+ ["Mrs / Miss / Mr","Narges Ebrahimi / Amir Salehi","خانم نرگس ابراهیمی / آقای امیر صالحی","برای احترام: Mr برای آقایان، Miss برای خانم‌های مجرد، Mrs برای خانم‌های متأهل."],
+ ["What (چه)","What's your name?","اسم تو چیست؟","برای پرسیدن نام افراد استفاده می‌شود."],
+ ["How (چطور)","How are you?","حالت چطور است؟","برای احوالپرسی. همچنین در How do you spell this name? برای پرسیدن هجی کردن."]
+];
+grammar[1]=[
+ ["Who (چه کسی)","Who is that man?","آن مرد کیست؟","برای پرسیدن در مورد اشخاص."],
+ ["What / How","What's your sister's name? / How are you?","اسم خواهرت چیست؟ / حالت چطور است؟","What برای پرسیدن اسم، How برای احوالپرسی."],
+ ["Contractions (مخفف‌ها)","I am = I'm / You are = You're / it is = it's / he is = he's / she is = she's","من هستم / تو هستی / آن است / او است / او است","برای سریع‌تر صحبت کردن استفاده می‌شود."],
+ ["This / That","This is my friend Sina. / That is my classmate Sobhan.","این دوست من سینا است. / آن هم‌کلاسی من سبحان است.","This برای اشاره به نزدیک، That برای اشاره به دور."]
+];
+grammar[2]=[
+ ["Capital Letters","My name is Amirreza.","اسم من امیررضا است.","اول حرف جمله و اسم بزرگ نوشته می‌شود."],
+ ["When (چه وقتی)","When is your birthday?","تولدت کی است؟","برای پرسیدن زمان و تاریخ تولد."],
+ ["On / In","on 13th Mehr / in Mehr","در سیزدهم مهر / در مهر","on برای روز، in برای ماه."],
+ ["How old (چند سال)","How old are you? I am 13 years old.","چند سالته؟ من ۱۳ ساله هستم.","ساختار: فاعل + am/is/are + سن + years old"]
+];
+grammar[3]=[
+ ["Possessive Adjectives","My / Your / His / Her / Its / Our / Their","مال من / مال تو / مال او(مذکر) / مال او(مؤنث) / مال آن / مال ما / مال آنها","صفت‌های ملکی قبل از اسم می‌آیند و مالکیت را نشان می‌دهند."],
+ ["Possessive with 's","What's her uncle's name?","اسم عموی او چیست؟","با اضافه کردن 's به اسم، مالکیت نشان داده می‌شود."],
+ ["What (شغل)","What's your aunt's job?","شغل خاله‌ات چیست؟","What در اینجا برای پرسیدن شغل استفاده می‌شود."],
+ ["Yes/No Questions","Is that your father? Yes, he is. / No, he isn't.","آیا او پدرت است؟ بله / نه","با جابه‌جا کردن is/are سوالی می‌سازیم."]
+];
+grammar[4]=[
+ ["Which one / Who","Who is Mr. Rafiei? / Which one is your mom?","آقای رفیعی کیست؟ / مادرت کدام یکی است؟","برای شناسایی افراد از روی ظاهر و لباس."],
+ ["Wearing","She is wearing a red scarf.","او یک شال قرمز پوشیده است.","ساختار: am/is/are + wearing + لباس"],
+ ["Yes/No with is/are","Is that your uncle? Yes / No","آیا او عمویت است؟ بله / نه","سوالی کردن با جابه‌جایی am/is/are."]
+];
+grammar[5]=[
+ ["Present Continuous","My Dad is fixing the car.","پدرم در حال تعمیر ماشین است.","ساختار: am/is/are + فعل + ing برای کاری که همین الآن در جریان است."],
+ ["Yes/No Question","Is your dad fixing the car? Yes, he is.","آیا پدرت در حال تعمیر ماشین است؟ بله.","برای سوالی کردن، am/is/are به اول جمله می‌آید."],
+ ["What + doing","What is your Dad doing?","پدرت در حال انجام چه کاری است؟","برای پرسیدن از کار در حال انجام."],
+ ["Where (کجا)","Where is your mom? She is in the kitchen.","مادرت کجاست؟ او در آشپزخانه است.","برای پرسیدن مکان."]
+];
+grammar[6]=[
+ ["Going to (آینده)","I am going to visit my friend today.","من قصد دارم امروز دوستم را ببینم.","ساختار: am/is/are + going to + فعل برای بیان قصد و برنامه آینده."],
+ ["Yes/No Question","Are you going to visit your friend today? Yes, I am.","آیا امروز قصد داری دوستت را ببینی؟ بله.","am/is/are به اول جمله می‌آید."],
+ ["What time (چه ساعتی)","What time are you going to visit your friend?","چه ساعتی قصد داری دوستت را ببینی؟","برای پرسیدن ساعت."],
+ ["What (آدرس/تلفن/ایمیل)","What's your address / phone number / email address?","آدرس / شماره تلفن / ایمیل شما چیست؟","What برای پرسیدن اطلاعات شخصی."],
+ ["What time is it?","What time is it?","ساعت چند است؟","برای پرسیدن ساعت."]
+];
+grammar[7]=[
+ ["What's your favorite...?","What's your favorite food / drink?","غذا / نوشیدنی مورد علاقه‌ات چیست؟","What + favorite برای پرسیدن مورد علاقه."],
+ ["How about (چطور)","A: I am thirsty. B: How about some orange juice?","من تشنه‌ام. / با یک آب پرتقال چطور؟","برای پیشنهاد دادن استفاده می‌شود."],
+ ["Let's (بیا)","Let's drink something.","بیا چیزی بنوشیم.","Let's = Let us برای پیشنهاد انجام کاری با هم."]
+];
+
+words[0]=[
+ ["What's your last name?","نام خانوادگی شما چیست؟"],["library card","کارت عضویت کتابخانه"],
+ ["I'm your English teacher.","من معلم زبان شما هستم"],["How are you?","حال شما چطور است؟"],
+ ["good afternoon","ظهر به خیر"],["Now, you tell me your names.","حالا شما اسم‌هایتان را به من بگویید"],
+ ["stand up","بلند شدن"],["last name","نام خانوادگی"],["library","کتابخانه"],["and","و"],
+ ["name","نام"],["excuse me","ببخشید"],["fine","خوب"],["sit down","نشستن"],["Great, thanks.","خوبم، ممنون"],
+ ["hello","سلام"],["How do you spell ...?","... را چگونه هجی می‌کنیم؟"],["thank you","متشکرم"],
+ ["Mrs.","خانم"],["My name is ...","اسم من ... است"],["How do you spell your last name?","نام خانوادگی‌ات را چگونه هجی می‌کنی؟"],
+ ["first name","اسم کوچک"],["Fine, thanks.","خوبم، ممنون"],["please","لطفاً"],["teacher","معلم"],
+ ["What's your first name?","اسم (کوچک) شما چیست؟"],["Mr.","آقا"],["student","دانش‌آموز"],
+ ["Can you spell your name?","می‌توانی اسمت را هجی کنی؟"],["How are you today?","امروز حالتان چطور است؟"],
+ ["good morning","صبح به خیر"],["I'm ...","من ... هستم"],["class","کلاس"],["hi","سلام"],
+ ["Now, please say your name.","حالا لطفاً اسمتان را بگویید"],["one by one","یکی یکی"],["thanks","ممنون"],["Miss","خانم"]
+];
+words[1]=[
+ ["Classmate","هم‌کلاسی"],["Who","چه کسی"],["This","این (اشاره به نزدیک)"],["That","آن (اشاره به دور)"],
+ ["Boy","پسر"],["New","جدید"],["Talk","صحبت کردن"],["Him","او را، به او، با او"],
+ ["Nice","خوب"],["Meet","ملاقات کردن"],["Our","ـ ما"],["Welcome","خوش آمد گفتن"],
+ ["School","مدرسه"],["Friend","دوست"],["Thank you.","ممنون از شما"],["Too","همچنین"],
+ ["Girl","دختر"],["Man","مرد"],["Woman","خانم"],["She","او (مؤنث)"],["He","او (مذکر)"],
+ ["Can","توانستن"],["Help","کمک کردن"],["Have","داشتن"],["Please","لطفاً"],
+ ["Library","کتابخانه"],["Library card","کارت کتابخانه"],["Sure","حتماً"],["Sorry","متأسفم"],
+ ["Again","دوباره"],["Librarian","کتابدار"],["Teacher","معلم"]
+];
+words[2]=[
+ ["date","تاریخ"],["twelve","دوازده"],["ten","ده"],["March","مارس"],["eleven","یازده"],["six","شش"],
+ ["no","نه"],["forty","چهل"],["September","سپتامبر"],["fifty","پنجاه"],["fifteen","پانزده"],
+ ["thirteen","سیزده"],["sixty","شصت"],["really","واقعاً"],["seventy","هفتاد"],
+ ["When is your birthday?","روز تولد شما کی است؟"],["fourteen","چهارده"],["eighty","هشتاد"],["Friday","جمعه"],
+ ["How do you say this word?","این واژه را چگونه (به انگلیسی) می‌گوییم؟"],["ninety","نود"],["Sunday","یکشنبه"],
+ ["It's my birthday today.","امروز تولد من است"],["sixteen","شانزده"],["twenty","بیست"],["seventeen","هفده"],
+ ["Wednesday","چهارشنبه"],["Monday","دوشنبه"],["one hundred","یک صد"],["eighteen","هجده"],
+ ["What about you?","شما چطور؟"],["My birthday is in ...","تولد من در (ماه) ... است"],["August","اوت"],
+ ["nineteen","نوزده"],["I'm ... years old.","من ... ساله هستم"],["May","مه"],["birthday","روز تولد"],
+ ["two","دو"],["nine","نه"],["three","سه"],["months of the year","ماه‌های سال"],["January","ژانویه"],
+ ["five","پنج"],["Tuesday","سه‌شنبه"],["happy birthday","تولدت مبارک"],["Saturday","شنبه"],
+ ["July","ژوئیه"],["one","یک"],["eight","هشت"],["Thursday","پنجشنبه"],["How old are you?","چند سال دارید؟"],
+ ["age","سن"],["Oh, I see.","اوه، متوجه شدم"],["April","آوریل"],["seven","هفت"],["June","ژوئن"],["year","سال"],
+ ["How old is your brother?","برادر شما چند ساله است؟"],["November","نوامبر"],["October","اکتبر"],
+ ["thirty","سی"],["December","دسامبر"]
+];
+words[3]=[
+ ["aunt","خاله/عمه/زن‌عمو/زن‌دایی"],["shopkeeper","مغازه دار"],["employee","کارمند"],["wife","همسر"],
+ ["What is your mother's job?","شغل مادر شما چیست؟"],["number","عدد"],["driver","راننده"],["pilot","خلبان"],
+ ["baker","نانوا"],["job","شغل"],["waiter","پیشخدمت (آقا)"],["Is that your father?","آیا او پدر شماست؟"],
+ ["florist","گل‌فروش"],["postman","پستی"],["son","فرزند) پسر"],["brother","برادر"],
+ ["How old is he?","او چند ساله است؟"],["grandmother","مادربزرگ"],["daughter","فرزند) دختر"],
+ ["worker","کارگر"],["picture","تصویر"],["uncle","عمو/دایی/شوهرخاله/شوهرعمه"],["housewife","خانم خانه‌دار"],
+ ["What is your father's name?","اسم پدر شما چیست؟"],["family","خانواده"],["What's your father's job?","شغل پدر شما چیست؟"],
+ ["teacher","معلم"],["farmer","کشاورز"],["Can you write it for me, please?","می‌توانید لطفاً این را برای من بنویسید؟"],
+ ["sister","خواهر"],["mother","مادر"],["How old is your ...?","... شما چند ساله است؟"],["nurse","پرستار"],
+ ["dentist","دندانپزشک"],["engineer","مهندس"],["nice","خوب"],["mechanic","مکانیک"],["grandfather","پدربزرگ"],
+ ["What's his job?","شغل او چیست؟"],["How do you spell your first name?","اسم کوچک‌تان را چگونه هجی می‌کنید؟"],
+ ["painter","نقاش"],["cook","آشپز"],["He's ... years old.","او ... ساله است"],["He's a ...","او یک ... است"],
+ ["father","پدر"],["policeman","پلیس"],["doctor","دکتر"]
+];
+words[4]=[
+ ["tall","بلندقد"],["grey","طوسی"],["white","سفید"],["manteau","مانتو"],["hat","کلاه"],["chador","چادر"],
+ ["glove","دستکش"],["Is that your English teacher?","آیا او معلم زبان شما است؟"],["green","سبز"],["young","جوان"],
+ ["math","ریاضی"],["orange","نارنجی"],["pink","صورتی"],["belt","کمربند"],["sunglasses","عینک آفتابی"],
+ ["suit","کت شلوار"],["T-shirt","تی شرت"],["He's wearing a grey suit.","او یک کت و شلوار طوسی پوشیده است"],
+ ["brown","قهوه‌ای"],["He's over there.","او آنجا (ایستاده) است"],["blue","آبی"],["sock","جوراب"],
+ ["dress","پیراهن زنانه"],["shoe","کفش"],["black","سیاه"],["shirt","پیراهن"],["sweater","ژاکت"],
+ ["No, my English teacher is the tall man.","نه، معلم انگلیسی من آن مرد بلند قد است"],["glasses","عینک"],
+ ["short","قد کوتاه"],["Let's meet your English teacher first.","بیا ابتدا با معلم انگلیسی شما ملاقات کنیم"],
+ ["old","پیر"],["coat","پالتو"],["trousers","شلوار"],["red","قرمز"],["yellow","زرد"],["jacket","کت"],
+ ["He's wearing a blue suit and a white shirt.","او یک کت و شلوار آبی و پیراهن سفید پوشیده است"],
+ ["sandal","صندل"],["And which one is your math teacher?","و کدام یکی معلم ریاضی شماست؟"],["wear","پوشیدن"]
+];
+words[5]=[
+ ["watch TV","تلویزیون تماشا کردن"],["again","دوباره"],["where","کجا"],["bedroom","اتاق خواب"],
+ ["work","کار کردن"],["car","ماشین"],["bathroom","حمام"],["cook","پختن"],["blanket","پتو"],
+ ["correct","صحیح"],["bookcase","قفسه کتاب"],["dad","بابا"],["clock","ساعت دیواری"],["do","انجام دادن"],
+ ["comb","شانه"],["fix","تعمیر کردن"],["computer","کامپیوتر"],["for","برای"],["drink","نوشیدن"],
+ ["garage","پارکینگ خانه"],["eat","خوردن"],["house","خانه"],["flat/apartment","آپارتمان"],
+ ["hungry","گرسنه"],["kitchen","آشپزخانه"],["I'll call dad","من پدر را صدا خواهم کرد"],["mirror","آینه"],
+ ["Living room","اتاق پذیرایی"],["newspaper","روزنامه"],["Look at","نگاه کردن به"],["play","بازی کردن"],
+ ["lunch","ناهار"],["radio","رادیو"],["mom","مامان"],["stairs","راه پله"],["office","دفتر، شرکت"],
+ ["picture","تصویر"],["study","مطالعه کردن"],["Play football","فوتبال بازی کردن"],["table","میز ناهارخوری"],
+ ["Read a book","کتاب خواندن"],["television","تلویزیون"],["say","گفتن"],["tower","برج"],["so","خیلی"],
+ ["villa","ویلا"],["Wash your hands","دست‌هایت را بشور"]
+];
+words[6]=[
+ ["39 Kargar Street, Baharestan","بهارستان، خیابان کارگر، پلاک ۳۹"],["live","زندگی کردن"],
+ ["I'm not sure.","مطمئن نیستم"],["go","رفتن"],["Call me before you go.","قبل از اینکه بروی به من زنگ بزن"],
+ ["Around 5 in the afternoon.","حدوداً ساعت ۵ بعد از ظهر"],["telephone","تلفن"],["OK, bye.","باشه، خداحافظ"],
+ ["What time are they leaving?","آنها چه ساعتی می‌روند؟"],["evening","عصر"],["What's their address?","آدرس (منزل) آنها چیست؟"],
+ ["address","نشانی"],["mobile","تلفن همراه"],["24 Laleh Street, Sa'dieh","سعدیه، خیابان لاله، پلاک ۲۴"],
+ ["5 Azadi Street","خیابان آزادی، پلاک پنجم"],["What's your address?","آدرس (منزل) شما چیست؟"],
+ ["Are you coming with me?","آیا تو با من می‌آیی؟"],["e-mail address","آدرس ایمیل"],
+ ["15 Shahid Hakim Street, Manzarieh","منظریه، خیابان شهید حکیم، پلاک ۱۵"],["home","خانه"],
+ ["What time is he going?","ساعت چند قرار است برود؟"],["What's his mobile phone number?","شماره موبایل او چند است؟"],
+ ["67 Mahan Street","خیابان ماهان، پلاک ۶۷"],["81 Farnam Street","خیابان فرنام، پلاک ۸۱"],
+ ["What's her address?","آدرس (منزل) او چیست؟"],["street","خیابان"],["p.m.","بعد از ظهر"],
+ ["What's his address?","آدرس (منزل) او چیست؟"],["... is not well.","حال ... خوب نیست"],["call","زنگ زدن"],
+ ["What time is she coming back?","چه ساعتی بر می‌گردد؟"],["I'm not sure I can, but I'll try.","مطمئن نیستم بتوانم، اما سعی خواهم کرد"],
+ ["I'm going to visit him today.","من قرار است امروز به ملاقاتش بروم"],["number","عدد"],["I don't understand.","متوجه نمی‌شوم"],
+ ["time","زمان"],["What's ...'s home number?","شماره تلفن منزل ... چند است؟"],["Where do you live?","کجا زندگی می‌کنید؟"],
+ ["What time are you going?","ساعت چند قرار است بروی؟"],["a.m.","قبل از ظهر (ساعت)"],
+ ["What's their telephone number?","شماره تلفن آنها چند است؟"],["I don't know.","نمی‌دانم"],
+ ["What's your telephone number?","شماره تلفن شما چند است؟"],["What time is it?","ساعت چند است؟"],
+ ["My phone number is ...","شماره تلفن من ... است"],["What's her office phone number?","شماره تلفن دفتر او چند است؟"],
+ ["o'clock","ساعت"]
+];
+words[7]=[
+ ["What's your favorite food?","غذای مورد علاقه‌ی شما چیست؟"],["jelly","ژله"],["rice","برنج"],
+ ["Look, it's enough.","ببین، دیگر بس است"],["spaghetti","اسپاگتی"],["orange","پرتقال"],
+ ["Let's take something to eat.","بیا یک چیز بخوریم"],["cheese","پنیر"],["potato","سیب‌زمینی"],
+ ["Ok, let's go to the kitchen.","باشه، بیا به آشپزخانه برویم"],["Let's have something to drink.","بیا یک چیز بنوشیم"],
+ ["kebab","کباب"],["bread","نان"],["date","خرما"],["egg","تخم مرغ"],["yogurt","ماست"],["fruit","میوه"],
+ ["I'd like some ...","من کمی ... می‌خواهم"],["What's your favorite drink?","نوشیدنی مورد علاقه‌ی شما چیست؟"],
+ ["like","دوست داشتن"],["Me too. Let's have some cake and milk.","منم همینطور. بیا کمی شیر و کیک بخوریم"],
+ ["What do you like to drink?","چی میل دارید بنوشید؟"],["I feel thirsty.","من احساس تشنگی می‌کنم"],["salad","سالاد"],
+ ["How about some cake and milk?","نظرت راجع به کمی کیک و شیر چیست؟"],["orange juice","آب پرتقال"],
+ ["I feel hungry.","من احساس گرسنگی می‌کنم"],["food","غذا"],["banana","موز"],["quince","به (میوه)"],
+ ["Let's take something to drink.","بیا یک چیز بنوشیم"],["cake","کیک"],["carrot","هویج"],
+ ["What do you like to eat?","چی میل دارید بخورید؟"],["Let's have something to eat.","بیا یک چیز بخوریم"],
+ ["feel","احساس کردن"],["chicken","مرغ"],["thirsty","تشنه"],["Sounds good.","خوب به نظر می‌آید"],
+ ["coconut","نارگیل"],["honey","عسل"],["drink","نوشیدنی"],["milk","شیر"],["onion","پیاز"],
+ ["That's my favorite.","آن (غذا) مورد علاقه‌ی من است"],["I am hungry.","من گرسنه هستم"],["hungry","گرسنه"],
+ ["apple","سیب"],["water","آب"],["ice cream","بستنی"],["pineapple","آناناس"],
+ ["How do you say ... in English?","به انگلیسی چه می‌شود؟"],["zucchini","کدو سبز"],["favorite","مورد علاقه"],
+ ["I'm hungry. How about you?","من گرسنه‌ام. تو چطور؟"],["juice","آبمیوه"],["enough","به اندازه‌ی کافی"],
+ ["fish","ماهی"],["I am thirsty.","من تشنه هستم"],["tea","چای"],["go shopping","به خرید رفتن"],
+ ["I'd like some tea with my cake.","من دوست دارم کمی چای با کیکم بخورم"],["tomato","گوجه"]
+];
+
+/* ==================== پایه هشتم ==================== */
+grammar[9]=[
+ ["Verb to be (am/is/are)","I am ... / We are ... / You are ... / He is ... / She is ... / They are ...","من هستم / ما هستیم / تو هستی / او است / او است / آنها هستند","فعل to be برای بیان هویت، ملیت و وضعیت."],
+ ["From + کشور","I am from Iran. / She is from France. / They are from China.","من اهل ایران هستم. / او اهل فرانسه است. / آنها اهل چین هستند.","برای بیان ملیت اصلی (کشور) از from استفاده می‌کنیم."],
+ ["منفی کردن","am not / isn't / aren't","نیستم / نیست / نیستند","Am not مخفف ندارد. Is not = isn't / Are not = aren't"],
+ ["سوالی کردن","Are they from Spain? / Is he from Iran?","آیا آنها اهل اسپانیا هستند؟ / آیا او اهل ایران است؟","am/is/are را به اول جمله می‌بریم."],
+ ["پاسخ کوتاه","Yes, they are. / No, they aren't. / Yes, I am. / No, I'm not.","بله هستند / نه نیستند / بله هستم / نه نیستم","با Yes/No + فاعل + فعل to be"],
+ ["Where (کجا)","Where are you from? / Where is she from?","اهل کجا هستی؟ / او اهل کجاست؟","برای پرسیدن محل/کشور."],
+ ["نکته ملیت","You are from Brazil. / You are Brazilian.","تو اهل برزیل هستی. / تو برزیلی هستی.","برای بیان ملیت نیازی به from نیست: Chinese, Spanish, Iranian, ..."]
+];
+grammar[10]=[
+ ["Present Simple (حال ساده)","Ali takes a shower every day. / I usually read the newspaper in the morning.","علی هر روز دوش می‌گیرد. / من معمولاً صبح‌ها روزنامه می‌خوانم.","برای عادت‌ها، کارهای روزمره و حقایق طبیعی."],
+ ["حقایق طبیعی","Babies cry. / Birds fly.","بچه‌ها گریه می‌کنند. / پرنده‌ها پرواز می‌کنند.","برای بیان حقایق کلی."],
+ ["سوالی کردن","Do you ...? / Does she ...?","آیا تو ...؟ / آیا او ...؟","Do برای I/you/we/they و Does برای he/she/it"],
+ ["منفی کردن","don't / doesn't","نمی‌کنم / نمی‌کند","He doesn't work for I.R.I.B. / Your dog doesn't bark loudly."],
+ ["What do you do...?","What do you do in the mornings?","صبح‌ها چه کار می‌کنی؟","برای پرسیدن فعالیت‌های روزانه."],
+ ["When / What days do you...?","When do you go shopping? / What days do you play sports?","چه موقع خرید می‌روی؟ / چه روزهایی ورزش می‌کنی؟","برای پرسیدن زمان انجام کار."],
+ ["حرف اضافه زمان","on برای روز / in برای صبح، ظهر، عصر","on Fridays / in the morning","قبل از ایام هفته on، قبل از قسمت‌های روز in"]
+];
+grammar[11]=[
+ ["Possessive Adjectives","my / your / his / her / its / our / their","مال من / مال تو / مال او(مذکر) / مال او(مؤنث) / مال آن / مال ما / مال آنها","صفت ملکی قبل از اسم می‌آید."],
+ ["مطابقت ضمیر و صفت ملکی","I → my / you → your / he → his / she → her / it → its / we → our / they → their","—","مثال: I have a bag. My bag is yellow."],
+ ["Be good at + ing","I am good at drawing. / He is good at taking photos.","من در نقاشی خوب هستم. / او در عکاسی خوب است.","ساختار: am/is/are + good at + فعل ing"],
+ ["Can (توانستن)","I can draw. / He can take photos. / They can play basketball.","من می‌توانم نقاشی بکشم. / او می‌تواند عکس بگیرد. / آنها می‌توانند بسکتبال بازی کنند.","ساختار: فاعل + can + فعل ساده"]
+];
+grammar[12]=[
+ ["سوال در مورد سلامتی","What's wrong? / What's the matter? / What's the problem?","چه شده است؟ / چه مشکلی پیش آمده؟ / مشکل چیست؟","همه یک معنی دارند: پرسیدن مشکل سلامتی."],
+ ["Are/Is + اسم/ضمیر + ok/all right?","Are you OK? / Is he all right?","خوبی؟ / حالش خوب است؟","برای احوالپرسی سلامتی."],
+ ["پاسخ و توصیه","You should ... / Why don't you ...? / Go to ...","باید ... / چرا ... نمی‌کنی؟ / برو به ...","برای توصیه به مریض."],
+ ["تلفظ ch = /k/","school / backache / mechanic / zucchini / stomachache","—","در این کلمات ch صدای /k/ می‌دهد."],
+ ["تلفظ ea = /e/","headache / bread / health / sweater / weather","—","در این کلمات ea صدای /e/ کوتاه می‌دهد."]
+];
+grammar[13]=[
+ ["Where is + شهر?","Where is Mashhad? It's in the north-east of Iran.","مشهد کجاست؟ در شمال شرق ایران است.","برای پرسیدن موقعیت جغرافیایی."],
+ ["What's + شهر + like?","What's Tabriz like? It's big and old.","تبریز چگونه است؟ بزرگ و قدیمی است.","برای پرسیدن شکل ظاهری شهر."],
+ ["Is there a/an ...?","Is there a stadium? Yes, there is. / No, there isn't.","آیا ورزشگاه هست؟ بله / نه","برای مفرد."],
+ ["Are there any ...?","Are there any museums? Yes, there are. / No, there aren't.","آیا موزه‌ای هست؟ بله / نه","برای جمع."],
+ ["What is + شهر + famous for?","What is Isfahan famous for? It's famous for its old mosques.","اصفهان برای چه معروف است؟ برای مسجدهای قدیمی‌اش معروف است.","برای پرسیدن شهرت یک مکان."],
+ ["تلفظ th","north / south / three / thanks / bathroom / toothache / Thursday / math","—","th دو صدا دارد: /θ/ و /ð/"]
+];
+grammar[14]=[
+ ["What's the weather like in ...?","What's the weather like in Rasht? It's rainy and wet in spring and summer.","هوا در رشت چگونه است؟ در بهار و تابستان بارانی و مرطوب است.","برای پرسیدن آب و هوا."],
+ ["Is it + آب و هوا?","Is it snowy in winter? Yes, it is. / No, it isn't.","آیا در زمستان برفی است؟ بله / نه","سوال بله/خیر در مورد آب و هوا."],
+ ["توصیف روستا","What's Amir Abad like? It's a mountain village with many farms and a river.","امیرآباد چگونه است؟ روستایی کوهستانی با مزرعه‌های زیاد و یک رودخانه است.","برای توصیف مکان."],
+ ["What's the people's job?","What's the people's job? They work on farms and raise animals.","شغل مردم چیست؟ در مزرعه کار می‌کنند و دام پرورش می‌دهند.","پرسیدن شغل مردم."],
+ ["How about / What about","What's the weather like in spring? How about winter?","هوا در بهار چگونه است؟ زمستان چطور؟","برای جلوگیری از تکرار سوال."],
+ ["تلفظ th = /ð/","mother / father / brother / with / this / they / there / that / the / weather","—","th در این کلمات صدای /ð/ می‌دهد."]
+];
+grammar[15]=[
+ ["Free time (وقت آزاد)","What do you do in your free time?","در وقت آزادت چه کار می‌کنی؟","برای پرسیدن فعالیت در وقت آزاد."],
+ ["What do you like to do in your free time?","What do you like to do in your free time?","دوست داری در وقت آزادت چه کار کنی؟","برای پرسیدن علاقه."]
+];
+
+words[9]=[
+ ["Iran is great!","ایران عالی است"],["South America","آمریکای جنوبی"],
+ ["cousin","پسر عمو/ دختر عمو/ پسر دایی/ دختر دایی/ پسر خاله/ دختر خاله/ پسر عمه/ دختر عمه"],
+ ["Asian","آسیایی"],["North American","آمریکای شمالی"],
+ ["He speaks French, English, and a little Persian.","او به فرانسه، انگلیسی و کمی به فارسی صحبت می‌کند"],
+ ["I'm originally Iranian.","من اصالتاً ایرانی هستم"],["Spanish","اسپانیایی‌ها"],["Spain","اسپانیا"],
+ ["South American","اهل آمریکای جنوبی"],["continent","قاره"],["Where is he from?","او اهل کجاست؟"],
+ ["North America","آمریکای شمالی"],["African","آفریقایی"],["Chinese","چینی"],
+ ["Australia","استرالیا"],["They're from Spain.","آنها اهل اسپانیا هستند"],["European","اروپایی"],
+ ["relative","خویشاوند"],["Africa","آفریقا"],["Iranian","ایرانی"],["She's from England.","او اهل انگلستان است"],
+ ["How do you like it in Iran?","ایران را چطور دیدی؟"],["Persian Gulf","خلیج فارس"],["Brazil","برزیل"],
+ ["France","فرانسه"],["Europe","اروپا"],["Are you from Iran?","آیا اهل ایران هستید؟"],
+ ["I live in France.","من در فرانسه زندگی می‌کنم"],["Iran","ایران"],["China","چین"],["Brazilian","برزیلی"],
+ ["He's from France.","او اهل فرانسه است"],["Where are they from?","آنها اهل کجا هستند؟"],
+ ["Asia","آسیا"],["British","بریتانیایی"],["guest","مهمان"],["nationality","ملیت"],
+ ["country","کشور"],["Caspian Sea","دریای خزر"],["England","انگلستان"],
+ ["I love it.","من دوستش دارم"],["Australian","استرالیایی"],["It's a beautiful country.","این یک کشور زیباست"]
+];
+words[10]=[
+ ["What days do you play sports?","چه روزهایی ورزش می‌کنی؟"],["What days do you go shopping?","چه روزهایی خرید می‌روی؟"],
+ ["When can you start?","از کی می‌توانی شروع کنی؟"],["day","روز"],["midnight","نیمه شب"],
+ ["What days do you go to school?","چه روزهایی به مدرسه می‌روی؟"],["go to library","به کتابخانه رفتن"],
+ ["visit relatives","سر زدن به فامیل"],["That's fine.","خوبه"],["when","چه زمانی"],["why","چرا"],
+ ["I go to the gym on Sundays and Tuesdays.","من یکشنبه‌ها و سه‌شنبه‌ها به باشگاه می‌روم"],["sunrise","طلوع خورشید"],
+ ["midday","ظهر"],["I stay at home and relax.","من خانه می‌مانم و استراحت می‌کنم"],["night","شب"],
+ ["climb a mountain","کوهنوردی کردن"],["I'll let her know.","به او می‌گویم"],["relax","آرامیدن"],
+ ["noon","ظهر"],["stay","ماندن"],["weekend","آخر هفته"],["... is not very good at English.","زیاد انگلیسی‌اش خوب نیست"],
+ ["Every weekday.","هر روز هفته"],["sir","آقا"],["go to the gym","رفتن به باشگاه"],["play sports","ورزش کردن"],
+ ["go to school","به مدرسه رفتن"],["gym","باشگاه"],["madam","خانم"],
+ ["What days do you study English?","چه روزهایی زبان (انگلیسی) می‌خوانی؟"],["well","خب"],["watch TV","تلویزیون تماشا کردن"],
+ ["weekday","روز هفته"],["sunset","غروب خورشید"],["week","هفته"],["How about Friday mornings?","صبح‌های جمعه چطور؟"],
+ ["study lessons","درس خواندن"],["That sounds great!","عالی به نظر می‌رسد"],
+ ["What days do you go to the library?","چه روزهایی به کتابخانه می‌روی؟"],
+ ["What do you do in the afternoons?","بعد از ظهرها چه کار می‌کنی"]
+];
+words[11]=[
+ ["play volleyball","والیبال بازی کردن"],["Who can work with a computer?","کی بلد است با کامپیوتر کار کند؟"],
+ ["Can you make a cake?","می‌توانی کیک درست کنی؟"],["Can I see your photos?","می‌توانم عکس‌هایت را ببینم؟"],
+ ["Who can draw?","چه کسی می‌تواند نقاشی بکشد؟"],["Are you good at drawing?","آیا نقاشی‌ات خوب است؟"],
+ ["Are you good at searching the Web?","آیا در جستجو در فضای اینترنت خوب هستی؟"],
+ ["act in movies","بازی کردن در فیلم‌های سینمایی"],["drawing","طراحی (هنر)"],
+ ["Are they good at swimming?","آیا شنا کردن آنها خوب است؟"],["photo","عکس"],
+ ["Is he good at playing football?","آیا او خوب فوتبال بازی می‌کند؟"],["ride a horse","اسب سواری کردن"],
+ ["play basketball","بسکتبال بازی کردن"],["Who is good at telling stories?","کی خوب می‌تواند داستان بگوید؟"],
+ ["wow!","وای"],["Why not?","چرا که نه؟"],["recite the Holy Quran","از حفظ خواندن قرآن مجید"],
+ ["do a puzzle","پازل درست کردن"],["Excuse me, I have a question.","ببخشید، من یک سوال دارم"],
+ ["Who can play tennis?","کی می‌تواند تنیس بازی کند؟"],["tell a story","داستان گفتن"],
+ ["Can they play basketball?","آیا آنها می‌توانند بسکتبال بازی کنند؟"],["play badminton","بدمینتون بازی کردن"],
+ ["run","دویدن"],["Can she search the Web?","آیا او می‌تواند در اینترنت جستجو کند؟"],["good","خوب"],
+ ["swim","شنا کردن"],["Are you good at riding a bicycle?","آیا دوچرخه سواری‌ات خوب است؟"],
+ ["Can you ride a bicycle?","می‌توانید دوچرخه سواری کنید؟"],["Is she good at cooking?","آیا آشپزی او خوب است؟"],
+ ["draw","نقاشی کشیدن"],["Come to my house this afternoon.","امروز بعد از ظهر به خانه‌ی من بیا"],
+ ["take photos","عکس گرفتن"],["Can he do a puzzle?","آیا او می‌تواند پازل را تکمیل کند؟"],
+ ["ability","مهارت"],["I'm not good at drawing.","من نقاشی‌ام خوب نیست"],["Can you draw?","می‌توانی نقاشی بکشی؟"],
+ ["Who is good at riding a bicycle?","چه کسی دوچرخه سواری‌اش خوب است؟"],["work with a computer","با کامپیوتر کار کردن"],
+ ["Who can take photos?","کی می‌تواند عکس بگیرد؟"],["Your drawing is very good.","نقاشی تو خیلی قشنگ است"],
+ ["draw a picture","نقاشی کشیدن"],["play ping-pong","پینگ پنگ بازی کردن"],["make tea","چای درست کردن"],
+ ["I can take good photos.","من می‌توانم خوب عکس بگیرم"],["speak","صحبت کردن"],
+ ["I can't make it today.","من امروز نمی‌توانم (بیایم)"],["ride a bicycle","دوچرخه سواری کردن"],
+ ["play tennis","تنیس بازی کردن"],["play chess","شطرنج بازی کردن"],["type","تایپ کردن"],["read","خواندن"],
+ ["puzzle","پازل"],["You can bring your drawing book, too.","می‌توانی دفتر نقاشی‌ات را هم همراه خودت بیاوری"]
+];
+words[12]=[
+ ["drugstore","داروخانه"],["You should go home and rest.","باید به خانه بروی و استراحت کنی"],
+ ["health problem","مشکل سلامتی"],["You should rest.","باید استراحت کنی"],
+ ["Thanks for your help.","ممنون بابت کمک شما"],["I'll talk to your teacher.","من با معلمت صحبت خواهم کرد"],
+ ["stomachache","دل درد"],["cough","سرفه"],["What's the matter?","چه شده است؟"],["patient","مریض"],
+ ["advice","نصیحت"],["I have a sore throat.","من گلودرد دارم"],["Why don't you see a doctor?","چرا نمی‌روی دکتر؟"],
+ ["You have sore eyes, too.","چشم‌هایت هم که خون افتاده است"],["Go to the dentist.","به دندانپزشکی برو"],
+ ["What is the problem?","چه مشکلی پیش آمده است؟"],["have a fever","تب داشتن"],["earache","گوش‌درد"],
+ ["What's wrong?","چه شده است؟"],["running nose","آبریزش بینی"],
+ ["Let's go to the office and call your parents first.","بیا اول به دفتر برویم و به پدر و مادرت زنگ بزنیم"],
+ ["Why don't you get some rest?","چرا کمی استراحت نمی‌کنی؟"],["cold","سرماخوردگی"],
+ ["Is she all right?","آیا او حالش خوب است؟"],["sore throat","گلودرد"],["Are you OK?","خوبی؟"],
+ ["I'll be back in a minute.","من یک دقیقه‌ای بر می‌گردم"],["You should see a doctor.","باید بروی دکتر"],
+ ["toothache","دندان‌درد"],["rest","استراحت کردن"],["I have a headache.","سردرد دارم"],["headache","سردرد"],
+ ["measles","سرخک"],["health","سلامت"],["have a temperature","تب داشتن"],["backache","کمردرد"],
+ ["We have one more class.","ما یک کلاس دیگر هم داریم"],["sore eyes","چشم‌های خون افتاده"],
+ ["Czech","اهل جمهوری چک"],["I have a toothache.","دندان درد دارم"],["Is he OK?","آیا او حالش خوب است؟"],
+ ["I have a cold.","سرما خورده‌ام"],["parent","والد"],["hospital","بیمارستان"],["don't worry.","نگران نباش"],
+ ["quiet","ساکت"],["sneeze","عطسه"],["Be quiet!","ساکت باشید"],["flu","آنفلوآنزا"],["mumps","آوریون"],
+ ["I have a running nose.","آبریزش بینی دارم"]
+];
+words[13]=[
+ ["mosque","مسجد"],["actually","در واقع"],["cinema","سینما"],["minaret","مناره"],["center","مرکز"],
+ ["east","شرق"],["zoo","باغ وحش"],["stadium","ورزشگاه"],
+ ["Isfahan's an old city in the center of Iran.","اصفهان شهری قدیمی در مرکز ایران است"],
+ ["many","چندین"],["boulevard","بلوار"],["What's it like?","چگونه است؟"],["old","قدیمی"],
+ ["Please say it again.","لطفاً دوباره بگو"],["restaurant","رستوران"],["location","موقعیت"],["palace","کاخ"],
+ ["Where is it?","آن کجاست؟"],["I should see the city soon.","من به زودی از شهر دیدن خواهم کرد"],
+ ["bridge","پل"],["city","شهر"],["shrine","حرم"],["building","ساختمان"],["west","غرب"],
+ ["Are there any museums?","آیا موزه هم دارد؟"],["What is it famous for?","آن (شهر) برای چه چیزی معروف است؟"],
+ ["We can have special food downtown.","ما می‌توانیم در مرکز شهر غذای ویژه بخوریم"],["church","کلیسا"],
+ ["capital","پایتخت"],["Tell me about Isfahan.","راجع به اصفهان برایم بگو"],["north","شمال"],["museum","موزه"],
+ ["tourist","گردشگر"],["downtown","مرکز شهر"],["special","خاص"],["metro","مترو"],["clean","تمیز"],
+ ["It's a big and clean city.","(آن) شهری بزرگ و تمیز است"],["big","بزرگ"],["park","پارک"],["south","جنوب"],
+ ["store","مغازه"],["famous","مشهور"],
+ ["Isfahan is very famous for its mosques and palaces.","اصفهان بابت مساجد و کاخ‌هایش بسیار مشهور است"],
+ ["train station","ایستگاه راه آهن"],["near","نزدیک"],["Any famous buildings?","ساختمان‌های معروفی دارد؟"],
+ ["bus station","ایستگاه اتوبوس"],["airport","فرودگاه"],["north-east","شمال شرق"],["north-west","شمال غرب"],
+ ["south-east","جنوب شرقی"],["south-west","جنوب غربی"]
+];
+words[14]=[
+ ["village","روستا"],["wind","باد"],["What's the people's job?","شغل مردم (آن شهر) چیست؟"],
+ ["It sounds to be a very interesting place.","به نظر می‌رسد مکان بسیار جالبی است"],["hen","مرغ"],
+ ["winter","زمستان"],["fall","پاییز"],["Can you give me some examples?","می‌توانید چند مثال برای من بزنید؟"],
+ ["icy","یخ‌زده"],["hot","داغ"],["raise","پرورش دادن"],["rain","باران"],["cow","گاو"],
+ ["Are there many people in the village?","آیا مردم زیادی در روستا زندگی می‌کنند؟"],
+ ["It's a mountain village with many trees and flowers.","آن یک روستای کوهستانی با درختان و گل‌های بسیار است"],
+ ["What's the weather like in ...?","آب و هوا در ... چگونه است؟"],["summer","تابستان"],["tree","درخت"],
+ ["warm","گرم"],["cold","سرد"],["farm","مزرعه"],["spring","بهار"],["hill","تپه"],
+ ["Are there any fields?","آیا مزارع هم دارد؟"],["thermometer","دماسنج"],["weather","آب‌وهوا"],["field","مزرعه"],
+ ["There's a lot of wind in summer, fall and winter.","در تابستان، پاییز و زمستان باد بسیار زیاد می‌وزد"],
+ ["Is it near the city?","آیا نزدیک شهر است؟"],["flower","گل"],["Is it cold in winter?","آیا در زمستان سرد می‌شود؟"],
+ ["Is there much rain in spring?","آیا در بهار باران زیاد می‌بارد؟"],["dry","خشک"],["rainy","بارانی"],
+ ["Is there a river?","آیا رودخانه دارد؟"],["animal","حیوان"],["interesting","جالب"],["sunny","آفتابی"],
+ ["plow","گاو آهن"],["place","مکان"],["horse","اسب"],["mountain","کوه"],["chicken","مرغ"],
+ ["Where are you from?","شما اهل کجا هستید؟"],
+ ["It's famous for its sunflower fields.","آنجا به خاطر مزارع گل‌های آفتابگردانش معروف است"],
+ ["river","رود"],["cattle","گاوها (اعم از نر و ماده)"],["dog","سگ"],["sunflower","آفتابگردان"],
+ ["What about the weather?","آب و هوایش چطور است؟"],["snowy","برفی"],["very","خیلی"],["tractor","تراکتور"],
+ ["They work on farms and raise animals.","آنها در مزرعه کار می‌کنند و دام پرورش می‌دهند"]
+];
+words[15]=[
+ ["poem","شعر"],["horse riding","اسب سواری"],["reading","مطالعه"],
+ ["What do you like to do in your free time?","دوست دارید در اوقات فراغت خود چه کاری کنید؟"],
+ ["playing computer games","بازی کامپیوتری بازی کردن"],["sometimes","گاهی"],["What's your hobby?","سرگرمی شما چیست؟"],
+ ["What sort of things do you read?","چه جور چیزهایی می‌خوانی؟"],["Do you have any hobbies?","آیا هیچ سرگرمی‌ای داری؟"],
+ ["watching movies","فیلم تماشا کردن"],["walking in the park","قدم زدن در پارک"],["magazine","مجله"],
+ ["sports news","خبر ورزشی"],["What do you do as a hobby?","برای سرگرمی چه کاری انجام می‌دهی؟"],
+ ["usually","معمولاً"],["I watch movies as a hobby.","من به عنوان سرگرمی تلویزیون تماشا می‌کنم"],
+ ["playing tennis","تنیس بازی کردن"],["search","جستجو کردن"],["skiing","اسکی"],
+ ["listening to the radio","گوش دادن به رادیو"],["fishing","ماهی‌گیری"],["Net","اینترنت"],
+ ["Do you like reading?","مطالعه کردن را دوست داری؟"],["I don't have any hobbies.","من هیچ سرگرمی‌ای ندارم"],
+ ["shopping","خرید"],["hobby","سرگرمی"],["free time","وقت آزاد"],["going to the movies","رفتن به سینما"],
+ ["I love reading.","من عاشق مطالعه هستم"],["working in the garden","در باغ کار کردن"],["enjoy","لذت بردن"],
+ ["browsing the internet","در اینترنت گشت زدن"],
+ ["I usually go to the gym in my free time.","من معمولاً در وقت آزادم به باشگاه می‌روم"],
+ ["What do you do in your free time?","در اوقات فراغت خود چه می‌کنید؟"],["fire service","سازمان آتش‌نشانی"]
+];
+
+/* ==================== پایه نهم ==================== */
+/* getWordKey(9,1)=16 ، getWordKey(9,2)=17 ... getWordKey(9,6)=21 */
+grammar[16]=[
+ ["Verb to be (am/is/are)","I am / You are / He is / She is / It is / We are / You are / They are","من هستم / تو هستی / او هست / او هست / آن هست / ما هستیم / شما هستید / آنها هستند","فعل to be در زمان حال ساده به سه صورت مثبت، منفی و سوالی."],
+ ["منفی کردن to be","I am not / He is not / She is not / It is not / We are not / You are not / They are not","نیستم / نیست / نیست / نیست / نیستیم / نیستید / نیستند","کافی است بعد از فعل not بیاید."],
+ ["سوالی کردن to be","Am I? / Is he? / Is she? / Is it? / Are we? / Are you? / Are they?","آیا من؟ / آیا او؟ / ...","جای فاعل و فعل را عوض می‌کنیم."],
+ ["There is / There are","There is a book on the table. / There are two apples on the table.","یک کتاب روی میز هست. / دو سیب روی میز هست.","There is برای مفرد، There are برای جمع."],
+ ["a / an","a book / an apple / an orange / an umbrella","یک کتاب / یک سیب / یک پرتقال / یک چتر","an برای کلماتی که با حروف صدادار (a, e, i, o, u) شروع می‌شوند."],
+ ["منفی There is/are","There isn't a book. / There aren't many tourists.","کتابی نیست. / گردشگران زیادی نیستند.","بعد از is/are کلمه not می‌آید."],
+ ["سوالی There is/are","Is there an apple on the table? / Are there any museums?","آیا سیبی روی میز هست؟ / آیا موزه‌ای هست؟","جای is/are با there عوض می‌شود."],
+ ["Contractions (اختصاری)","I'm / He's / She's / It's / We're / You're / They're / isn't / aren't","مخفف‌ها","در مکالمه بیشتر از شکل اختصاری استفاده می‌شود. I am not → I'm not (استثنا)"]
+];
+grammar[17]=[
+ ["Present Continuous (حال استمراری)","I am eating dinner. / He is eating dinner. / They are eating dinner.","من دارم شام می‌خورم. / او دارد شام می‌خورد. / آنها دارند شام می‌خورند.","برای کاری که همین الآن در حال انجام است."],
+ ["ساختار","فاعل + am/is/are + فعل + ing","—","am برای I، is برای he/she/it، are برای we/you/they"],
+ ["نکته ing","write → writing / type → typing / drive → driving","—","اگر فعل به e ختم شود، e حذف و ing اضافه می‌شود."],
+ ["نکته ing ۲","hit → hitting / sit → sitting / swim → swimming","—","اگر فعل یک‌بخشی و کوتاه باشد، حرف آخر دوبار تکرار می‌شود."],
+ ["سوالی","Am I running? / Are you writing? / Is he sleeping?","آیا دارم می‌دوم؟ / آیا داری می‌نویسی؟ / آیا دارد می‌خوابد؟","جای فاعل و فعل to be عوض می‌شود."],
+ ["منفی","I'm not cooking. / You aren't studying. / He isn't coming.","من آشپزی نمی‌کنم. / تو درس نمی‌خوانی. / او نمی‌آید.","not بعد از am/is/are می‌آید."],
+ ["مالکیت با 's","Dog's collar / sister's backpack","قلاده سگ / کوله پشتی خواهر","برای اشخاص، حیوانات، کشورها، سازمان‌ها استفاده می‌شود."],
+ ["جمع با s'","sisters' backpacks / cars' engines","کوله پشتی‌های خواهران / موتورهای ماشین‌ها","اگر اسم جمع باشد فقط آپاستروف اضافه می‌شود."],
+ ["مالکیت با of","What is the name of that street? / The door of the class","اسم آن خیابان چیست؟ / در کلاس","of برای مالکیت اشیاء به کار می‌رود."]
+];
+grammar[18]=[
+ ["Present Simple (حال ساده)","I speak / He speaks / They play","من صحبت می‌کنم / او صحبت می‌کند / آنها بازی می‌کنند","برای عادت‌ها، حقایق علمی، کارهای روزمره و برنامه‌های آینده."],
+ ["ساختار","فاعل + فعل ساده (برای سوم شخص s می‌گیرد)","—","سوم شخص مفرد: he/she/it → فعل + s"],
+ ["منفی","I do not speak. / He does not speak.","من صحبت نمی‌کنم. / او صحبت نمی‌کند.","don't برای I/you/we/they و doesn't برای he/she/it"],
+ ["سوالی","Do I speak? / Does he speak?","آیا صحبت می‌کنم؟ / آیا صحبت می‌کند؟","Do/Does به اول جمله می‌آید."],
+ ["استثناهای سوم شخص","watch → watches / wash → washes / go → goes / do → does","—","افعالی که به ch, sh, z, ss, x, o ختم می‌شوند es می‌گیرند."],
+ ["y در سوم شخص","worry → worries / play → plays","—","اگر قبل از y حرف صدادار باشد y تغییر نمی‌کند، وگرنه y → i"],
+ ["قیدهای تکرار","never / rarely / sometimes / often / usually / always","هرگز / به‌ندرت / گاهی / غالباً / معمولاً / همیشه","0% ......... 50% ......... 100%"]
+];
+grammar[19]=[
+ ["Wh questions","What / Who / Where / When / Why / How / Which / Whose","چه / چه کسی / کجا / کی / چرا / چطور / کدام / مال چه کسی","برای پرسیدن اطلاعات استفاده می‌شوند."],
+ ["دسته اول","How many / How much / Whose / Which","چند تا / چه مقدار / مال چه کسی / کدام","بعد از این کلمات، اسم و سپس جمله سوالی می‌آید."],
+ ["دسته دوم","What / What color / What time / What day / How / When / Where / Who / How old","چه / چه رنگی / چه ساعتی / چه روزی / چطور / کی / کجا / چه کسی / چند ساله","بعد از این کلمات، جمله به شکل سوالی می‌آید."],
+ ["مراحل سوالی کردن","۱) کلمه پرسشی در ابتدا ۲) جمله سوالی ۳) حذف کلمه حذفی ۴) اسم بعد از کلمه پرسشی","—","مثال: There is a book on the table. (What) → What is there on the table?"],
+ ["قیدهای تکرار","always / usually / often / sometimes / rarely / never","همیشه / معمولاً / غالباً / گاهی / به‌ندرت / هرگز","—"],
+ ["قانون ۱","قید قبل از فعل اصلی: I always watch TV in the morning.","—","Adverb + Main verb"],
+ ["قانون ۲","قید بعد از فعل to be: He is always ill.","—","To Be + Adverb"],
+ ["قانون ۳","قید بین فعل کمکی و فعل اصلی: He can never learn English.","—","Auxiliary + Adverb + Main verb"],
+ ["قانون ۴","قید بعد از فاعل در جملات سوالی","—","در سوالات از Frequency adverb بعد از فاعل استفاده می‌کنیم."]
+];
+grammar[20]=[
+ ["Simple Past (گذشته ساده)","I played / He spoke / They went","من بازی کردم / او صحبت کرد / آنها رفتند","برای وقایعی که در گذشته اتفاق افتاده و تمام شده‌اند."],
+ ["ساختار","فاعل + فعل گذشته + ...","—","افعال باقاعده: ed اضافه می‌شود. افعال بی‌قاعده: شکل دوم فعل."],
+ ["منفی","I did not play. / He did not speak.","من بازی نکردم. / او صحبت نکرد.","did not / didn't بعد از فاعل، فعل ساده."],
+ ["سوالی","Did I play? / Did he speak?","آیا بازی کردم؟ / آیا صحبت کرد؟","Did به اول جمله می‌آید و فعل ساده می‌شود."],
+ ["کاربرد ۱","She met Sarah three weeks ago.","او سه هفته پیش سارا را دید.","عملی که در گذشته در زمان مشخصی شروع و تمام شده."],
+ ["کاربرد ۲","I got up early, washed my face, ate breakfast, and went to school.","صبح زود بیدار شدم، صورتم را شستم، صبحانه خوردم و به مدرسه رفتم.","کارهایی که در گذشته یکی پس از دیگری اتفاق افتاده‌اند."],
+ ["کاربرد ۳","Mina lived in Japan for seven years.","مینا به مدت هفت سال در ژاپن زندگی کرد.","عملی که در گذشته طول مدتی ادامه داشته."],
+ ["کاربرد ۴","My father always listened to classical music.","پدرم همیشه به موسیقی سنتی گوش می‌داد.","عادت‌های گذشته که دیگر انجام نمی‌شوند."],
+ ["Be در گذشته","I was / You were / He was / She was / It was / We were / You were / They were","بودم / بودی / بود / بود / بود / بودیم / بودید / بودند","Be فعل بی‌قاعده است. منفی: was not / were not. سوالی: Was I? / Were you?"]
+];
+grammar[21]=[
+ ["ضمایر مفعولی","me / you / him / her / it / us / you / them","به من / به تو / به او(مذکر) / به او(مؤنث) / به آن / به ما / به شما / به آنها","جایگزین اسم مفعول در جمله می‌شوند."],
+ ["مطابقت ضمیر فاعلی و مفعولی","I → me / you → you / he → him / she → her / it → it / we → us / you → you / they → them","—","ضمیر مفعولی بعد از فعل یا حرف اضافه می‌آید."],
+ ["بعد از فعل","Give me a ring tomorrow. / I'm older than you.","فردا به من زنگ بزن. / من از تو بزرگترم.","—"],
+ ["بعد از حرف اضافه","Our teacher was angry with us. / When he comes in, please tell him I phoned.","معلممان از دست ما عصبانی بود. / هر وقت آمد، لطفاً به او بگویید که من زنگ زدم.","—"],
+ ["نکته مؤدبانه","you and I / my father and I / you and your wife","—","you قبل از اسامی و ضمایر دیگر، و ضمیر اول‌شخص آخر می‌آید."]
+];
+
+words[16]=[
+ ["patient","صبور"],["bit","کم"],["personality","شخصیت"],["hard-working","کوشا"],["neat","مرتب و منظم"],
+ ["careful","مراقب"],["What's he like?","او چه جور آدمی است؟"],["kind","مهربان"],["how","چطور"],
+ ["talkative","پرحرف"],["also","همچنین"],["careless","بی‌دقت"],["clever","باهوش"],
+ ["Is he hard-working too?","آیا کوشا هم هست؟"],["pleasant","خوشایند"],["happy","خوشحال"],["lazy","تنبل"],
+ ["shy","خجالتی"],["He always helps me with my lessons.","او همیشه به من در درس‌هایم کمک می‌کند"],
+ ["What is your friend like?","دوستت چه جور آدمی است؟"],["cruel","بی‌رحم"],["rude","بی‌ادب"],
+ ["I do my homework.","من تکالیفم را انجام می‌دهم"],["helpful","مفید"],["generous","بخشنده"],
+ ["friendly","دوستانه"],["Let me check it in the dictionary.","اجازه بدهید این (واژه) را در فرهنگ لغت چک کنم"],
+ ["best friend","بهترین دوست"],["everybody","همه"],["member","عضو"],["great","عالی"],["polite","مؤدب"],
+ ["Oh, he is really great!","او واقعاً آدم خوبی است"],["some","بعضی (از)"],["upset","ناراحت"],
+ ["company","شرکت"],["nervous","مضطرب"],["She works for a company.","او برای یک شرکت کار می‌کند"],
+ ["And he's always very helpful.","و او همیشه خیلی کمک‌کننده است"],
+ ["Who is your best friend at school?","چه کسی دوست صمیمی تو در مدرسه است؟"],["selfish","خودخواه"],
+ ["funny","بامزه"],["serious","جدی"],["brave","شجاع"],["He's clever and kind.","او باهوش و مهربان است"],
+ ["always","همیشه"],["angry","عصبانی"],["homework","تکلیف منزل"]
+];
+words[17]=[
+ ["say prayers","نماز خواندن"],["land","فرود آمدن"],
+ ["Hope you enjoy your stay in Tehran.","امیدوارم از اقامت‌تان در تهران لذت ببرید"],
+ ["check the timetable","چک کردن برنامه حرکت (قطار، هواپیما و ...)"],["around the World","دور دنیا"],
+ ["hope","امیدوار بودن"],["of course","البته"],["check the passport","گذرنامه چک کردن"],
+ ["book a hotel","هتل رزرو کردن"],["make a voyage","سفر دریایی رفتن"],["baggage reclaim","محل دریافت بار (فرودگاه)"],
+ ["suitable","مناسب"],["My wife and I are visiting Tehran for three days.","من و همسرم به مدت سه روز از تهران بازدید می‌کنیم"],
+ ["guess","حدس زدن"],["key","کلید"],["novel","رمان"],["map","نقشه"],["Germany","آلمان"],
+ ["Arabic","زبان عربی"],["leg","پا"],["buy a ticket","بلیط خریدن"],["talk to a receptionist","با متصدی پذیرش صحبت کردن"],
+ ["I have a reservation here.","من اینجا (اتاق) رزرو کرده‌ام"],["Are you staying here for two nights?","آیا به مدت دو شب اینجا می‌مانید؟"],
+ ["car","خودرو"],["pay toll","عوارضی پرداخت کردن"],["Are you working with the computer now?","آیا الآن داری با کامپیوتر کار می‌کنی؟"],
+ ["letter","نامه"],["board the plane","سوار هواپیما شدن"],["German","آلمانی"],
+ ["take off","از زمین بلند شدن (هواپیما)"],["Here is her passport.","بفرمایید، این هم پاسپورت او"],
+ ["pray","دعا کردن"],["take an express train","قطار سریع‌السیر سوار شدن"],["wheel","چرخ"],["guide book","کتابچه راهنما"],
+ ["I need to check her passport.","من باید گذرنامه‌شان را چک کنم"],["pack for a trip","برای سفر وسیله گرفتن"],
+ ["This is your key.","این کلید شماست"],["reservation","رزرو"],["fill out the form","فرم پر کردن"],
+ ["possible","امکان‌پذیر"],["tourist","گردشگر"],["check in","پذیرش شدن (در هتل، فرودگاه و ...)"],["here","اینجا"],
+ ["short story","داستان کوتاه"],["Is it possible to book it online?","آیا ممکن است آنلاین رزرو کنی؟"],
+ ["I'm searching for a hotel in ...","من دارم دنبال هتلی در ... می‌گردم"],["weigh the baggage","بار وزن کردن"],
+ ["She's standing over there, by the gift shop.","او آنجا ایستاده است، کنار کادوسرا"],
+ ["exchange money","پول و ارز تبدیل کردن"],["I see!","متوجه‌ام"],["gift shop","کادوسرا"],["online","آنلاین"]
+];
+words[18]=[
+ ["holiday","روز تعطیل"],["Do you and your cousins set the Haft Seen table?","آیا شما و خویشاوندان شما سفره هفت‌سین می‌چینید؟"],
+ ["celebrate a religious holiday","تعطیلات مذهبی را جشن گرفتن"],
+ ["I just love New Year holidays!","من واقعاً تعطیلات سال نو را دوست دارم"],
+ ["Do you get New Year gifts too?","آیا هدیه‌ی سال نو هم می‌گیرید؟"],["set the table","چیدن میز غذا"],
+ ["Commemorate NE martyrs","گرامی‌داشت شهدای انرژی هسته‌ای"],
+ ["They say their Eid prayers before noon.","آنها نماز عیدشان را قبل از ظهر می‌خوانند"],
+ ["Do young children color the eggs?","آیا بچه‌های کوچک تخم‌مرغ رنگ می‌کنند؟"],["clear the table","میز غذا را جمع کردن"],
+ ["I really like Fajr Film Festival.","من واقعاً جشنواره فیلم فجر را دوست دارم"],
+ ["go out on Nature Day","بیرون رفتن در روز طبیعت"],["watch fireworks","آتش‌بازی تماشا کردن"],
+ ["watch military parade","تماشا کردن رژه نظامی"],
+ ["In all Muslim countries people hold the same ceremony.","در تمام کشورهای اسلامی مسلمانان مراسم یکسانی برگزار می‌کنند"],
+ ["gold fish","ماهی قرمز"],["Does he recite the Holy Quran at the turn of the year?","آیا او در آغاز سال (جدید) قرآن مجید قرائت می‌کند؟"],
+ ["Turkey","ترکیه"],["wear special clothes","لباس‌های مخصوص پوشیدن (برای مناسبت‌های خاص)"],
+ ["Nature Day","روز طبیعت"],["Happy New Year!","سال نو مبارک"],["national","ملی"],["dish","ظرف"],
+ ["Islamic-Iranian culture","فرهنگ اسلامی-ایرانی"],["sing the national anthem","خواندن سرود ملی"],["New Year","سال نو"],
+ ["clothes","لباس"],["fun","سرگرمی"],["normally","معمولاً"],["bake a cake","کیک پختن"],["gift","کادو"],
+ ["Muslim","مسلمان"],["Do you buy new clothes for the New Year?","آیا برای سال جدید لباس‌های نو می‌خرید؟"],
+ ["We usually get money.","ما معمولاً پول می‌گیریم"],["meal","وعده غذایی"],["make lunch","ناهار درست کردن"],
+ ["On Fitr Eid, Muslims don't fast.","در عید فطر، مسلمانان روزه نمی‌گیرند"],["international","بین‌المللی"],
+ ["hold a ceremony","جشن برپا کردن"],["fast","روزه گرفتن"],
+ ["Does your grandmother cook the New Year meal?","آیا مادربزرگت غذای سال نو را درست می‌کند؟"],
+ ["We always go to my grandparents' houses.","ما همیشه به خانه‌ی پدربزرگ و مادربزرگم می‌رویم"],
+ ["Fitr Eid is an important religious holiday.","عید فطر یک تعطیلات مذهبی مهم است"],
+ ["Do Chinese people buy gold fish for the New Year?","آیا چینی‌ها برای سال نو ماهی قرمز می‌خرند؟"],
+ ["grandparent","پدربزرگ یا مادربزرگ"],["Islamic revolution anniversary","سالگرد انقلاب اسلامی"],
+ ["It's fun!","خوش می‌گذرد"],["make dinner","شام درست کردن"],
+ ["We normally visit our relatives in Norooz.","ما معمولاً در نوروز به دید و بازدید فامیل می‌رویم"],
+ ["Wish you a great holiday!","برای شما تعطیلات خوبی آرزو دارم"],["eat nuts","آجیل خوردن"],
+ ["ceremony","مراسم"],["festival","جشنواره"],["read poems of Hafiz","خواندن اشعار حافظ"]
+];
+words[19]=[
+ ["recharge the e-ticket","شارژ مجدد بلیت الکترونیک"],["gas station","جایگاه سوخت"],
+ ["He often plays outside.","او اغلب بیرون (از خانه) بازی می‌کند"],["What does a firefighter do?","یک آتش‌نشان چه کار می‌کند؟"],
+ ["never","هرگز"],["Is there a fire station near here?","آیا در نزدیکی اینجا اداره آتش‌نشانی هست؟"],
+ ["What is her job?","شغل او چیست؟"],["Thanks a lot!","خیلی ممنون"],["fast","سریع"],
+ ["When is the break?","زنگ تفریح کی است؟"],["When does a firefighter go to work?","یک آتش‌نشان چه زمانی به سرکار می‌رود؟"],
+ ["How do you come to school?","شما چطور به مدرسه می‌آیید؟"],["firefighter","آتش‌نشان"],
+ ["fire station","ایستگاه آتش‌نشانی"],["cheap","ارزان"],["stamp","تمبر"],["send an e-mail","ایمیل فرستادن"],
+ ["open an account","حساب (بانکی) باز کردن"],["Because it's fast and cheap.","چون سریع و ارزان است"],["I'm lost.","من گم شده‌ام"],
+ ["get off a bus","از اتوبوس پیاده شدن"],["envelope","پاکت (نامه)"],["help charity","به (مؤسسه) خیریه کمک کردن"],
+ ["donate blood","خون اهدا کردن"],["take out money","پول برداشت کردن"],["break","وقت استراحت"],
+ ["What can I do for you?","چه کاری از دست من برمی‌آید؟"],["Who helps lost children?","چه کسی به کودکان گمشده کمک می‌کند؟"],
+ ["They never come late.","آنها هیچ‌وقت دیر نمی‌آیند"],["hire a taxi","تاکسی گرفتن"],["because","چون"],
+ ["wake up","از خواب بیدار شدن"],["Actually it's near here.","در واقع آن نزدیک به اینجاست"],["service","خدمت"],
+ ["What time does it open?","چه ساعتی باز می‌شود؟"],["I can take you home.","من می‌توانم تو را به خانه برسانم"],["often","اغلب"],
+ ["He puts out fire and saves people's lives.","او آتش را خاموش می‌کند و جان مردم را نجات می‌دهد"],
+ ["Mandarin","زبان ماندارین"],["corner","گوشه"],["And is it an easy job?!","و آیا آن شغل آسانی است؟"],
+ ["keep the city clean","شهر را تمیز نگه داشتن"],["What's your favorite job?","شغل مورد علاقه‌ی شما چیست؟"],
+ ["post office","اداره پست"],["I like to be a firefighter.","من دوست دارم آتش‌نشان شوم"],
+ ["I think he goes to work on shifts.","من فکر می‌کنم او شیفتی کار می‌کند"],["I take a bus.","من سوار اتوبوس می‌شوم"],
+ ["She always studies hard.","او همیشه بسیار درس می‌خواند"],["bring to the ER","به اورژانس آوردن"],["postcard","کارت پستال"],
+ ["do voluntary work","کار داوطلبانه انجام دادن"],["shift","شیفت"],["Where does he work?","او کجا کار می‌کند؟"],
+ ["get on a bus","سوار اتوبوس شدن"],["call the emergency","به اورژانس زنگ زدن"],["It's just round the corner.","آن درست سر پیچ است"],
+ ["Why does he go to work by bus?","چرا او با اتوبوس به سر کار می‌رود؟"],
+ ["You can get them from a post office.","می‌توانید آنها را از اداره پست بخرید"],["put out fire","آتش خاموش کردن"]
+];
+words[20]=[
+ ["see a war movie","یک فیلم جنگی دیدن"],["We can watch it together.","می‌توانیم با همدیگر تماشا کنیم"],
+ ["event","رویداد"],["update a blog","به‌روز کردن یک وبلاگ"],["look at the newsstand","به دکه روزنامه‌فروشی نگاهی انداختن"],
+ ["wonderful","شگفت‌انگیز"],["watch a quiz show","مسابقه تلویزیونی تماشا کردن"],["interview somebody","با شخصی مصاحبه کردن"],
+ ["attend","حضور داشتن"],["Change the TV channels","شبکه تلویزیون را عوض کردن"],["text a message","پیامک فرستادن (از طریق موبایل)"],
+ ["cartoon","کارتون"],["busy","پرمشغله"],["yesterday","دیروز"],["install an antivirus program","برنامه آنتی‌ویروس نصب کردن"],
+ ["I attended Fajr International Film Festival.","من در جشنواره بین‌المللی فیلم فجر شرکت کردم"],["movie","فیلم"],["amazing","شگفت‌آور"],
+ ["receive an e-mail","ایمیل دریافت کردن"],["It's amazing!","محشره"],["There is a football match on TV tonight.","امشب در تلویزیون مسابقه فوتبالی پخش می‌شود"],
+ ["How fantastic!","چقدر جالب"],["That's great!","عالیه"],["Well done!","آفرین"],["That's great news!","عجب خبر خوبی"],
+ ["use information technology","استفاده کردن از فناوری اطلاعات"],["Download something from the Internet","چیزی را از اینترنت دانلود کردن"],
+ ["Did you enjoy your weekend?","آیا از آخر هفته لذت بردی؟"],["text","پیام دادن (از طریق موبایل)"],["What a wonderful day!","چه روز قشنگی"],
+ ["excellent","عالی"],["comedy","نمایش خنده‌دار"],["install a computer dictionary","نصب کردن یک فرهنگ لغت کامپیوتری"],
+ ["media","رسانه"],["surf","جست‌وجو کردن (در اینترنت)"],["fantastic","خارق‌العاده"],
+ ["I am also interested in its events and movies.","من همچنین علاقه‌مند به جشنواره‌ها (مراسم‌ها) و فیلم سینمایی هستم"],
+ ["Connect to the Internet","به اینترنت وصل شدن"],["Please buy some fruits.","لطفاً مقداری میوه بخر"],["brilliant","عالی"],
+ ["participate in an online course","شرکت کردن در یک دوره آموزشی آنلاین"],["website","تارنما"],["report","گزارش"],
+ ["I get home at ...","من ساعت ... به خانه می‌رسم"],["Attend a TV program","در یک برنامه تلویزیونی شرکت کردن"],
+ ["Just a moment.","یک لحظه (صبر کنید)"],["That's really nice!","واقعاً عالیه"],["That'll be all fun!","خیلی خوش خواهد گذشت"],
+ ["You can surf its website if you like.","می‌توانی اگر دوست داشتی سری به وب‌سایت آنجا بزنی"],["IT","فناوری اطلاعات"],
+ ["Could you please give me the website address?","می‌توانید لطفاً آدرس وب‌سایت را به من بدهید؟"],
+ ["Did you watch the reports on TV last night?","آیا دیشب گزارش‌های تلویزیونی را تماشا کردی؟"]
+];
+words[21]=[
+ ["myself","ضمیر انعکاسی اول شخص مفرد"],["She burned her hand.","او دستش را سوزاند"],["head","سر"],["cookie","کلوچه"],
+ ["He hit his head on the door.","او سرش را به در زد"],["He has some bruises.","او چند کبودی دارد"],["find","پیدا کردن"],
+ ["He has a black eye.","او زیر چشمش کبود شده است"],["He has a scar.","او (جای) زخم دارد"],
+ ["Please stick a plaster on the wound.","لطفاً روی زخم چسب زخم بچسبانید"],["Did you hurt your back?","به کمرت آسیب رسیده است؟"],
+ ["It sometimes happens.","برخی اوقات پیش می‌آید"],["plan","برنامه‌ریزی کردن"],["injury","صدمه"],
+ ["She cut her finger.","او انگشتش را برید"],["to have an accident","تصادف کردن"],["fall down","(به زمین) افتادن"],
+ ["school trips","اردوهای مدرسه"],["I don't like school trips.","من اردوهای مدرسه را دوست ندارم"],["That's too bad!","چقدر بد"],
+ ["Last summer I fell and broke my leg.","تابستان گذشته من افتادم و پایم شکست"],["We plan to go to the lake.","ما برنامه داریم به دریاچه برویم"],
+ ["Oh, does anyone have a plaster?","اوه، آیا کسی چسب زخم دارد؟"],["It hurts a lot.","خیلی درد می‌کند"],["take care","مراقب بودن"],
+ ["He broke his leg.","او پایش شکست"],["She takes care of her mother.","او از مادرش مراقبت می‌کند"],
+ ["I learnt how to take care of myself.","من یاد گرفتم چگونه از خودم مراقبت کنم"],["Let me see.","بگذار ببینم"],
+ ["He had a car crash.","او با اتومبیل تصادف کرد"],["It is bleeding.","دارد خون می‌آید"],["back","پشت"],
+ ["Here you are.","بفرمایید"],["I participated in Helal-e-Ahmar first aid classes.","من در کلاس‌های کمک‌های اولیه هلال احمر شرکت کردم"],
+ ["I hurt my knee.","زانویم صدمه دیده است"],["Can you give me some advice?","می‌توانید کمی من را نصیحت کنید؟"],
+ ["twist","پیچ خوردن"],["He has his leg in a cast.","او پایش را گچ گرفته است"],["after","بعد از"],
+ ["Just a second!","(فقط) یک لحظه"],["Do you want to come?","می‌خواهی بیایی؟"],["Please hurry up!","لطفاً عجله کنید"],
+ ["I stayed home for two weeks!","من دو هفته در خانه ماندم"],["lake","دریاچه"],["leg","پا"],
+ ["I didn't know that.","من آن (موضوع) را نمی‌دانستم"],["She had a heart attack.","او سکته قلبی کرد"],
+ ["She takes care of her child.","او از کودکش مراقبت می‌کند"],["happen","اتفاق افتادن"],["break","شکستن"],
+ ["ankle","مچ پا"],["I twisted my ankle last winter.","زمستان گذشته مچ پایم پیچ خورد"],["cut","بریدن"]
+];
 
 /* ==================== حروف و صداها ==================== */
 const soundsData=[
