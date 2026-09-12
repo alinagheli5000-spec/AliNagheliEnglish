@@ -104,14 +104,13 @@ const ACCESS_FUNCTION=SUPABASE_URL+"/functions/v1/student-access";
 let S={student:null,admin:false,grade:null,lesson:null,quiz:null,xp:0,level:1,progress:{},achievements:[],exams:[]};
 let examRecords=JSON.parse(localStorage.getItem("AN_EXAMS")||"[]");
 
-/* تابع کمکی: پیدا کردن کلید words/grammar بر اساس پایه و شماره درس (1-based) */
 function getWordKey(grade, lessonNumber){
- if(grade===7) return lessonNumber-1;       /* درس 1 → کلید 0, درس 2 → کلید 1, ... */
- if(grade===8) return 8+lessonNumber;        /* درس 1 → کلید 9,  ... */
- if(grade===9) return 15+lessonNumber;       /* درس 1 → کلید 16, ... */
- if(grade===10) return 21+lessonNumber;      /* درس 1 → کلید 22, ... */
- if(grade===11) return 25+lessonNumber;      /* درس 1 → کلید 26, ... */
- if(grade===12) return 28+lessonNumber;      /* درس 1 → کلید 29, ... */
+ if(grade===7) return lessonNumber-1;
+ if(grade===8) return 8+lessonNumber;
+ if(grade===9) return 15+lessonNumber;
+ if(grade===10) return 21+lessonNumber;
+ if(grade===11) return 25+lessonNumber;
+ if(grade===12) return 28+lessonNumber;
  return null;
 }
 
@@ -259,7 +258,7 @@ function courses(){
 }
 function grade(g){
  S.grade=Number(g);
- render("پایه "+g,`<div class="card"><button class="btn secondary" onclick="courses()">← بازگشت</button><h2>پایه ${g} — ${esc(books[g].title)}</h2><div class="lessonGrid">${books[g].lessons.map((x,i)=>{const p=S.progress[`${g}-${i}`]||{progress:0,completed:false};return `<div class="lesson" onclick="openLesson(${i})"><div class="lessonNo">${i+1}</div><h3>${esc(x)}</h3><p class="muted">گرامر · لغات · آزمون</p><div class="progress"><i style="width:${p.progress||0}%"></i></div><small>${p.completed?"✅ تکمیل شده":"⏳ "+(p.progress||0)+"%"}</small></div>`}).join("")}</div></div>`);
+ render("پایه "+g,`<div class="card"><button class="btn secondary" onclick="courses()">← بازگشت</button><h2>پایه ${g} — ${esc(books[g].title)}</h2><div class="lessonGrid">${books[g].lessons.map((x,i)=>{const p=S.progress[`${g}-${i}`]||{progress:0,completed:false};return `<div class="lesson"><div class="lessonNo">${i+1}</div><h3>${esc(x)}</h3><p class="muted">گرامر · لغات · آزمون</p><div class="progress"><i style="width:${p.progress||0}%"></i></div><small>${p.completed?"✅ تکمیل شده":"⏳ "+(p.progress||0)+"%"}</small><button class="btn full" style="margin-top:10px" onclick="openLesson(${i})">📖 ورود به درس</button><button class="btn secondary full" style="margin-top:6px" onclick="openLessonWords(${i})">🔊 لغات</button><button class="btn secondary full" style="margin-top:6px" onclick="openLessonGrammar(${i})">📘 گرامر</button></div>`}).join("")}</div></div>`);
 }
 function openLesson(i){
  S.lesson=i;
@@ -305,6 +304,48 @@ function openLesson(i){
  <div class="wordGrid">${wordsHtml}</div>
  </div>
  <div id="s2" class="sec"><div id="lessonQuiz"></div></div>
+ </div>`);
+}
+function openLessonWords(i){
+ S.lesson=i;
+ const gradeNum=S.grade;
+ const no=i+1;
+ const wordKey=getWordKey(gradeNum,no);
+ const wordList=(wordKey!==null&&typeof words[wordKey]!=="undefined")?words[wordKey]:[];
+ let wordsHtml="";
+ if(wordList.length){
+  wordList.forEach(function(w){
+   wordsHtml+='<div class="word" onclick=\'speak('+JSON.stringify(w[0])+')\'><div class="en">🔊 '+esc(w[0])+'</div><div class="fa">'+esc(w[1])+'</div></div>';
+  });
+ }else{
+  wordsHtml='<p class="muted">واژگانی برای این درس ثبت نشده است.</p>';
+ }
+ render("لغات درس "+(i+1),`
+ <div class="card">
+ <button class="btn secondary" onclick="grade(${gradeNum})">← بازگشت</button>
+ <h2>${esc(books[gradeNum].lessons[i])} — لغات</h2>
+ <div class="wordGrid">${wordsHtml}</div>
+ </div>`);
+}
+function openLessonGrammar(i){
+ S.lesson=i;
+ const gradeNum=S.grade;
+ const no=i+1;
+ const wordKey=getWordKey(gradeNum,no);
+ const grammarList=(wordKey!==null&&typeof grammar[wordKey]!=="undefined")?grammar[wordKey]:[];
+ let grammarHtml="";
+ if(grammarList.length){
+  grammarList.forEach(function(g){
+   grammarHtml+='<div class="grammar"><h3>'+esc(g[0])+'</h3><p>'+esc(g[3]||'')+'</p><div class="example">'+esc(g[1])+'</div><p><b>ترجمه:</b> '+esc(g[2])+'</p></div>';
+  });
+ }else{
+  grammarHtml='<p class="muted">گرامری برای این درس ثبت نشده است.</p>';
+ }
+ render("گرامر درس "+(i+1),`
+ <div class="card">
+ <button class="btn secondary" onclick="grade(${gradeNum})">← بازگشت</button>
+ <h2>${esc(books[gradeNum].lessons[i])} — گرامر</h2>
+ ${grammarHtml}
  </div>`);
 }
 async function completeLesson(key){await saveProgress(key,100,true);await addXP(20);await unlockAchievement("first_lesson","اولین درس تکمیل شد");alert("درس با موفقیت تکمیل شد! ⭐ +20 XP");openLesson(S.lesson);}
