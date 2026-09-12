@@ -6,7 +6,6 @@
 <meta name="theme-color" content="#6d28d9">
 <title>AliNagheli English</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
@@ -89,7 +88,6 @@ input:focus,select:focus,textarea:focus{border-color:#7c3aed}
 @media(max-width:600px){.container{padding:10px}.card{padding:16px;border-radius:18px}.hero{padding:20px}}
 </style>
 </head>
-
 <body>
 <div id="app"></div>
 
@@ -121,7 +119,6 @@ async function accessFunction(payload){
  return data;
 }
 
-/* BOOKS */
 const books={
 7:{title:"Prospect 1",lessons:["Lesson 1: My Name","Lesson 2: My Classmates","Lesson 3: My Age","Lesson 4: My Family","Lesson 5: My Appearance","Lesson 6: My House","Lesson 7: My Address","Lesson 8: My Favorite Food"]},
 8:{title:"Prospect 2",lessons:["Lesson 1: My Nationality","Lesson 2: My Week","Lesson 3: My Abilities","Lesson 4: My Health","Lesson 5: My City","Lesson 6: My Hobbies","Lesson 7: My Services","Lesson 8: My Plans"]},
@@ -130,10 +127,6 @@ const books={
 11:{title:"Vision 2",lessons:["Lesson 1: Understanding People","Lesson 2: A Healthy Lifestyle","Lesson 3: Art and Culture","Lesson 4: The World of Technology"]},
 12:{title:"Vision 3",lessons:["Lesson 1: Sense of Appreciation","Lesson 2: Look It Up","Lesson 3: Renewable Energy","Lesson 4: The Power of Nature"]}
 };
-
-/* =============================================
-   words و grammar از فایل data.js لود می‌شن
-   ============================================= */
 
 function calculateLevel(xp){return Math.max(1,Math.floor(Number(xp||0)/100)+1)}
 function xpForLevel(level){return (level-1)*100}
@@ -146,28 +139,21 @@ async function loadStudentStats(){
  try{const r=await db.from("student_achievements").select("achievement_key,title").eq("student_id",S.student.id);S.achievements=r.data||[]}catch(e){}
  try{const r=await db.from("exam_results").select("*").eq("user_id",S.student.auth_user_id).order("created_at",{ascending:false});S.exams=r.data||[]}catch(e){}
 }
-
 async function addXP(amount){
  if(!S.student)return;
- const old=S.xp;
- S.xp+=Number(amount||0);
- S.level=calculateLevel(S.xp);
+ const old=S.xp;S.xp+=Number(amount||0);S.level=calculateLevel(S.xp);
  try{await db.from("student_xp").upsert({student_id:S.student.id,xp:S.xp,level:S.level,updated_at:new Date().toISOString()},{onConflict:"student_id"})}catch(e){}
  if(S.level>calculateLevel(old))await unlockAchievement("level_"+S.level,"رسیدن به Level "+S.level);
 }
-
 async function unlockAchievement(key,title){
  if(!S.student||S.achievements.some(x=>x.achievement_key===key))return;
  try{const r=await db.from("student_achievements").insert({student_id:S.student.id,achievement_key:key,title});if(!r.error)S.achievements.push({achievement_key:key,title})}catch(e){}
 }
-
 async function saveProgress(lessonId,progress,completed){
  if(!S.student)return;
  S.progress[lessonId]={progress,completed};
  try{await db.from("student_progress").upsert({student_id:S.student.id,lesson_id:lessonId,progress,completed,completed_at:completed?new Date().toISOString():null},{onConflict:"student_id,lesson_id"})}catch(e){}
 }
-
-/* LOGIN */
 function login(){
  document.body.innerHTML=`<div class="login"><div class="loginCard"><div style="text-align:center"><div style="font-size:55px">📚</div><h2>AliNagheli English</h2><p class="muted">سامانه آموزش زبان انگلیسی</p></div><div class="tabs"><button id="st" class="tab active" onclick="loginTab('student')">🎓 زبان‌آموز</button><button id="ad" class="tab" onclick="loginTab('admin')">👨‍💼 مدیر</button></div><div id="lf"></div></div></div>`;
  loginTab("student");
@@ -225,8 +211,6 @@ async function register(){
   login();
  }catch(e){try{await db.auth.signOut()}catch(_){}alert("ثبت‌نام انجام نشد:\n"+(e?.message||"خطای نامشخص"))}
 }
-
-/* LAYOUT */
 function header(title){
  return `<header class="header"><div class="headerIn"><div><div class="logo">${esc(title)}</div><div style="font-size:10px;opacity:.8">AliNagheli English</div></div><button onclick="logout()" style="background:#ffffff22;color:white;border:0;border-radius:10px;padding:9px">خروج</button></div></header>`;
 }
@@ -234,14 +218,12 @@ function nav(){
  return `<div class="bottom"><div class="bottomIn"><button class="nav" onclick="home()"><b>🏠</b>خانه</button><button class="nav" onclick="courses()"><b>📚</b>دروس</button><button class="nav" onclick="conversation()"><b>🗣️</b>مکالمه</button><button class="nav" onclick="contest()"><b>🏆</b>مسابقه</button><button class="nav" onclick="teachers()"><b>👨‍🏫</b>اساتید</button><button class="nav" onclick="profile()"><b>👤</b>پروفایل</button></div></div>`;
 }
 function render(title,content){document.body.innerHTML=header(title)+`<main class="container">${content}</main>`+nav()}
-
 function home(){
  const xp=S.xp||0,level=S.level||calculateLevel(xp);
  const base=xpForLevel(level),next=xpForLevel(level+1);
  const percent=Math.min(100,Math.round(((xp-base)/(next-base))*100));
  render("خانه",`<div class="hero hero3d"><div style="position:relative;z-index:2"><div style="font-size:13px;opacity:.85">WELCOME TO</div><h1 style="font-size:32px;margin:8px 0">AliNagheli English 🚀</h1><h2>سلام ${esc(S.student?.first_name||"زبان‌آموز")} 👋</h2><p>یادگیری انگلیسی را حرفه‌ای شروع کن.</p><div class="levelBar"><i style="width:${percent}%"></i></div><b>⭐ ${xp} XP &nbsp; 🏅 Level ${level}</b></div></div><div class="grid"><div class="item" onclick="courses()"><div class="icon">📚</div><h3>دروس مدرسه</h3><p class="muted">Prospect و Vision</p><button class="btn full">ورود</button></div><div class="item" onclick="placementTest()"><div class="icon">🎯</div><h3>تعیین سطح</h3><p class="muted">۳۰ سؤال از آسان تا خیلی سخت</p><button class="btn full">شروع تعیین سطح</button></div><div class="item" onclick="conversation()"><div class="icon">🗣️</div><h3>مکالمه</h3><p class="muted">Touchstone و Viewpoint</p><button class="btn full">ورود</button></div><div class="item" onclick="contest()"><div class="icon">🏆</div><h3>مسابقه</h3><p class="muted">رقابت و کسب XP</p><button class="btn full">ورود</button></div><div class="item" onclick="teachers()"><div class="icon">👨‍🏫</div><h3>اساتید</h3><p class="muted">رزرو کلاس با استاد</p><button class="btn full">مشاهده اساتید</button></div><div class="item" onclick="profile()"><div class="icon">📊</div><h3>پیشرفت من</h3><p class="muted">درصد پیشرفت و سوابق آزمون</p><button class="btn full">مشاهده</button></div></div>`);
 }
-
 const teachersData=[{name:"علی ناقلی",degree:"کارشناس ارشد آموزش زبان انگلیسی",phone:"09141892768",icon:"👨‍🏫",text:"با بیش از ۲۰ سال سابقه تدریس مکالمه زبان انگلیسی و مدرس دوره‌های TOEFL, IELTS, FCE, KET, PET, PTE, MCHE, MSRT و برگزارکننده دوره‌های حرفه‌ای TTC"},{name:"الهه باغبانی",degree:"کارشناس ارشد آموزش زبان انگلیسی",phone:"09914312534",icon:"👩‍🏫",text:"با بیش از ۱۰ سال سابقه تدریس مکالمه زبان انگلیسی و دوره‌های بین‌المللی TOEFL, IELTS, KET, PET, PTE, MSRT"}];
 function teachers(){
  render("اساتید",`<div class="card"><h2>👨‍🏫 اساتید AliNagheli English</h2><p class="muted">استاد مورد نظر خود را انتخاب کنید و درخواست رزرو کلاس بفرستید.</p></div><div class="teacher">${teachersData.map((t,i)=>`<div class="teacherBox"><div class="teacherAvatar">${t.icon}</div><h2 style="text-align:center">${esc(t.name)}</h2><p style="text-align:center"><b>${esc(t.degree)}</b></p><p>${esc(t.text)}</p><a class="btn call" href="tel:${t.phone}">📞 تماس با ${esc(t.name)}<br>${t.phone}</a><div class="request"><h3>📅 رزرو تایم کلاس با استاد</h3><label>تاریخ پیشنهادی</label><input id="td${i}" type="date"><label>ساعت پیشنهادی</label><input id="tt${i}" type="time"><label>نوع کلاس</label><select id="ttype${i}"><option>کلاس مکالمه</option><option>کلاس خصوصی</option><option>آمادگی IELTS</option><option>آمادگی TOEFL</option><option>آمادگی KET / PET</option><option>سایر</option></select><label>توضیحات</label><textarea id="tn${i}" placeholder="توضیحات یا زمان جایگزین..."></textarea><button class="btn full" onclick="requestTeacher(${i})">📨 ارسال درخواست رزرو</button></div></div>`).join("")}</div>`);
@@ -259,8 +241,6 @@ async function requestTeacher(i){
   alert("درخواست شما با موفقیت برای استاد ارسال شد. ✅");
  }catch(e){alert("ارسال درخواست انجام نشد:\n"+e.message)}
 }
-
-/* COURSES */
 function courses(){
  render("دروس مدرسه",`<div class="card"><h2>📚 کتاب‌های مدرسه</h2><div class="grid">${Object.keys(books).map(g=>`<div class="item" onclick="grade(${g})"><div class="icon">📖</div><h3>پایه ${g}</h3><p class="muted">${esc(books[g].title)}</p><button class="btn full">مشاهده درس‌ها</button></div>`).join("")}</div></div>`);
 }
@@ -271,28 +251,17 @@ function grade(g){
 function openLesson(i){
  S.lesson=i;
  const no=i+1,book=books[S.grade],key=`${S.grade}-${i}`;
- const isGrade7=S.grade==7;
- const wordList=isGrade7&&no===0?words[0]:(words[no]||[]);
- render("درس "+no,`<div class="card"><button class="btn secondary" onclick="grade(${S.grade})">← بازگشت</button><h2>${esc(book.lessons[i])}</h2><div class="tabs2"><button class="tab2 active" onclick="lessonTab(0)">📘 گرامر</button><button class="tab2" onclick="lessonTab(1)">🔊 لغات</button><button class="tab2" onclick="lessonTab(2)">📝 آزمون</button></div><div id="s0" class="sec active">${(grammar[no]||[]).map(g=>`<div class="grammar"><h3>${esc(g[0])}</h3><p>${esc(g[3]||'')}</p><div class="example">${esc(g[1])}</div><p><b>ترجمه:</b> ${esc(g[2])}</p></div>`).join("")}<button class="btn full" onclick="completeLesson('${key}')">✅ تکمیل مطالعه این درس</button></div><div id="s1" class="sec"><h3>🔊 واژگان درس — ${wordList.length} کلمه</h3><p class="muted">روی هر کلمه بزن تا تلفظ شود.</p><div class="wordGrid">${wordList.map(w=>`<div class="word" onclick='speak(${JSON.stringify(w[0])})'><div class="en">🔊 ${esc(w[0])}</div><div class="fa">${esc(w[1])}</div></div>`).join("")}</div></div><div id="s2" class="sec"><div id="lessonQuiz"></div></div></div>`);
+ const wordList=(words[S.grade]&&words[S.grade][no])||(words[no]||[]);
+ render("درس "+no,`<div class="card"><button class="btn secondary" onclick="grade(${S.grade})">← بازگشت</button><h2>${esc(book.lessons[i])}</h2><div class="tabs2"><button class="tab2 active" onclick="lessonTab(0)">📘 گرامر</button><button class="tab2" onclick="lessonTab(1)">🔊 لغات</button><button class="tab2" onclick="lessonTab(2)">📝 آزمون</button></div><div id="s0" class="sec active">${((grammar[S.grade]&&grammar[S.grade][no])||(grammar[no])||[]).map(g=>`<div class="grammar"><h3>${esc(g[0])}</h3><p>${esc(g[3]||'')}</p><div class="example">${esc(g[1])}</div><p><b>ترجمه:</b> ${esc(g[2])}</p></div>`).join("")}<button class="btn full" onclick="completeLesson('${key}')">✅ تکمیل مطالعه این درس</button></div><div id="s1" class="sec"><h3>🔊 واژگان درس — ${wordList.length} کلمه</h3><p class="muted">روی هر کلمه بزن تا تلفظ شود.</p><div class="wordGrid">${wordList.map(w=>`<div class="word" onclick='speak(${JSON.stringify(w[0])})'><div class="en">🔊 ${esc(w[0])}</div><div class="fa">${esc(w[1])}</div></div>`).join("")}</div></div><div id="s2" class="sec"><div id="lessonQuiz"></div></div></div>`);
 }
-async function completeLesson(key){
- await saveProgress(key,100,true);
- await addXP(20);
- await unlockAchievement("first_lesson","اولین درس تکمیل شد");
- alert("درس با موفقیت تکمیل شد! ⭐ +20 XP");
- openLesson(S.lesson);
-}
-function lessonTab(n){
- document.querySelectorAll(".sec").forEach((x,i)=>x.classList.toggle("active",i===n));
- document.querySelectorAll(".tab2").forEach((x,i)=>x.classList.toggle("active",i===n));
- if(n===2)startLessonQuiz();
-}
+async function completeLesson(key){await saveProgress(key,100,true);await addXP(20);await unlockAchievement("first_lesson","اولین درس تکمیل شد");alert("درس با موفقیت تکمیل شد! ⭐ +20 XP");openLesson(S.lesson);}
+function lessonTab(n){document.querySelectorAll(".sec").forEach((x,i)=>x.classList.toggle("active",i===n));document.querySelectorAll(".tab2").forEach((x,i)=>x.classList.toggle("active",i===n));if(n===2)startLessonQuiz();}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function makeLessonQuestions(){
  const no=S.lesson+1,arr=[];
- const wordList=(S.grade==7&&no===0)?words[0]:(words[no]||[]);
+ const wordList=(words[S.grade]&&words[S.grade][no])||(words[no]||[]);
  wordList.forEach((w,i)=>{const pool=shuffle(wordList.filter((_,j)=>j!==i).map(x=>x[1])).slice(0,3);const opts=shuffle([w[1],...pool]);arr.push({q:`معنی "${w[0]}" چیست؟`,options:opts,answer:opts.indexOf(w[1])})});
- (grammar[no]||[]).forEach(g=>{const opts=shuffle([g[1],"She are a student.","They is happy.","He am a teacher."]);arr.push({q:`کدام گزینه با مبحث «${g[0]}» هماهنگ است؟`,options:opts,answer:opts.indexOf(g[1])})});
+ (((grammar[S.grade]&&grammar[S.grade][no])||(grammar[no]))||[]).forEach(g=>{const opts=shuffle([g[1],"She are a student.","They is happy.","He am a teacher."]);arr.push({q:`کدام گزینه با مبحث «${g[0]}» هماهنگ است؟`,options:opts,answer:opts.indexOf(g[1])})});
  return arr.slice(0,15);
 }
 function startLessonQuiz(){S.quiz={type:"lesson",title:`پایه ${S.grade} - ${books[S.grade].lessons[S.lesson]}`,questions:makeLessonQuestions(),i:0,correct:0,wrong:0};quizRender("lessonQuiz")}
@@ -303,18 +272,14 @@ function quizRender(id){
  el.innerHTML=`<div class="card"><b>سؤال ${S.quiz.i+1} از ${S.quiz.questions.length}</b><div class="progress"><i style="width:${S.quiz.i/S.quiz.questions.length*100}%"></i></div><div style="font-size:18px;font-weight:bold;line-height:2;margin:15px 0">${esc(q.q)}</div>${q.options.map((x,i)=>`<button class="option" onclick="answer(${i},'${id}')">${esc(x)}</button>`).join("")}<div id="fb"></div></div>`;
 }
 function answer(i,id){
- const q=S.quiz.questions[S.quiz.i];
- const opts=document.querySelectorAll(".option");
- opts.forEach(x=>x.disabled=true);
+ const q=S.quiz.questions[S.quiz.i];const opts=document.querySelectorAll(".option");opts.forEach(x=>x.disabled=true);
  if(i===q.answer){S.quiz.correct++;opts[i].classList.add("correct");document.getElementById("fb").className="feedback ok";document.getElementById("fb").innerHTML="✅ 😊 آفرین! پاسخ درست است."}
  else{S.quiz.wrong++;opts[i].classList.add("wrong");opts[q.answer].classList.add("correct");document.getElementById("fb").className="feedback bad";document.getElementById("fb").innerHTML="❌ پاسخ اشتباه است."}
  setTimeout(()=>{S.quiz.i++;quizRender(id)},700);
 }
 async function quizFinish(id){
- const total=S.quiz.questions.length;
- const percent=total?Math.round(S.quiz.correct/total*100):0;
- examRecords.unshift({student:S.student?.phone||"",title:S.quiz.title,score:percent,date:new Date().toISOString()});
- saveLocal();
+ const total=S.quiz.questions.length;const percent=total?Math.round(S.quiz.correct/total*100):0;
+ examRecords.unshift({student:S.student?.phone||"",title:S.quiz.title,score:percent,date:new Date().toISOString()});saveLocal();
  if(S.student){
   try{await db.from("exam_results").insert({user_id:S.student.auth_user_id,student_name:`${S.student.first_name||""} ${S.student.last_name||""}`,exam_type:S.quiz.type,exam_title:S.quiz.title,lesson:S.lesson+1,score:S.quiz.correct,total,percentage:percent})}catch(e){}
   await addXP(Math.max(10,percent));
@@ -325,7 +290,6 @@ async function quizFinish(id){
  const el=document.getElementById(id);if(!el)return;
  el.innerHTML=`<div class="card"><div class="score">${percent}%</div><h2 style="text-align:center">آزمون تمام شد 🎉</h2><p style="text-align:center">${S.quiz.correct} پاسخ درست از ${total}</p><button class="btn full" onclick="profile()">مشاهده پیشرفت</button></div>`;
 }
-
 const conversationBooks=["Touchstone 1","Touchstone 2","Touchstone 3","Touchstone 4","Viewpoint 1","Viewpoint 2"];
 function conversation(){render("مکالمه",`<div class="card"><h2>🗣️ دوره‌های مکالمه</h2><div class="grid">${conversationBooks.map((x,i)=>`<div class="item" onclick="conversationBook(${i})"><div class="icon">🗣️</div><h3>${x}</h3><p class="muted">Units · Vocabulary · Grammar · Quiz</p><button class="btn full">ورود</button></div>`).join("")}</div></div>`)}
 function conversationBook(i){render(conversationBooks[i],`<div class="card"><button class="btn secondary" onclick="conversation()">← بازگشت</button><h2>${conversationBooks[i]}</h2><div class="lessonGrid">${Array.from({length:12},(_,n)=>`<div class="lesson" onclick="conversationLesson(${i},${n})"><div class="lessonNo">${n+1}</div><h3>Unit ${n+1}</h3><p class="muted">لغات · Grammar · Quiz</p></div>`).join("")}</div></div>`)}
@@ -342,37 +306,28 @@ function conversationQuiz(name,unit){
  render("آزمون مکالمه",`<div id="conversationQuiz"></div>`);
  quizRender("conversationQuiz");
 }
-
 function contest(){render("مسابقه",`<div class="card"><h2>🏆 مسابقه</h2><div class="grid">${[7,8,9,10,11,12].map(g=>`<div class="item"><div class="icon">🏆</div><h3>مسابقه پایه ${g}</h3><p class="muted">۲۰ سؤال</p><button class="btn full" onclick="startContest(${g})">شروع</button></div>`).join("")}</div></div>`)}
 function startContest(g){
  let q=[];
- for(let i=1;i<=8;i++){const wordList=(g==7&&i===0)?words[0]:(words[i]||[]);wordList.forEach((w,j)=>{if(q.length>=20)return;const pool=shuffle(wordList.filter((_,k)=>k!==j).map(x=>x[1])).slice(0,3);const options=shuffle([w[1],...pool]);q.push({q:`معنی "${w[0]}" چیست؟`,options,answer:options.indexOf(w[1])})})}
+ const wordsArr=words[g]?Object.values(words[g]).flat():[];
+ wordsArr.forEach((w,j)=>{if(q.length>=20)return;const pool=shuffle(wordsArr.filter((_,k)=>k!==j).map(x=>x[1])).slice(0,3);const options=shuffle([w[1],...pool]);q.push({q:`معنی "${w[0]}" چیست؟`,options,answer:options.indexOf(w[1])})});
  while(q.length<20){const base=[{q:"Which sentence is correct?",a:"She is a student."},{q:"Which sentence is correct?",a:"They are happy."},{q:"Which sentence is correct?",a:"I am a teacher."},{q:"Which sentence is correct?",a:"He is my friend."}][q.length%4];const options=shuffle([base.a,"She are a student.","They is happy.","I is a teacher."]);q.push({q:base.q,options,answer:options.indexOf(base.a)})}
  S.quiz={type:"contest",title:"مسابقه پایه "+g,questions:q.slice(0,20),i:0,correct:0,wrong:0};
  render("مسابقه",`<div id="contestQuiz"></div>`);
  quizRender("contestQuiz");
 }
-
 const placementQuestions=[{q:"Choose the correct sentence.",o:["I am a student.","I is a student.","I are a student.","I be a student."],a:0},{q:"What is the meaning of 'book'?",o:["کتاب","مدرسه","معلم","دوست"],a:0},{q:"She ___ my friend.",o:["is","are","am","be"],a:0},{q:"They ___ students.",o:["are","is","am","be"],a:0},{q:"I ___ English every day.",o:["study","studies","studying","studied"],a:0},{q:"He ___ football every Friday.",o:["plays","play","playing","played"],a:0},{q:"___ old are you?",o:["How","What","Where","Who"],a:0},{q:"Where ___ you live?",o:["do","does","are","is"],a:0},{q:"She ___ two brothers.",o:["has","have","having","had"],a:0},{q:"There ___ a book on the table.",o:["is","are","am","be"],a:0},{q:"The book is ___ the table.",o:["on","at","to","from"],a:0},{q:"I can ___ English.",o:["speak","speaks","speaking","spoke"],a:0},{q:"Look! She ___.",o:["is running","runs","run","ran"],a:0},{q:"I ___ to school yesterday.",o:["went","go","goes","going"],a:0},{q:"We ___ dinner when he arrived.",o:["were having","have","had","are having"],a:0},{q:"She has ___ her homework.",o:["finished","finish","finishing","finishes"],a:0},{q:"This is the ___ book I have ever read.",o:["best","better","good","well"],a:0},{q:"If it rains, we ___ at home.",o:["will stay","stayed","stay yesterday","would stayed"],a:0},{q:"The letters ___ every morning.",o:["are delivered","delivers","delivered by","is deliver"],a:0},{q:"I have lived here ___ 2018.",o:["since","for","at","from"],a:0},{q:"If I had more time, I ___ another language.",o:["would learn","will learn","learned","would learned"],a:0},{q:"The man ___ lives next door is a doctor.",o:["who","where","when","what"],a:0},{q:"She said that she ___ tired.",o:["was","is","were","be"],a:0},{q:"By next year, I ___ this course.",o:["will have completed","complete","completed","am completing"],a:0},{q:"If they had studied harder, they ___ the exam.",o:["would have passed","will pass","would pass","passed"],a:0},{q:"The problem ___ yesterday.",o:["was discussed","discussed by","is discuss","has discuss"],a:0},{q:"He should ___ more carefully.",o:["listen","listens","listening","listened"],a:0},{q:"Never ___ such a beautiful place.",o:["have I seen","I have seen","did I saw","I saw"],a:0},{q:"If we had protected the forest, the air ___ cleaner now.",o:["would be","will be","would have been","is"],a:0},{q:"The technology, ___ was developed recently, saves energy.",o:["which","where","who","what"],a:0}];
 function placementTest(){S.quiz={type:"placement",title:"آزمون تعیین سطح ۳۰ سؤالی",questions:placementQuestions.map(x=>{const options=shuffle(x.o);return {q:x.q,options,answer:options.indexOf(x.o[x.a])}}),i:0,correct:0,wrong:0};render("تعیین سطح",`<div id="placementQuiz"></div>`);quizRender("placementQuiz")}
 async function placementFinish(){
- const score=S.quiz.correct;
- let level;
+ const score=S.quiz.correct;let level;
  if(score<=7)level="A1";else if(score<=13)level="A2";else if(score<=19)level="B1";else if(score<=24)level="B2";else if(score<=28)level="C1";else level="C2";
  const el=document.getElementById("placementQuiz");
  if(S.student){try{await db.from("exam_results").insert({user_id:S.student.auth_user_id,student_name:`${S.student.first_name||""} ${S.student.last_name||""}`,exam_type:"placement",exam_title:"آزمون تعیین سطح ۳۰ سؤالی",score,total:30,percentage:Math.round(score/30*100)})}catch(e){}}
  el.innerHTML=`<div class="card resultBox"><div class="score">${score}/30</div><h2 style="text-align:center">سطح پیشنهادی شما: ${level} 🎯</h2><p style="text-align:center">این نتیجه بر اساس عملکرد شما در آزمون تعیین سطح به دست آمده است.</p><button class="btn full" onclick="home()">بازگشت به خانه</button></div>`;
 }
-async function placementAnswer(i){
- const q=S.quiz.questions[S.quiz.i];
- const opts=document.querySelectorAll(".option");
- opts.forEach(x=>x.disabled=true);
- if(i===q.answer){S.quiz.correct++;opts[i].classList.add("correct")}else{S.quiz.wrong++;opts[i].classList.add("wrong");opts[q.answer].classList.add("correct")}
- setTimeout(async()=>{S.quiz.i++;if(S.quiz.i>=S.quiz.questions.length)await placementFinish();else quizRender("placementQuiz")},650);
-}
+async function placementAnswer(i){const q=S.quiz.questions[S.quiz.i];const opts=document.querySelectorAll(".option");opts.forEach(x=>x.disabled=true);if(i===q.answer){S.quiz.correct++;opts[i].classList.add("correct")}else{S.quiz.wrong++;opts[i].classList.add("wrong");opts[q.answer].classList.add("correct")}setTimeout(async()=>{S.quiz.i++;if(S.quiz.i>=S.quiz.questions.length)await placementFinish();else quizRender("placementQuiz")},650);}
 const originalAnswer=answer;
 answer=function(i,id){if(S.quiz?.type==="placement"){placementAnswer(i);return}originalAnswer(i,id)};
-
 async function profile(){
  await loadStudentStats();
  const completed=Object.values(S.progress).filter(x=>x.completed).length;
@@ -381,7 +336,6 @@ async function profile(){
  const exams=S.exams||[];
  render("پروفایل من",`<div class="card"><div style="text-align:center"><div style="width:85px;height:85px;border-radius:50%;background:#ede9fe;display:flex;align-items:center;justify-content:center;font-size:42px;margin:auto">👤</div><h2>${esc(S.student?.first_name||"")} ${esc(S.student?.last_name||"")}</h2><p class="muted">📱 ${esc(S.student?.phone||"")}<br>🎓 پایه ${esc(S.student?.level||"-")}</p></div></div><div class="grid"><div class="profileStat">⭐ XP<b>${S.xp}</b></div><div class="profileStat">🏅 Level<b>${S.level}</b></div><div class="profileStat">📚 تکمیل‌شده<b>${completed}</b></div><div class="profileStat">📊 پیشرفت<b>${overall}%</b></div></div><div class="card"><h3>📈 پیشرفت درسی</h3><div class="levelBar"><i style="width:${overall}%"></i></div><h2 style="text-align:center;color:#6d28d9">${overall}%</h2><p class="muted">پیشرفت شما بر اساس درس‌هایی که مطالعه و تکمیل کرده‌اید محاسبه می‌شود.</p></div><div class="card"><h3>📝 سوابق آزمون‌ها</h3>${exams.length?exams.map(e=>`<div class="examRow"><b>${esc(e.exam_title||e.exam_type||"آزمون")}</b><div class="muted">${e.created_at?new Date(e.created_at).toLocaleDateString("fa-IR"):""}</div><div class="examScore">${e.percentage??(e.total?Math.round(e.score/e.total*100):0)}٪</div><div class="muted">${e.score??"-"} از ${e.total??"-"} پاسخ درست</div></div>`).join(""):`<p class="muted">هنوز آزمونی ثبت نشده است.</p>`}</div><div class="card"><h3>🏆 دستاوردها</h3>${S.achievements.length?S.achievements.map(a=>`<span class="badge">🏆 ${esc(a.title)}</span>`).join(""):`<p class="muted">هنوز دستاوردی کسب نکرده‌ای.</p>`}</div>`);
 }
-
 async function admin(){
  try{
   const r=await db.from("students").select("*").order("id",{ascending:false});
@@ -396,9 +350,7 @@ function renderAdmin(students,requests){
 async function respondRequest(id,status){try{const r=await db.from("teacher_requests").update({status}).eq("id",id);if(r.error)throw r.error;admin()}catch(e){alert("خطا:\n"+e.message)}}
 async function approve(id){try{const r=await db.from("students").update({status:"registered"}).eq("id",id);if(r.error)throw r.error;admin()}catch(e){alert("خطا در تأیید:\n"+e.message)}}
 async function rejectStudent(id){try{const r=await db.from("students").update({status:"rejected"}).eq("id",id);if(r.error)throw r.error;admin()}catch(e){alert("خطا:\n"+e.message)}}
-
 async function logout(){try{await db.auth.signOut()}catch(e){}S={student:null,admin:false,grade:null,lesson:null,quiz:null,xp:0,level:1,progress:{},achievements:[],exams:[]};login()}
-
 async function startup(){
  try{
   const r=await db.auth.getSession();
@@ -412,7 +364,6 @@ async function startup(){
  }catch(e){try{await db.auth.signOut()}catch(_){}login()}
 }
 db.auth.onAuthStateChange((event)=>{if(event==="SIGNED_OUT"&&!S.admin&&!S.student)login()});
-
 startup();
 </script>
 </body>
