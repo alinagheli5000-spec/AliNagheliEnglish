@@ -8,87 +8,509 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
-body{font-family:Tahoma,Arial,sans-serif;background:#f5f3ff;color:#171717;padding-bottom:82px}
+body{
+ font-family:Tahoma,Arial,sans-serif;
+ background:linear-gradient(180deg,#f5f3ff 0%,#ede9fe 100%);
+ background-attachment:fixed;
+ color:#171717;
+ padding-bottom:96px;
+ min-height:100vh;
+ overflow-x:hidden;
+}
 button,input,select,textarea{font-family:inherit}
-button{cursor:pointer}
+button{cursor:pointer;transition:all .2s ease}
+button:active{transform:scale(.97)}
 .hidden{display:none!important}
-.header{background:linear-gradient(135deg,#4c1d95,#7c3aed);color:#fff;padding:15px;position:sticky;top:0;z-index:100;box-shadow:0 3px 15px #0002}
+
+/* ==== Header ==== */
+.header{
+ background:linear-gradient(135deg,#4c1d95 0%,#6d28d9 50%,#a855f7 100%);
+ color:#fff;padding:16px;
+ position:sticky;top:0;z-index:100;
+ box-shadow:0 8px 32px rgba(109,40,217,.25);
+ backdrop-filter:blur(20px);
+ border-bottom:1px solid rgba(255,255,255,.1);
+}
 .headerIn{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:20px;font-weight:bold}
-.container{max-width:1100px;margin:auto;padding:15px}
-.card{background:#fff;border-radius:22px;padding:20px;margin-bottom:15px;box-shadow:0 5px 25px #0000000d}
-.hero{background:linear-gradient(135deg,#312e81,#7c3aed,#a855f7);color:#fff;border-radius:25px;padding:28px;margin-bottom:15px;box-shadow:0 15px 35px #6d28d944}
-.hero3d{position:relative;overflow:hidden}
-.hero3d:before,.hero3d:after{content:"";position:absolute;border-radius:50%;background:#ffffff18}
-.hero3d:before{width:180px;height:180px;left:-50px;top:-70px}
-.hero3d:after{width:250px;height:250px;right:-100px;bottom:-150px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
-.item{background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:18px;transition:.2s}
-.item:hover{transform:translateY(-3px);box-shadow:0 10px 25px #6d28d933}
-.icon{font-size:40px}
-.btn{background:#6d28d9;color:#fff;border:0;border-radius:13px;padding:12px 16px;font-weight:bold}
+.logo{font-size:22px;font-weight:bold;letter-spacing:.5px;text-shadow:0 2px 8px rgba(0,0,0,.2)}
+.logoSub{font-size:10px;opacity:.85;letter-spacing:2px;margin-top:2px}
+
+/* ==== Container ==== */
+.container{max-width:1100px;margin:auto;padding:18px;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ==== Cards ==== */
+.card{
+ background:#fff;
+ border-radius:24px;
+ padding:22px;
+ margin-bottom:16px;
+ box-shadow:0 4px 24px rgba(109,40,217,.06),0 1px 3px rgba(0,0,0,.04);
+ border:1px solid rgba(221,214,254,.5);
+ transition:box-shadow .3s ease;
+}
+.card:hover{box-shadow:0 8px 32px rgba(109,40,217,.1),0 2px 6px rgba(0,0,0,.05)}
+
+/* ==== Hero ==== */
+.hero{
+ background:linear-gradient(135deg,#312e81 0%,#6d28d9 50%,#a855f7 100%);
+ color:#fff;border-radius:28px;padding:32px;
+ margin-bottom:18px;
+ box-shadow:0 20px 50px rgba(109,40,217,.35),0 8px 20px rgba(168,85,247,.2);
+ position:relative;overflow:hidden;
+}
+.hero:before{
+ content:"";position:absolute;inset:0;
+ background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.15),transparent 60%),
+            radial-gradient(circle at 80% 80%,rgba(255,255,255,.1),transparent 50%);
+ pointer-events:none;
+}
+.hero3d:before{width:200px;height:200px;left:-60px;top:-80px;border-radius:50%;background:rgba(255,255,255,.08);position:absolute;content:""}
+.hero3d:after{width:280px;height:280px;right:-120px;bottom:-160px;border-radius:50%;background:rgba(255,255,255,.06);position:absolute;content:""}
+.hero h1{margin:8px 0;font-size:34px;text-shadow:0 4px 16px rgba(0,0,0,.25);letter-spacing:.5px}
+.hero h2{margin:6px 0;font-weight:600}
+.hero p{opacity:.9;margin:8px 0}
+
+/* ==== Grid ==== */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+
+/* ==== Item (menu tiles) ==== */
+.item{
+ background:#fff;
+ border:1px solid rgba(221,214,254,.6);
+ border-radius:22px;
+ padding:20px;
+ transition:all .3s cubic-bezier(.2,.8,.2,1);
+ position:relative;
+ overflow:hidden;
+ cursor:pointer;
+}
+.item:before{
+ content:"";position:absolute;inset:0;
+ background:linear-gradient(135deg,#ede9fe,transparent);
+ opacity:0;transition:opacity .3s;
+ pointer-events:none;
+}
+.item:hover{
+ transform:translateY(-4px);
+ box-shadow:0 16px 40px rgba(109,40,217,.18);
+ border-color:#a78bfa;
+}
+.item:hover:before{opacity:.5}
+.item>*{position:relative;z-index:1}
+.icon{font-size:44px;filter:drop-shadow(0 4px 8px rgba(109,40,217,.2))}
+.item h3{margin:10px 0 6px;font-size:16px}
+.item .muted{margin:6px 0 12px}
+
+/* ==== Buttons ==== */
+.btn{
+ background:linear-gradient(135deg,#6d28d9,#7c3aed);
+ color:#fff;border:0;border-radius:14px;
+ padding:13px 18px;font-weight:bold;font-size:14px;
+ box-shadow:0 4px 14px rgba(109,40,217,.35);
+ transition:all .2s ease;
+ position:relative;
+ overflow:hidden;
+}
+.btn:before{
+ content:"";position:absolute;inset:0;
+ background:linear-gradient(135deg,rgba(255,255,255,.2),transparent);
+ opacity:0;transition:opacity .2s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(109,40,217,.45)}
+.btn:hover:before{opacity:1}
 .btn.full{width:100%}
-.secondary{background:#ede9fe;color:#5b21b6}
-.success{background:#dcfce7;color:#166534}
-.danger{background:#fee2e2;color:#991b1b}
-.warning{background:#fef3c7;color:#92400e}
-.login{min-height:100vh;background:linear-gradient(135deg,#2e1065,#7c3aed,#a855f7);display:flex;justify-content:center;align-items:center;padding:20px}
-.loginCard{background:#fff;width:min(430px,100%);padding:25px;border-radius:28px;box-shadow:0 20px 60px #0004}
-label{display:block;margin:10px 0 5px;font-weight:bold;font-size:13px}
-input,select,textarea{width:100%;border:1px solid #ddd6fe;border-radius:12px;padding:12px;background:#fff;outline:none}
+.secondary{
+ background:linear-gradient(135deg,#ede9fe,#ddd6fe);
+ color:#5b21b6;
+ box-shadow:0 4px 14px rgba(167,139,250,.25);
+}
+.secondary:hover{box-shadow:0 8px 20px rgba(167,139,250,.35)}
+.success{background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 4px 14px rgba(34,197,94,.3)}
+.danger{background:linear-gradient(135deg,#ef4444,#dc2626);box-shadow:0 4px 14px rgba(239,68,68,.3)}
+.warning{background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 4px 14px rgba(245,158,11,.3)}
+
+/* ==== Login ==== */
+.login{
+ min-height:100vh;
+ background:linear-gradient(135deg,#2e1065 0%,#6d28d9 50%,#a855f7 100%);
+ display:flex;justify-content:center;align-items:center;padding:20px;
+ position:relative;overflow:hidden;
+}
+.login:before,.login:after{
+ content:"";position:absolute;border-radius:50%;
+ background:radial-gradient(circle,rgba(255,255,255,.15),transparent 70%);
+}
+.login:before{width:500px;height:500px;top:-200px;left:-200px}
+.login:after{width:600px;height:600px;bottom:-300px;right:-300px}
+.loginCard{
+ background:rgba(255,255,255,.98);
+ backdrop-filter:blur(20px);
+ width:min(440px,100%);padding:32px;
+ border-radius:32px;
+ box-shadow:0 30px 80px rgba(0,0,0,.3),0 10px 30px rgba(109,40,217,.3);
+ border:1px solid rgba(255,255,255,.4);
+ position:relative;z-index:1;
+ animation:slideUp .5s ease;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* ==== Form ==== */
+label{display:block;margin:12px 0 6px;font-weight:bold;font-size:13px;color:#4c1d95}
+input,select,textarea{
+ width:100%;border:2px solid #ede9fe;
+ border-radius:14px;padding:13px;
+ background:#faf9ff;outline:none;
+ font-size:14px;
+ transition:all .2s ease;
+}
 textarea{min-height:100px;resize:vertical}
-input:focus,select:focus,textarea:focus{border-color:#7c3aed}
-.tabs{display:flex;gap:8px;margin:18px 0}
-.tab{flex:1;border:0;border-radius:12px;padding:12px;background:#f3f4f6}
-.tab.active{background:#ede9fe;color:#6d28d9;font-weight:bold}
-.bottom{position:fixed;bottom:0;left:0;right:0;height:78px;background:#fff;border-top:1px solid #ddd;z-index:200;box-shadow:0 -3px 15px #0000000d}
-.bottomIn{max-width:700px;height:100%;margin:auto;display:flex}
-.nav{flex:1;border:0;background:#fff;padding:7px 2px;color:#777;font-size:11px}
-.nav b{display:block;font-size:21px;margin-bottom:3px}
-.nav.active{color:#6d28d9;font-weight:bold}
-.lessonGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.lesson{background:#faf9ff;border:1px solid #ddd6fe;border-radius:18px;padding:17px}
-.lesson:hover{background:#f3efff}
-.lessonNo{font-size:30px;color:#6d28d9;font-weight:bold}
-.tabs2{display:flex;gap:7px;overflow:auto;margin-bottom:15px}
-.tab2{padding:11px 15px;border:0;border-radius:12px;background:#eee;white-space:nowrap}
-.tab2.active{background:#6d28d9;color:#fff}
-.sec{display:none}.sec.active{display:block}
-.wordGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
-.word{border:1px solid #ddd6fe;background:#faf9ff;border-radius:15px;padding:13px;text-align:center;cursor:pointer}
-.en{direction:ltr;color:#5b21b6;font-weight:bold}
-.fa{font-size:11px;color:#777;margin-top:5px}
-.grammar{border:1px solid #e9e5ff;background:#faf9ff;padding:17px;border-radius:17px;margin-bottom:12px;line-height:2}
-.example{direction:ltr;text-align:left;background:#fff;border-radius:10px;padding:11px;font-family:Arial,sans-serif;border:1px solid #eee}
-.option{display:block;width:100%;text-align:right;background:#fff;border:1px solid #ddd6fe;border-radius:13px;padding:13px;margin:7px 0}
-.option.correct{background:#dcfce7;border-color:#22c55e}
-.option.wrong{background:#fee2e2;border-color:#ef4444}
-.feedback{text-align:center;border-radius:15px;padding:13px;margin-top:10px;font-weight:bold}
-.ok{background:#dcfce7;color:#166534}.bad{background:#fee2e2;color:#991b1b}
-.progress{height:9px;background:#eee;border-radius:99px;overflow:hidden;margin:12px 0}
-.progress i{display:block;height:100%;background:linear-gradient(90deg,#6d28d9,#a855f7);transition:.3s}
-.score{font-size:55px;color:#6d28d9;font-weight:bold;text-align:center}
-.adminRow{border:1px solid #e5e7eb;border-radius:16px;padding:14px;margin:9px 0}
-.muted{font-size:12px;color:#777;line-height:1.9}
-.teacher{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px}
-.teacherBox{background:linear-gradient(135deg,#faf5ff,#fff);border:1px solid #e9d5ff;border-radius:22px;padding:20px;line-height:2}
-.teacherAvatar{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:48px;background:#ede9fe;margin:auto}
-.profileStat{background:#faf9ff;border:1px solid #e9d5ff;border-radius:18px;padding:15px;text-align:center}
-.profileStat b{display:block;font-size:27px;color:#6d28d9;margin-top:5px}
-.levelBar{height:12px;background:#eee;border-radius:99px;overflow:hidden;margin:10px 0}
-.levelBar i{display:block;height:100%;background:#7c3aed}
-.badge{display:inline-block;padding:8px 12px;margin:4px;border-radius:20px;background:#ede9fe;color:#5b21b6;font-size:12px}
-.notice{padding:13px;border-radius:13px;background:#fff7ed;color:#9a3412;font-size:13px;line-height:1.8;margin-bottom:12px}
-.call{display:block;text-decoration:none;text-align:center;margin:12px 0}
-.request{background:#f8f5ff;border:1px solid #ddd6fe;border-radius:18px;padding:15px;margin-top:15px}
-.examRow{border:1px solid #e5e7eb;border-radius:15px;padding:14px;margin:8px 0}
-.examScore{font-size:25px;font-weight:bold;color:#6d28d9}
-.resultBox{background:#faf9ff;border:1px solid #ddd6fe;border-radius:18px;padding:18px}
-.btnRow{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-.btnRow .btn{flex:1;min-width:80px;padding:10px 8px;font-size:12px}
-@media(max-width:600px){.container{padding:10px}.card{padding:16px;border-radius:18px}.hero{padding:20px}}
+input:focus,select:focus,textarea:focus{
+ border-color:#7c3aed;
+ background:#fff;
+ box-shadow:0 0 0 4px rgba(124,58,237,.1);
+}
+
+/* ==== Tabs ==== */
+.tabs{display:flex;gap:8px;margin:20px 0;background:#f3f4f6;padding:5px;border-radius:16px}
+.tab{
+ flex:1;border:0;border-radius:12px;padding:12px;
+ background:transparent;font-weight:bold;color:#777;
+ transition:all .25s ease;
+}
+.tab.active{
+ background:#fff;color:#6d28d9;
+ box-shadow:0 2px 10px rgba(109,40,217,.15);
+}
+
+/* ==== Bottom nav ==== */
+.bottom{
+ position:fixed;bottom:0;left:0;right:0;height:88px;
+ background:rgba(255,255,255,.96);
+ backdrop-filter:blur(20px);
+ border-top:1px solid rgba(221,214,254,.8);
+ z-index:200;
+ box-shadow:0 -8px 30px rgba(109,40,217,.08);
+ padding-bottom:env(safe-area-inset-bottom);
+}
+.bottomIn{max-width:700px;height:100%;margin:auto;display:flex;padding:6px 4px}
+.nav{
+ flex:1;border:0;background:transparent;
+ padding:8px 2px;color:#999;font-size:11px;
+ border-radius:16px;
+ transition:all .2s ease;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:2px;
+}
+.nav b{font-size:22px;margin-bottom:2px;transition:transform .2s ease;filter:grayscale(.4)}
+.nav:hover{background:#f5f3ff;color:#6d28d9}
+.nav.active{color:#6d28d9;font-weight:bold;background:#ede9fe}
+.nav.active b{transform:scale(1.1);filter:grayscale(0)}
+
+/* ==== Lesson grid ==== */
+.lessonGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.lesson{
+ background:linear-gradient(135deg,#faf9ff,#f5f3ff);
+ border:1px solid rgba(221,214,254,.8);
+ border-radius:20px;padding:20px;
+ transition:all .25s cubic-bezier(.2,.8,.2,1);
+ position:relative;overflow:hidden;
+}
+.lesson:hover{
+ background:linear-gradient(135deg,#f5f3ff,#ede9fe);
+ transform:translateY(-3px);
+ box-shadow:0 12px 30px rgba(109,40,217,.15);
+ border-color:#c4b5fd;
+}
+.lessonNo{
+ font-size:34px;color:#6d28d9;font-weight:bold;
+ background:linear-gradient(135deg,#6d28d9,#a855f7);
+ -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+ background-clip:text;
+ line-height:1;
+}
+
+/* ==== Tabs2 (in lesson) ==== */
+.tabs2{display:flex;gap:8px;overflow:auto;margin-bottom:18px;padding-bottom:4px}
+.tabs2::-webkit-scrollbar{display:none}
+.tab2{
+ padding:12px 18px;border:0;border-radius:14px;
+ background:#f3f4f6;white-space:nowrap;
+ font-weight:bold;color:#666;font-size:13px;
+ transition:all .2s ease;
+}
+.tab2.active{
+ background:linear-gradient(135deg,#6d28d9,#7c3aed);
+ color:#fff;
+ box-shadow:0 4px 14px rgba(109,40,217,.35);
+}
+.sec{display:none;animation:fadeIn .3s ease}
+.sec.active{display:block}
+
+/* ==== Words ==== */
+.wordGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.word{
+ border:1px solid rgba(221,214,254,.8);
+ background:linear-gradient(135deg,#fff,#faf9ff);
+ border-radius:18px;padding:16px;text-align:center;
+ cursor:pointer;
+ transition:all .25s ease;
+}
+.word:hover{
+ transform:translateY(-3px) scale(1.02);
+ box-shadow:0 12px 24px rgba(109,40,217,.15);
+ border-color:#a78bfa;
+ background:linear-gradient(135deg,#faf5ff,#ede9fe);
+}
+.word:active{transform:scale(.98)}
+.en{direction:ltr;color:#6d28d9;font-weight:bold;font-size:15px}
+.fa{font-size:12px;color:#777;margin-top:6px}
+
+/* ==== Grammar ==== */
+.grammar{
+ border:1px solid rgba(221,214,254,.8);
+ background:linear-gradient(135deg,#faf9ff,#fff);
+ padding:20px;border-radius:20px;margin-bottom:14px;
+ line-height:2;
+ box-shadow:0 2px 12px rgba(109,40,217,.04);
+}
+.grammar h3{
+ margin:0 0 10px;color:#5b21b6;
+ font-size:16px;
+ display:flex;align-items:center;gap:8px;
+}
+.grammar h3:before{content:"📘";font-size:18px}
+.example{
+ direction:ltr;text-align:left;
+ background:linear-gradient(135deg,#ede9fe,#f5f3ff);
+ border-radius:12px;padding:14px;
+ font-family:'Courier New',Arial,sans-serif;
+ border-right:4px solid #7c3aed;
+ font-size:14px;
+ color:#4c1d95;
+ font-weight:bold;
+ margin:10px 0;
+}
+
+/* ==== Quiz options ==== */
+.option{
+ display:block;width:100%;text-align:right;
+ background:#fff;border:2px solid #ede9fe;
+ border-radius:16px;padding:16px;margin:9px 0;
+ font-size:15px;font-weight:600;color:#374151;
+ transition:all .2s ease;
+}
+.option:hover:not(:disabled){
+ border-color:#a78bfa;background:#faf5ff;
+ transform:translateX(-4px);
+ box-shadow:0 4px 12px rgba(109,40,217,.1);
+}
+.option:disabled{cursor:default}
+.option.correct{
+ background:linear-gradient(135deg,#dcfce7,#bbf7d0);
+ border-color:#22c55e;color:#166534;
+ box-shadow:0 4px 14px rgba(34,197,94,.25);
+}
+.option.wrong{
+ background:linear-gradient(135deg,#fee2e2,#fecaca);
+ border-color:#ef4444;color:#991b1b;
+ box-shadow:0 4px 14px rgba(239,68,68,.25);
+}
+.feedback{
+ text-align:center;border-radius:16px;padding:16px;
+ margin-top:12px;font-weight:bold;font-size:15px;
+ animation:fadeIn .3s ease;
+}
+.ok{background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#166534}
+.bad{background:linear-gradient(135deg,#fee2e2,#fecaca);color:#991b1b}
+
+/* ==== Progress ==== */
+.progress{
+ height:10px;background:#ede9fe;
+ border-radius:99px;overflow:hidden;margin:12px 0;
+ position:relative;
+}
+.progress i{
+ display:block;height:100%;
+ background:linear-gradient(90deg,#6d28d9,#a855f7,#ec4899);
+ background-size:200% 100%;
+ transition:width .4s ease;
+ animation:shimmer 2s linear infinite;
+}
+@keyframes shimmer{0%{background-position:0% 0}100%{background-position:200% 0}}
+
+/* ==== Score ==== */
+.score{
+ font-size:64px;
+ background:linear-gradient(135deg,#6d28d9,#a855f7);
+ -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+ background-clip:text;
+ font-weight:bold;text-align:center;
+ line-height:1;
+ margin:10px 0;
+}
+
+/* ==== Admin rows ==== */
+.adminRow{
+ border:1px solid rgba(221,214,254,.6);
+ border-radius:18px;padding:16px;margin:10px 0;
+ background:#faf9ff;
+ transition:all .2s ease;
+}
+.adminRow:hover{background:#f5f3ff;box-shadow:0 4px 16px rgba(109,40,217,.08)}
+
+/* ==== Muted ==== */
+.muted{font-size:12px;color:#888;line-height:1.9}
+
+/* ==== Teacher ==== */
+.teacher{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.teacherBox{
+ background:linear-gradient(135deg,#faf5ff,#fff);
+ border:1px solid rgba(233,213,255,.8);
+ border-radius:26px;padding:24px;line-height:2;
+ box-shadow:0 4px 20px rgba(109,40,217,.06);
+}
+.teacherAvatar{
+ width:100px;height:100px;border-radius:50%;
+ display:flex;align-items:center;justify-content:center;
+ font-size:52px;
+ background:linear-gradient(135deg,#ede9fe,#ddd6fe);
+ margin:auto;
+ box-shadow:0 10px 30px rgba(109,40,217,.2);
+ border:4px solid #fff;
+}
+
+/* ==== Profile stat ==== */
+.profileStat{
+ background:linear-gradient(135deg,#faf9ff,#fff);
+ border:1px solid rgba(233,213,255,.8);
+ border-radius:20px;padding:18px;text-align:center;
+ transition:all .25s ease;
+}
+.profileStat:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(109,40,217,.12)}
+.profileStat b{
+ display:block;font-size:30px;
+ background:linear-gradient(135deg,#6d28d9,#a855f7);
+ -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+ background-clip:text;
+ margin-top:6px;
+}
+
+/* ==== Level bar ==== */
+.levelBar{
+ height:14px;background:rgba(0,0,0,.15);
+ border-radius:99px;overflow:hidden;margin:12px 0;
+ box-shadow:inset 0 2px 4px rgba(0,0,0,.1);
+}
+.levelBar i{
+ display:block;height:100%;
+ background:linear-gradient(90deg,#fff,#fbbf24,#f59e0b);
+ background-size:200% 100%;
+ transition:width .4s ease;
+ animation:shimmer 2s linear infinite;
+ box-shadow:0 0 12px rgba(251,191,36,.6);
+}
+
+/* ==== Badge ==== */
+.badge{
+ display:inline-block;padding:9px 14px;margin:5px;
+ border-radius:22px;
+ background:linear-gradient(135deg,#ede9fe,#ddd6fe);
+ color:#5b21b6;font-size:12px;font-weight:bold;
+ box-shadow:0 3px 10px rgba(109,40,217,.15);
+}
+
+/* ==== Notice ==== */
+.notice{
+ padding:14px;border-radius:16px;
+ background:linear-gradient(135deg,#fff7ed,#ffedd5);
+ color:#9a3412;font-size:13px;line-height:1.8;
+ margin-bottom:12px;border-right:4px solid #f59e0b;
+}
+
+/* ==== Call ==== */
+.call{
+ display:block;text-decoration:none;text-align:center;
+ margin:14px 0;
+ background:linear-gradient(135deg,#22c55e,#16a34a)!important;
+ color:#fff!important;
+ box-shadow:0 6px 20px rgba(34,197,94,.35)!important;
+}
+.call:hover{box-shadow:0 10px 30px rgba(34,197,94,.45)!important}
+
+/* ==== Request ==== */
+.request{
+ background:linear-gradient(135deg,#f8f5ff,#faf9ff);
+ border:1px solid rgba(221,214,254,.8);
+ border-radius:22px;padding:18px;margin-top:18px;
+}
+
+/* ==== Exam row ==== */
+.examRow{
+ border:1px solid rgba(221,214,254,.6);
+ border-radius:18px;padding:16px;margin:10px 0;
+ background:linear-gradient(135deg,#faf9ff,#fff);
+ transition:all .2s ease;
+}
+.examRow:hover{transform:translateX(-4px);box-shadow:0 6px 20px rgba(109,40,217,.1)}
+.examScore{
+ font-size:28px;font-weight:bold;
+ background:linear-gradient(135deg,#6d28d9,#a855f7);
+ -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+ background-clip:text;
+}
+
+/* ==== Result box ==== */
+.resultBox{
+ background:linear-gradient(135deg,#faf9ff,#f5f3ff);
+ border:2px solid #ddd6fe;
+ border-radius:24px;padding:24px;
+ box-shadow:0 10px 30px rgba(109,40,217,.12);
+}
+
+/* ==== Btn row (in lesson card) ==== */
+.btnRow{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btnRow .btn{flex:1;min-width:90px;padding:11px 8px;font-size:12px;border-radius:12px}
+
+/* ==== Desktop bottom nav hidden tweak ==== */
+@media(min-width:900px){
+ body{padding-bottom:24px}
+ .bottom{
+  top:auto;bottom:20px;left:50%;right:auto;
+  transform:translateX(-50%);
+  width:min(700px,calc(100% - 40px));
+  height:74px;
+  border-radius:22px;
+  border:1px solid rgba(221,214,254,.8);
+  box-shadow:0 12px 40px rgba(109,40,217,.2);
+ }
+}
+
+/* ==== Mobile tweaks ==== */
+@media(max-width:600px){
+ .container{padding:12px}
+ .card{padding:18px;border-radius:20px}
+ .hero{padding:24px;border-radius:24px}
+ .hero h1{font-size:26px}
+ .hero h2{font-size:17px}
+ .icon{font-size:38px}
+ .lessonGrid{grid-template-columns:1fr}
+ .wordGrid{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+ .score{font-size:52px}
+ .loginCard{padding:24px}
+}
+
+/* ==== Scrollbar ==== */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:#f5f3ff}
+::-webkit-scrollbar-thumb{background:#c4b5fd;border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:#a78bfa}
+
+/* ==== Loading shimmer ==== */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.loading{animation:pulse 1.5s ease-in-out infinite}
 </style>
 </head>
 
@@ -98,7 +520,6 @@ input:focus,select:focus,textarea:focus{border-color:#7c3aed}
 <script src="data.js"></script>
 
 <script>
-/* ---- محافظت در برابر نبود words و grammar در data.js ---- */
 if(typeof window.words==="undefined"){window.words={}}
 if(typeof window.grammar==="undefined"){window.grammar={}}
 var words=window.words;
@@ -185,13 +606,13 @@ async function saveProgress(lessonId,progress,completed){
  try{await db.from("student_progress").upsert({student_id:S.student.id,lesson_id:lessonId,progress,completed,completed_at:completed?new Date().toISOString():null},{onConflict:"student_id,lesson_id"})}catch(e){}
 }
 function login(){
- document.body.innerHTML=`<div class="login"><div class="loginCard"><div style="text-align:center"><div style="font-size:55px">📚</div><h2>AliNagheli English</h2><p class="muted">سامانه آموزش زبان انگلیسی</p></div><div class="tabs"><button id="st" class="tab active" onclick="loginTab('student')">🎓 زبان‌آموز</button><button id="ad" class="tab" onclick="loginTab('admin')">👨‍💼 مدیر</button></div><div id="lf"></div></div></div>`;
+ document.body.innerHTML=`<div class="login"><div class="loginCard"><div style="text-align:center"><div style="font-size:60px;filter:drop-shadow(0 8px 20px rgba(109,40,217,.3))">📚</div><h2 style="margin:12px 0 4px;background:linear-gradient(135deg,#6d28d9,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:26px">AliNagheli English</h2><p class="muted">سامانه آموزش زبان انگلیسی</p></div><div class="tabs"><button id="st" class="tab active" onclick="loginTab('student')">🎓 زبان‌آموز</button><button id="ad" class="tab" onclick="loginTab('admin')">👨‍💼 مدیر</button></div><div id="lf"></div></div></div>`;
  loginTab("student");
 }
 function loginTab(type){
  document.getElementById("st").classList.toggle("active",type==="student");
  document.getElementById("ad").classList.toggle("active",type==="admin");
- document.getElementById("lf").innerHTML=type==="admin"?`<label>ایمیل مدیر</label><input id="email" type="email" value="alinagheli@gmail.com"><label>رمز عبور</label><input id="pass" type="password"><button class="btn full" onclick="adminLogin()">ورود مدیر</button>`:`<label>شماره تلفن</label><input id="phone" inputmode="tel" placeholder="شماره تلفن"><label>رمز عبور</label><input id="pass" type="password"><button class="btn full" onclick="studentLogin()">ورود زبان‌آموز</button><button class="btn secondary full" style="margin-top:8px" onclick="registerForm()">ثبت‌نام زبان‌آموز جدید</button>`;
+ document.getElementById("lf").innerHTML=type==="admin"?`<label>ایمیل مدیر</label><input id="email" type="email" value="alinagheli@gmail.com"><label>رمز عبور</label><input id="pass" type="password"><button class="btn full" onclick="adminLogin()">ورود مدیر</button>`:`<label>شماره تلفن</label><input id="phone" inputmode="tel" placeholder="شماره تلفن"><label>رمز عبور</label><input id="pass" type="password"><button class="btn full" onclick="studentLogin()">ورود زبان‌آموز</button><button class="btn secondary full" style="margin-top:10px" onclick="registerForm()">ثبت‌نام زبان‌آموز جدید</button>`;
 }
 async function studentLogin(){
  const phone=document.getElementById("phone").value.trim();
@@ -218,7 +639,7 @@ async function adminLogin(){
  try{const r=await db.auth.signInWithPassword({email:"alinagheli@gmail.com",password});if(r.error)throw r.error;S.admin=true;S.student=null;admin()}catch(e){alert("ورود مدیر ناموفق بود:\n"+e.message)}
 }
 function registerForm(){
- document.getElementById("lf").innerHTML=`<h3>ثبت‌نام زبان‌آموز جدید</h3><label>نام</label><input id="rf"><label>نام خانوادگی</label><input id="rl"><label>شماره تلفن</label><input id="rp" inputmode="tel"><label>رمز عبور</label><input id="rpass" type="password"><label>پایه / سطح</label><select id="rlevel"><option value="">انتخاب پایه</option><option value="7">پایه هفتم</option><option value="8">پایه هشتم</option><option value="9">پایه نهم</option><option value="10">پایه دهم</option><option value="11">پایه یازدهم</option><option value="12">پایه دوازدهم</option></select><button class="btn full" onclick="register()">ثبت‌نام</button><button class="btn secondary full" style="margin-top:8px" onclick="login()">بازگشت</button>`;
+ document.getElementById("lf").innerHTML=`<h3>ثبت‌نام زبان‌آموز جدید</h3><label>نام</label><input id="rf"><label>نام خانوادگی</label><input id="rl"><label>شماره تلفن</label><input id="rp" inputmode="tel"><label>رمز عبور</label><input id="rpass" type="password"><label>پایه / سطح</label><select id="rlevel"><option value="">انتخاب پایه</option><option value="7">پایه هفتم</option><option value="8">پایه هشتم</option><option value="9">پایه نهم</option><option value="10">پایه دهم</option><option value="11">پایه یازدهم</option><option value="12">پایه دوازدهم</option></select><button class="btn full" onclick="register()">ثبت‌نام</button><button class="btn secondary full" style="margin-top:10px" onclick="login()">بازگشت</button>`;
 }
 async function register(){
  const first=document.getElementById("rf").value.trim();
@@ -242,7 +663,7 @@ async function register(){
  }catch(e){try{await db.auth.signOut()}catch(_){}alert("ثبت‌نام انجام نشد:\n"+(e?.message||"خطای نامشخص"))}
 }
 function header(title){
- return `<header class="header"><div class="headerIn"><div><div class="logo">${esc(title)}</div><div style="font-size:10px;opacity:.8">AliNagheli English</div></div><button onclick="logout()" style="background:#ffffff22;color:white;border:0;border-radius:10px;padding:9px">خروج</button></div></header>`;
+ return `<header class="header"><div class="headerIn"><div><div class="logo">${esc(title)}</div><div class="logoSub">ALINAGHELI ENGLISH</div></div><button onclick="logout()" style="background:rgba(255,255,255,.15);color:white;border:0;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:bold;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)">🚪 خروج</button></div></header>`;
 }
 function nav(){
  return `<div class="bottom"><div class="bottomIn"><button class="nav" onclick="home()"><b>🏠</b>خانه</button><button class="nav" onclick="courses()"><b>📚</b>دروس</button><button class="nav" onclick="conversation()"><b>🗣️</b>مکالمه</button><button class="nav" onclick="contest()"><b>🏆</b>مسابقه</button><button class="nav" onclick="teachers()"><b>👨‍🏫</b>اساتید</button><button class="nav" onclick="profile()"><b>👤</b>پروفایل</button></div></div>`;
@@ -252,11 +673,11 @@ function home(){
  const xp=S.xp||0,level=S.level||calculateLevel(xp);
  const base=xpForLevel(level),next=xpForLevel(level+1);
  const percent=Math.min(100,Math.round(((xp-base)/(next-base))*100));
- render("خانه",`<div class="hero hero3d"><div style="position:relative;z-index:2"><div style="font-size:13px;opacity:.85">WELCOME TO</div><h1 style="font-size:32px;margin:8px 0">AliNagheli English 🚀</h1><h2>سلام ${esc(S.student?.first_name||"زبان‌آموز")} 👋</h2><p>یادگیری انگلیسی را حرفه‌ای شروع کن.</p><div class="levelBar"><i style="width:${percent}%"></i></div><b>⭐ ${xp} XP &nbsp; 🏅 Level ${level}</b></div></div><div class="grid"><div class="item" onclick="courses()"><div class="icon">📚</div><h3>دروس مدرسه</h3><p class="muted">Prospect و Vision</p><button class="btn full">ورود</button></div><div class="item" onclick="placementTest()"><div class="icon">🎯</div><h3>تعیین سطح</h3><p class="muted">۳۰ سؤال از آسان تا خیلی سخت</p><button class="btn full">شروع تعیین سطح</button></div><div class="item" onclick="conversation()"><div class="icon">🗣️</div><h3>مکالمه</h3><p class="muted">Touchstone و Viewpoint</p><button class="btn full">ورود</button></div><div class="item" onclick="contest()"><div class="icon">🏆</div><h3>مسابقه</h3><p class="muted">رقابت و کسب XP</p><button class="btn full">ورود</button></div><div class="item" onclick="teachers()"><div class="icon">👨‍🏫</div><h3>اساتید</h3><p class="muted">رزرو کلاس با استاد</p><button class="btn full">مشاهده اساتید</button></div><div class="item" onclick="profile()"><div class="icon">📊</div><h3>پیشرفت من</h3><p class="muted">درصد پیشرفت و سوابق آزمون</p><button class="btn full">مشاهده</button></div></div>`);
+ render("خانه",`<div class="hero hero3d"><div style="position:relative;z-index:2"><div style="font-size:13px;opacity:.85;letter-spacing:3px;font-weight:bold">WELCOME TO</div><h1>AliNagheli English 🚀</h1><h2>سلام ${esc(S.student?.first_name||"زبان‌آموز")} 👋</h2><p>یادگیری انگلیسی را حرفه‌ای شروع کن.</p><div class="levelBar"><i style="width:${percent}%"></i></div><b style="font-size:15px">⭐ ${xp} XP &nbsp;·&nbsp; 🏅 Level ${level}</b></div></div><div class="grid"><div class="item" onclick="courses()"><div class="icon">📚</div><h3>دروس مدرسه</h3><p class="muted">Prospect و Vision</p><button class="btn full">ورود</button></div><div class="item" onclick="placementTest()"><div class="icon">🎯</div><h3>تعیین سطح</h3><p class="muted">۳۰ سؤال از آسان تا خیلی سخت</p><button class="btn full">شروع تعیین سطح</button></div><div class="item" onclick="conversation()"><div class="icon">🗣️</div><h3>مکالمه</h3><p class="muted">Touchstone و Viewpoint</p><button class="btn full">ورود</button></div><div class="item" onclick="contest()"><div class="icon">🏆</div><h3>مسابقه</h3><p class="muted">رقابت و کسب XP</p><button class="btn full">ورود</button></div><div class="item" onclick="teachers()"><div class="icon">👨‍🏫</div><h3>اساتید</h3><p class="muted">رزرو کلاس با استاد</p><button class="btn full">مشاهده اساتید</button></div><div class="item" onclick="profile()"><div class="icon">📊</div><h3>پیشرفت من</h3><p class="muted">درصد پیشرفت و سوابق آزمون</p><button class="btn full">مشاهده</button></div></div>`);
 }
 const teachersData=[{name:"علی ناقلی",degree:"کارشناس ارشد آموزش زبان انگلیسی",phone:"09141892768",icon:"👨‍🏫",text:"با بیش از ۲۰ سال سابقه تدریس مکالمه زبان انگلیسی و مدرس دوره‌های TOEFL, IELTS, FCE, KET, PET, PTE, MCHE, MSRT و برگزارکننده دوره‌های حرفه‌ای TTC"},{name:"الهه باغبانی",degree:"کارشناس ارشد آموزش زبان انگلیسی",phone:"09914312534",icon:"👩‍🏫",text:"با بیش از ۱۰ سال سابقه تدریس مکالمه زبان انگلیسی و دوره‌های بین‌المللی TOEFL, IELTS, KET, PET, PTE, MSRT"}];
 function teachers(){
- render("اساتید",`<div class="card"><h2>👨‍🏫 اساتید AliNagheli English</h2><p class="muted">استاد مورد نظر خود را انتخاب کنید و درخواست رزرو کلاس بفرستید.</p></div><div class="teacher">${teachersData.map((t,i)=>`<div class="teacherBox"><div class="teacherAvatar">${t.icon}</div><h2 style="text-align:center">${esc(t.name)}</h2><p style="text-align:center"><b>${esc(t.degree)}</b></p><p>${esc(t.text)}</p><a class="btn call" href="tel:${t.phone}">📞 تماس با ${esc(t.name)}<br>${t.phone}</a><div class="request"><h3>📅 رزرو تایم کلاس با استاد</h3><label>تاریخ پیشنهادی</label><input id="td${i}" type="date"><label>ساعت پیشنهادی</label><input id="tt${i}" type="time"><label>نوع کلاس</label><select id="ttype${i}"><option>کلاس مکالمه</option><option>کلاس خصوصی</option><option>آمادگی IELTS</option><option>آمادگی TOEFL</option><option>آمادگی KET / PET</option><option>سایر</option></select><label>توضیحات</label><textarea id="tn${i}" placeholder="توضیحات یا زمان جایگزین..."></textarea><button class="btn full" onclick="requestTeacher(${i})">📨 ارسال درخواست رزرو</button></div></div>`).join("")}</div>`);
+ render("اساتید",`<div class="card"><h2 style="margin-top:0">👨‍🏫 اساتید AliNagheli English</h2><p class="muted">استاد مورد نظر خود را انتخاب کنید و درخواست رزرو کلاس بفرستید.</p></div><div class="teacher">${teachersData.map((t,i)=>`<div class="teacherBox"><div class="teacherAvatar">${t.icon}</div><h2 style="text-align:center;margin:14px 0 6px">${esc(t.name)}</h2><p style="text-align:center;color:#6d28d9;font-weight:bold;font-size:13px">${esc(t.degree)}</p><p style="font-size:13px;color:#555">${esc(t.text)}</p><a class="btn call" href="tel:${t.phone}">📞 تماس با ${esc(t.name)}<br><span style="font-size:12px">${t.phone}</span></a><div class="request"><h3 style="margin-top:0">📅 رزرو تایم کلاس با استاد</h3><label>تاریخ پیشنهادی</label><input id="td${i}" type="date"><label>ساعت پیشنهادی</label><input id="tt${i}" type="time"><label>نوع کلاس</label><select id="ttype${i}"><option>کلاس مکالمه</option><option>کلاس خصوصی</option><option>آمادگی IELTS</option><option>آمادگی TOEFL</option><option>آمادگی KET / PET</option><option>سایر</option></select><label>توضیحات</label><textarea id="tn${i}" placeholder="توضیحات یا زمان جایگزین..."></textarea><button class="btn full" onclick="requestTeacher(${i})">📨 ارسال درخواست رزرو</button></div></div>`).join("")}</div>`);
 }
 async function requestTeacher(i){
  if(!S.student){alert("ابتدا وارد حساب زبان‌آموز شوید.");return}
@@ -272,7 +693,7 @@ async function requestTeacher(i){
  }catch(e){alert("ارسال درخواست انجام نشد:\n"+e.message)}
 }
 function courses(){
- render("دروس مدرسه",`<div class="card"><h2>📚 کتاب‌های مدرسه</h2><div class="grid">${Object.keys(books).map(g=>`<div class="item" onclick="grade(${g})"><div class="icon">📖</div><h3>پایه ${g}</h3><p class="muted">${esc(books[g].title)}</p><button class="btn full">مشاهده درس‌ها</button></div>`).join("")}</div></div>`);
+ render("دروس مدرسه",`<div class="card"><h2 style="margin-top:0">📚 کتاب‌های مدرسه</h2><p class="muted">پایه خود را انتخاب کنید.</p><div class="grid">${Object.keys(books).map(g=>`<div class="item" onclick="grade(${g})"><div class="icon">📖</div><h3>پایه ${g}</h3><p class="muted">${esc(books[g].title)}</p><button class="btn full">مشاهده درس‌ها</button></div>`).join("")}</div></div>`);
 }
 function grade(g){
  S.grade=Number(g);
@@ -280,10 +701,10 @@ function grade(g){
   const p=S.progress[`${g}-${i}`]||{progress:0,completed:false};
   return `<div class="lesson">
    <div class="lessonNo">${i+1}</div>
-   <h3>${esc(x)}</h3>
+   <h3 style="margin:8px 0 6px">${esc(x)}</h3>
    <p class="muted">گرامر · لغات · آزمون</p>
    <div class="progress"><i style="width:${p.progress||0}%"></i></div>
-   <small>${p.completed?"✅ تکمیل شده":"⏳ "+(p.progress||0)+"%"}</small>
+   <small style="color:#6d28d9;font-weight:bold">${p.completed?"✅ تکمیل شده":"⏳ "+(p.progress||0)+"%"}</small>
    <div class="btnRow">
     <button class="btn" onclick="openLesson(${i})">📖 درس</button>
     <button class="btn secondary" onclick="openLessonWords(${i})">🔊 لغات</button>
@@ -321,7 +742,7 @@ function openLesson(i){
  render("درس "+no,`
  <div class="card">
  <button class="btn secondary" onclick="grade(${gradeNum})">← بازگشت</button>
- <h2>${esc(book.lessons[i])}</h2>
+ <h2 style="margin-top:14px">${esc(book.lessons[i])}</h2>
  <div class="tabs2">
  <button class="tab2 active" onclick="lessonTab(0)">📘 گرامر</button>
  <button class="tab2" onclick="lessonTab(1)">🔊 لغات</button>
@@ -388,7 +809,7 @@ function quizRender(id){
  const q=S.quiz.questions[S.quiz.i];
  if(!q){quizFinish(id);return}
  const el=document.getElementById(id);if(!el)return;
- el.innerHTML=`<div class="card"><b>سؤال ${S.quiz.i+1} از ${S.quiz.questions.length}</b><div class="progress"><i style="width:${S.quiz.i/S.quiz.questions.length*100}%"></i></div><div style="font-size:18px;font-weight:bold;line-height:2;margin:15px 0">${esc(q.q)}</div>${q.options.map((x,i)=>`<button class="option" onclick="answer(${i},'${id}')">${esc(x)}</button>`).join("")}<div id="fb"></div></div>`;
+ el.innerHTML=`<div class="card"><b style="color:#6d28d9">سؤال ${S.quiz.i+1} از ${S.quiz.questions.length}</b><div class="progress"><i style="width:${S.quiz.i/S.quiz.questions.length*100}%"></i></div><div style="font-size:18px;font-weight:bold;line-height:2;margin:18px 0;color:#312e81">${esc(q.q)}</div>${q.options.map((x,i)=>`<button class="option" onclick="answer(${i},'${id}')">${esc(x)}</button>`).join("")}<div id="fb"></div></div>`;
 }
 function answer(i,id){
  if(S.quiz?.type==="placement"){placementAnswer(i);return}
@@ -408,16 +829,16 @@ async function quizFinish(id){
   if(S.quiz.type==="lesson")await saveProgress(`${S.grade}-${S.lesson}`,100,true);
  }
  const el=document.getElementById(id);if(!el)return;
- el.innerHTML=`<div class="card"><div class="score">${percent}%</div><h2 style="text-align:center">آزمون تمام شد 🎉</h2><p style="text-align:center">${S.quiz.correct} پاسخ درست از ${total}</p><button class="btn full" onclick="profile()">مشاهده پیشرفت</button></div>`;
+ el.innerHTML=`<div class="card resultBox"><div class="score">${percent}%</div><h2 style="text-align:center">آزمون تمام شد 🎉</h2><p style="text-align:center;color:#666">${S.quiz.correct} پاسخ درست از ${total}</p><button class="btn full" onclick="profile()">مشاهده پیشرفت</button></div>`;
 }
 const conversationBooks=["Touchstone 1","Touchstone 2","Touchstone 3","Touchstone 4","Viewpoint 1","Viewpoint 2"];
-function conversation(){render("مکالمه",`<div class="card"><h2>🗣️ دوره‌های مکالمه</h2><div class="grid">${conversationBooks.map((x,i)=>`<div class="item" onclick="conversationBook(${i})"><div class="icon">🗣️</div><h3>${x}</h3><p class="muted">Units · Vocabulary · Grammar · Quiz</p><button class="btn full">ورود</button></div>`).join("")}</div></div>`)}
+function conversation(){render("مکالمه",`<div class="card"><h2 style="margin-top:0">🗣️ دوره‌های مکالمه</h2><div class="grid">${conversationBooks.map((x,i)=>`<div class="item" onclick="conversationBook(${i})"><div class="icon">🗣️</div><h3>${x}</h3><p class="muted">Units · Vocabulary · Grammar · Quiz</p><button class="btn full">ورود</button></div>`).join("")}</div></div>`)}
 function conversationBook(i){render(conversationBooks[i],`<div class="card"><button class="btn secondary" onclick="conversation()">← بازگشت</button><h2>${conversationBooks[i]}</h2><div class="lessonGrid">${Array.from({length:12},(_,n)=>`<div class="lesson" onclick="conversationLesson(${i},${n})"><div class="lessonNo">${n+1}</div><h3>Unit ${n+1}</h3><p class="muted">لغات · Grammar · Quiz</p></div>`).join("")}</div></div>`)}
 function conversationLesson(book,unit){
  const name=conversationBooks[book];
  const cw=[["conversation","گفت‌وگو"],["question","سؤال"],["answer","پاسخ"],["practice","تمرین"],["language","زبان"],["class","کلاس"],["student","دانش‌آموز"],["teacher","معلم"],["friend","دوست"],["information","اطلاعات"],["speak","صحبت کردن"],["listen","گوش دادن"]];
  const cg=[["Simple Present","برای عادت‌ها و کارهای همیشگی.","I study English every day."],["Present Continuous","برای کاری که اکنون در حال انجام است.","I am studying English now."],["Questions","برای دریافت اطلاعات.","Where do you live?"],["Would like","برای بیان خواسته مؤدبانه.","I would like some coffee."]];
- render(name,`<div class="card"><button class="btn secondary" onclick="conversationBook(${book})">← بازگشت</button><h2>${name} — Unit ${unit+1}</h2><h3>📘 Grammar</h3>${cg.map(g=>`<div class="grammar"><h3>${g[0]}</h3><p>${g[1]}</p><div class="example">${g[2]}</div></div>`).join("")}<h3>🔊 Vocabulary</h3><div class="wordGrid">${cw.map(w=>`<div class="word" onclick='speak(${JSON.stringify(w[0])})'><div class="en">🔊 ${w[0]}</div><div class="fa">${w[1]}</div></div>`).join("")}</div><button class="btn full" onclick="conversationQuiz('${name}',${unit})">📝 آزمون Unit ${unit+1}</button></div>`);
+ render(name,`<div class="card"><button class="btn secondary" onclick="conversationBook(${book})">← بازگشت</button><h2>${name} — Unit ${unit+1}</h2><h3>📘 Grammar</h3>${cg.map(g=>`<div class="grammar"><h3>${g[0]}</h3><p>${g[1]}</p><div class="example">${g[2]}</div></div>`).join("")}<h3>🔊 Vocabulary</h3><div class="wordGrid">${cw.map(w=>`<div class="word" onclick='speak(${JSON.stringify(w[0])})'><div class="en">🔊 ${w[0]}</div><div class="fa">${w[1]}</div></div>`).join("")}</div><button class="btn full" style="margin-top:16px" onclick="conversationQuiz('${name}',${unit})">📝 آزمون Unit ${unit+1}</button></div>`);
 }
 function conversationQuiz(name,unit){
  const q=[["What is the meaning of conversation?","گفت‌وگو"],["What is the meaning of question?","سؤال"],["What is the meaning of answer?","پاسخ"],["What is the meaning of practice?","تمرین"],["What is the meaning of language?","زبان"],["What is the meaning of class?","کلاس"],["What is the meaning of student?","دانش‌آموز"],["What is the meaning of teacher?","معلم"],["What is the meaning of friend?","دوست"],["What is the meaning of information?","اطلاعات"]];
@@ -426,7 +847,7 @@ function conversationQuiz(name,unit){
  render("آزمون مکالمه",`<div id="conversationQuiz"></div>`);
  quizRender("conversationQuiz");
 }
-function contest(){render("مسابقه",`<div class="card"><h2>🏆 مسابقه</h2><div class="grid">${[7,8,9,10,11,12].map(g=>`<div class="item"><div class="icon">🏆</div><h3>مسابقه پایه ${g}</h3><p class="muted">۲۰ سؤال</p><button class="btn full" onclick="startContest(${g})">شروع</button></div>`).join("")}</div></div>`)}
+function contest(){render("مسابقه",`<div class="card"><h2 style="margin-top:0">🏆 مسابقه</h2><p class="muted">پایه خود را انتخاب کن و رقابت رو شروع کن!</p><div class="grid">${[7,8,9,10,11,12].map(g=>`<div class="item"><div class="icon">🏆</div><h3>مسابقه پایه ${g}</h3><p class="muted">۲۰ سؤال</p><button class="btn full" onclick="startContest(${g})">شروع</button></div>`).join("")}</div></div>`)}
 function startContest(g){
  const allWords=[];
  for(let ln=1;ln<=(books[g]?books[g].lessons.length:0);ln++){
@@ -447,7 +868,7 @@ async function placementFinish(){
  if(score<=7)level="A1";else if(score<=13)level="A2";else if(score<=19)level="B1";else if(score<=24)level="B2";else if(score<=28)level="C1";else level="C2";
  const el=document.getElementById("placementQuiz");
  if(S.student){try{await db.from("exam_results").insert({user_id:S.student.auth_user_id,student_name:`${S.student.first_name||""} ${S.student.last_name||""}`,exam_type:"placement",exam_title:"آزمون تعیین سطح ۳۰ سؤالی",score,total:30,percentage:Math.round(score/30*100)})}catch(e){}}
- el.innerHTML=`<div class="card resultBox"><div class="score">${score}/30</div><h2 style="text-align:center">سطح پیشنهادی شما: ${level} 🎯</h2><p style="text-align:center">این نتیجه بر اساس عملکرد شما در آزمون تعیین سطح به دست آمده است.</p><button class="btn full" onclick="home()">بازگشت به خانه</button></div>`;
+ el.innerHTML=`<div class="card resultBox"><div class="score">${score}/30</div><h2 style="text-align:center">سطح پیشنهادی شما: ${level} 🎯</h2><p style="text-align:center;color:#666">این نتیجه بر اساس عملکرد شما در آزمون تعیین سطح به دست آمده است.</p><button class="btn full" onclick="home()">بازگشت به خانه</button></div>`;
 }
 async function placementAnswer(i){const q=S.quiz.questions[S.quiz.i];const opts=document.querySelectorAll(".option");opts.forEach(x=>x.disabled=true);if(i===q.answer){S.quiz.correct++;opts[i].classList.add("correct")}else{S.quiz.wrong++;opts[i].classList.add("wrong");opts[q.answer].classList.add("correct")}setTimeout(async()=>{S.quiz.i++;if(S.quiz.i>=S.quiz.questions.length)await placementFinish();else quizRender("placementQuiz")},650);}
 async function profile(){
@@ -456,7 +877,7 @@ async function profile(){
  const totalLessons=Object.keys(books).reduce((s,g)=>s+books[g].lessons.length,0);
  const overall=Math.round(completed/Math.max(totalLessons,1)*100);
  const exams=S.exams||[];
- render("پروفایل من",`<div class="card"><div style="text-align:center"><div style="width:85px;height:85px;border-radius:50%;background:#ede9fe;display:flex;align-items:center;justify-content:center;font-size:42px;margin:auto">👤</div><h2>${esc(S.student?.first_name||"")} ${esc(S.student?.last_name||"")}</h2><p class="muted">📱 ${esc(S.student?.phone||"")}<br>🎓 پایه ${esc(S.student?.level||"-")}</p></div></div><div class="grid"><div class="profileStat">⭐ XP<b>${S.xp}</b></div><div class="profileStat">🏅 Level<b>${S.level}</b></div><div class="profileStat">📚 تکمیل‌شده<b>${completed}</b></div><div class="profileStat">📊 پیشرفت<b>${overall}%</b></div></div><div class="card"><h3>📈 پیشرفت درسی</h3><div class="levelBar"><i style="width:${overall}%"></i></div><h2 style="text-align:center;color:#6d28d9">${overall}%</h2><p class="muted">پیشرفت شما بر اساس درس‌هایی که مطالعه و تکمیل کرده‌اید محاسبه می‌شود.</p></div><div class="card"><h3>📝 سوابق آزمون‌ها</h3>${exams.length?exams.map(e=>`<div class="examRow"><b>${esc(e.exam_title||e.exam_type||"آزمون")}</b><div class="muted">${e.created_at?new Date(e.created_at).toLocaleDateString("fa-IR"):""}</div><div class="examScore">${e.percentage??(e.total?Math.round(e.score/e.total*100):0)}٪</div><div class="muted">${e.score??"-"} از ${e.total??"-"} پاسخ درست</div></div>`).join(""):`<p class="muted">هنوز آزمونی ثبت نشده است.</p>`}</div><div class="card"><h3>🏆 دستاوردها</h3>${S.achievements.length?S.achievements.map(a=>`<span class="badge">🏆 ${esc(a.title)}</span>`).join(""):`<p class="muted">هنوز دستاوردی کسب نکرده‌ای.</p>`}</div>`);
+ render("پروفایل من",`<div class="card"><div style="text-align:center"><div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;font-size:44px;margin:auto;box-shadow:0 10px 30px rgba(109,40,217,.2);border:4px solid #fff">👤</div><h2 style="margin:14px 0 6px">${esc(S.student?.first_name||"")} ${esc(S.student?.last_name||"")}</h2><p class="muted">📱 ${esc(S.student?.phone||"")}<br>🎓 پایه ${esc(S.student?.level||"-")}</p></div></div><div class="grid"><div class="profileStat">⭐ XP<b>${S.xp}</b></div><div class="profileStat">🏅 Level<b>${S.level}</b></div><div class="profileStat">📚 تکمیل‌شده<b>${completed}</b></div><div class="profileStat">📊 پیشرفت<b>${overall}%</b></div></div><div class="card"><h3 style="margin-top:0">📈 پیشرفت درسی</h3><div class="levelBar"><i style="width:${overall}%"></i></div><h2 style="text-align:center;color:#6d28d9;margin:10px 0">${overall}%</h2><p class="muted">پیشرفت شما بر اساس درس‌هایی که مطالعه و تکمیل کرده‌اید محاسبه می‌شود.</p></div><div class="card"><h3 style="margin-top:0">📝 سوابق آزمون‌ها</h3>${exams.length?exams.map(e=>`<div class="examRow"><b>${esc(e.exam_title||e.exam_type||"آزمون")}</b><div class="muted">${e.created_at?new Date(e.created_at).toLocaleDateString("fa-IR"):""}</div><div class="examScore">${e.percentage??(e.total?Math.round(e.score/e.total*100):0)}٪</div><div class="muted">${e.score??"-"} از ${e.total??"-"} پاسخ درست</div></div>`).join(""):`<p class="muted">هنوز آزمونی ثبت نشده است.</p>`}</div><div class="card"><h3 style="margin-top:0">🏆 دستاوردها</h3>${S.achievements.length?S.achievements.map(a=>`<span class="badge">🏆 ${esc(a.title)}</span>`).join(""):`<p class="muted">هنوز دستاوردی کسب نکرده‌ای.</p>`}</div>`);
 }
 async function admin(){
  try{
@@ -467,7 +888,7 @@ async function admin(){
  }catch(e){document.body.innerHTML=`<div class="container"><div class="card"><h2>خطا در پنل مدیر</h2><p>${esc(e.message)}</p><button class="btn" onclick="admin()">تلاش مجدد</button></div></div>`}
 }
 function renderAdmin(students,requests){
- document.body.innerHTML=`${header("پنل مدیریت")}<main class="container"><div class="hero"><h2>👨‍💼 پنل مدیریت</h2><p>مدیریت زبان‌آموزان و درخواست‌های کلاس</p></div><div class="grid"><div class="item"><div class="icon">👥</div><h3>کل</h3><b>${students.length}</b></div><div class="item"><div class="icon">⏳</div><h3>در انتظار</h3><b>${students.filter(x=>x.status==="waiting").length}</b></div><div class="item"><div class="icon">✅</div><h3>تأیید شده</h3><b>${students.filter(x=>["registered","approved"].includes(x.status)).length}</b></div><div class="item"><div class="icon">📅</div><h3>درخواست کلاس</h3><b>${requests.filter(x=>x.status==="pending").length}</b></div></div><div class="card"><h3>📅 درخواست‌های رزرو کلاس</h3>${requests.length?requests.map(x=>`<div class="adminRow"><b>${esc(x.student_name||"")}</b><div class="muted">📱 ${esc(x.student_phone||"")}<br>👨‍🏫 استاد: ${esc(x.teacher_name||"")}<br>📅 ${esc(x.requested_date||"")} ⏰ ${esc(x.requested_time||"")}<br>📘 ${esc(x.class_type||"")}<br>📝 ${esc(x.note||"")}</div><div style="margin-top:10px">${x.status==="pending"?`<button class="btn success" onclick="respondRequest('${x.id}','approved')">✅ تأیید</button><button class="btn danger" onclick="respondRequest('${x.id}','rejected')">❌ رد</button>`:`<b>${x.status==="approved"?"✅ تأیید شده":"❌ رد شده"}</b>`}</div></div>`).join(""):`<p class="muted">درخواستی وجود ندارد.</p>`}</div><div class="card"><h3>👥 ثبت‌نام‌ها</h3>${students.length?students.map(x=>`<div class="adminRow"><b>${esc(x.first_name)} ${esc(x.last_name)}</b><div class="muted">📱 ${esc(x.phone||"")}<br>🎓 پایه: ${esc(x.level||"-")}<br>✉️ ${esc(x.login_email||"-")}</div><div style="margin-top:10px">${x.status==="waiting"?`<button class="btn success" onclick="approve('${x.id}')">✅ تأیید</button><button class="btn danger" onclick="rejectStudent('${x.id}')">❌ رد</button>`:x.status==="registered"||x.status==="approved"?`<span>✅ تأیید شده</span><button class="btn danger" onclick="rejectStudent('${x.id}')">رد / حذف</button>`:`<span>❌ رد شده</span><button class="btn success" onclick="approve('${x.id}')">تأیید مجدد</button>`}</div></div>`).join(""):`<p class="muted">ثبت‌نامی وجود ندارد.</p>`}</div><button class="btn secondary full" onclick="logout()">خروج</button></main>`;
+ document.body.innerHTML=`${header("پنل مدیریت")}<main class="container"><div class="hero"><h2 style="margin-top:0">👨‍💼 پنل مدیریت</h2><p>مدیریت زبان‌آموزان و درخواست‌های کلاس</p></div><div class="grid"><div class="item"><div class="icon">👥</div><h3>کل</h3><b style="font-size:26px;color:#6d28d9">${students.length}</b></div><div class="item"><div class="icon">⏳</div><h3>در انتظار</h3><b style="font-size:26px;color:#f59e0b">${students.filter(x=>x.status==="waiting").length}</b></div><div class="item"><div class="icon">✅</div><h3>تأیید شده</h3><b style="font-size:26px;color:#22c55e">${students.filter(x=>["registered","approved"].includes(x.status)).length}</b></div><div class="item"><div class="icon">📅</div><h3>درخواست کلاس</h3><b style="font-size:26px;color:#6d28d9">${requests.filter(x=>x.status==="pending").length}</b></div></div><div class="card"><h3 style="margin-top:0">📅 درخواست‌های رزرو کلاس</h3>${requests.length?requests.map(x=>`<div class="adminRow"><b>${esc(x.student_name||"")}</b><div class="muted">📱 ${esc(x.student_phone||"")}<br>👨‍🏫 استاد: ${esc(x.teacher_name||"")}<br>📅 ${esc(x.requested_date||"")} ⏰ ${esc(x.requested_time||"")}<br>📘 ${esc(x.class_type||"")}<br>📝 ${esc(x.note||"")}</div><div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">${x.status==="pending"?`<button class="btn success" onclick="respondRequest('${x.id}','approved')">✅ تأیید</button><button class="btn danger" onclick="respondRequest('${x.id}','rejected')">❌ رد</button>`:`<b>${x.status==="approved"?"✅ تأیید شده":"❌ رد شده"}</b>`}</div></div>`).join(""):`<p class="muted">درخواستی وجود ندارد.</p>`}</div><div class="card"><h3 style="margin-top:0">👥 ثبت‌نام‌ها</h3>${students.length?students.map(x=>`<div class="adminRow"><b>${esc(x.first_name)} ${esc(x.last_name)}</b><div class="muted">📱 ${esc(x.phone||"")}<br>🎓 پایه: ${esc(x.level||"-")}<br>✉️ ${esc(x.login_email||"-")}</div><div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">${x.status==="waiting"?`<button class="btn success" onclick="approve('${x.id}')">✅ تأیید</button><button class="btn danger" onclick="rejectStudent('${x.id}')">❌ رد</button>`:x.status==="registered"||x.status==="approved"?`<span style="color:#22c55e;font-weight:bold">✅ تأیید شده</span><button class="btn danger" onclick="rejectStudent('${x.id}')">رد / حذف</button>`:`<span style="color:#ef4444;font-weight:bold">❌ رد شده</span><button class="btn success" onclick="approve('${x.id}')">تأیید مجدد</button>`}</div></div>`).join(""):`<p class="muted">ثبت‌نامی وجود ندارد.</p>`}</div><button class="btn secondary full" onclick="logout()">خروج</button></main>`;
 }
 async function respondRequest(id,status){try{const r=await db.from("teacher_requests").update({status}).eq("id",id);if(r.error)throw r.error;admin()}catch(e){alert("خطا:\n"+e.message)}}
 async function approve(id){try{const r=await db.from("students").update({status:"registered"}).eq("id",id);if(r.error)throw r.error;admin()}catch(e){alert("خطا در تأیید:\n"+e.message)}}
