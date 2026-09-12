@@ -48,8 +48,8 @@ input:focus,select:focus,textarea:focus{border-color:#7c3aed}
 .nav{flex:1;border:0;background:#fff;padding:7px 2px;color:#777;font-size:11px}
 .nav b{display:block;font-size:21px;margin-bottom:3px}
 .nav.active{color:#6d28d9;font-weight:bold}
-.lessonGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
-.lesson{background:#faf9ff;border:1px solid #ddd6fe;border-radius:18px;padding:17px;cursor:pointer}
+.lessonGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.lesson{background:#faf9ff;border:1px solid #ddd6fe;border-radius:18px;padding:17px}
 .lesson:hover{background:#f3efff}
 .lessonNo{font-size:30px;color:#6d28d9;font-weight:bold}
 .tabs2{display:flex;gap:7px;overflow:auto;margin-bottom:15px}
@@ -86,6 +86,8 @@ input:focus,select:focus,textarea:focus{border-color:#7c3aed}
 .examRow{border:1px solid #e5e7eb;border-radius:15px;padding:14px;margin:8px 0}
 .examScore{font-size:25px;font-weight:bold;color:#6d28d9}
 .resultBox{background:#faf9ff;border:1px solid #ddd6fe;border-radius:18px;padding:18px}
+.btnRow{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.btnRow .btn{flex:1;min-width:80px;padding:10px 8px;font-size:12px}
 @media(max-width:600px){.container{padding:10px}.card{padding:16px;border-radius:18px}.hero{padding:20px}}
 </style>
 </head>
@@ -96,6 +98,12 @@ input:focus,select:focus,textarea:focus{border-color:#7c3aed}
 <script src="data.js"></script>
 
 <script>
+/* ---- محافظت در برابر نبود words و grammar در data.js ---- */
+if(typeof window.words==="undefined"){window.words={}}
+if(typeof window.grammar==="undefined"){window.grammar={}}
+var words=window.words;
+var grammar=window.grammar;
+
 const SUPABASE_URL="https://kapzyedzjecnfxevjisq.supabase.co";
 const SUPABASE_KEY="sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
@@ -112,6 +120,16 @@ function getWordKey(grade, lessonNumber){
  if(grade===11) return 25+lessonNumber;
  if(grade===12) return 28+lessonNumber;
  return null;
+}
+function getWords(grade,lessonNumber){
+ const k=getWordKey(grade,lessonNumber);
+ if(k===null)return [];
+ return (words&&words[k])?words[k]:[];
+}
+function getGrammar(grade,lessonNumber){
+ const k=getWordKey(grade,lessonNumber);
+ if(k===null)return [];
+ return (grammar&&grammar[k])?grammar[k]:[];
 }
 
 function esc(x){return String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
@@ -258,7 +276,40 @@ function courses(){
 }
 function grade(g){
  S.grade=Number(g);
- render("پایه "+g,`<div class="card"><button class="btn secondary" onclick="courses()">← بازگشت</button><h2>پایه ${g} — ${esc(books[g].title)}</h2><div class="lessonGrid">${books[g].lessons.map((x,i)=>{const p=S.progress[`${g}-${i}`]||{progress:0,completed:false};return `<div class="lesson"><div class="lessonNo">${i+1}</div><h3>${esc(x)}</h3><p class="muted">گرامر · لغات · آزمون</p><div class="progress"><i style="width:${p.progress||0}%"></i></div><small>${p.completed?"✅ تکمیل شده":"⏳ "+(p.progress||0)+"%"}</small><button class="btn full" style="margin-top:10px" onclick="openLesson(${i})">📖 ورود به درس</button><button class="btn secondary full" style="margin-top:6px" onclick="openLessonWords(${i})">🔊 لغات</button><button class="btn secondary full" style="margin-top:6px" onclick="openLessonGrammar(${i})">📘 گرامر</button></div>`}).join("")}</div></div>`);
+ const list=books[g].lessons.map((x,i)=>{
+  const p=S.progress[`${g}-${i}`]||{progress:0,completed:false};
+  return `<div class="lesson">
+   <div class="lessonNo">${i+1}</div>
+   <h3>${esc(x)}</h3>
+   <p class="muted">گرامر · لغات · آزمون</p>
+   <div class="progress"><i style="width:${p.progress||0}%"></i></div>
+   <small>${p.completed?"✅ تکمیل شده":"⏳ "+(p.progress||0)+"%"}</small>
+   <div class="btnRow">
+    <button class="btn" onclick="openLesson(${i})">📖 درس</button>
+    <button class="btn secondary" onclick="openLessonWords(${i})">🔊 لغات</button>
+    <button class="btn secondary" onclick="openLessonGrammar(${i})">📘 گرامر</button>
+   </div>
+  </div>`;
+ }).join("");
+ render("پایه "+g,`<div class="card"><button class="btn secondary" onclick="courses()">← بازگشت</button><h2>پایه ${g} — ${esc(books[g].title)}</h2><div class="lessonGrid">${list}</div></div>`);
+}
+function wordsHtml(grade,lessonNumber){
+ const list=getWords(grade,lessonNumber);
+ if(!list.length)return '<p class="muted">واژگانی برای این درس ثبت نشده است.</p>';
+ let h="";
+ list.forEach(function(w){
+  h+='<div class="word" onclick=\'speak('+JSON.stringify(w[0])+')\'><div class="en">🔊 '+esc(w[0])+'</div><div class="fa">'+esc(w[1])+'</div></div>';
+ });
+ return h;
+}
+function grammarHtml(grade,lessonNumber){
+ const list=getGrammar(grade,lessonNumber);
+ if(!list.length)return '<p class="muted">گرامری برای این درس ثبت نشده است.</p>';
+ let h="";
+ list.forEach(function(g){
+  h+='<div class="grammar"><h3>'+esc(g[0])+'</h3><p>'+esc(g[3]||'')+'</p><div class="example">'+esc(g[1])+'</div><p><b>ترجمه:</b> '+esc(g[2])+'</p></div>';
+ });
+ return h;
 }
 function openLesson(i){
  S.lesson=i;
@@ -266,25 +317,7 @@ function openLesson(i){
  const no=i+1;
  const book=books[gradeNum];
  const key=gradeNum+"-"+i;
- const wordKey=getWordKey(gradeNum,no);
- const wordList=(wordKey!==null&&typeof words[wordKey]!=="undefined")?words[wordKey]:[];
- const grammarList=(wordKey!==null&&typeof grammar[wordKey]!=="undefined")?grammar[wordKey]:[];
- let grammarHtml="";
- if(grammarList.length){
-  grammarList.forEach(function(g){
-   grammarHtml+='<div class="grammar"><h3>'+esc(g[0])+'</h3><p>'+esc(g[3]||'')+'</p><div class="example">'+esc(g[1])+'</div><p><b>ترجمه:</b> '+esc(g[2])+'</p></div>';
-  });
- }else{
-  grammarHtml='<p class="muted">گرامری برای این درس ثبت نشده است.</p>';
- }
- let wordsHtml="";
- if(wordList.length){
-  wordList.forEach(function(w){
-   wordsHtml+='<div class="word" onclick=\'speak('+JSON.stringify(w[0])+')\'><div class="en">🔊 '+esc(w[0])+'</div><div class="fa">'+esc(w[1])+'</div></div>';
-  });
- }else{
-  wordsHtml='<p class="muted">واژگانی برای این درس ثبت نشده است.</p>';
- }
+ const wl=getWords(gradeNum,no);
  render("درس "+no,`
  <div class="card">
  <button class="btn secondary" onclick="grade(${gradeNum})">← بازگشت</button>
@@ -295,13 +328,13 @@ function openLesson(i){
  <button class="tab2" onclick="lessonTab(2)">📝 آزمون</button>
  </div>
  <div id="s0" class="sec active">
- ${grammarHtml}
+ ${grammarHtml(gradeNum,no)}
  <button class="btn full" onclick="completeLesson('${key}')">✅ تکمیل مطالعه این درس</button>
  </div>
  <div id="s1" class="sec">
- <h3>🔊 واژگان درس — ${wordList.length} کلمه</h3>
+ <h3>🔊 واژگان درس — ${wl.length} کلمه</h3>
  <p class="muted">روی هر کلمه بزن تا تلفظ شود.</p>
- <div class="wordGrid">${wordsHtml}</div>
+ <div class="wordGrid">${wordsHtml(gradeNum,no)}</div>
  </div>
  <div id="s2" class="sec"><div id="lessonQuiz"></div></div>
  </div>`);
@@ -310,42 +343,24 @@ function openLessonWords(i){
  S.lesson=i;
  const gradeNum=S.grade;
  const no=i+1;
- const wordKey=getWordKey(gradeNum,no);
- const wordList=(wordKey!==null&&typeof words[wordKey]!=="undefined")?words[wordKey]:[];
- let wordsHtml="";
- if(wordList.length){
-  wordList.forEach(function(w){
-   wordsHtml+='<div class="word" onclick=\'speak('+JSON.stringify(w[0])+')\'><div class="en">🔊 '+esc(w[0])+'</div><div class="fa">'+esc(w[1])+'</div></div>';
-  });
- }else{
-  wordsHtml='<p class="muted">واژگانی برای این درس ثبت نشده است.</p>';
- }
+ const wl=getWords(gradeNum,no);
  render("لغات درس "+(i+1),`
  <div class="card">
  <button class="btn secondary" onclick="grade(${gradeNum})">← بازگشت</button>
  <h2>${esc(books[gradeNum].lessons[i])} — لغات</h2>
- <div class="wordGrid">${wordsHtml}</div>
+ <p class="muted">${wl.length} کلمه — روی هر کلمه بزن تا تلفظ شود.</p>
+ <div class="wordGrid">${wordsHtml(gradeNum,no)}</div>
  </div>`);
 }
 function openLessonGrammar(i){
  S.lesson=i;
  const gradeNum=S.grade;
  const no=i+1;
- const wordKey=getWordKey(gradeNum,no);
- const grammarList=(wordKey!==null&&typeof grammar[wordKey]!=="undefined")?grammar[wordKey]:[];
- let grammarHtml="";
- if(grammarList.length){
-  grammarList.forEach(function(g){
-   grammarHtml+='<div class="grammar"><h3>'+esc(g[0])+'</h3><p>'+esc(g[3]||'')+'</p><div class="example">'+esc(g[1])+'</div><p><b>ترجمه:</b> '+esc(g[2])+'</p></div>';
-  });
- }else{
-  grammarHtml='<p class="muted">گرامری برای این درس ثبت نشده است.</p>';
- }
  render("گرامر درس "+(i+1),`
  <div class="card">
  <button class="btn secondary" onclick="grade(${gradeNum})">← بازگشت</button>
  <h2>${esc(books[gradeNum].lessons[i])} — گرامر</h2>
- ${grammarHtml}
+ ${grammarHtml(gradeNum,no)}
  </div>`);
 }
 async function completeLesson(key){await saveProgress(key,100,true);await addXP(20);await unlockAchievement("first_lesson","اولین درس تکمیل شد");alert("درس با موفقیت تکمیل شد! ⭐ +20 XP");openLesson(S.lesson);}
@@ -354,16 +369,15 @@ function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Mat
 function makeLessonQuestions(){
  const gradeNum=S.grade;
  const no=S.lesson+1;
- const wordKey=getWordKey(gradeNum,no);
- const wordList=(wordKey!==null&&typeof words[wordKey]!=="undefined")?words[wordKey]:[];
- const grammarList=(wordKey!==null&&typeof grammar[wordKey]!=="undefined")?grammar[wordKey]:[];
+ const wl=getWords(gradeNum,no);
+ const gl=getGrammar(gradeNum,no);
  const arr=[];
- wordList.forEach(function(w,i){
-  const pool=shuffle(wordList.filter(function(_,j){return j!==i}).map(function(x){return x[1]})).slice(0,3);
+ wl.forEach(function(w,i){
+  const pool=shuffle(wl.filter(function(_,j){return j!==i}).map(function(x){return x[1]})).slice(0,3);
   const opts=shuffle([w[1]].concat(pool));
   arr.push({q:'معنی "'+w[0]+'" چیست؟',options:opts,answer:opts.indexOf(w[1])});
  });
- grammarList.forEach(function(g){
+ gl.forEach(function(g){
   const opts=shuffle([g[1],"She are a student.","They is happy.","He am a teacher."]);
   arr.push({q:'کدام گزینه با مبحث «'+g[0]+'» هماهنگ است؟',options:opts,answer:opts.indexOf(g[1])});
  });
@@ -377,6 +391,7 @@ function quizRender(id){
  el.innerHTML=`<div class="card"><b>سؤال ${S.quiz.i+1} از ${S.quiz.questions.length}</b><div class="progress"><i style="width:${S.quiz.i/S.quiz.questions.length*100}%"></i></div><div style="font-size:18px;font-weight:bold;line-height:2;margin:15px 0">${esc(q.q)}</div>${q.options.map((x,i)=>`<button class="option" onclick="answer(${i},'${id}')">${esc(x)}</button>`).join("")}<div id="fb"></div></div>`;
 }
 function answer(i,id){
+ if(S.quiz?.type==="placement"){placementAnswer(i);return}
  const q=S.quiz.questions[S.quiz.i];const opts=document.querySelectorAll(".option");opts.forEach(x=>x.disabled=true);
  if(i===q.answer){S.quiz.correct++;opts[i].classList.add("correct");document.getElementById("fb").className="feedback ok";document.getElementById("fb").innerHTML="✅ 😊 آفرین! پاسخ درست است."}
  else{S.quiz.wrong++;opts[i].classList.add("wrong");opts[q.answer].classList.add("correct");document.getElementById("fb").className="feedback bad";document.getElementById("fb").innerHTML="❌ پاسخ اشتباه است."}
@@ -415,8 +430,8 @@ function contest(){render("مسابقه",`<div class="card"><h2>🏆 مسابق�
 function startContest(g){
  const allWords=[];
  for(let ln=1;ln<=(books[g]?books[g].lessons.length:0);ln++){
-  const k=getWordKey(g,ln);
-  if(k!==null&&words[k])words[k].forEach(function(w){allWords.push(w)});
+  const list=getWords(g,ln);
+  list.forEach(function(w){allWords.push(w)});
  }
  let q=[];
  allWords.forEach((w,j)=>{if(q.length>=20)return;const pool=shuffle(allWords.filter((_,k)=>k!==j).map(x=>x[1])).slice(0,3);const options=shuffle([w[1],...pool]);q.push({q:`معنی "${w[0]}" چیست؟`,options,answer:options.indexOf(w[1])})});
@@ -435,8 +450,6 @@ async function placementFinish(){
  el.innerHTML=`<div class="card resultBox"><div class="score">${score}/30</div><h2 style="text-align:center">سطح پیشنهادی شما: ${level} 🎯</h2><p style="text-align:center">این نتیجه بر اساس عملکرد شما در آزمون تعیین سطح به دست آمده است.</p><button class="btn full" onclick="home()">بازگشت به خانه</button></div>`;
 }
 async function placementAnswer(i){const q=S.quiz.questions[S.quiz.i];const opts=document.querySelectorAll(".option");opts.forEach(x=>x.disabled=true);if(i===q.answer){S.quiz.correct++;opts[i].classList.add("correct")}else{S.quiz.wrong++;opts[i].classList.add("wrong");opts[q.answer].classList.add("correct")}setTimeout(async()=>{S.quiz.i++;if(S.quiz.i>=S.quiz.questions.length)await placementFinish();else quizRender("placementQuiz")},650);}
-const originalAnswer=answer;
-answer=function(i,id){if(S.quiz?.type==="placement"){placementAnswer(i);return}originalAnswer(i,id)};
 async function profile(){
  await loadStudentStats();
  const completed=Object.values(S.progress).filter(x=>x.completed).length;
