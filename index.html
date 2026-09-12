@@ -96,18 +96,6 @@ input:focus,select:focus,textarea:focus{border-color:#7c3aed}
 <script src="data.js"></script>
 
 <script>
-/* ======================================================
-   نگاشت شماره پایه به کلیدهای words/grammar در data.js
-   ====================================================== */
-const LESSON_MAP={
-7:[0,1,2,3,4,5,6,7,8],   // آواها + درس 1 تا 8
-8:[null,9,10,11,12,13,14,15], // درس 1 تا 7 (درس 8 نداریم)
-9:[null,16,17,18,19,20,21],   // درس 1 تا 6
-10:[null,22,23,24,25],        // درس 1 تا 4
-11:[null,26,27,28],           // درس 1 تا 3
-12:[null,29,30,31]            // درس 1 تا 3
-};
-
 const SUPABASE_URL="https://kapzyedzjecnfxevjisq.supabase.co";
 const SUPABASE_KEY="sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
@@ -115,6 +103,17 @@ const ACCESS_FUNCTION=SUPABASE_URL+"/functions/v1/student-access";
 
 let S={student:null,admin:false,grade:null,lesson:null,quiz:null,xp:0,level:1,progress:{},achievements:[],exams:[]};
 let examRecords=JSON.parse(localStorage.getItem("AN_EXAMS")||"[]");
+
+/* تابع کمکی: پیدا کردن کلید words/grammar بر اساس پایه و شماره درس (1-based) */
+function getWordKey(grade, lessonNumber){
+ if(grade===7) return lessonNumber-1;       /* درس 1 → کلید 0, درس 2 → کلید 1, ... */
+ if(grade===8) return 8+lessonNumber;        /* درس 1 → کلید 9,  ... */
+ if(grade===9) return 15+lessonNumber;       /* درس 1 → کلید 16, ... */
+ if(grade===10) return 21+lessonNumber;      /* درس 1 → کلید 22, ... */
+ if(grade===11) return 25+lessonNumber;      /* درس 1 → کلید 26, ... */
+ if(grade===12) return 28+lessonNumber;      /* درس 1 → کلید 29, ... */
+ return null;
+}
 
 function esc(x){return String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
 function normalizePhone(x){return String(x||"").replace(/\D/g,"")}
@@ -133,7 +132,6 @@ async function accessFunction(payload){
  return data;
 }
 
-/* کتاب‌های هر پایه - درس‌ها باید با LESSON_MAP هم‌تعداد باشن */
 const books={
 7:{title:"Prospect 1",lessons:["Lesson 1: My Name","Lesson 2: My Classmates","Lesson 3: My Age","Lesson 4: My Family","Lesson 5: My Appearance","Lesson 6: My House","Lesson 7: My Address","Lesson 8: My Favorite Food"]},
 8:{title:"Prospect 2",lessons:["Lesson 1: My Nationality","Lesson 2: My Week","Lesson 3: My Abilities","Lesson 4: My Health","Lesson 5: My City","Lesson 6: My Hobbies","Lesson 7: My Services"]},
@@ -268,11 +266,46 @@ function openLesson(i){
  const gradeNum=S.grade;
  const no=i+1;
  const book=books[gradeNum];
- const key=`${gradeNum}-${i}`;
- const wordKey=LESSON_MAP[gradeNum]?LESSON_MAP[gradeNum][no]:null;
- const wordList=wordKey!==null&&wordKey!==undefined&&words[wordKey]?words[wordKey]:[];
- const grammarList=wordKey!==null&&wordKey!==undefined&&grammar[wordKey]?grammar[wordKey]:[];
- render("درس "+no,`<div class="card"><button class="btn secondary" onclick="grade(${gradeNum})">← بازگشت</button><h2>${esc(book.lessons[i])}</h2><div class="tabs2"><button class="tab2 active" onclick="lessonTab(0)">📘 گرامر</button><button class="tab2" onclick="lessonTab(1)">🔊 لغات</button><button class="tab2" onclick="lessonTab(2)">📝 آزمون</button></div><div id="s0" class="sec active">${grammarList.length?grammarList.map(g=>`<div class="grammar"><h3>${esc(g[0])}</h3><p>${esc(g[3]||'')}</p><div class="example">${esc(g[1])}</div><p><b>ترجمه:</b> ${esc(g[2])}</p></div>`).join(""):'<p class="muted">گرامری برای این درس ثبت نشده است.</p>'}<button class="btn full" onclick="completeLesson('${key}')">✅ تکمیل مطالعه این درس</button></div><div id="s1" class="sec"><h3>🔊 واژگان درس — ${wordList.length} کلمه</h3><p class="muted">روی هر کلمه بزن تا تلفظ شود.</p><div class="wordGrid">${wordList.length?wordList.map(w=>`<div class="word" onclick='speak(${JSON.stringify(w[0])})'><div class="en">🔊 ${esc(w[0])}</div><div class="fa">${esc(w[1])}</div></div>`).join(""):'<p class="muted">واژگانی برای این درس ثبت نشده است.</p>'}</div></div><div id="s2" class="sec"><div id="lessonQuiz"></div></div></div>`);
+ const key=gradeNum+"-"+i;
+ const wordKey=getWordKey(gradeNum,no);
+ const wordList=(wordKey!==null&&typeof words[wordKey]!=="undefined")?words[wordKey]:[];
+ const grammarList=(wordKey!==null&&typeof grammar[wordKey]!=="undefined")?grammar[wordKey]:[];
+ let grammarHtml="";
+ if(grammarList.length){
+  grammarList.forEach(function(g){
+   grammarHtml+='<div class="grammar"><h3>'+esc(g[0])+'</h3><p>'+esc(g[3]||'')+'</p><div class="example">'+esc(g[1])+'</div><p><b>ترجمه:</b> '+esc(g[2])+'</p></div>';
+  });
+ }else{
+  grammarHtml='<p class="muted">گرامری برای این درس ثبت نشده است.</p>';
+ }
+ let wordsHtml="";
+ if(wordList.length){
+  wordList.forEach(function(w){
+   wordsHtml+='<div class="word" onclick=\'speak('+JSON.stringify(w[0])+')\'><div class="en">🔊 '+esc(w[0])+'</div><div class="fa">'+esc(w[1])+'</div></div>';
+  });
+ }else{
+  wordsHtml='<p class="muted">واژگانی برای این درس ثبت نشده است.</p>';
+ }
+ render("درس "+no,`
+ <div class="card">
+ <button class="btn secondary" onclick="grade(${gradeNum})">← بازگشت</button>
+ <h2>${esc(book.lessons[i])}</h2>
+ <div class="tabs2">
+ <button class="tab2 active" onclick="lessonTab(0)">📘 گرامر</button>
+ <button class="tab2" onclick="lessonTab(1)">🔊 لغات</button>
+ <button class="tab2" onclick="lessonTab(2)">📝 آزمون</button>
+ </div>
+ <div id="s0" class="sec active">
+ ${grammarHtml}
+ <button class="btn full" onclick="completeLesson('${key}')">✅ تکمیل مطالعه این درس</button>
+ </div>
+ <div id="s1" class="sec">
+ <h3>🔊 واژگان درس — ${wordList.length} کلمه</h3>
+ <p class="muted">روی هر کلمه بزن تا تلفظ شود.</p>
+ <div class="wordGrid">${wordsHtml}</div>
+ </div>
+ <div id="s2" class="sec"><div id="lessonQuiz"></div></div>
+ </div>`);
 }
 async function completeLesson(key){await saveProgress(key,100,true);await addXP(20);await unlockAchievement("first_lesson","اولین درس تکمیل شد");alert("درس با موفقیت تکمیل شد! ⭐ +20 XP");openLesson(S.lesson);}
 function lessonTab(n){document.querySelectorAll(".sec").forEach((x,i)=>x.classList.toggle("active",i===n));document.querySelectorAll(".tab2").forEach((x,i)=>x.classList.toggle("active",i===n));if(n===2)startLessonQuiz();}
@@ -280,12 +313,19 @@ function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Mat
 function makeLessonQuestions(){
  const gradeNum=S.grade;
  const no=S.lesson+1;
- const wordKey=LESSON_MAP[gradeNum]?LESSON_MAP[gradeNum][no]:null;
- const wordList=wordKey!==null&&wordKey!==undefined&&words[wordKey]?words[wordKey]:[];
- const grammarList=wordKey!==null&&wordKey!==undefined&&grammar[wordKey]?grammar[wordKey]:[];
+ const wordKey=getWordKey(gradeNum,no);
+ const wordList=(wordKey!==null&&typeof words[wordKey]!=="undefined")?words[wordKey]:[];
+ const grammarList=(wordKey!==null&&typeof grammar[wordKey]!=="undefined")?grammar[wordKey]:[];
  const arr=[];
- wordList.forEach((w,i)=>{const pool=shuffle(wordList.filter((_,j)=>j!==i).map(x=>x[1])).slice(0,3);const opts=shuffle([w[1],...pool]);arr.push({q:`معنی "${w[0]}" چیست؟`,options:opts,answer:opts.indexOf(w[1])})});
- grammarList.forEach(g=>{const opts=shuffle([g[1],"She are a student.","They is happy.","He am a teacher."]);arr.push({q:`کدام گزینه با مبحث «${g[0]}» هماهنگ است؟`,options:opts,answer:opts.indexOf(g[1])})});
+ wordList.forEach(function(w,i){
+  const pool=shuffle(wordList.filter(function(_,j){return j!==i}).map(function(x){return x[1]})).slice(0,3);
+  const opts=shuffle([w[1]].concat(pool));
+  arr.push({q:'معنی "'+w[0]+'" چیست؟',options:opts,answer:opts.indexOf(w[1])});
+ });
+ grammarList.forEach(function(g){
+  const opts=shuffle([g[1],"She are a student.","They is happy.","He am a teacher."]);
+  arr.push({q:'کدام گزینه با مبحث «'+g[0]+'» هماهنگ است؟',options:opts,answer:opts.indexOf(g[1])});
+ });
  return arr.slice(0,15);
 }
 function startLessonQuiz(){S.quiz={type:"lesson",title:`پایه ${S.grade} - ${books[S.grade].lessons[S.lesson]}`,questions:makeLessonQuestions(),i:0,correct:0,wrong:0};quizRender("lessonQuiz")}
@@ -333,7 +373,10 @@ function conversationQuiz(name,unit){
 function contest(){render("مسابقه",`<div class="card"><h2>🏆 مسابقه</h2><div class="grid">${[7,8,9,10,11,12].map(g=>`<div class="item"><div class="icon">🏆</div><h3>مسابقه پایه ${g}</h3><p class="muted">۲۰ سؤال</p><button class="btn full" onclick="startContest(${g})">شروع</button></div>`).join("")}</div></div>`)}
 function startContest(g){
  const allWords=[];
- (LESSON_MAP[g]||[]).forEach(k=>{if(k!==null&&words[k])words[k].forEach(w=>allWords.push(w))});
+ for(let ln=1;ln<=(books[g]?books[g].lessons.length:0);ln++){
+  const k=getWordKey(g,ln);
+  if(k!==null&&words[k])words[k].forEach(function(w){allWords.push(w)});
+ }
  let q=[];
  allWords.forEach((w,j)=>{if(q.length>=20)return;const pool=shuffle(allWords.filter((_,k)=>k!==j).map(x=>x[1])).slice(0,3);const options=shuffle([w[1],...pool]);q.push({q:`معنی "${w[0]}" چیست؟`,options,answer:options.indexOf(w[1])})});
  while(q.length<20){const base=[{q:"Which sentence is correct?",a:"She is a student."},{q:"Which sentence is correct?",a:"They are happy."},{q:"Which sentence is correct?",a:"I am a teacher."},{q:"Which sentence is correct?",a:"He is my friend."}][q.length%4];const options=shuffle([base.a,"She are a student.","They is happy.","I is a teacher."]);q.push({q:base.q,options,answer:options.indexOf(base.a)})}
