@@ -1129,7 +1129,6 @@ words[28]=[
 ];
 
 /* ==================== پایه دوازدهم ==================== */
-/* getWordKey(12,1)=29 ، getWordKey(12,2)=30 ، getWordKey(12,3)=31 */
 grammar[29]=[
  ["انواع سوال در انگلیسی","1) سوال‌های بله و خیری (Yes/No questions) 2) سوال‌های با کلمه پرسشی (Wh-questions)","برای ساختن جمله پرسشی بله و خیری با فعل to be، جای فاعل و فعل را عوض می‌کنیم.","مثال: Jack is an English teacher. → Is Jack an English teacher? Yes, he is."],
  ["کلمات پرسشی Wh","What / Where / When / Who / How / Which / Why / How many / How much","فرم سوالی با کلمه پرسشی نیز به میزان فراوانی به سوال بله و خیری شبیه است.","Why does your friend visit you? / How many books did you buy? / What is your day job?"],
@@ -1396,6 +1395,167 @@ const ACCESS_FUNCTION=SUPABASE_URL+"/functions/v1/student-access";
 let S={student:null,admin:false,grade:null,lesson:null,quiz:null,xp:0,level:1,progress:{},achievements:[],exams:[]};
 let examRecords=JSON.parse(localStorage.getItem("AN_EXAMS")||"[]");
 
+/* ==================== بانک سوال آزمون نهایی ==================== */
+const finalExamBank={
+10:[
+ {q:"معنی «leopard» چیست؟",o:["پلنگ","فیل","ببر","خرس"],a:0},
+ {q:"معنی «endangered» چیست؟",o:["در معرض خطر","نجات دادن","شکار کردن","محافظت کردن"],a:0},
+ {q:"«go hunting» یعنی چه؟",o:["به شکار رفتن","به خرید رفتن","به سفر رفتن","به ماهیگیری رفتن"],a:0},
+ {q:"معنی «wildlife» چیست؟",o:["حیات وحش","زندگی وحشی","حیوان خانگی","محیط زیست"],a:0},
+ {q:"«destroy» یعنی چه؟",o:["نابود کردن","ساختن","نجات دادن","حفظ کردن"],a:0},
+ {q:"معنی «hunter» چیست؟",o:["شکارچی","نگهبان","کشاورز","معلم"],a:0},
+ {q:"معنی «dolphin» چیست؟",o:["دلفین","کوسه","نهنگ","ماهی"],a:0},
+ {q:"«zookeeper» یعنی چه؟",o:["نگهبان باغ وحش","مسئول باغ","پرورش‌دهنده","دامپزشک"],a:0},
+ {q:"«What's your favorite food?» یعنی چه؟",o:["غذای مورد علاقه‌ات چیست؟","چه غذایی می‌خوری؟","غذا کجاست؟","غذا چطور است؟"],a:0},
+ {q:"معنی «plain» در درس دهم چیست؟",o:["دشت","ساده","پرواز","صاف"],a:0},
+ {q:"معنی «gazelle» چیست؟",o:["آهو","زرافه","گوزن","بز"],a:0},
+ {q:"«go out» یعنی چه؟",o:["بیرون رفتن","خاموش شدن","بیرون آمدن","خارج شدن"],a:0},
+ {q:"«cheetah» یعنی چه؟",o:["یوزپلنگ","پلنگ","ببر","شیر"],a:0},
+ {q:"معنی «endangered language» چیست؟",o:["زبان در خطر","زبان جدید","زبان قدیمی","زبان زنده"],a:0},
+ {q:"«program» یعنی چه؟",o:["برنامه","تلفن","رایانه","تلویزیون"],a:0},
+ {q:"معنی «attention» چیست؟",o:["توجه","حواس","ذهن","فکر"],a:0},
+ {q:"«pay attention» یعنی چه؟",o:["توجه کردن","پرداخت کردن","توجه دادن","جلب توجه"],a:0},
+ {q:"«increase» یعنی چه؟",o:["افزایش یافتن","کاهش یافتن","ثابت ماندن","تغییر کردن"],a:0},
+ {q:"«amazing» یعنی چه؟",o:["شگفت‌آور","خسته‌کننده","ترسناک","خنده‌دار"],a:0},
+ {q:"«tall» یعنی چه؟",o:["بلندقد","کوتاه","چاق","لاغر"],a:0},
+ {q:"«giraffe» یعنی چه؟",o:["زرافه","فیل","شتر","اسب"],a:0},
+ {q:"«elephant» یعنی چه؟",o:["فیل","زرافه","کرگدن","اسب آبی"],a:0},
+ {q:"«bear» یعنی چه؟",o:["خرس","شیر","ببر","گرگ"],a:0},
+ {q:"معنی «forest» چیست؟",o:["جنگل","بیابان","دشت","کوه"],a:0},
+ {q:"«whale» یعنی چه؟",o:["نهنگ","کوسه","دلفین","ماهی"],a:0},
+ {q:"«future» یعنی چه؟",o:["آینده","گذشته","حال","زمان"],a:0},
+ {q:"«nowadays» یعنی چه؟",o:["امروزه","فردا","دیروز","همیشه"],a:0},
+ {q:"«Instead» یعنی چه؟",o:["در عوض","همچنین","بنابراین","علاوه بر"],a:0},
+ {q:"«save» یعنی چه؟",o:["نجات دادن","کشتن","خوردن","خریدن"],a:0},
+ {q:"«nature» یعنی چه؟",o:["طبیعت","صنعت","کشور","شهر"],a:0},
+ {q:"«high» یعنی چه؟",o:["بلند","کوتاه","پهن","باریک"],a:0},
+ {q:"«beautiful» یعنی چه؟",o:["زیبا","زشت","بزرگ","کوچک"],a:0},
+ {q:"«natural» یعنی چه؟",o:["طبیعی","مصنوعی","شیمیایی","معدنی"],a:0},
+ {q:"«pain» یعنی چه؟",o:["درد","شادی","ترس","عصبانیت"],a:0},
+ {q:"«bird» یعنی چه؟",o:["پرنده","ماهی","حشره","حیوان"],a:0},
+ {q:"«boring» یعنی چه؟",o:["خسته‌کننده","جالب","ترسناک","خنده‌دار"],a:0},
+ {q:"«recently» یعنی چه؟",o:["اخیراً","قبلاً","فردا","دیروز"],a:0},
+ {q:"«safe» یعنی چه؟",o:["امن","خطرناک","ترسناک","قوی"],a:0},
+ {q:"«lose» یعنی چه؟",o:["گم کردن","پیدا کردن","خریدن","فروختن"],a:0},
+ {q:"«danger» یعنی چه؟",o:["خطر","امنیت","ترس","شجاعت"],a:0},
+ {q:"«plant» یعنی چه؟",o:["گیاه","حیوان","سنگ","آب"],a:0},
+ {q:"«noun» یعنی چه؟",o:["اسم","فعل","صفت","قید"],a:0},
+ {q:"«hopefully» یعنی چه؟",o:["امیدوارانه","متأسفانه","خوشبختانه","قطعاً"],a:0},
+ {q:"«lion» یعنی چه؟",o:["شیر","پلنگ","ببر","گرگ"],a:0},
+ {q:"«zebra» یعنی چه؟",o:["گورخر","اسب","الاغ","شتر"],a:0},
+ {q:"«panda» یعنی چه؟",o:["پاندا","خرس","کوالا","میمون"],a:0},
+ {q:"«sea» یعنی چه؟",o:["دریا","اقیانوس","رودخانه","دریاچه"],a:0},
+ {q:"کدام جمله آینده ساده است؟",o:["I will save nature.","I save nature.","I saved nature.","I am saving nature."],a:0},
+ {q:"ساختار آینده ساده با will کدام است؟",o:["فاعل + will + فعل ساده","فاعل + will + فعل + ing","will + فاعل + فعل","فاعل + will + to + فعل"],a:0},
+ {q:"منفی will کدام است؟",o:["will not / won't","will no","not will","will don't"],a:0}
+],
+11:[
+ {q:"«Skimming» یعنی چه؟",o:["مرور اجمالی","نگاه انداختن","ترجمه کردن","حفظ کردن"],a:0},
+ {q:"«Scanning» یعنی چه؟",o:["نگاه انداختن","مرور اجمالی","نوشتن","خواندن"],a:0},
+ {q:"«Countable nouns» یعنی چه؟",o:["اسم‌های قابل شمارش","اسم‌های غیرقابل شمارش","اسم‌های خاص","اسم‌های عام"],a:0},
+ {q:"کدام گزینه غیرقابل شمارش است؟",o:["water","book","car","apple"],a:0},
+ {q:"«How many» برای کدام است؟",o:["اسم قابل شمارش","اسم غیرقابل شمارش","صفت","قید"],a:0},
+ {q:"«How much» برای کدام است؟",o:["اسم غیرقابل شمارش","اسم قابل شمارش","فعل","قید"],a:0},
+ {q:"تفاوت «a few» و «few» چیست؟",o:["a few مثبت، few منفی","a few منفی، few مثبت","هیچ تفاوتی ندارند","هر دو منفی"],a:0},
+ {q:"«prefix» یعنی چه؟",o:["پیشوند","پسوند","میانوند","ریشه"],a:0},
+ {q:"«suffix» یعنی چه؟",o:["پسوند","پیشوند","میانوند","ریشه"],a:0},
+ {q:"پیشوند «un-» چه معنایی می‌دهد؟",o:["منفی/متضاد","دوباره","قبل","بعد"],a:0},
+ {q:"پیشوند «re-» چه معنایی می‌دهد؟",o:["دوباره","قبل","بعد","منفی"],a:0},
+ {q:"«Present Perfect» چه زمانی است؟",o:["حال کامل","حال ساده","گذشته ساده","آینده"],a:0},
+ {q:"ساختار حال کامل کدام است؟",o:["have/has + p.p","had + p.p","will + p.p","am/is/are + p.p"],a:0},
+ {q:"«for» در حال کامل برای چیست؟",o:["مدت زمان","نقطه شروع","مکان","شخص"],a:0},
+ {q:"«since» در حال کامل برای چیست؟",o:["نقطه شروع","مدت زمان","مکان","شخص"],a:0},
+ {q:"معنی «give up» چیست؟",o:["ترک کردن","دادن","بالا بردن","پایین آوردن"],a:0},
+ {q:"معنی «look after» چیست؟",o:["مراقب بودن","نگاه کردن","جستجو کردن","پیدا کردن"],a:0},
+ {q:"«Gerund» یعنی چه؟",o:["اسم مصدر","مصدر با to","فعل کمکی","قید"],a:0},
+ {q:"کدام گزینه درست است؟",o:["I enjoy reading.","I enjoy to read.","I enjoy read.","I enjoy reads."],a:0},
+ {q:"معنی «afraid of» چیست؟",o:["ترسیدن از","علاقه به","مطمئن بودن از","خسته شدن از"],a:0},
+ {q:"«good at» با کدام گزینه می‌آید؟",o:["فعل ing","فعل ساده","to + فعل","اسم"],a:0},
+ {q:"«skimming» در کدام نوع متن بهتر عمل می‌کند؟",o:["غیرداستانی","داستانی","شعری","تخیلی"],a:0},
+ {q:"«Have you ever been to China?» چه زمانی است؟",o:["حال کامل","حال ساده","گذشته ساده","آینده"],a:0},
+ {q:"«already» معمولاً کجا می‌آید؟",o:["قبل از قسمت سوم فعل","بعد از فعل","اول جمله","آخر جمله"],a:0},
+ {q:"«yet» در کدام جملات می‌آید؟",o:["منفی و سوالی","مثبت","امری","تعجبی"],a:0},
+ {q:"معنی «up to now» چیست؟",o:["تاکنون","از این به بعد","دیروز","فردا"],a:0},
+ {q:"معنی «careless» چیست؟",o:["بی‌دقت","مراقب","مواظب","هشیار"],a:0},
+ {q:"معنی «homeless» چیست؟",o:["بی‌خانمان","خانه‌دار","مهمان","مالک"],a:0},
+ {q:"پسوند «-less» چه معنایی می‌دهد؟",o:["بدون","پر از","مانند","دارای"],a:0},
+ {q:"پسوند «-ful» چه معنایی می‌دهد؟",o:["پر از","بدون","مانند","کم"],a:0},
+ {q:"«news» چه نوع اسمی است؟",o:["غیرقابل شمارش","قابل شمارش","جمع","مرکب"],a:0},
+ {q:"کدام اسم غیرقابل شمارش است؟",o:["money","dollar","book","chair"],a:0},
+ {q:"جمع «child» چیست؟",o:["children","childs","childes","childrens"],a:0},
+ {q:"جمع «man» چیست؟",o:["men","mans","mens","manes"],a:0},
+ {q:"جمع «foot» چیست؟",o:["feet","foots","footes","feets"],a:0},
+ {q:"جمع «analysis» چیست؟",o:["analyses","analysises","analysis","analysi"],a:0},
+ {q:"«a piece of furniture» یعنی چه؟",o:["یک تکه مبلمان","یک مبل","یک صندلی","یک میز"],a:0},
+ {q:"«some» در کدام جملات می‌آید؟",o:["مثبت","منفی","سوالی","امری"],a:0},
+ {q:"«any» در کدام جملات می‌آید؟",o:["منفی و سوالی","مثبت","امری","تعجبی"],a:0},
+ {q:"معنی «take part» چیست؟",o:["شرکت کردن","پاره کردن","قسمت کردن","جدا کردن"],a:0},
+ {q:"معنی «hurry up» چیست؟",o:["عجله کردن","صبر کردن","آرام رفتن","توقف کردن"],a:0},
+ {q:"معنی «get up» چیست؟",o:["بیدار شدن","خوابیدن","نشستن","بلند شدن"],a:0},
+ {q:"کدام گزینه درست است؟",o:["He has gone to Paris.","He has went to Paris.","He have gone to Paris.","He has go to Paris."],a:0},
+ {q:"«I have never seen such a film» یعنی چه؟",o:["من هرگز چنین فیلمی ندیده‌ام","من این فیلم را ندیده‌ام","من فیلم دیدم","من فیلم نمی‌بینم"],a:0},
+ {q:"«This is the first time she has been to Shiraz» یعنی چه؟",o:["این اولین بار است که به شیراز رفته","او قبلاً شیراز رفته","او به شیراز نمی‌رود","او شیراز را دوست دارد"],a:0},
+ {q:"«so far» یعنی چه؟",o:["تاکنون","از این به بعد","دور","نزدیک"],a:0},
+ {q:"معنی «happiness» چیست؟",o:["خوشحالی","غم","ترس","عصبانیت"],a:0},
+ {q:"معنی «kindness» چیست؟",o:["مهربانی","بدی","قدرت","ضعف"],a:0},
+ {q:"«suffix -ness» کدام نوع کلمه را می‌سازد؟",o:["اسم","فعل","صفت","قید"],a:0},
+ {q:"«suffix -ly» کدام نوع کلمه را می‌سازد؟",o:["قید","اسم","فعل","صفت"],a:0},
+ {q:"کدام گزینه درست است؟",o:["If it rains, we will stay at home.","If it rains, we stay at home.","If it will rain, we stay at home.","If it rained, we will stay at home."],a:0}
+],
+12:[
+ {q:"«Yes/No questions» چه نوع سوالاتی هستند؟",o:["سوالات بله و خیری","سوالات با کلمه پرسشی","سوالات امری","سوالات تعجبی"],a:0},
+ {q:"«Wh-questions» شامل کدام کلمات هستند؟",o:["What, Where, When, Who, How","Yes, No, Maybe","Is, Are, Am","Do, Does, Did"],a:0},
+ {q:"«Collocation» یعنی چه؟",o:["همایند","هم‌معنی","متضاد","مترادف"],a:0},
+ {q:"کدام گزینه همایند درست است؟",o:["fast food","food quick","quick food","food fast"],a:0},
+ {q:"«do the homework» یعنی چه؟",o:["انجام دادن تکالیف","انجام دادن ورزش","انجام دادن کار","انجام دادن خرید"],a:0},
+ {q:"«make a decision» یعنی چه؟",o:["تصمیم گرفتن","گرفتن تصمیم","ساختن تصمیم","رفتن تصمیم"],a:0},
+ {q:"«take an exam» یعنی چه؟",o:["امتحان دادن","گرفتن امتحان","ساختن امتحان","رفتن امتحان"],a:0},
+ {q:"«Passive Voice» یعنی چه؟",o:["جملات مجهول","جملات معلوم","جملات شرطی","جملات سوالی"],a:0},
+ {q:"در جملات مجهول، چه چیزی مهم است؟",o:["عملی که انجام شده","فاعل","زمان","مکان"],a:0},
+ {q:"«The butter is kept in the fridge» چه نوع جمله‌ای است؟",o:["مجهول","معلوم","شرطی","امری"],a:0},
+ {q:"مجهول حال ساده کدام است؟",o:["am/is/are + p.p","was/were + p.p","have/has + been + p.p","will be + p.p"],a:0},
+ {q:"مجهول گذشته ساده کدام است؟",o:["was/were + p.p","am/is/are + p.p","have/has + been + p.p","will be + p.p"],a:0},
+ {q:"مجهول حال کامل کدام است؟",o:["have/has + been + p.p","am/is/are + p.p","was/were + p.p","will be + p.p"],a:0},
+ {q:"«Tag Questions» یعنی چه؟",o:["سوالات ضمیمه","سوالات اصلی","سوالات فرعی","سوالات کوتاه"],a:0},
+ {q:"«He is a student, ___?» کدام گزینه درست است؟",o:["isn't he","is he","doesn't he","does he"],a:0},
+ {q:"«They are not at school, ___?» کدام گزینه درست است؟",o:["are they","aren't they","do they","don't they"],a:0},
+ {q:"«Let's play, ___?» کدام گزینه درست است؟",o:["shall we","will we","do we","are we"],a:0},
+ {q:"«Open the door, ___?» کدام گزینه درست است؟",o:["will you","shall you","do you","are you"],a:0},
+ {q:"«I am a good student, ___?» کدام گزینه درست است؟",o:["aren't I","am not I","isn't I","amn't I"],a:0},
+ {q:"«Nobody knows the answer, ___?» کدام گزینه درست است؟",o:["do they","don't they","does he","doesn't he"],a:0},
+ {q:"کدام حرف ربط تضاد را نشان می‌دهد؟",o:["but","and","or","so"],a:0},
+ {q:"کدام حرف ربط نتیجه را نشان می‌دهد؟",o:["so","and","but","or"],a:0},
+ {q:"کدام حرف ربط دلیل را نشان می‌دهد؟",o:["because","and","or","but"],a:0},
+ {q:"«Relative Pronouns» یعنی چه؟",o:["ضمایر موصولی","ضمایر فاعلی","ضمایر مفعولی","ضمایر ملکی"],a:0},
+ {q:"«who» برای چه استفاده می‌شود؟",o:["انسان","اشیا","حیوانات","مکان"],a:0},
+ {q:"«which» برای چه استفاده می‌شود؟",o:["اشیا و حیوانات","انسان","مکان","زمان"],a:0},
+ {q:"«whose» برای چه استفاده می‌شود؟",o:["مالکیت","مکان","زمان","دلیل"],a:0},
+ {q:"«The man ___ you met yesterday is coming» کدام گزینه درست است؟",o:["whom","who","which","whose"],a:0},
+ {q:"«Second Conditional» یعنی چه؟",o:["شرطی نوع دوم","شرطی نوع اول","شرطی نوع سوم","شرطی صفر"],a:0},
+ {q:"ساختار شرطی نوع دوم کدام است؟",o:["If + گذشته ساده, would + مصدر","If + حال ساده, will + مصدر","If + گذشته کامل, would have + p.p","If + حال ساده, would + مصدر"],a:0},
+ {q:"«If I were you, I would save my money» چه نوع شرطی است؟",o:["نوع دوم","نوع اول","نوع سوم","صفر"],a:0},
+ {q:"در شرطی نوع دوم، از چه چیزی به جای was استفاده می‌کنیم؟",o:["were","am","is","are"],a:0},
+ {q:"«Were I rich, I would buy a house» کدام نوع شرطی است؟",o:["نوع دوم (با حذف if)","نوع اول","نوع سوم","صفر"],a:0},
+ {q:"«Paragraph» یعنی چه؟",o:["پاراگراف","جمله","کلمه","متن"],a:0},
+ {q:"«Topic sentence» یعنی چه؟",o:["جمله موضوعی","جمله پایانی","جمله پشتیبان","جمله سوالی"],a:0},
+ {q:"«Supporting sentences» یعنی چه؟",o:["جملات پشتیبان","جملات موضوعی","جملات پایانی","جملات سوالی"],a:0},
+ {q:"«Concluding sentence» یعنی چه؟",o:["جمله نتیجه‌گیری","جمله موضوعی","جمله پشتیبان","جمله سوالی"],a:0},
+ {q:"«Indentation» در پاراگراف یعنی چه؟",o:["فاصله از حاشیه","خط جدید","نقطه","ویرگول"],a:0},
+ {q:"«Past Perfect Tense» یعنی چه؟",o:["ماضی بعید","ماضی نقلی","گذشته ساده","گذشته استمراری"],a:0},
+ {q:"ساختار ماضی بعید کدام است؟",o:["had + p.p","have/has + p.p","was/were + ing","will + p.p"],a:0},
+ {q:"«When I arrived, the plane had landed» یعنی چه؟",o:["وقتی رسیدم، هواپیما نشسته بود","وقتی رسیدم، هواپیما نشست","وقتی رسیدم، هواپیما می‌نشیند","وقتی رسیدم، هواپیما خواهد نشست"],a:0},
+ {q:"«hadn't» مخفف چیست؟",o:["had not","has not","have not","did not"],a:0},
+ {q:"«Modal» یعنی چه؟",o:["فعل ناقص","فعل کامل","فعل کمکی","فعل اصلی"],a:0},
+ {q:"کدام گزینه فعل Modal است؟",o:["must","do","have","be"],a:0},
+ {q:"مجهول «must clean» کدام است؟",o:["must be cleaned","must cleaned","must being cleaned","must clean"],a:0},
+ {q:"«He never eats breakfast, ___?» کدام گزینه درست است؟",o:["does he","doesn't he","is he","isn't he"],a:0},
+ {q:"«Let us go, ___?» کدام گزینه درست است؟",o:["will you","shall we","do we","are we"],a:0},
+ {q:"«This is your car, ___?» کدام گزینه درست است؟",o:["isn't it","is it","doesn't it","does it"],a:0},
+ {q:"«Those are your friends, ___?» کدام گزینه درست است؟",o:["aren't they","are they","don't they","do they"],a:0},
+ {q:"کدام گزینه جمله مرکب است؟",o:["I like tea and coffee.","I like tea.","I like coffee.","Tea is good."],a:0}
+]
+};
+
 function getWordKey(grade,lessonNumber){
  if(grade===7) return lessonNumber-1;
  if(grade===8) return 8+lessonNumber;
@@ -1424,6 +1584,19 @@ function speak(text){
  const u=new SpeechSynthesisUtterance(text);
  u.lang="en-US";u.rate=.75;
  speechSynthesis.resume();speechSynthesis.speak(u);
+}
+function speakAll(letter,examples){
+ if(!window.speechSynthesis){alert("مرورگر شما از تلفظ صوتی پشتیبانی نمی‌کند.");return}
+ speechSynthesis.cancel();
+ const u1=new SpeechSynthesisUtterance(letter);
+ u1.lang="en-US";u1.rate=.7;
+ u1.onend=function(){
+  const u2=new SpeechSynthesisUtterance(examples);
+  u2.lang="en-US";u2.rate=.7;
+  speechSynthesis.speak(u2);
+ };
+ speechSynthesis.resume();
+ speechSynthesis.speak(u1);
 }
 async function accessFunction(payload){
  const r=await fetch(ACCESS_FUNCTION,{method:"POST",headers:{"Content-Type":"application/json","apikey":SUPABASE_KEY},body:JSON.stringify(payload)});
@@ -1528,14 +1701,26 @@ function header(title){
  return `<header class="header"><div class="headerIn"><div><div class="logo">${esc(title)}</div><div class="logoSub">ALINAGHELI ENGLISH</div></div><button onclick="logout()" style="background:rgba(255,255,255,.15);color:white;border:0;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:bold;border:1px solid rgba(255,255,255,.15)">🚪 خروج</button></div></header>`;
 }
 function nav(){
- return `<div class="bottom"><div class="bottomIn"><button class="nav" onclick="home()"><b>🏠</b>خانه</button><button class="nav" onclick="courses()"><b>📚</b>دروس</button><button class="nav" onclick="conversation()"><b>🗣️</b>مکالمه</button><button class="nav" onclick="sounds()"><b>🔤</b>صداها</button><button class="nav" onclick="contest()"><b>🏆</b>مسابقه</button><button class="nav" onclick="profile()"><b>👤</b>پروفایل</button></div></div>`;
+ return `<div class="bottom"><div class="bottomIn"><button class="nav" onclick="home()"><b>🏠</b>خانه</button><button class="nav" onclick="courses()"><b>📚</b>دروس</button><button class="nav" onclick="conversation()"><b>🗣️</b>مکالمه</button><button class="nav" onclick="sounds()"><b>🔤</b>صداها</button><button class="nav" onclick="finalExams()"><b>📝</b>آزمون</button><button class="nav" onclick="contest()"><b>🏆</b>مسابقه</button><button class="nav" onclick="profile()"><b>👤</b>پروفایل</button></div></div>`;
 }
 function render(title,content){document.body.innerHTML=header(title)+`<main class="container">${content}</main>`+nav()}
 function home(){
  const xp=S.xp||0,level=S.level||calculateLevel(xp);
  const base=xpForLevel(level),next=xpForLevel(level+1);
  const percent=Math.min(100,Math.round(((xp-base)/(next-base))*100));
- render("خانه",`<div class="hero hero3d"><div style="position:relative;z-index:2"><div style="font-size:13px;opacity:.85;letter-spacing:3px;font-weight:bold">WELCOME TO</div><h1>AliNagheli English 🚀</h1><h2>سلام ${esc(S.student?.first_name||"زبان‌آموز")} 👋</h2><p>یادگیری انگلیسی را حرفه‌ای شروع کن.</p><div class="levelBar"><i style="width:${percent}%"></i></div><b style="font-size:15px">⭐ ${xp} XP &nbsp;·&nbsp; 🏅 Level ${level}</b></div></div><div class="grid"><div class="item" onclick="courses()"><div class="icon">📚</div><h3>دروس مدرسه</h3><p class="muted">Prospect و Vision</p><button class="btn full">ورود</button></div><div class="item" onclick="placementTest()"><div class="icon">🎯</div><h3>تعیین سطح</h3><p class="muted">۳۰ سؤال از آسان تا خیلی سخت</p><button class="btn full">شروع تعیین سطح</button></div><div class="item" onclick="sounds()"><div class="icon">🔤</div><h3>حروف و صداها</h3><p class="muted">یادگیری الفبای انگلیسی</p><button class="btn full">ورود</button></div><div class="item" onclick="conversation()"><div class="icon">🗣️</div><h3>مکالمه</h3><p class="muted">Touchstone و Viewpoint</p><button class="btn full">ورود</button></div><div class="item" onclick="contest()"><div class="icon">🏆</div><h3>مسابقه</h3><p class="muted">رقابت و کسب XP</p><button class="btn full">ورود</button></div><div class="item" onclick="teachers()"><div class="icon">👨‍🏫</div><h3>اساتید</h3><p class="muted">رزرو کلاس با استاد</p><button class="btn full">مشاهده اساتید</button></div></div>`);
+ render("خانه",`<div class="hero hero3d"><div style="position:relative;z-index:2"><div style="font-size:13px;opacity:.85;letter-spacing:3px;font-weight:bold">WELCOME TO</div><h1>AliNagheli English 🚀</h1><h2>سلام ${esc(S.student?.first_name||"زبان‌آموز")} 👋</h2><p>یادگیری انگلیسی را حرفه‌ای شروع کن.</p><div class="levelBar"><i style="width:${percent}%"></i></div><b style="font-size:15px">⭐ ${xp} XP &nbsp;·&nbsp; 🏅 Level ${level}</b></div></div><div class="grid"><div class="item" onclick="courses()"><div class="icon">📚</div><h3>دروس مدرسه</h3><p class="muted">Prospect و Vision</p><button class="btn full">ورود</button></div><div class="item" onclick="placementTest()"><div class="icon">🎯</div><h3>تعیین سطح</h3><p class="muted">۳۰ سؤال از آسان تا خیلی سخت</p><button class="btn full">شروع تعیین سطح</button></div><div class="item" onclick="sounds()"><div class="icon">🔤</div><h3>حروف و صداها</h3><p class="muted">یادگیری الفبای انگلیسی</p><button class="btn full">ورود</button></div><div class="item" onclick="finalExams()"><div class="icon">📝</div><h3>آزمون نهایی</h3><p class="muted">دهم، یازدهم، دوازدهم</p><button class="btn full">ورود</button></div><div class="item" onclick="conversation()"><div class="icon">🗣️</div><h3>مکالمه</h3><p class="muted">Touchstone و Viewpoint</p><button class="btn full">ورود</button></div><div class="item" onclick="contest()"><div class="icon">🏆</div><h3>مسابقه</h3><p class="muted">رقابت و کسب XP</p><button class="btn full">ورود</button></div><div class="item" onclick="teachers()"><div class="icon">👨‍🏫</div><h3>اساتید</h3><p class="muted">رزرو کلاس با استاد</p><button class="btn full">مشاهده اساتید</button></div></div>`);
+}
+function finalExams(){
+ render("آزمون نهایی",`<div class="card"><h2 style="margin-top:0">📝 سوالات آزمون نهایی</h2><p class="muted">سوالات ترکیبی از لغات و گرامر کل کتاب — برای پایه‌های دهم، یازدهم و دوازدهم</p><div class="grid">${[10,11,12].map(g=>`<div class="item" onclick="startFinalExam(${g})"><div class="icon">📝</div><h3>آزمون نهایی پایه ${g}</h3><p class="muted">${finalExamBank[g].length} سؤال ترکیبی</p><button class="btn full">شروع آزمون</button></div>`).join("")}</div></div>`);
+}
+function startFinalExam(g){
+ const qs=finalExamBank[g].map(x=>{
+  const options=shuffle(x.o.slice());
+  return {q:x.q,options,answer:options.indexOf(x.o[x.a])};
+ });
+ S.quiz={type:"final",title:"آزمون نهایی پایه "+g,grade:g,questions:qs,i:0,correct:0,wrong:0};
+ render("آزمون نهایی پایه "+g,`<div id="finalQuiz"></div>`);
+ quizRender("finalQuiz");
 }
 const teachersData=[{name:"علی ناقلی",degree:"کارشناس ارشد آموزش زبان انگلیسی",phone:"09141892768",icon:"👨‍🏫",text:"با بیش از ۲۰ سال سابقه تدریس مکالمه زبان انگلیسی و مدرس دوره‌های TOEFL, IELTS, FCE, KET, PET, PTE, MCHE, MSRT و برگزارکننده دوره‌های حرفه‌ای TTC"},{name:"الهه باغبانی",degree:"کارشناس ارشد آموزش زبان انگلیسی",phone:"09914312534",icon:"👩‍🏫",text:"با بیش از ۱۰ سال سابقه تدریس مکالمه زبان انگلیسی و دوره‌های بین‌المللی TOEFL, IELTS, KET, PET, PTE, MSRT"}];
 function teachers(){
@@ -1555,7 +1740,7 @@ async function requestTeacher(i){
  }catch(e){alert("ارسال درخواست انجام نشد:\n"+e.message)}
 }
 function sounds(){
- render("حروف و صداها",`<div class="card"><h2 style="margin-top:0">🔤 الفبای انگلیسی و صداها</h2><p class="muted">روی هر حرف کلیک کن تا صدای آن را بشنوی.</p><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">${soundsData.map(s=>`<div class="soundCard" onclick='speak("${s.letter.split(" ")[0]}")'><div class="soundLetter">${esc(s.letter)}</div><div class="soundName">${esc(s.name)}</div><div class="soundEx">${esc(s.sound)}</div><div class="soundEx" style="color:#888;font-weight:normal">${esc(s.ex)}</div></div>`).join("")}</div></div>`);
+ render("حروف و صداها",`<div class="card"><h2 style="margin-top:0">🔤 الفبای انگلیسی و صداها</h2><p class="muted">روی هر حرف کلیک کن تا حرف، نام حرف و مثال‌های آن را بشنوی.</p><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">${soundsData.map(s=>`<div class="soundCard" onclick='speakAll("${s.letter.split(" ")[0]}","${s.ex.replace(/-/g,", ")}")'><div class="soundLetter">${esc(s.letter)}</div><div class="soundName">${esc(s.name)}</div><div class="soundEx">${esc(s.sound)}</div><div class="soundEx" style="color:#888;font-weight:normal">${esc(s.ex)}</div></div>`).join("")}</div></div>`);
 }
 function courses(){
  render("دروس مدرسه",`<div class="card"><h2 style="margin-top:0">📚 کتاب‌های مدرسه</h2><p class="muted">پایه خود را انتخاب کنید.</p><div class="grid">${Object.keys(books).map(g=>`<div class="item" onclick="grade(${g})"><div class="icon">📖</div><h3>پایه ${g}</h3><p class="muted">${esc(books[g].title)}</p><button class="btn full">مشاهده درس‌ها</button></div>`).join("")}</div></div>`);
@@ -1699,7 +1884,7 @@ async function quizFinish(id){
  const total=S.quiz.questions.length;const percent=total?Math.round(S.quiz.correct/total*100):0;
  examRecords.unshift({student:S.student?.phone||"",title:S.quiz.title,score:percent,date:new Date().toISOString()});saveLocal();
  if(S.student){
-  try{await db.from("exam_results").insert({user_id:S.student.auth_user_id,student_name:`${S.student.first_name||""} ${S.student.last_name||""}`,exam_type:S.quiz.type,exam_title:S.quiz.title,lesson:S.lesson+1,score:S.quiz.correct,total,percentage:percent})}catch(e){}
+  try{await db.from("exam_results").insert({user_id:S.student.auth_user_id,student_name:`${S.student.first_name||""} ${S.student.last_name||""}`,exam_type:S.quiz.type,exam_title:S.quiz.title,lesson:S.lesson?S.lesson+1:0,score:S.quiz.correct,total,percentage:percent})}catch(e){}
   await addXP(Math.max(10,percent));
   if(percent>=80)await unlockAchievement("exam_80","امتیاز بالای ۸۰٪");
   if(percent===100)await unlockAchievement("perfect_exam","آزمون کامل");
