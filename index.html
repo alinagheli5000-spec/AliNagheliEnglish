@@ -121,14 +121,11 @@ input:focus,select:focus,textarea:focus{border-color:#7c3aed;background:#fff;box
 </head>
 <body>
 <div id="app"></div>
-<script src="data.js"></script>
 <script>
-if(typeof window.words==="undefined"){window.words={}}
-if(typeof window.grammar==="undefined"){window.grammar={}}
-var words=window.words;
-var grammar=window.grammar;
+/* ==================== داده‌های پایه هفتم ==================== */
+var words={};
+var grammar={};
 
-/* ==================== پایه هفتم: grammar[0..7] و words[0..7] ==================== */
 grammar[0]=[
  ["Capital Letters","My name is Amirreza.","اسم من امیررضا است.","اول حرف جمله، اسم و فامیل باید بزرگ نوشته شود."],
  ["Mrs / Miss / Mr","Narges Ebrahimi / Amir Salehi","خانم نرگس ابراهیمی / آقای امیر صالحی","برای احترام: Mr برای آقایان، Miss برای خانم‌های مجرد، Mrs برای خانم‌های متأهل."],
@@ -304,8 +301,7 @@ words[7]=[
  ["I'd like some tea with my cake.","من دوست دارم کمی چای با کیکم بخورم"],["tomato","گوجه"]
 ];
 
-/* ==================== پایه هشتم: grammar[9..15] و words[9..15] ==================== */
-/* getWordKey(8,1)=9 ، getWordKey(8,2)=10 ... getWordKey(8,7)=15 */
+/* ==================== داده‌های پایه هشتم ==================== */
 grammar[9]=[
  ["Verb to be (am/is/are)","I am ... / We are ... / You are ... / He is ... / She is ... / They are ...","من هستم / ما هستیم / تو هستی / او است / او است / آنها هستند","فعل to be برای بیان هویت، ملیت و وضعیت."],
  ["From + کشور","I am from Iran. / She is from France. / They are from China.","من اهل ایران هستم. / او اهل فرانسه است. / آنها اهل چین هستند.","برای بیان ملیت اصلی (کشور) از from استفاده می‌کنیم."],
@@ -372,9 +368,8 @@ words[9]=[
  ["France","فرانسه"],["Europe","اروپا"],["Are you from Iran?","آیا اهل ایران هستید؟"],
  ["I live in France.","من در فرانسه زندگی می‌کنم"],["Iran","ایران"],["China","چین"],["Brazilian","برزیلی"],
  ["He's from France.","او اهل فرانسه است"],["Where are they from?","آنها اهل کجا هستند؟"],
- ["Chinese","چینی"],["Asia","آسیا"],["British","بریتانیایی"],["guest","مهمان"],["Brazilian","برزیلی"],
- ["nationality","ملیت"],["European","اروپایی"],["French","فرانسوی"],["country","کشور"],
- ["Caspian Sea","دریای خزر"],["Where is he from?","او اهل کجاست؟"],["England","انگلستان"],
+ ["Asia","آسیا"],["British","بریتانیایی"],["guest","مهمان"],["nationality","ملیت"],
+ ["country","کشور"],["Caspian Sea","دریای خزر"],["England","انگلستان"],
  ["I love it.","من دوستش دارم"],["Australian","استرالیایی"],["It's a beautiful country.","این یک کشور زیباست"]
 ];
 words[10]=[
@@ -529,6 +524,15 @@ const soundsData=[
  {letter:"Y y",name:"وای",sound:"ی / آی",ex:"yes - forty - sky"},
  {letter:"Z z",name:"زی",sound:"ز",ex:"zero"}
 ];
+
+/* ==================== Supabase ==================== */
+const SUPABASE_URL="https://kapzyedzjecnfxevjisq.supabase.co";
+const SUPABASE_KEY="sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const ACCESS_FUNCTION=SUPABASE_URL+"/functions/v1/student-access";
+
+let S={student:null,admin:false,grade:null,lesson:null,quiz:null,xp:0,level:1,progress:{},achievements:[],exams:[]};
+let examRecords=JSON.parse(localStorage.getItem("AN_EXAMS")||"[]");
 
 function getWordKey(grade,lessonNumber){
  if(grade===7) return lessonNumber-1;
