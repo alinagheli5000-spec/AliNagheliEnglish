@@ -66,6 +66,10 @@ input:focus,select:focus,textarea:focus{border-color:#7c3aed;background:#fff;box
 .lessonGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
 .lesson{background:linear-gradient(135deg,#faf9ff,#f5f3ff);border:1px solid rgba(221,214,254,.8);border-radius:20px;padding:20px;transition:all .25s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden}
 .lesson:hover{background:linear-gradient(135deg,#f5f3ff,#ede9fe);transform:translateY(-3px);box-shadow:0 12px 30px rgba(109,40,217,.15);border-color:#c4b5fd}
+.lesson.locked{background:linear-gradient(135deg,#f3f4f6,#e5e7eb);border-color:#d1d5db;opacity:.9}
+.lesson.locked:hover{transform:none;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.lesson.locked .lessonNo{background:linear-gradient(135deg,#9ca3af,#6b7280);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.lockBadge{position:absolute;top:14px;left:14px;font-size:24px}
 .lessonNo{font-size:34px;background:linear-gradient(135deg,#6d28d9,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;font-weight:bold}
 .tabs2{display:flex;gap:8px;overflow:auto;margin-bottom:18px;padding-bottom:4px}
 .tabs2::-webkit-scrollbar{display:none}
@@ -115,6 +119,9 @@ input:focus,select:focus,textarea:focus{border-color:#7c3aed;background:#fff;box
 .soundLetter{font-size:32px;font-weight:bold;color:#6d28d9;direction:ltr}
 .soundName{font-size:12px;color:#888;margin-top:4px;direction:ltr}
 .soundEx{font-size:11px;color:#6d28d9;margin-top:6px;direction:ltr;font-weight:bold}
+.payBox{background:linear-gradient(135deg,#fff7ed,#ffedd5);border:2px solid #fdba74;border-radius:22px;padding:22px;margin:14px 0;text-align:center}
+.payCard{font-size:24px;font-weight:bold;direction:ltr;letter-spacing:2px;color:#9a3412;background:#fff;border-radius:14px;padding:14px;margin:12px 0;border:2px dashed #fb923c;user-select:all}
+.payAmount{font-size:20px;font-weight:bold;color:#c2410c;margin:10px 0}
 @media(min-width:900px){body{padding-bottom:24px}.bottom{top:auto;bottom:20px;left:50%;right:auto;transform:translateX(-50%);width:min(700px,calc(100% - 40px));height:74px;border-radius:22px;border:1px solid rgba(221,214,254,.8);box-shadow:0 12px 40px rgba(109,40,217,.2)}}
 @media(max-width:600px){.container{padding:12px}.card{padding:18px;border-radius:20px}.hero{padding:24px;border-radius:24px}.hero h1{font-size:26px}.hero h2{font-size:17px}.icon{font-size:38px}.lessonGrid{grid-template-columns:1fr}.wordGrid{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}.score{font-size:52px}.loginCard{padding:24px}}
 </style>
@@ -1392,7 +1399,14 @@ const SUPABASE_KEY="sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const ACCESS_FUNCTION=SUPABASE_URL+"/functions/v1/student-access";
 
-let S={student:null,admin:false,grade:null,lesson:null,quiz:null,xp:0,level:1,progress:{},achievements:[],exams:[]};
+/* ==================== اطلاعات پرداخت ==================== */
+const PAYMENT_CARD="6219-8619-3240-5540";
+const PAYMENT_AMOUNT_RIAL=10000000;
+const PAYMENT_AMOUNT_LABEL="۱۰,۰۰۰,۰۰۰ ریال";
+const PAYMENT_OWNER="علی ناقلی";
+
+/* ==================== state ==================== */
+let S={student:null,admin:false,grade:null,lesson:null,quiz:null,xp:0,level:1,progress:{},achievements:[],exams:[],unlocks:{}};
 let examRecords=JSON.parse(localStorage.getItem("AN_EXAMS")||"[]");
 
 /* ==================== بانک سوال آزمون نهایی ==================== */
@@ -1556,6 +1570,7 @@ const finalExamBank={
 ]
 };
 
+/* ==================== توابع کمکی ==================== */
 function getWordKey(grade,lessonNumber){
  if(grade===7) return lessonNumber-1;
  if(grade===8) return 8+lessonNumber;
@@ -1640,6 +1655,97 @@ async function saveProgress(lessonId,progress,completed){
  S.progress[lessonId]={progress,completed};
  try{await db.from("student_progress").upsert({student_id:S.student.id,lesson_id:lessonId,progress,completed,completed_at:completed?new Date().toISOString():null},{onConflict:"student_id,lesson_id"})}catch(e){}
 }
+
+/* ==================== قفل دروس ==================== */
+function isUnlocked(grade,lessonIndex){
+  if(Number(lessonIndex)===0) return true;
+  return !!S.unlocks[`${grade}-${lessonIndex}`];
+}
+
+async function loadUnlocks(){
+  S.unlocks={};
+  for(let g=7; g<=12; g++){ S.unlocks[`${g}-0`]=true; }
+  if(!S.student) return;
+  try{
+    const r=await db.from("lesson_unlocks").select("grade,lesson_index").eq("student_id", S.student.id);
+    (r.data||[]).forEach(x=>{ S.unlocks[`${x.grade}-${x.lesson_index}`]=true; });
+  }catch(e){}
+  try{
+    const local=JSON.parse(localStorage.getItem("AN_UNLOCKS_"+S.student.id)||"{}");
+    Object.keys(local).forEach(k=>{ if(local[k]) S.unlocks[k]=true; });
+  }catch(e){}
+}
+
+async function unlockLesson(grade,lessonIndex,paymentRef){
+  const key=`${grade}-${lessonIndex}`;
+  S.unlocks[key]=true;
+  try{
+    if(S.student){
+      const local=JSON.parse(localStorage.getItem("AN_UNLOCKS_"+S.student.id)||"{}");
+      local[key]=true;
+      localStorage.setItem("AN_UNLOCKS_"+S.student.id,JSON.stringify(local));
+    }
+  }catch(e){}
+  if(S.student){
+    try{
+      await db.from("lesson_unlocks").upsert({
+        student_id: S.student.id,
+        grade: Number(grade),
+        lesson_index: Number(lessonIndex),
+        payment_ref: paymentRef||null,
+        unlocked_at: new Date().toISOString()
+      },{onConflict:"student_id,grade,lesson_index"});
+    }catch(e){}
+  }
+  return true;
+}
+
+function showPayment(grade,lessonIndex){
+  const lessonTitle=books[grade].lessons[lessonIndex];
+  render("پرداخت و باز کردن قفل",`
+    <div class="card">
+      <button class="btn secondary" onclick="grade(${grade})">← بازگشت</button>
+      <h2 style="margin-top:14px">🔓 باز کردن قفل درس</h2>
+      <p class="muted">درس: <b>${esc(lessonTitle)}</b> — پایه ${grade}</p>
+      <div class="payBox">
+        <div style="font-size:44px">💳</div>
+        <h3 style="margin:8px 0">پرداخت مبلغ</h3>
+        <div class="payAmount">${PAYMENT_AMOUNT_LABEL}</div>
+        <p class="muted" style="margin:6px 0">به شماره کارت زیر واریز کنید:</p>
+        <div class="payCard" onclick="copyCard()">${PAYMENT_CARD}</div>
+        <p class="muted">به نام: <b>${esc(PAYMENT_OWNER)}</b></p>
+        <button class="btn secondary" onclick="copyCard()">📋 کپی شماره کارت</button>
+      </div>
+      <div class="card" style="background:#f0fdf4;border-color:#86efac">
+        <h3 style="margin-top:0;color:#166534">✅ پس از پرداخت</h3>
+        <p class="muted">پس از واریز مبلغ، روی دکمه زیر بزنید. قفل درس باز می‌شود.</p>
+        <label>کد پیگیری / شماره رسید (اختیاری)</label>
+        <input id="payRef" placeholder="مثال: 123456789">
+        <button class="btn success full" style="margin-top:12px" onclick="confirmPayment(${grade},${lessonIndex})">✅ پرداخت انجام شد — باز کردن قفل</button>
+      </div>
+    </div>
+  `);
+}
+
+function copyCard(){
+  try{
+    navigator.clipboard.writeText(PAYMENT_CARD.replace(/-/g,""));
+    alert("شماره کارت کپی شد:\n"+PAYMENT_CARD);
+  }catch(e){
+    alert("شماره کارت:\n"+PAYMENT_CARD);
+  }
+}
+
+async function confirmPayment(grade,lessonIndex){
+  const ref=(document.getElementById("payRef")?.value||"").trim();
+  const ok=confirm("آیا از واریز مبلغ "+PAYMENT_AMOUNT_LABEL+" به شماره کارت زیر مطمئن هستید؟\n\n"+PAYMENT_CARD+"\n\nبا تأیید، قفل درس باز می‌شود.");
+  if(!ok) return;
+  await unlockLesson(grade,lessonIndex,ref||("manual-"+Date.now()));
+  alert("✅ قفل درس با موفقیت باز شد!");
+  grade(grade);
+}
+
+/* ==================== ورود ==================== */
 function login(){
  document.body.innerHTML=`<div class="login"><div class="loginCard"><div style="text-align:center"><div style="font-size:60px">📚</div><h2 style="margin:12px 0 4px;background:linear-gradient(135deg,#6d28d9,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:26px">AliNagheli English</h2><p class="muted">سامانه آموزش زبان انگلیسی</p></div><div class="tabs"><button id="st" class="tab active" onclick="loginTab('student')">🎓 زبان‌آموز</button><button id="ad" class="tab" onclick="loginTab('admin')">👨‍💼 مدیر</button></div><div id="lf"></div></div></div>`;
  loginTab("student");
@@ -1663,7 +1769,9 @@ async function studentLogin(){
   const auth=await db.auth.signInWithPassword({email:String(email).trim(),password});
   if(auth.error)throw new Error("رمز عبور صحیح نیست.");
   S.student=student;S.admin=false;
-  await loadStudentStats();home();
+  await loadStudentStats();
+  await loadUnlocks();
+  home();
  }catch(e){alert(e?.message||"ورود ناموفق بود.")}
 }
 async function adminLogin(){
@@ -1697,6 +1805,8 @@ async function register(){
   login();
  }catch(e){try{await db.auth.signOut()}catch(_){}alert("ثبت‌نام انجام نشد:\n"+(e?.message||"خطای نامشخص"))}
 }
+
+/* ==================== layout ==================== */
 function header(title){
  return `<header class="header"><div class="headerIn"><div><div class="logo">${esc(title)}</div><div class="logoSub">ALINAGHELI ENGLISH</div></div><button onclick="logout()" style="background:rgba(255,255,255,.15);color:white;border:0;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:bold;border:1px solid rgba(255,255,255,.15)">🚪 خروج</button></div></header>`;
 }
@@ -1704,6 +1814,8 @@ function nav(){
  return `<div class="bottom"><div class="bottomIn"><button class="nav" onclick="home()"><b>🏠</b>خانه</button><button class="nav" onclick="courses()"><b>📚</b>دروس</button><button class="nav" onclick="conversation()"><b>🗣️</b>مکالمه</button><button class="nav" onclick="sounds()"><b>🔤</b>صداها</button><button class="nav" onclick="finalExams()"><b>📝</b>آزمون</button><button class="nav" onclick="contest()"><b>🏆</b>مسابقه</button><button class="nav" onclick="profile()"><b>👤</b>پروفایل</button></div></div>`;
 }
 function render(title,content){document.body.innerHTML=header(title)+`<main class="container">${content}</main>`+nav()}
+
+/* ==================== صفحات ==================== */
 function home(){
  const xp=S.xp||0,level=S.level||calculateLevel(xp);
  const base=xpForLevel(level),next=xpForLevel(level+1);
@@ -1745,10 +1857,22 @@ function sounds(){
 function courses(){
  render("دروس مدرسه",`<div class="card"><h2 style="margin-top:0">📚 کتاب‌های مدرسه</h2><p class="muted">پایه خود را انتخاب کنید.</p><div class="grid">${Object.keys(books).map(g=>`<div class="item" onclick="grade(${g})"><div class="icon">📖</div><h3>پایه ${g}</h3><p class="muted">${esc(books[g].title)}</p><button class="btn full">مشاهده درس‌ها</button></div>`).join("")}</div></div>`);
 }
+
+/* ==================== تغییر grade برای قفل ==================== */
 function grade(g){
  S.grade=Number(g);
  const list=books[g].lessons.map((x,i)=>{
+  const unlocked=isUnlocked(g,i);
   const p=S.progress[`${g}-${i}`]||{progress:0,completed:false};
+  if(!unlocked){
+   return `<div class="lesson locked">
+    <div class="lockBadge">🔒</div>
+    <div class="lessonNo">${i+1}</div>
+    <h3 style="margin:8px 0 6px">${esc(x)}</h3>
+    <p class="muted">این درس قفل است</p>
+    <button class="btn warning full" onclick="showPayment(${g},${i})">🔓 باز کردن قفل — ${PAYMENT_AMOUNT_LABEL}</button>
+   </div>`;
+  }
   return `<div class="lesson">
    <div class="lessonNo">${i+1}</div>
    <h3 style="margin:8px 0 6px">${esc(x)}</h3>
@@ -1762,8 +1886,9 @@ function grade(g){
    </div>
   </div>`;
  }).join("");
- render("پایه "+g,`<div class="card"><button class="btn secondary" onclick="courses()">← بازگشت</button><h2>پایه ${g} — ${esc(books[g].title)}</h2><div class="lessonGrid">${list}</div></div>`);
+ render("پایه "+g,`<div class="card"><button class="btn secondary" onclick="courses()">← بازگشت</button><h2>پایه ${g} — ${esc(books[g].title)}</h2><p class="muted">درس ۱ هر پایه رایگان است. برای باز کردن بقیه دروس، روی دکمه 🔓 بزنید.</p><div class="lessonGrid">${list}</div></div>`);
 }
+
 function wordsHtml(grade,lessonNumber){
  const list=getWords(grade,lessonNumber);
  if(!list.length)return '<p class="muted">واژگانی برای این درس ثبت نشده است.</p>';
@@ -1783,7 +1908,7 @@ function grammarHtml(grade,lessonNumber){
  return h;
 }
 function openLesson(i){
- S.lesson=i;
+ if(!isUnlocked(S.grade,i)){ alert("🔒 این درس قفل است. ابتدا آن را باز کنید."); return; }
  const gradeNum=S.grade;
  const no=i+1;
  const book=books[gradeNum];
@@ -1811,7 +1936,7 @@ function openLesson(i){
  </div>`);
 }
 function openLessonWords(i){
- S.lesson=i;
+ if(!isUnlocked(S.grade,i)){ alert("🔒 این درس قفل است. ابتدا آن را باز کنید."); return; }
  const gradeNum=S.grade;
  const no=i+1;
  const wl=getWords(gradeNum,no);
@@ -1824,7 +1949,7 @@ function openLessonWords(i){
  </div>`);
 }
 function openLessonGrammar(i){
- S.lesson=i;
+ if(!isUnlocked(S.grade,i)){ alert("🔒 این درس قفل است. ابتدا آن را باز کنید."); return; }
  const gradeNum=S.grade;
  const no=i+1;
  render("گرامر درس "+(i+1),`
@@ -1941,6 +2066,8 @@ async function profile(){
  const exams=S.exams||[];
  render("پروفایل من",`<div class="card"><div style="text-align:center"><div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;font-size:44px;margin:auto;box-shadow:0 10px 30px rgba(109,40,217,.2);border:4px solid #fff">👤</div><h2 style="margin:14px 0 6px">${esc(S.student?.first_name||"")} ${esc(S.student?.last_name||"")}</h2><p class="muted">📱 ${esc(S.student?.phone||"")}<br>🎓 پایه ${esc(S.student?.level||"-")}</p></div></div><div class="grid"><div class="profileStat">⭐ XP<b>${S.xp}</b></div><div class="profileStat">🏅 Level<b>${S.level}</b></div><div class="profileStat">📚 تکمیل‌شده<b>${completed}</b></div><div class="profileStat">📊 پیشرفت<b>${overall}%</b></div></div><div class="card"><h3 style="margin-top:0">📈 پیشرفت درسی</h3><div class="levelBar"><i style="width:${overall}%"></i></div><h2 style="text-align:center;color:#6d28d9;margin:10px 0">${overall}%</h2><p class="muted">پیشرفت شما بر اساس درس‌هایی که مطالعه و تکمیل کرده‌اید محاسبه می‌شود.</p></div><div class="card"><h3 style="margin-top:0">📝 سوابق آزمون‌ها</h3>${exams.length?exams.map(e=>`<div class="examRow"><b>${esc(e.exam_title||e.exam_type||"آزمون")}</b><div class="muted">${e.created_at?new Date(e.created_at).toLocaleDateString("fa-IR"):""}</div><div class="examScore">${e.percentage??(e.total?Math.round(e.score/e.total*100):0)}٪</div><div class="muted">${e.score??"-"} از ${e.total??"-"} پاسخ درست</div></div>`).join(""):`<p class="muted">هنوز آزمونی ثبت نشده است.</p>`}</div><div class="card"><h3 style="margin-top:0">🏆 دستاوردها</h3>${S.achievements.length?S.achievements.map(a=>`<span class="badge">🏆 ${esc(a.title)}</span>`).join(""):`<p class="muted">هنوز دستاوردی کسب نکرده‌ای.</p>`}</div>`);
 }
+
+/* ==================== پنل مدیر ==================== */
 async function admin(){
  try{
   const r=await db.from("students").select("*").order("id",{ascending:false});
@@ -1950,12 +2077,43 @@ async function admin(){
  }catch(e){document.body.innerHTML=`<div class="container"><div class="card"><h2>خطا در پنل مدیر</h2><p>${esc(e.message)}</p><button class="btn" onclick="admin()">تلاش مجدد</button></div></div>`}
 }
 function renderAdmin(students,requests){
- document.body.innerHTML=`${header("پنل مدیریت")}<main class="container"><div class="hero"><h2 style="margin-top:0">👨‍💼 پنل مدیریت</h2><p>مدیریت زبان‌آموزان و درخواست‌های کلاس</p></div><div class="grid"><div class="item"><div class="icon">👥</div><h3>کل</h3><b style="font-size:26px;color:#6d28d9">${students.length}</b></div><div class="item"><div class="icon">⏳</div><h3>در انتظار</h3><b style="font-size:26px;color:#f59e0b">${students.filter(x=>x.status==="waiting").length}</b></div><div class="item"><div class="icon">✅</div><h3>تأیید شده</h3><b style="font-size:26px;color:#22c55e">${students.filter(x=>["registered","approved"].includes(x.status)).length}</b></div><div class="item"><div class="icon">📅</div><h3>درخواست کلاس</h3><b style="font-size:26px;color:#6d28d9">${requests.filter(x=>x.status==="pending").length}</b></div></div><div class="card"><h3 style="margin-top:0">📅 درخواست‌های رزرو کلاس</h3>${requests.length?requests.map(x=>`<div class="adminRow"><b>${esc(x.student_name||"")}</b><div class="muted">📱 ${esc(x.student_phone||"")}<br>👨‍🏫 استاد: ${esc(x.teacher_name||"")}<br>📅 ${esc(x.requested_date||"")} ⏰ ${esc(x.requested_time||"")}<br>📘 ${esc(x.class_type||"")}<br>📝 ${esc(x.note||"")}</div><div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">${x.status==="pending"?`<button class="btn success" onclick="respondRequest('${x.id}','approved')">✅ تأیید</button><button class="btn danger" onclick="respondRequest('${x.id}','rejected')">❌ رد</button>`:`<b>${x.status==="approved"?"✅ تأیید شده":"❌ رد شده"}</b>`}</div></div>`).join(""):`<p class="muted">درخواستی وجود ندارد.</p>`}</div><div class="card"><h3 style="margin-top:0">👥 ثبت‌نام‌ها</h3>${students.length?students.map(x=>`<div class="adminRow"><b>${esc(x.first_name)} ${esc(x.last_name)}</b><div class="muted">📱 ${esc(x.phone||"")}<br>🎓 پایه: ${esc(x.level||"-")}<br>✉️ ${esc(x.login_email||"-")}</div><div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">${x.status==="waiting"?`<button class="btn success" onclick="approve('${x.id}')">✅ تأیید</button><button class="btn danger" onclick="rejectStudent('${x.id}')">❌ رد</button>`:x.status==="registered"||x.status==="approved"?`<span style="color:#22c55e;font-weight:bold">✅ تأیید شده</span><button class="btn danger" onclick="rejectStudent('${x.id}')">رد / حذف</button>`:`<span style="color:#ef4444;font-weight:bold">❌ رد شده</span><button class="btn success" onclick="approve('${x.id}')">تأیید مجدد</button>`}</div></div>`).join(""):`<p class="muted">ثبت‌نامی وجود ندارد.</p>`}</div><button class="btn secondary full" onclick="logout()">خروج</button></main>`;
+ document.body.innerHTML=`${header("پنل مدیریت")}<main class="container"><div class="hero"><h2 style="margin-top:0">👨‍💼 پنل مدیریت</h2><p>مدیریت زبان‌آموزان و درخواست‌های کلاس</p></div><div class="grid"><div class="item"><div class="icon">👥</div><h3>کل</h3><b style="font-size:26px;color:#6d28d9">${students.length}</b></div><div class="item"><div class="icon">⏳</div><h3>در انتظار</h3><b style="font-size:26px;color:#f59e0b">${students.filter(x=>x.status==="waiting").length}</b></div><div class="item"><div class="icon">✅</div><h3>تأیید شده</h3><b style="font-size:26px;color:#22c55e">${students.filter(x=>["registered","approved"].includes(x.status)).length}</b></div><div class="item"><div class="icon">📅</div><h3>درخواست کلاس</h3><b style="font-size:26px;color:#6d28d9">${requests.filter(x=>x.status==="pending").length}</b></div></div><div class="card"><h3 style="margin-top:0">📅 درخواست‌های رزرو کلاس</h3>${requests.length?requests.map(x=>`<div class="adminRow"><b>${esc(x.student_name||"")}</b><div class="muted">📱 ${esc(x.student_phone||"")}<br>👨‍🏫 استاد: ${esc(x.teacher_name||"")}<br>📅 ${esc(x.requested_date||"")} ⏰ ${esc(x.requested_time||"")}<br>📘 ${esc(x.class_type||"")}<br>📝 ${esc(x.note||"")}</div><div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">${x.status==="pending"?`<button class="btn success" onclick="respondRequest('${x.id}','approved')">✅ تأیید</button><button class="btn danger" onclick="respondRequest('${x.id}','rejected')">❌ رد</button>`:`<b>${x.status==="approved"?"✅ تأیید شده":"❌ رد شده"}</b>`}</div></div>`).join(""):`<p class="muted">درخواستی وجود ندارد.</p>`}</div><div class="card"><h3 style="margin-top:0">👥 ثبت‌نام‌ها</h3>${students.length?students.map(x=>`<div class="adminRow"><b>${esc(x.first_name)} ${esc(x.last_name)}</b><div class="muted">📱 ${esc(x.phone||"")}<br>🎓 پایه: ${esc(x.level||"-")}<br>✉️ ${esc(x.login_email||"-")}</div><div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">${x.status==="waiting"?`<button class="btn success" onclick="approve('${x.id}')">✅ تأیید</button><button class="btn danger" onclick="rejectStudent('${x.id}')">❌ رد</button>`:x.status==="registered"||x.status==="approved"?`<span style="color:#22c55e;font-weight:bold">✅ تأیید شده</span><button class="btn danger" onclick="rejectStudent('${x.id}')">رد / حذف</button>`:`<span style="color:#ef4444;font-weight:bold">❌ رد شده</span><button class="btn success" onclick="approve('${x.id}')">تأیید مجدد</button>`}</div></div>`).join(""):`<p class="muted">ثبت‌نامی وجود ندارد.</p>`}</div><div class="card"><h3 style="margin-top:0">🔓 مدیریت قفل دروس</h3><p class="muted">برای هر زبان‌آموز می‌توانید قفل هر درس را به صورت دستی باز یا بسته کنید.</p><label>انتخاب زبان‌آموز</label><select id="adminStudentSelect" onchange="adminLoadUnlocks(this.value)"><option value="">-- انتخاب کنید --</option>${students.map(s=>`<option value="${s.id}">${esc(s.first_name||"")} ${esc(s.last_name||"")} — ${esc(s.phone||"")}</option>`).join("")}</select><div id="adminUnlockArea" style="margin-top:14px"></div></div><button class="btn secondary full" onclick="logout()">خروج</button></main>`;
+}
+async function adminLoadUnlocks(studentId){
+ const area=document.getElementById("adminUnlockArea");
+ if(!area) return;
+ if(!studentId){ area.innerHTML=""; return; }
+ let unlocked={};
+ try{
+  const r=await db.from("lesson_unlocks").select("grade,lesson_index").eq("student_id",studentId);
+  (r.data||[]).forEach(x=>{ unlocked[`${x.grade}-${x.lesson_index}`]=true; });
+ }catch(e){}
+ let html="";
+ for(let g=7; g<=12; g++){
+  html+=`<h4 style="margin:14px 0 6px;color:#5b21b6">پایه ${g}</h4><div style="display:flex;flex-wrap:wrap;gap:6px">`;
+  books[g].lessons.forEach((les,i)=>{
+   const isUn= i===0 || unlocked[`${g}-${i}`];
+   html+=`<button class="btn ${isUn?'success':'secondary'}" style="font-size:11px;padding:8px 10px" onclick="adminToggleUnlock('${studentId}',${g},${i},${!isUn})" title="${esc(les)}">${i+1}. ${isUn?'🔓':'🔒'}</button>`;
+  });
+  html+=`</div>`;
+ }
+ area.innerHTML=html;
+}
+async function adminToggleUnlock(studentId,grade,lessonIndex,unlock){
+ if(lessonIndex===0){ alert("درس ۱ همیشه باز است."); return; }
+ try{
+  if(unlock){
+   await db.from("lesson_unlocks").upsert({student_id:studentId,grade:Number(grade),lesson_index:Number(lessonIndex),payment_ref:"admin",unlocked_at:new Date().toISOString()},{onConflict:"student_id,grade,lesson_index"});
+  }else{
+   await db.from("lesson_unlocks").delete().eq("student_id",studentId).eq("grade",grade).eq("lesson_index",lessonIndex);
+  }
+ }catch(e){ alert("خطا: "+e.message); }
+ adminLoadUnlocks(studentId);
 }
 async function respondRequest(id,status){try{const r=await db.from("teacher_requests").update({status}).eq("id",id);if(r.error)throw r.error;admin()}catch(e){alert("خطا:\n"+e.message)}}
 async function approve(id){try{const r=await db.from("students").update({status:"registered"}).eq("id",id);if(r.error)throw r.error;admin()}catch(e){alert("خطا در تأیید:\n"+e.message)}}
 async function rejectStudent(id){try{const r=await db.from("students").update({status:"rejected"}).eq("id",id);if(r.error)throw r.error;admin()}catch(e){alert("خطا:\n"+e.message)}}
-async function logout(){try{await db.auth.signOut()}catch(e){}S={student:null,admin:false,grade:null,lesson:null,quiz:null,xp:0,level:1,progress:{},achievements:[],exams:[]};login()}
+async function logout(){try{await db.auth.signOut()}catch(e){}S={student:null,admin:false,grade:null,lesson:null,quiz:null,xp:0,level:1,progress:{},achievements:[],exams:[],unlocks:{}};login()}
 async function startup(){
  try{
   const r=await db.auth.getSession();
@@ -1964,7 +2122,7 @@ async function startup(){
   const user=session.user;
   if((user.email||"").toLowerCase()==="alinagheli@gmail.com"){S.admin=true;admin();return}
   const st=await db.from("students").select("*").eq("auth_user_id",user.id).maybeSingle();
-  if(st.data&&["registered","approved"].includes(st.data.status)){S.student=st.data;await loadStudentStats();home();return}
+  if(st.data&&["registered","approved"].includes(st.data.status)){S.student=st.data;await loadStudentStats();await loadUnlocks();home();return}
   await db.auth.signOut();login();
  }catch(e){try{await db.auth.signOut()}catch(_){}login()}
 }
