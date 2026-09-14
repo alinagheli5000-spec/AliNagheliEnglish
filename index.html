@@ -36,7 +36,7 @@ button:active{transform:scale(.97)}
 .logo3d-lg{width:190px;height:190px}
 .logo3d-xl{width:240px;height:240px}
 
-/* ============ Header Buttons (زرق و برق‌دار) ============ */
+/* ============ Header Buttons ============ */
 .header{background:linear-gradient(135deg,#4c1d95 0%,#6d28d9 50%,#a855f7 100%);color:#fff;padding:12px 16px;position:sticky;top:0;z-index:100;box-shadow:0 8px 32px rgba(109,40,217,.25);border-bottom:1px solid rgba(255,255,255,.1)}
 .headerIn{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center}
 .brandBox{display:flex;align-items:center;gap:12px}
@@ -136,7 +136,7 @@ input:focus,select:focus,textarea:focus{border-color:#7c3aed;background:var(--ca
 .nav:hover{background:var(--bg-grad-2);color:var(--primary)}
 .nav.active{color:var(--primary);font-weight:700;background:var(--bg-grad-2)}
 
-/* ============ Lesson Cards with Red Minimal Lock ============ */
+/* ============ Lesson Cards ============ */
 .lessonGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
 .lesson{background:linear-gradient(135deg,var(--card-bg),var(--bg-grad-1));border:1px solid var(--card-border);border-radius:20px;padding:20px;transition:all .25s;position:relative;overflow:hidden}
 .lesson:hover{background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));transform:translateY(-3px);box-shadow:0 12px 30px rgba(109,40,217,.15);border-color:#c4b5fd}
@@ -308,6 +308,187 @@ input:focus,select:focus,textarea:focus{border-color:#7c3aed;background:var(--ca
 .pcalDay.empty{background:transparent;cursor:default;pointer-events:none}
 .pcalDay.today{border:2px solid var(--accent-pink)}
 
+/* ============================================================
+   🐧 پنگوئن بامزه AliNagheli English 🐧
+   ============================================================ */
+.penguinWrap{
+  position:fixed;
+  bottom:100px;
+  right:20px;
+  z-index:9998;
+  width:110px;
+  height:140px;
+  cursor:pointer;
+  user-select:none;
+  -webkit-user-select:none;
+  touch-action:none;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  filter:drop-shadow(0 12px 24px rgba(109,40,217,.4));
+  animation:penguinIdle 3s ease-in-out infinite;
+}
+.penguinWrap:hover{transform:scale(1.08) rotate(-2deg)}
+.penguinWrap:active{transform:scale(.95)}
+.penguinWrap.hidden{display:none}
+.penguinWrap.dragging{animation:none;cursor:grabbing;transition:none}
+
+/* حباب صحبت */
+.penguinBubble{
+  position:absolute;
+  bottom:100%;
+  right:0;
+  margin-bottom:10px;
+  background:#fff;
+  color:#171717;
+  padding:12px 16px;
+  border-radius:18px;
+  border-bottom-right-radius:4px;
+  font-size:12px;
+  font-weight:700;
+  box-shadow:0 8px 24px rgba(0,0,0,.2);
+  border:2px solid #ddd6fe;
+  max-width:180px;
+  min-width:120px;
+  line-height:1.6;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(10px) scale(.8);
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+  z-index:10;
+  direction:rtl;
+  text-align:right;
+}
+.penguinBubble:after{
+  content:"";
+  position:absolute;
+  bottom:-10px;
+  right:24px;
+  width:0;
+  height:0;
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-top:10px solid #fff;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.08));
+}
+.penguinBubble.show{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0) scale(1);
+}
+.penguinBubble:before{
+  content:"🐧";
+  position:absolute;
+  top:-14px;
+  right:-8px;
+  font-size:20px;
+  animation:penguinBubbleWiggle .8s ease-in-out infinite;
+}
+@keyframes penguinBubbleWiggle{
+  0%,100%{transform:rotate(-10deg)}
+  50%{transform:rotate(10deg)}
+}
+
+/* بدنه پنگوئن */
+.penguinBody{
+  width:100%;
+  height:100%;
+  animation:penguinWiggle 2.4s ease-in-out infinite;
+  transform-origin:bottom center;
+}
+@keyframes penguinIdle{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+@keyframes penguinWiggle{
+  0%,100%{transform:rotate(-3deg)}
+  50%{transform:rotate(3deg)}
+}
+
+/* پرش هنگام کلیک */
+.penguinWrap.jumping{
+  animation:penguinJump .7s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes penguinJump{
+  0%{transform:translateY(0) scale(1)}
+  30%{transform:translateY(-40px) scale(1.15) rotate(-8deg)}
+  50%{transform:translateY(-50px) scale(1.1) rotate(0deg)}
+  70%{transform:translateY(-30px) scale(1.12) rotate(8deg)}
+  100%{transform:translateY(0) scale(1) rotate(0deg)}
+}
+
+/* قلب‌های شناور */
+.penguinHeart{
+  position:absolute;
+  font-size:20px;
+  pointer-events:none;
+  animation:heartFloat 1.5s ease-out forwards;
+  z-index:5;
+}
+@keyframes heartFloat{
+  0%{opacity:0;transform:translateY(0) scale(0)}
+  20%{opacity:1;transform:translateY(-10px) scale(1.3)}
+  100%{opacity:0;transform:translateY(-80px) scale(.5)}
+}
+
+/* دکمه بازکردن مجدد */
+.penguinRestore{
+  position:fixed;
+  bottom:100px;
+  right:20px;
+  z-index:9998;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#6d28d9,#a855f7);
+  color:#fff;
+  border:3px solid #fff;
+  box-shadow:0 10px 30px rgba(109,40,217,.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  cursor:pointer;
+  animation:penguinIdle 3s ease-in-out infinite;
+}
+.penguinRestore.show{display:flex}
+.penguinRestore:hover{transform:scale(1.1)}
+
+/* دکمه بستن پنگوئن */
+.penguinClose{
+  position:absolute;
+  top:-8px;
+  left:-8px;
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#ef4444,#dc2626);
+  color:#fff;
+  border:2px solid #fff;
+  font-size:14px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(239,68,68,.5);
+  opacity:0;
+  transition:opacity .2s;
+  z-index:20;
+  line-height:1;
+}
+.penguinWrap:hover .penguinClose{opacity:1}
+
+/* روی موبایل کوچیک‌تر */
+@media(max-width:600px){
+  .penguinWrap{width:88px;height:112px;bottom:100px;right:12px}
+  .penguinBubble{max-width:150px;font-size:11px;padding:10px 12px}
+  .penguinRestore{width:48px;height:48px;bottom:100px;right:12px;font-size:24px}
+}
+
+@media(min-width:900px){
+  .penguinWrap{bottom:110px}
+  .penguinRestore{bottom:110px}
+}
+
 @media(min-width:900px){body{padding-bottom:24px}.bottom{top:auto;bottom:20px;left:50%;right:auto;transform:translateX(-50%);width:min(700px,calc(100% - 40px));height:74px;border-radius:22px;border:1px solid var(--card-border);box-shadow:0 12px 40px rgba(109,40,217,.2)}.floatWhats{bottom:110px}}
 @media(max-width:600px){.container{padding:12px}.card{padding:18px;border-radius:20px}.hero{padding:24px;border-radius:24px}.hero h1{font-size:26px}.hero h2{font-size:17px}.lessonGrid{grid-template-columns:1fr}.wordGrid{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}.score{font-size:52px}.loginCard{padding:24px}.landingHero{padding:50px 16px 70px}.logo3d-xl{width:180px;height:180px}.splash .logo3d{width:180px;height:180px}.gameWord{font-size:32px}.gameOptions{grid-template-columns:1fr}.gameEmojiBig{font-size:90px}.dailyTipBox .tipTitle{font-size:24px}}
 </style>
@@ -320,8 +501,95 @@ input:focus,select:focus,textarea:focus{border-color:#7c3aed;background:var(--ca
   <div class="brand">AliNagheli English</div>
   <div class="sub">LEARN · PRACTICE · SUCCEED</div>
 </div>
+
+<!-- 🐧 پنگوئن بامزه -->
+<div class="penguinWrap" id="penguinWrap" title="با من حرف بزن!">
+  <div class="penguinClose" onclick="hidePenguin(event)" title="پنهان کردن">✕</div>
+  <div class="penguinBubble" id="penguinBubble"></div>
+  <div class="penguinBody" id="penguinBody">
+    <svg viewBox="0 0 110 140" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="penguinBodyGrad" cx="0.5" cy="0.4" r="0.7">
+          <stop offset="0" stop-color="#3b4252"/>
+          <stop offset="1" stop-color="#1a1f2e"/>
+        </radialGradient>
+        <radialGradient id="penguinBellyGrad" cx="0.5" cy="0.4" r="0.6">
+          <stop offset="0" stop-color="#ffffff"/>
+          <stop offset="1" stop-color="#e5e7eb"/>
+        </radialGradient>
+        <radialGradient id="penguinCheek" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#fca5a5" stop-opacity="0.9"/>
+          <stop offset="1" stop-color="#fca5a5" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="penguinBeak" cx="0.3" cy="0.2" r="0.8">
+          <stop offset="0" stop-color="#fbbf24"/>
+          <stop offset="1" stop-color="#f59e0b"/>
+        </radialGradient>
+        <filter id="penguinShadow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+          <feOffset dx="0" dy="4"/>
+          <feComponentTransfer><feFuncA type="linear" slope="0.3"/></feComponentTransfer>
+          <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- سایه زیر پنگوئن -->
+      <ellipse cx="55" cy="135" rx="35" ry="5" fill="#000" opacity="0.15"/>
+
+      <!-- بدن پنگوئن -->
+      <g filter="url(#penguinShadow)">
+        <!-- بال چپ -->
+        <ellipse cx="18" cy="75" rx="10" ry="28" fill="url(#penguinBodyGrad)" transform="rotate(-15 18 75)"/>
+        <!-- بال راست -->
+        <ellipse cx="92" cy="75" rx="10" ry="28" fill="url(#penguinBodyGrad)" transform="rotate(15 92 75)"/>
+        <!-- بدن اصلی -->
+        <ellipse cx="55" cy="78" rx="38" ry="50" fill="url(#penguinBodyGrad)"/>
+        <!-- شکم سفید -->
+        <ellipse cx="55" cy="82" rx="26" ry="40" fill="url(#penguinBellyGrad)"/>
+
+        <!-- سر -->
+        <ellipse cx="55" cy="35" rx="32" ry="30" fill="url(#penguinBodyGrad)"/>
+        <!-- صورت سفید -->
+        <ellipse cx="55" cy="38" rx="24" ry="20" fill="url(#penguinBellyGrad)"/>
+
+        <!-- چشم چپ -->
+        <ellipse cx="44" cy="33" rx="6" ry="7" fill="#fff"/>
+        <ellipse cx="45" cy="34" rx="3.5" ry="4" fill="#1a1f2e"/>
+        <circle cx="44" cy="32" r="1.5" fill="#fff"/>
+        <!-- چشم راست -->
+        <ellipse cx="66" cy="33" rx="6" ry="7" fill="#fff"/>
+        <ellipse cx="65" cy="34" rx="3.5" ry="4" fill="#1a1f2e"/>
+        <circle cx="64" cy="32" r="1.5" fill="#fff"/>
+
+        <!-- لپ‌های صورتی -->
+        <circle cx="36" cy="42" r="5" fill="url(#penguinCheek)"/>
+        <circle cx="74" cy="42" r="5" fill="url(#penguinCheek)"/>
+
+        <!-- منقار -->
+        <path d="M 50 42 L 55 50 L 60 42 Z" fill="url(#penguinBeak)" stroke="#d97706" stroke-width="1"/>
+        <path d="M 50 42 L 60 42" stroke="#d97706" stroke-width="0.8"/>
+
+        <!-- پاها -->
+        <ellipse cx="42" cy="122" rx="12" ry="5" fill="#f59e0b"/>
+        <ellipse cx="68" cy="122" rx="12" ry="5" fill="#f59e0b"/>
+        <!-- پنجه‌ها -->
+        <path d="M 32 122 L 30 125 M 42 124 L 42 127 M 52 122 L 54 125" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M 58 122 L 56 125 M 68 124 L 68 127 M 78 122 L 80 125" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
+
+        <!-- کراوات / پاپیون بامزه -->
+        <path d="M 55 60 L 48 56 L 48 64 Z" fill="#ec4899"/>
+        <path d="M 55 60 L 62 56 L 62 64 Z" fill="#ec4899"/>
+        <circle cx="55" cy="60" r="3" fill="#be185d"/>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- دکمه بازگرداندن پنگوئن -->
+<div class="penguinRestore" id="penguinRestore" onclick="showPenguin()" title="پنگوئن رو برگردون!">🐧</div>
+
 <script>
-/* ==================== لوگوی سه‌بعدی جدید: Ali داخل کتاب ==================== */
+/* ==================== لوگوی سه‌بعدی ==================== */
 function getLogo3D(){
   return `<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -366,74 +634,43 @@ function getLogo3D(){
         <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
       </filter>
     </defs>
-
-    <!-- Glow -->
     <ellipse cx="120" cy="208" rx="100" ry="18" fill="url(#glowR2)"/>
-
-    <!-- Book 3D -->
     <g filter="url(#softShadow2)">
-      <!-- Back cover depth -->
       <path d="M 32 82 Q 32 72 42 72 L 198 72 Q 208 72 208 82 L 208 195 Q 208 205 198 205 L 42 205 Q 32 205 32 195 Z" fill="url(#bookBackG)"/>
-      <!-- Bottom edge -->
       <path d="M 32 195 Q 32 205 42 205 L 198 205 Q 208 205 208 195 L 208 188 Q 208 195 198 195 L 42 195 Q 32 195 32 188 Z" fill="#2e1065"/>
-      <!-- Pages right -->
       <path d="M 36 78 L 204 78 L 204 190 Q 204 196 198 196 L 42 196 Q 36 196 36 190 Z" fill="url(#pageEdgeG)"/>
-      <!-- Page lines -->
       <g stroke="#c4b5fd" stroke-width="1.3" opacity="0.55" stroke-linecap="round">
         <line x1="48" y1="92" x2="192" y2="92"/>
         <line x1="48" y1="104" x2="180" y2="104"/>
         <line x1="48" y1="116" x2="195" y2="116"/>
         <line x1="48" y1="128" x2="170" y2="128"/>
       </g>
-      <!-- Front cover -->
       <path d="M 28 78 Q 28 68 38 68 L 194 68 Q 204 68 204 78 L 204 190 Q 204 200 194 200 L 38 200 Q 28 200 28 190 Z" fill="url(#bookCoverG)"/>
-      <!-- Spine -->
       <path d="M 28 78 Q 28 68 38 68 L 46 68 L 46 200 L 38 200 Q 28 200 28 190 Z" fill="#7c3aed" opacity="0.9"/>
-      <!-- Top highlight -->
       <path d="M 38 68 L 194 68 Q 204 68 204 78 L 38 78 Z" fill="#ffffff" opacity="0.28"/>
-      <!-- Spine highlight -->
       <path d="M 30 80 L 34 80 L 34 195 L 30 195 Z" fill="#ffffff" opacity="0.25"/>
     </g>
-
-    <!-- Letter "Ali" (3 letters A, l, i) -->
     <g filter="url(#letterShadow)">
-      <!-- A - حرف A بزرگ -->
       <g transform="translate(45, 0)">
-        <!-- Shadow layer -->
-        <path d="M 30 30 L -15 155 L 8 155 L 15 132 L 45 132 L 52 155 L 75 155 Z M 18 110 L 30 68 L 42 110 Z"
-              fill="#4c1d95" opacity="0.45" transform="translate(3,4)"/>
-        <!-- Main A -->
-        <path d="M 30 30 L -15 155 L 8 155 L 15 132 L 45 132 L 52 155 L 75 155 Z M 18 110 L 30 68 L 42 110 Z"
-              fill="url(#letterG)"/>
-        <!-- Top shine -->
+        <path d="M 30 30 L -15 155 L 8 155 L 15 132 L 45 132 L 52 155 L 75 155 Z M 18 110 L 30 68 L 42 110 Z" fill="#4c1d95" opacity="0.45" transform="translate(3,4)"/>
+        <path d="M 30 30 L -15 155 L 8 155 L 15 132 L 45 132 L 52 155 L 75 155 Z M 18 110 L 30 68 L 42 110 Z" fill="url(#letterG)"/>
         <path d="M 30 30 L -15 155 L 8 155 L 30 68 Z" fill="url(#letterShine)" opacity="0.55"/>
-        <!-- Crossbar shadow -->
         <path d="M 15 132 L 45 132 L 43 126 L 17 126 Z" fill="#4c1d95" opacity="0.5"/>
       </g>
-
-      <!-- l - حرف l -->
       <g transform="translate(120, 0)">
-        <path d="M 0 30 L 0 155 L 12 155 L 12 30 Z"
-              fill="#4c1d95" opacity="0.45" transform="translate(3,4)"/>
+        <path d="M 0 30 L 0 155 L 12 155 L 12 30 Z" fill="#4c1d95" opacity="0.45" transform="translate(3,4)"/>
         <path d="M 0 30 L 0 155 L 12 155 L 12 30 Z" fill="url(#letterG)"/>
         <path d="M 0 30 L 0 155 L 6 155 L 6 30 Z" fill="url(#letterShine)" opacity="0.55"/>
       </g>
-
-      <!-- i - حرف i -->
       <g transform="translate(155, 0)">
-        <!-- dot -->
         <circle cx="6" cy="45" r="7" fill="#4c1d95" opacity="0.45" transform="translate(3,4)"/>
         <circle cx="6" cy="45" r="7" fill="url(#letterG)"/>
         <circle cx="4" cy="43" r="3" fill="#ffffff" opacity="0.75"/>
-        <!-- body -->
-        <path d="M 0 75 L 0 155 L 12 155 L 12 75 Z"
-              fill="#4c1d95" opacity="0.45" transform="translate(3,4)"/>
+        <path d="M 0 75 L 0 155 L 12 155 L 12 75 Z" fill="#4c1d95" opacity="0.45" transform="translate(3,4)"/>
         <path d="M 0 75 L 0 155 L 12 155 L 12 75 Z" fill="url(#letterG)"/>
         <path d="M 0 75 L 0 155 L 6 155 L 6 75 Z" fill="url(#letterShine)" opacity="0.55"/>
       </g>
     </g>
-
-    <!-- Sparkles -->
     <g>
       <circle cx="42" cy="42" r="3.5" fill="#fbbf24" opacity="0.95">
         <animate attributeName="opacity" values="0.4;1;0.4" dur="1.6s" repeatCount="indefinite"/>
@@ -483,7 +720,320 @@ const ICONS={
 function neonIcon(name,color="purple",size="md"){
   const sizeClass=size==="sm"?"neonIcon-sm":"";
   return `<div class="neonIcon ${color} ${sizeClass}">${ICONS[name]||""}</div>`;
-}/* ==================== داده‌های علمی (بدون تغییر) ==================== */
+}
+
+/* ==================== 🐧 پنگوئن بامزه ==================== */
+const Penguin = {
+  el: null,
+  bubble: null,
+  hideTimer: null,
+  bubbleTimer: null,
+  isDragging: false,
+  dragStartX: 0,
+  dragStartY: 0,
+  initialRight: 0,
+  initialBottom: 0,
+  moved: false,
+  lastMessageIndex: -1,
+  hidden: false,
+
+  // پیام‌های پنگوئن بر اساس اسم زبان‌آموز
+  messages: {
+    greeting: [
+      "سلام {name} جان! 🐧 آماده‌ای درس بخونیم؟",
+      "{name} عزیز، خوش اومدی! 😍",
+      "وای {name}! چقدر خوشحالم که دیدمت 🎉",
+      "سلام {name} 🌟 امروز چه خبر؟"
+    ],
+    encourage: [
+      "آفرین {name}! داری عالی پیش می‌ری 💪",
+      "{name} جان، ادامه بده! داری می‌ترکونی 🔥",
+      "عالیه {name}! همینطور ادامه بده ⭐",
+      "ایول {name}! پیشرفتت عالیه 🚀",
+      "{name} قهرمان! بهت افتخار می‌کنم 🏆"
+    ],
+    correct: [
+      "آفرین {name}! درست بود 🎯",
+      "دقیقاً {name}! عالی بود ✨",
+      "ایول {name}! داری حرفه‌ای می‌شی 🌟",
+      "{name} جان، عالیه! ادامه بده 🔥"
+    ],
+    wrong: [
+      "اشکالی نداره {name}! دوباره تلاش کن 💪",
+      "{name} جان، ناراحت نشو! یاد می‌گیری 🌱",
+      "دفعه بعد حتماً می‌تونی {name} 💫",
+      "نگران نباش {name}! اشتباه یعنی یادگیری 📚"
+    ],
+    idle: [
+      "{name} جان، دلم برات تنگ شده بود 🐧",
+      "سلام {name}! چی کار می‌کنی؟ 😊",
+      "{name} عزیز، بیا یه درس جدید شروع کنیم 📖",
+      "امروز حالت چطوره {name}؟ 🌈",
+      "{name} جان، یه نکته جدید یادت بدم؟ 💡",
+      "من همیشه اینجام {name}! 💜",
+      "{name}، یه بازی جدید بازی کنیم؟ 🎮"
+    ],
+    welcome: [
+      "خوش اومدی {name}! 🎉",
+      "سلام {name} عزیز! آماده‌ای؟ 💪",
+      "{name} جان، امروز روز خوبیه برای یادگیری ✨"
+    ],
+    login: [
+      "خوش آمدی {name} جان! 🎊",
+      "سلام {name}! چه خبر؟ 😄",
+      "{name} عزیز، خیلی خوشحال شدم دیدمت 🥳"
+    ],
+    lesson: [
+      "درس خوبی رو انتخاب کردی {name} 📚",
+      "{name} جان، این درس خیلی جالبه! 🌟",
+      "با دقت بخون {name}! 💡",
+      "من کنارتم {name}! ادامه بده 🐧"
+    ],
+    game: [
+      "بازی شروع شد {name}! 🎮",
+      "برنده شو {name}! 🏆",
+      "{name} جان، رکورد بزن! 🔥"
+    ],
+    exam: [
+      "موفق باشی {name}! 🍀",
+      "{name} جان، با اعتماد به نفس برو جلو 💪",
+      "تو می‌تونی {name}! ⭐"
+    ]
+  },
+
+  // انتخاب پیام تصادفی
+  getMessage(category, name) {
+    const arr = this.messages[category] || this.messages.idle;
+    let idx;
+    // جلوگیری از تکرار پیام قبلی
+    do {
+      idx = Math.floor(Math.random() * arr.length);
+    } while (idx === this.lastMessageIndex && arr.length > 1);
+    this.lastMessageIndex = idx;
+    return arr[idx].replace(/{name}/g, name || "دوست من");
+  },
+
+  // نمایش حباب صحبت
+  say(text, duration) {
+    if (!this.bubble || this.hidden) return;
+    this.bubble.textContent = text;
+    this.bubble.classList.add("show");
+
+    clearTimeout(this.bubbleTimer);
+    this.bubbleTimer = setTimeout(() => {
+      if (this.bubble) this.bubble.classList.remove("show");
+    }, duration || 4000);
+
+    // صحبت کردن با صدا
+    if (window.speechSynthesis) {
+      try {
+        speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text.replace(/[🐧🎉💪🔥⭐🚀🏆🎯✨🌟🌱💫📚😍🎊😄🥳📖🌈💡💜🎮🍀]/g, ""));
+        u.lang = "fa-IR";
+        u.rate = 0.95;
+        u.pitch = 1.3;
+        u.volume = 0.9;
+        // انتخاب صدای فارسی اگر موجود باشد
+        const voices = speechSynthesis.getVoices();
+        const faVoice = voices.find(v => v.lang && v.lang.startsWith("fa"));
+        if (faVoice) u.voice = faVoice;
+        speechSynthesis.speak(u);
+      } catch (e) {}
+    }
+  },
+
+  // پرش پنگوئن
+  jump() {
+    if (!this.el) return;
+    this.el.classList.remove("jumping");
+    void this.el.offsetWidth;
+    this.el.classList.add("jumping");
+    setTimeout(() => this.el && this.el.classList.remove("jumping"), 700);
+
+    // ساخت قلب‌های شناور
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        if (!this.el) return;
+        const heart = document.createElement("div");
+        heart.className = "penguinHeart";
+        heart.textContent = ["💜", "💖", "⭐", "✨", "🌟"][Math.floor(Math.random() * 5)];
+        heart.style.right = (20 + Math.random() * 40) + "px";
+        heart.style.bottom = (40 + Math.random() * 30) + "px";
+        this.el.appendChild(heart);
+        setTimeout(() => heart.remove(), 1500);
+      }, i * 150);
+    }
+  },
+
+  // کلیک روی پنگوئن
+  handleClick() {
+    if (this.moved) {
+      this.moved = false;
+      return;
+    }
+    this.jump();
+    const name = (window.S && S.student && S.student.first_name) ? S.student.first_name : "دوست من";
+    const categories = ["idle", "encourage", "welcome", "correct"];
+    const cat = categories[Math.floor(Math.random() * categories.length)];
+    const msg = this.getMessage(cat, name);
+    setTimeout(() => this.say(msg, 5000), 200);
+  },
+
+  // مخفی کردن
+  hide(e) {
+    if (e) { e.stopPropagation(); e.preventDefault(); }
+    if (!this.el) return;
+    this.hidden = true;
+    this.el.classList.add("hidden");
+    const restore = document.getElementById("penguinRestore");
+    if (restore) restore.classList.add("show");
+    try { localStorage.setItem("AN_PENGUIN_HIDDEN", "1"); } catch (err) {}
+  },
+
+  // نمایش مجدد
+  show() {
+    this.hidden = false;
+    if (this.el) this.el.classList.remove("hidden");
+    const restore = document.getElementById("penguinRestore");
+    if (restore) restore.classList.remove("show");
+    try { localStorage.setItem("AN_PENGUIN_HIDDEN", "0"); } catch (err) {}
+    const name = (window.S && S.student && S.student.first_name) ? S.student.first_name : "دوست من";
+    setTimeout(() => this.say(this.getMessage("welcome", name), 4500), 300);
+  },
+
+  // راه‌اندازی drag & drop
+  setupDrag() {
+    if (!this.el) return;
+    const el = this.el;
+
+    const onDown = (e) => {
+      if (e.target.classList.contains("penguinClose")) return;
+      this.isDragging = true;
+      this.moved = false;
+      const point = e.touches ? e.touches[0] : e;
+      this.dragStartX = point.clientX;
+      this.dragStartY = point.clientY;
+      const rect = el.getBoundingClientRect();
+      this.initialRight = window.innerWidth - rect.right;
+      this.initialBottom = window.innerHeight - rect.bottom;
+      el.classList.add("dragging");
+      clearTimeout(this.hideTimer);
+      if (this.bubble) this.bubble.classList.remove("show");
+    };
+
+    const onMove = (e) => {
+      if (!this.isDragging) return;
+      const point = e.touches ? e.touches[0] : e;
+      const dx = point.clientX - this.dragStartX;
+      const dy = point.clientY - this.dragStartY;
+      if (Math.abs(dx) > 5 || Math.abs(dy) > 5) this.moved = true;
+      // محاسبه موقعیت جدید
+      let newRight = this.initialRight - dx;
+      let newBottom = this.initialBottom - dy;
+      // محدود کردن در صفحه
+      const w = el.offsetWidth;
+      const h = el.offsetHeight;
+      newRight = Math.max(0, Math.min(window.innerWidth - w, newRight));
+      newBottom = Math.max(0, Math.min(window.innerHeight - h, newBottom));
+      el.style.right = newRight + "px";
+      el.style.bottom = newBottom + "px";
+      el.style.left = "auto";
+      el.style.top = "auto";
+      // ذخیره موقعیت
+      try {
+        localStorage.setItem("AN_PENGUIN_POS", JSON.stringify({ right: newRight, bottom: newBottom }));
+      } catch (err) {}
+      if (e.cancelable) e.preventDefault();
+    };
+
+    const onUp = () => {
+      if (!this.isDragging) return;
+      this.isDragging = false;
+      el.classList.remove("dragging");
+      if (!this.moved) {
+        this.handleClick();
+      }
+      setTimeout(() => { this.moved = false; }, 100);
+    };
+
+    el.addEventListener("mousedown", onDown);
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+    el.addEventListener("touchstart", onDown, { passive: true });
+    document.addEventListener("touchmove", onMove, { passive: false });
+    document.addEventListener("touchend", onUp);
+  },
+
+  // راه‌اندازی اولیه
+  init() {
+    this.el = document.getElementById("penguinWrap");
+    this.bubble = document.getElementById("penguinBubble");
+    if (!this.el) return;
+
+    // بارگذاری موقعیت ذخیره‌شده
+    try {
+      const pos = JSON.parse(localStorage.getItem("AN_PENGUIN_POS") || "null");
+      if (pos && typeof pos.right === "number" && typeof pos.bottom === "number") {
+        const w = this.el.offsetWidth || 110;
+        const h = this.el.offsetHeight || 140;
+        const r = Math.max(0, Math.min(window.innerWidth - w, pos.right));
+        const b = Math.max(0, Math.min(window.innerHeight - h, pos.bottom));
+        this.el.style.right = r + "px";
+        this.el.style.bottom = b + "px";
+        this.el.style.left = "auto";
+        this.el.style.top = "auto";
+      }
+    } catch (e) {}
+
+    // بررسی مخفی بودن
+    try {
+      if (localStorage.getItem("AN_PENGUIN_HIDDEN") === "1") {
+        this.hidden = true;
+        this.el.classList.add("hidden");
+        const restore = document.getElementById("penguinRestore");
+        if (restore) restore.classList.add("show");
+      }
+    } catch (e) {}
+
+    this.setupDrag();
+
+    // پیام خوش‌آمد بعد از کمی تأخیر
+    setTimeout(() => {
+      if (this.hidden) return;
+      const name = (window.S && S.student && S.student.first_name) ? S.student.first_name : "دوست من";
+      this.say(this.getMessage("greeting", name), 5000);
+    }, 2500);
+
+    // پیام‌های دوره‌ای
+    this.startIdleTimer();
+
+    // بارگذاری صداهای فارسی
+    if (window.speechSynthesis) {
+      speechSynthesis.onvoiceschanged = () => { speechSynthesis.getVoices(); };
+    }
+  },
+
+  // تایمر پیام‌های دوره‌ای
+  startIdleTimer() {
+    clearInterval(this.hideTimer);
+    this.hideTimer = setInterval(() => {
+      if (this.hidden) return;
+      if (document.hidden) return;
+      // اگر کاربر در حال تایپ است، پیام نده
+      const active = document.activeElement;
+      if (active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA" || active.tagName === "SELECT")) return;
+      const name = (window.S && S.student && S.student.first_name) ? S.student.first_name : "دوست من";
+      const categories = ["idle", "encourage"];
+      const cat = categories[Math.floor(Math.random() * categories.length)];
+      this.say(this.getMessage(cat, name), 4500);
+    }, 45000);
+  }
+};
+
+function hidePenguin(e) { Penguin.hide(e); }
+function showPenguin() { Penguin.show(); }
+
+/* ==================== داده‌های علمی ==================== */
 var words={};
 var grammar={};
 
@@ -1712,7 +2262,7 @@ words[31]=[
  ["opposite","مخالف"],["harm","آسیب"],["solar system","منظومه شمسی"],["practical","کاربردی"]
 ];
 
-/* ==================== حروف و صداها (با تلفظ) ==================== */
+/* ==================== حروف و صداها ==================== */
 const soundsData=[
  {letter:"A a",name:"اِی",sound:"اَ / اِی",ex:"Ali - Sara - name - many",word:"Apple",exFa:"سیب"},
  {letter:"B b",name:"بی",sound:"ب",ex:"Babak - Book - Ball",word:"Book",exFa:"کتاب"},
@@ -1740,7 +2290,9 @@ const soundsData=[
  {letter:"X x",name:"اِکس",sound:"اِکس",ex:"six - Box - Fox",word:"Box",exFa:"جعبه"},
  {letter:"Y y",name:"وای",sound:"ی / آی",ex:"yes - forty - Yellow",word:"Yellow",exFa:"زرد"},
  {letter:"Z z",name:"زی",sound:"ز",ex:"zero - Zebra - Zoo",word:"Zebra",exFa:"گورخر"}
-];/* ==================== Supabase ==================== */
+];
+
+/* ==================== Supabase ==================== */
 const SUPABASE_URL="https://kapzyedzjecnfxevjisq.supabase.co";
 const SUPABASE_KEY="sb_publishable_9a_2NYNeDLBDd-MeHmut4g_JoEDkHeQ";
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
@@ -1749,7 +2301,6 @@ const ADMIN_EMAIL="alinagheli@gmail.com";
 const PAYMENT_CARD="6219-8619-3240-5540";
 const PAYMENT_OWNER="علی ناقلی";
 
-/* ==================== پکیج‌های قیمت‌گذاری جدید ==================== */
 function getPackages(grade){
   const g=Number(grade);
   if(g>=7 && g<=9){
@@ -1792,6 +2343,14 @@ function toggleTheme(){
   document.documentElement.setAttribute("data-theme",next);
   localStorage.setItem("AN_THEME",next);
   toast(next==="dark"?"حالت شب فعال شد 🌙":"حالت روز فعال شد ☀️","info",2000);
+  // پنگوئن واکنش نشون بده
+  if (window.Penguin) {
+    setTimeout(() => {
+      const name = (S && S.student && S.student.first_name) ? S.student.first_name : "دوست من";
+      Penguin.jump();
+      Penguin.say(next === "dark" ? `حالت شب رو دوست دارم ${name}! 🌙` : `آفتاب اومد ${name}! ☀️`, 3500);
+    }, 300);
+  }
 }
 initTheme();
 
@@ -1895,7 +2454,7 @@ function loadStreak(){
  updateStreak();
 }
 
-/* ==================== نکته روز (نکته‌های کاربردی انگلیسی) ==================== */
+/* ==================== نکته روز ==================== */
 const DAILY_TIPS=[
  {type:"گرامر",title:"Present Simple",body:"برای کارهای روزمره و عادت‌ها استفاده می‌شود.",en:"I go to school every day.",fa:"من هر روز به مدرسه می‌روم."},
  {type:"گرامر",title:"Present Continuous",body:"برای کاری که همین الآن در حال انجام است.",en:"She is reading a book now.",fa:"او همین الآن دارد کتاب می‌خواند."},
@@ -1979,7 +2538,6 @@ function jalaliToGregorian(jy,jm,jd){
 function getJalaliMonthDays(jy,jm){
  if(jm<=6)return 31;
  if(jm<=11)return 30;
- // اسفند
  const leap=((((jy+2346)%2820)*682)%2816)<682;
  return leap?30:29;
 }
@@ -1994,36 +2552,16 @@ function getTodayJalali(){
 /* ==================== بازی‌ها ==================== */
 function getAnimalGameData(){
  return [
-  {emoji:"🦁",name:"Lion",fa:"شیر"},
-  {emoji:"🐘",name:"Elephant",fa:"فیل"},
-  {emoji:"🐯",name:"Tiger",fa:"ببر"},
-  {emoji:"🐻",name:"Bear",fa:"خرس"},
-  {emoji:"🐺",name:"Wolf",fa:"گرگ"},
-  {emoji:"🦊",name:"Fox",fa:"روباه"},
-  {emoji:"🐰",name:"Rabbit",fa:"خرگوش"},
-  {emoji:"🐼",name:"Panda",fa:"پاندا"},
-  {emoji:"🐨",name:"Koala",fa:"کوالا"},
-  {emoji:"🐸",name:"Frog",fa:"قورباغه"},
-  {emoji:"🐵",name:"Monkey",fa:"میمون"},
-  {emoji:"🐴",name:"Horse",fa:"اسب"},
-  {emoji:"🐮",name:"Cow",fa:"گاو"},
-  {emoji:"🐷",name:"Pig",fa:"خوک"},
-  {emoji:"🐑",name:"Sheep",fa:"گوسفند"},
-  {emoji:"🐔",name:"Chicken",fa:"مرغ"},
-  {emoji:"🐧",name:"Penguin",fa:"پنگوئن"},
-  {emoji:"🦅",name:"Eagle",fa:"عقاب"},
-  {emoji:"🦉",name:"Owl",fa:"جغد"},
-  {emoji:"🦆",name:"Duck",fa:"اردک"},
-  {emoji:"🐢",name:"Turtle",fa:"لاک‌پشت"},
-  {emoji:"🐍",name:"Snake",fa:"مار"},
-  {emoji:"🐙",name:"Octopus",fa:"هشت‌پا"},
-  {emoji:"🦋",name:"Butterfly",fa:"پروانه"},
-  {emoji:"🐝",name:"Bee",fa:"زنبور"},
-  {emoji:"🐞",name:"Ladybug",fa:"کفش‌دوزک"},
-  {emoji:"🦈",name:"Shark",fa:"کوسه"},
-  {emoji:"🐬",name:"Dolphin",fa:"دلفین"},
-  {emoji:"🐳",name:"Whale",fa:"نهنگ"},
-  {emoji:"🐊",name:"Crocodile",fa:"کروکودیل"}
+  {emoji:"🦁",name:"Lion",fa:"شیر"},{emoji:"🐘",name:"Elephant",fa:"فیل"},{emoji:"🐯",name:"Tiger",fa:"ببر"},
+  {emoji:"🐻",name:"Bear",fa:"خرس"},{emoji:"🐺",name:"Wolf",fa:"گرگ"},{emoji:"🦊",name:"Fox",fa:"روباه"},
+  {emoji:"🐰",name:"Rabbit",fa:"خرگوش"},{emoji:"🐼",name:"Panda",fa:"پاندا"},{emoji:"🐨",name:"Koala",fa:"کوالا"},
+  {emoji:"🐸",name:"Frog",fa:"قورباغه"},{emoji:"🐵",name:"Monkey",fa:"میمون"},{emoji:"🐴",name:"Horse",fa:"اسب"},
+  {emoji:"🐮",name:"Cow",fa:"گاو"},{emoji:"🐷",name:"Pig",fa:"خوک"},{emoji:"🐑",name:"Sheep",fa:"گوسفند"},
+  {emoji:"🐔",name:"Chicken",fa:"مرغ"},{emoji:"🐧",name:"Penguin",fa:"پنگوئن"},{emoji:"🦅",name:"Eagle",fa:"عقاب"},
+  {emoji:"🦉",name:"Owl",fa:"جغد"},{emoji:"🦆",name:"Duck",fa:"اردک"},{emoji:"🐢",name:"Turtle",fa:"لاک‌پشت"},
+  {emoji:"🐍",name:"Snake",fa:"مار"},{emoji:"🐙",name:"Octopus",fa:"هشت‌پا"},{emoji:"🦋",name:"Butterfly",fa:"پروانه"},
+  {emoji:"🐝",name:"Bee",fa:"زنبور"},{emoji:"🐞",name:"Ladybug",fa:"کفش‌دوزک"},{emoji:"🦈",name:"Shark",fa:"کوسه"},
+  {emoji:"🐬",name:"Dolphin",fa:"دلفین"},{emoji:"🐳",name:"Whale",fa:"نهنگ"},{emoji:"🐊",name:"Crocodile",fa:"کروکودیل"}
  ];
 }
 function getMemoryGameData(){
@@ -2062,18 +2600,12 @@ function getNumberGameData(){
 }
 function getColorGameData(){
  return [
-  {color:"#ef4444",name:"Red",fa:"قرمز"},
-  {color:"#3b82f6",name:"Blue",fa:"آبی"},
-  {color:"#22c55e",name:"Green",fa:"سبز"},
-  {color:"#fbbf24",name:"Yellow",fa:"زرد"},
-  {color:"#a855f7",name:"Purple",fa:"بنفش"},
-  {color:"#f97316",name:"Orange",fa:"نارنجی"},
-  {color:"#ec4899",name:"Pink",fa:"صورتی"},
-  {color:"#000000",name:"Black",fa:"مشکی"},
-  {color:"#ffffff",name:"White",fa:"سفید"},
-  {color:"#6b7280",name:"Gray",fa:"خاکستری"},
-  {color:"#78350f",name:"Brown",fa:"قهوه‌ای"},
-  {color:"#06b6d4",name:"Cyan",fa:"فیروزه‌ای"}
+  {color:"#ef4444",name:"Red",fa:"قرمز"},{color:"#3b82f6",name:"Blue",fa:"آبی"},
+  {color:"#22c55e",name:"Green",fa:"سبز"},{color:"#fbbf24",name:"Yellow",fa:"زرد"},
+  {color:"#a855f7",name:"Purple",fa:"بنفش"},{color:"#f97316",name:"Orange",fa:"نارنجی"},
+  {color:"#ec4899",name:"Pink",fa:"صورتی"},{color:"#000000",name:"Black",fa:"مشکی"},
+  {color:"#ffffff",name:"White",fa:"سفید"},{color:"#6b7280",name:"Gray",fa:"خاکستری"},
+  {color:"#78350f",name:"Brown",fa:"قهوه‌ای"},{color:"#06b6d4",name:"Cyan",fa:"فیروزه‌ای"}
  ];
 }
 function loadGameRecords(){
@@ -2102,7 +2634,17 @@ async function addXP(amount){
  if(!S.student)return;
  const old=S.xp;S.xp+=Number(amount||0);S.level=calculateLevel(S.xp);
  try{await db.from("student_xp").upsert({student_id:S.student.id,xp:S.xp,level:S.level,updated_at:new Date().toISOString()},{onConflict:"student_id"})}catch(e){}
- if(S.level>calculateLevel(old))await unlockAchievement("level_"+S.level,"رسیدن به Level "+S.level);
+ if(S.level>calculateLevel(old)){
+  await unlockAchievement("level_"+S.level,"رسیدن به Level "+S.level);
+  // پنگوئن تبریک بگه
+  if (window.Penguin) {
+   const name = (S.student && S.student.first_name) ? S.student.first_name : "دوست من";
+   setTimeout(() => {
+    Penguin.jump();
+    Penguin.say(`تبریک ${name}! به Level ${S.level} رسیدی! 🏆🎉`, 6000);
+   }, 500);
+  }
+ }
 }
 async function unlockAchievement(key,title){
  if(!S.student||S.achievements.some(x=>x.achievement_key===key))return;
@@ -2199,7 +2741,7 @@ async function confirmPayment(grade,lessonIndex){
   grade(grade);
 }
 
-/* ==================== Landing (بدون قیمت) ==================== */
+/* ==================== Landing ==================== */
 function landing(){
   document.body.innerHTML=`
   <div class="landing">
@@ -2262,6 +2804,10 @@ function landing(){
     </section>
     <a class="floatWhats" href="https://wa.me/989141892768" target="_blank" title="واتساپ پشتیبانی">💬</a>
   </div>`;
+  // پنگوئن در صفحه Landing هم نمایش داده بشه
+  setTimeout(() => {
+    if (window.Penguin && !Penguin.el) Penguin.init();
+  }, 800);
 }
 
 function tryDemo(){
@@ -2269,6 +2815,13 @@ function tryDemo(){
   S.admin=false;
   loadStreak();loadGameRecords();
   toast("حالت دمو فعال شد — درس ۱ همه پایه‌ها قابل مشاهده است","info",4000);
+  // پنگوئن به کاربر خوش‌آمد بگه
+  setTimeout(() => {
+    if (window.Penguin) {
+      Penguin.jump();
+      Penguin.say("سلام مهمان عزیز! خوش اومدی 🐧✨", 5000);
+    }
+  }, 1000);
   demoHome();
 }
 function demoHome(){
@@ -2322,6 +2875,8 @@ function login(){
   <div style="text-align:center;margin-top:16px"><button class="btn secondary" onclick="landing()">← بازگشت به صفحه اصلی</button></div>
  </div></div>`;
  loginTab("student");
+ // پنگوئن در صفحه لاگین هم باشه
+ if (window.Penguin && !Penguin.el) Penguin.init();
 }
 function loginTab(type){
  document.getElementById("st").classList.toggle("active",type==="student");
@@ -2348,6 +2903,13 @@ async function studentLogin(){
   await loadQAs();
   await loadHomeworks();
   toast("خوش آمدی "+student.first_name+" 👋","success");
+  // پنگوئن خوش‌آمد بگه
+  setTimeout(() => {
+    if (window.Penguin) {
+      Penguin.jump();
+      Penguin.say(`سلام ${student.first_name} جان! خوش اومدی 🐧💜`, 6000);
+    }
+  }, 800);
   home();
  }catch(e){toast(e?.message||"ورود ناموفق بود.","error")}
 }
@@ -2384,7 +2946,6 @@ async function register(){
   if(r.error)throw r.error;
   if(!r.data.user)throw new Error("حساب کاربری ساخته نشد.");
   await accessFunction({action:"register",first_name:first,last_name:last,phone,level,auth_user_id:r.data.user.id,email,referred_by:refCode||null});
-  // ثبت دعوت‌کننده
   if(refCode){
    try{
     const cur=Number(localStorage.getItem("AN_REF_COUNT_"+refCode)||0);
@@ -2426,6 +2987,75 @@ function nav(){
 }
 function render(title,content){
  document.body.innerHTML=header(title)+`<main class="container">${content}</main>`+nav()+`<a class="floatWhats" href="https://wa.me/989141892768" target="_blank" title="واتساپ پشتیبانی">💬</a>`;
+ // مطمئن شو پنگوئن همیشه وجود داره
+ ensurePenguin();
+}
+
+/* ==================== اطمینان از وجود پنگوئن ==================== */
+function ensurePenguin() {
+  if (!document.getElementById("penguinWrap")) {
+    const penguinHTML = `
+      <div class="penguinWrap" id="penguinWrap" title="با من حرف بزن!">
+        <div class="penguinClose" onclick="hidePenguin(event)" title="پنهان کردن">✕</div>
+        <div class="penguinBubble" id="penguinBubble"></div>
+        <div class="penguinBody" id="penguinBody">
+          <svg viewBox="0 0 110 140" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="penguinBodyGrad" cx="0.5" cy="0.4" r="0.7">
+                <stop offset="0" stop-color="#3b4252"/><stop offset="1" stop-color="#1a1f2e"/>
+              </radialGradient>
+              <radialGradient id="penguinBellyGrad" cx="0.5" cy="0.4" r="0.6">
+                <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e5e7eb"/>
+              </radialGradient>
+              <radialGradient id="penguinCheek" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0" stop-color="#fca5a5" stop-opacity="0.9"/><stop offset="1" stop-color="#fca5a5" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="penguinBeak" cx="0.3" cy="0.2" r="0.8">
+                <stop offset="0" stop-color="#fbbf24"/><stop offset="1" stop-color="#f59e0b"/>
+              </radialGradient>
+              <filter id="penguinShadow" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+                <feOffset dx="0" dy="4"/>
+                <feComponentTransfer><feFuncA type="linear" slope="0.3"/></feComponentTransfer>
+                <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <ellipse cx="55" cy="135" rx="35" ry="5" fill="#000" opacity="0.15"/>
+            <g filter="url(#penguinShadow)">
+              <ellipse cx="18" cy="75" rx="10" ry="28" fill="url(#penguinBodyGrad)" transform="rotate(-15 18 75)"/>
+              <ellipse cx="92" cy="75" rx="10" ry="28" fill="url(#penguinBodyGrad)" transform="rotate(15 92 75)"/>
+              <ellipse cx="55" cy="78" rx="38" ry="50" fill="url(#penguinBodyGrad)"/>
+              <ellipse cx="55" cy="82" rx="26" ry="40" fill="url(#penguinBellyGrad)"/>
+              <ellipse cx="55" cy="35" rx="32" ry="30" fill="url(#penguinBodyGrad)"/>
+              <ellipse cx="55" cy="38" rx="24" ry="20" fill="url(#penguinBellyGrad)"/>
+              <ellipse cx="44" cy="33" rx="6" ry="7" fill="#fff"/>
+              <ellipse cx="45" cy="34" rx="3.5" ry="4" fill="#1a1f2e"/>
+              <circle cx="44" cy="32" r="1.5" fill="#fff"/>
+              <ellipse cx="66" cy="33" rx="6" ry="7" fill="#fff"/>
+              <ellipse cx="65" cy="34" rx="3.5" ry="4" fill="#1a1f2e"/>
+              <circle cx="64" cy="32" r="1.5" fill="#fff"/>
+              <circle cx="36" cy="42" r="5" fill="url(#penguinCheek)"/>
+              <circle cx="74" cy="42" r="5" fill="url(#penguinCheek)"/>
+              <path d="M 50 42 L 55 50 L 60 42 Z" fill="url(#penguinBeak)" stroke="#d97706" stroke-width="1"/>
+              <path d="M 50 42 L 60 42" stroke="#d97706" stroke-width="0.8"/>
+              <ellipse cx="42" cy="122" rx="12" ry="5" fill="#f59e0b"/>
+              <ellipse cx="68" cy="122" rx="12" ry="5" fill="#f59e0b"/>
+              <path d="M 32 122 L 30 125 M 42 124 L 42 127 M 52 122 L 54 125" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M 58 122 L 56 125 M 68 124 L 68 127 M 78 122 L 80 125" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M 55 60 L 48 56 L 48 64 Z" fill="#ec4899"/>
+              <path d="M 55 60 L 62 56 L 62 64 Z" fill="#ec4899"/>
+              <circle cx="55" cy="60" r="3" fill="#be185d"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="penguinRestore" id="penguinRestore" onclick="showPenguin()" title="پنگوئن رو برگردون!">🐧</div>
+    `;
+    document.body.insertAdjacentHTML("beforeend", penguinHTML);
+    Penguin.el = document.getElementById("penguinWrap");
+    Penguin.bubble = document.getElementById("penguinBubble");
+    Penguin.setupDrag();
+  }
 }
 
 /* ==================== Home ==================== */
@@ -2437,8 +3067,6 @@ function home(){
  const tip=getDailyTip();
  const [ty,tm,td]=getTodayJalali();
  const todayStr=`${JALALI_WEEK[(new Date().getDay()+1)%7]} ${td} ${JALALI_MONTHS[tm-1]} ${ty}`;
- const gameIds=["animals","memory","incomplete","numbers","colors"];
- const bestGame=gameIds.reduce((a,b)=>((S.gameRecords[a]||0)>=(S.gameRecords[b]||0)?a:b),"animals");
  render("خانه",`
   <div class="hero hero3d"><div style="position:relative;z-index:2">
     <div style="font-size:13px;opacity:.85;letter-spacing:3px;font-weight:700">WELCOME BACK</div>
@@ -2532,6 +3160,11 @@ function startGame(gameId){
     </div>
   </div>
  `);
+ // پنگوئن تشویق کنه
+ if (window.Penguin) {
+  const name = (S.student && S.student.first_name) ? S.student.first_name : "دوست من";
+  setTimeout(() => Penguin.say(Penguin.getMessage("game", name), 4000), 600);
+ }
 }
 function gameStart(){
  if(S.currentGame.timer) clearInterval(S.currentGame.timer);
@@ -2585,7 +3218,7 @@ function gameNextAnimals(el){
  `;
 }
 function gameAnswerAnimals(i,chosen,correct){
- const btns=document.querySelectorAll("#gameOptions .option, .gameOptions .option");
+ const btns=document.querySelectorAll(".gameOptions .option");
  if(btns.length){btns.forEach(b=>b.disabled=true);btns[i].classList.add(chosen===correct?"correct":"wrong");if(chosen!==correct){const ci=Array.from(btns).findIndex(b=>b.textContent===correct);if(ci>=0)btns[ci].classList.add("correct");}}
  gameAnswerHandler(chosen===correct);
 }
@@ -2681,9 +3314,18 @@ async function gameEnd(){
     <button class="btn secondary full" onclick="gamesMenu()">بازی دیگر</button>
   </div>
  `;
+ // پنگوئن تبریک بگه
+ if (window.Penguin && S.student) {
+  const name = S.student.first_name || "دوست من";
+  setTimeout(() => {
+   Penguin.jump();
+   if (isNewRecord) Penguin.say(`آفرین ${name}! رکورد جدید زدی 🏆🎉`, 5000);
+   else Penguin.say(`خوب بود ${name}! دوباره تلاش کن 💪`, 4500);
+  }, 400);
+ }
 }
 
-/* ==================== تعیین سطح دوگانه ==================== */
+/* ==================== تعیین سطح ==================== */
 function placementMenu(){
  render("تعیین سطح",`
   <div class="card">
@@ -2708,7 +3350,6 @@ function placementMenu(){
  `);
 }
 
-/* ==================== بانک سوال تعیین سطح گرامر ==================== */
 const grammarPlacementQ=[
  {q:"I ___ a student.",o:["am","is","are","be"],a:0,level:"A1"},
  {q:"She ___ my sister.",o:["is","am","are","be"],a:0,level:"A1"},
@@ -2736,7 +3377,6 @@ const grammarPlacementQ=[
  {q:"If we had protected the forest, the air ___ cleaner now.",o:["would be","will be","would have been","is"],a:0,level:"C2"}
 ];
 
-/* ==================== بانک سوال تعیین سطح واژگان ==================== */
 const vocabPlacementQ=[
  {q:"معنی «book» چیست؟",o:["کتاب","مدرسه","معلم","دوست"],a:0,level:"A1"},
  {q:"معنی «water» چیست؟",o:["آب","نان","شیر","چای"],a:0,level:"A1"},
@@ -2840,6 +3480,14 @@ async function placementFinish(){
   <div class="card"><h3 style="margin-top:0">📊 عملکرد شما در هر سطح</h3>${bars}</div>
   <button class="btn full" onclick="home()">بازگشت به خانه</button>
  `;
+ // پنگوئن تبریک بگه
+ if (window.Penguin && S.student) {
+  const name = S.student.first_name || "دوست من";
+  setTimeout(() => {
+   Penguin.jump();
+   Penguin.say(`سطح تو ${level} شد ${name}! عالیه 🎯✨`, 5500);
+  }, 500);
+ }
 }
 
 /* ==================== Quiz عمومی ==================== */
@@ -2859,9 +3507,29 @@ function answer(i,id){
  const q=S.quiz.questions[S.quiz.i];
  const opts=document.querySelectorAll(".option");
  opts.forEach(x=>x.disabled=true);
- if(i===q.answer){S.quiz.correct++;opts[i].classList.add("correct");const fb=document.getElementById("fb");if(fb){fb.className="feedback ok";fb.innerHTML="✅ 😊 آفرین! پاسخ درست است."}}
- else{S.quiz.wrong++;opts[i].classList.add("wrong");opts[q.answer].classList.add("correct");const fb=document.getElementById("fb");if(fb){fb.className="feedback bad";fb.innerHTML="❌ پاسخ اشتباه است."}}
- setTimeout(()=>{S.quiz.i++;quizRender(id)},700);
+ if(i===q.answer){
+  S.quiz.correct++;
+  opts[i].classList.add("correct");
+  const fb=document.getElementById("fb");
+  if(fb){fb.className="feedback ok";fb.innerHTML="✅ 😊 آفرین! پاسخ درست است."}
+  // پنگوئن تشویق بگه
+  if (window.Penguin && S.student) {
+   const name = S.student.first_name || "دوست من";
+   Penguin.jump();
+   Penguin.say(Penguin.getMessage("correct", name), 3500);
+  }
+ } else {
+  S.quiz.wrong++;
+  opts[i].classList.add("wrong");
+  opts[q.answer].classList.add("correct");
+  const fb=document.getElementById("fb");
+  if(fb){fb.className="feedback bad";fb.innerHTML="❌ پاسخ اشتباه است."}
+  if (window.Penguin && S.student) {
+   const name = S.student.first_name || "دوست من";
+   Penguin.say(Penguin.getMessage("wrong", name), 3500);
+  }
+ }
+ setTimeout(()=>{S.quiz.i++;quizRender(id)},900);
 }
 async function quizFinish(id){
  const total=S.quiz.questions.length;
@@ -2879,7 +3547,7 @@ async function quizFinish(id){
  el.innerHTML=`<div class="card resultBox"><div class="score">${percent}%</div><h2 style="text-align:center">آزمون تمام شد 🎉</h2><p style="text-align:center;color:var(--text-muted)">${S.quiz.correct} پاسخ درست از ${total}</p><button class="btn full" onclick="profile()">مشاهده پیشرفت</button><button class="btn secondary full" style="margin-top:8px" onclick="home()">بازگشت به خانه</button></div>`;
 }
 
-/* ==================== حروف و صداها با تلفظ ==================== */
+/* ==================== حروف و صداها ==================== */
 function sounds(){
  render("حروف و صداها",`<div class="card">
   <button class="btn secondary" onclick="home()">← بازگشت</button>
@@ -2974,6 +3642,11 @@ function openLesson(i){
  <div id="s1" class="sec"><h3>🔊 واژگان درس — ${wl.length} کلمه</h3><p class="muted">روی هر کلمه بزن تا تلفظ شود.</p><div class="wordGrid">${wordsHtml(gradeNum,no)}</div></div>
  <div id="s2" class="sec"><div id="lessonQuiz"></div></div>
  </div>`);
+ // پنگوئن تشویق کنه
+ if (window.Penguin && S.student) {
+  const name = S.student.first_name || "دوست من";
+  setTimeout(() => Penguin.say(Penguin.getMessage("lesson", name), 4000), 500);
+ }
 }
 function openLessonWords(i){
  if(!isUnlocked(S.grade,i)){ toast("🔒 این درس قفل است.","error"); return; }
@@ -3033,7 +3706,7 @@ function startLessonQuiz(){
  quizRender("lessonQuiz");
 }
 
-/* ==================== آزمون نهایی با تاریخ ==================== */
+/* ==================== آزمون نهایی ==================== */
 const finalExamBank={
 10:[
  {q:"معنی «leopard» چیست؟",o:["پلنگ","فیل","ببر","خرس"],a:0,date:"خرداد ۱۳۹۹"},
@@ -3196,6 +3869,11 @@ const finalExamBank={
 
 function finalExams(){
  render("آزمون نهایی",`<div class="card"><button class="btn secondary" onclick="home()">← بازگشت</button><h2 style="margin-top:14px">📄 آزمون نهایی</h2><p class="muted">سوالات ترکیبی از لغات و گرامر کل کتاب — از سوالات سال‌های گذشته</p><div class="grid">${[10,11,12].map(g=>`<div class="item" onclick="startFinalExam(${g})"><div class="neonIcon red">${ICONS.exam}</div><h3>آزمون نهایی پایه ${g}</h3><p class="muted">${finalExamBank[g].length} سؤال با تاریخ</p><button class="btn full">شروع آزمون</button></div>`).join("")}</div></div>`);
+ // پنگوئن آرزوی موفقیت کنه
+ if (window.Penguin && S.student) {
+  const name = S.student.first_name || "دوست من";
+  setTimeout(() => Penguin.say(Penguin.getMessage("exam", name), 4500), 500);
+ }
 }
 function startFinalExam(g){
  const qs=finalExamBank[g].map(x=>{
@@ -3226,9 +3904,17 @@ function finalAnswer(i,id){
  const q=S.quiz.questions[S.quiz.i];
  const opts=document.querySelectorAll(".option");
  opts.forEach(x=>x.disabled=true);
- if(i===q.answer){S.quiz.correct++;opts[i].classList.add("correct");const fb=document.getElementById("fb");if(fb){fb.className="feedback ok";fb.innerHTML="✅ 😊 آفرین! پاسخ درست است."}}
- else{S.quiz.wrong++;opts[i].classList.add("wrong");opts[q.answer].classList.add("correct");const fb=document.getElementById("fb");if(fb){fb.className="feedback bad";fb.innerHTML="❌ پاسخ اشتباه است."}}
- setTimeout(()=>{S.quiz.i++;finalQuizRender(id)},700);
+ if(i===q.answer){
+  S.quiz.correct++;opts[i].classList.add("correct");
+  const fb=document.getElementById("fb");if(fb){fb.className="feedback ok";fb.innerHTML="✅ 😊 آفرین! پاسخ درست است."}
+  if (window.Penguin && S.student) { const name = S.student.first_name || "دوست من"; Penguin.jump(); Penguin.say(Penguin.getMessage("correct", name), 3000); }
+ }
+ else{
+  S.quiz.wrong++;opts[i].classList.add("wrong");opts[q.answer].classList.add("correct");
+  const fb=document.getElementById("fb");if(fb){fb.className="feedback bad";fb.innerHTML="❌ پاسخ اشتباه است."}
+  if (window.Penguin && S.student) { const name = S.student.first_name || "دوست من"; Penguin.say(Penguin.getMessage("wrong", name), 3000); }
+ }
+ setTimeout(()=>{S.quiz.i++;finalQuizRender(id)},900);
 }
 
 /* ==================== Q&A ==================== */
@@ -3382,13 +4068,10 @@ async function submitHomework(){
  }catch(e){toast("ارسال انجام نشد: "+e.message,"error")}
 }
 
-/* ==================== اساتید با تقویم فارسی ==================== */
+/* ==================== اساتید ==================== */
 function teachers(){
  render("اساتید",`<div class="card"><button class="btn secondary" onclick="home()">← بازگشت</button><h2 style="margin-top:14px">👨‍🏫 اساتید AliNagheli English</h2><p class="muted">استاد مورد نظر خود را انتخاب کنید.</p></div><div class="teacher">${teachersData.map((t,i)=>`<div class="teacherBox"><div class="teacherAvatar">${t.icon}</div><h2 style="text-align:center;margin:14px 0 6px">${esc(t.name)}</h2><p style="text-align:center;color:var(--primary);font-weight:700;font-size:13px">${esc(t.degree)}</p><p style="font-size:13px;color:var(--text-muted)">${esc(t.text)}</p><a class="btn call" href="tel:${t.phone}">📞 تماس با ${esc(t.name)}<br><span style="font-size:12px">${t.phone}</span></a><button class="btn info full" onclick="askFromTeacher('${t.id}')">💬 پرسیدن سؤال از ${esc(t.name)}</button><div class="request"><h3 style="margin-top:0">📅 رزرو تایم کلاس (تقویم فارسی)</h3><div id="pcal-${i}"></div><div id="ptime-${i}" style="margin-top:10px"></div><label>نوع کلاس</label><select id="ttype${i}"><option>کلاس مکالمه</option><option>کلاس خصوصی</option><option>آمادگی IELTS</option><option>آمادگی TOEFL</option><option>سایر</option></select><label>توضیحات</label><textarea id="tn${i}" placeholder="..."></textarea><button class="btn full" onclick="requestTeacher(${i})">📨 ارسال درخواست رزرو</button></div></div>`).join("")}</div>`);
- // راه‌اندازی تقویم فارسی برای هر استاد
- teachersData.forEach((_,i)=>{
-  initPersianCalendar(i);
- });
+ teachersData.forEach((_,i)=>{ initPersianCalendar(i); });
 }
 function initPersianCalendar(teacherIndex){
  const today=getTodayJalali();
@@ -3401,10 +4084,9 @@ function renderPersianCalendar(teacherIndex){
  const el=document.getElementById("pcal-"+teacherIndex);
  if(!el) return;
  const daysInMonth=getJalaliMonthDays(st.jy,st.jm);
- // روز اول ماه - تعیین روز هفته
  const [gy,gm,gd]=jalaliToGregorian(st.jy,st.jm,1);
  const gDate=new Date(gy,gm-1,gd);
- const firstWeekDay=(gDate.getDay()+1)%7; // شنبه=0
+ const firstWeekDay=(gDate.getDay()+1)%7;
  let grid="";
  for(let i=0;i<firstWeekDay;i++) grid+=`<div class="pcalDay empty"></div>`;
  for(let d=1;d<=daysInMonth;d++){
@@ -3528,7 +4210,7 @@ async function leaderboard(){
    const name=row.students?`${row.students.first_name||""} ${row.students.last_name||""}`:"زبان‌آموز";
    const isMe=S.student&&row.student_id===S.student.id;
    const medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":`#${i+1}`;
-   return `<div class="leaderRow ${isMe?"me":""}"><div class="leaderRank">${medal}</div><div class="leaderName">${esc(name)}</div><div class="leaderXP">⭐ ${row.xp}</div></div>`;
+   return `<div class="leaderRow ${isMe?"me":""}" style="display:flex;justify-content:space-between;padding:12px;border-bottom:1px solid var(--card-border);${isMe?"background:var(--bg-grad-1);font-weight:800;":""}"><div>${medal} ${esc(name)}</div><div>⭐ ${row.xp}</div></div>`;
   }).join("")}</div>`);
  }catch(e){
   render("لیدربورد",`<div class="card"><button class="btn secondary" onclick="home()">← بازگشت</button><h2>🏆 لیدربورد</h2><p class="muted">خطا: ${esc(e.message)}</p></div>`);
@@ -3552,7 +4234,6 @@ function referralPage(){
       <div class="referCode">${esc(code)}</div>
       <button class="btn" onclick="copyRef('${code}')">📋 کپی کد معرف</button>
     </div>
-
     <div style="margin-top:20px">
       <h3>📊 وضعیت دعوت شما</h3>
       <div style="background:var(--bg-grad-1);border-radius:16px;padding:16px">
@@ -3561,18 +4242,14 @@ function referralPage(){
           <b style="color:var(--primary)">${referredCount} / ۳</b>
         </div>
         <div class="progress" style="margin:0"><i style="width:${Math.min(100,(referredCount/3)*100)}%"></i></div>
-        <p class="muted" style="margin-top:12px">
-          ${referredCount>=3?"🎉 تبریک! واجد شرایط ۵۰٪ تخفیف شدی. برای فعال‌سازی با پشتیبانی واتساپ تماس بگیر.":`${remaining} نفر دیگه مونده تا تخفیف ۵۰٪ بگیری.`}
-        </p>
+        <p class="muted" style="margin-top:12px">${referredCount>=3?"🎉 تبریک! واجد شرایط ۵۰٪ تخفیف شدی. برای فعال‌سازی با پشتیبانی واتساپ تماس بگیر.":`${remaining} نفر دیگه مونده تا تخفیف ۵۰٪ بگیری.`}</p>
       </div>
     </div>
-
     <div style="margin-top:20px">
       <h3>🔗 لینک دعوت</h3>
       <div class="payCard" style="font-size:12px;letter-spacing:0">${esc(link)}</div>
       <button class="btn secondary full" onclick="copyRef('${esc(link)}')">📋 کپی لینک دعوت</button>
     </div>
-
     <h3 style="margin-top:20px">📜 قوانین</h3>
     <ul class="muted">
       <li>فقط دعوت‌کننده (شما) با دعوت ۳ نفر موفق، ۵۰٪ تخفیف می‌گیرد</li>
@@ -3658,6 +4335,14 @@ function renderAdmin(students,requests,questions,homeworks){
  <div class="toast-wrap" id="toastWrap"></div>
  <a class="floatWhats" href="https://wa.me/989141892768" target="_blank">💬</a>
  `;
+ // پنگوئن برای مدیر
+ ensurePenguin();
+ setTimeout(() => {
+  if (window.Penguin) {
+   Penguin.jump();
+   Penguin.say("سلام مدیر عزیز! 👨‍💼 آماده‌ی کاریم؟ 🐧", 5000);
+  }
+ }, 800);
 }
 async function replyQuestion(id){
  const txt=document.getElementById("qr"+id).value.trim();
@@ -3718,6 +4403,12 @@ async function logout(){
  try{await db.auth.signOut()}catch(e){}
  S={student:null,admin:false,grade:null,lesson:null,quiz:null,xp:0,level:1,progress:{},achievements:[],exams:[],unlocks:{},streak:0,lastVisit:null,qas:[],homeworks:[],gameRecords:{},currentGame:null};
  landing();
+ // پنگوئن خداحافظی کنه
+ setTimeout(() => {
+  if (window.Penguin) {
+   Penguin.say("خداحافظ! زود برگرد 🐧💜", 4000);
+  }
+ }, 500);
 }
 
 /* ==================== Startup ==================== */
@@ -3727,6 +4418,10 @@ async function startup(){
   const session=r.data?.session;
   const sp=document.getElementById("splash");
   const hideSplash=()=>{if(sp)sp.style.display="none"};
+  // راه‌اندازی پنگوئن بعد از splash
+  setTimeout(() => {
+   if (window.Penguin) Penguin.init();
+  }, 1800);
   if(!session){setTimeout(()=>{hideSplash();landing()},1500);return}
   const user=session.user;
   if((user.email||"").toLowerCase()===ADMIN_EMAIL.toLowerCase()){S.admin=true;setTimeout(()=>{hideSplash();admin()},1500);return}
