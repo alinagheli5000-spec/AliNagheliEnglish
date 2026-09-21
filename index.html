@@ -5613,35 +5613,25 @@ function openUnlockPanel(studentId, studentName){
 /* ==================== Toggle Unlock ==================== */
 async function toggleUnlock(studentId, type, gradeOrBook, lessonIndex){
   try{
+    let gradeKey = "";
     if(type === "grade"){
-      const existing = await db.from("lesson_unlocks").select("*").eq("student_id",studentId).eq("grade",gradeOrBook).eq("lesson_index",lessonIndex).maybeSingle();
-      if(existing.data){
-        await db.from("lesson_unlocks").delete().eq("id", existing.data.id);
-        toast("🔒 قفل بسته شد","info");
-      } else {
-        await db.from("lesson_unlocks").insert({student_id:studentId,grade:gradeOrBook,lesson_index:lessonIndex,package:"admin",unlocked_at:new Date().toISOString()});
-        toast("🔓 قفل باز شد","success");
-      }
+      gradeKey = gradeOrBook;
     } else if(type === "final-exam"){
-      const existing = await db.from("lesson_unlocks").select("*").eq("student_id",studentId).eq("grade",`final-exam-${gradeOrBook}`).eq("lesson_index",0).maybeSingle();
-      if(existing.data){
-        await db.from("lesson_unlocks").delete().eq("id", existing.data.id);
-        toast("🔒 قفل آزمون بسته شد","info");
-      } else {
-        await db.from("lesson_unlocks").insert({student_id:studentId,grade:`final-exam-${gradeOrBook}`,lesson_index:0,package:"admin",unlocked_at:new Date().toISOString()});
-        toast("🔓 قفل آزمون باز شد","success");
-      }
+      gradeKey = `final-exam-${gradeOrBook}`;
     } else if(type === "talk"){
-      const gradeKey = gradeOrBook;
-      const existing = await db.from("lesson_unlocks").select("*").eq("student_id",studentId).eq("grade",gradeKey).eq("lesson_index",lessonIndex).maybeSingle();
-      if(existing.data){
-        await db.from("lesson_unlocks").delete().eq("id", existing.data.id);
-        toast("🔒 قفل بسته شد","info");
-      } else {
-        await db.from("lesson_unlocks").insert({student_id:studentId,grade:gradeKey,lesson_index:lessonIndex,package:"admin",unlocked_at:new Date().toISOString()});
-        toast("🔓 قفل باز شد","success");
-      }
+      gradeKey = gradeOrBook;
     }
+    
+    const existing = await db.from("lesson_unlocks").select("*").eq("student_id",studentId).eq("grade",gradeKey).eq("lesson_index",lessonIndex).maybeSingle();
+    
+    if(existing.data){
+      await db.from("lesson_unlocks").delete().eq("id", existing.data.id);
+      toast("🔒 قفل بسته شد","info");
+    } else {
+      await db.from("lesson_unlocks").insert({student_id:studentId,grade:gradeKey,lesson_index:lessonIndex,package:"admin",unlocked_at:new Date().toISOString()});
+      toast("🔓 قفل باز شد","success");
+    }
+    
     // رفرش پنل
     const name = document.querySelector("#unlockPanelContent p b")?.textContent || "";
     openUnlockPanel(studentId, name);
