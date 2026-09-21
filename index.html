@@ -5779,6 +5779,35 @@ async function openUnlockPanel(studentId, studentName){
     html += `</div>`;
   });
   
+   html += `<h4 style="margin-top:24px;color:var(--primary)">📄 آزمون‌های نهایی</h4>`;
+  html += `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">`;
+  [10,11,12].forEach(g=>{
+    const key = `final-exam-${g}-0`;
+    const isUnlocked = !!currentUnlocks[key];
+    const bgColor = isUnlocked ? "#22c55e" : "#ef4444";
+    const icon = isUnlocked ? "✅" : "🔒";
+    html += `<button style="background:${bgColor};color:#fff;border:0;border-radius:10px;padding:6px 12px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.2)" onclick="toggleUnlock(${studentId},'final-exam',${g},0)">${icon} آزمون پایه ${g}</button>`;
+  });
+  html += `</div>`;
+  
+  html += `<h4 style="margin-top:24px;color:var(--primary)">🎤 کتاب‌های مکالمه</h4>`;
+  ["ts1","ts2","ts3","ts4","vp1","vp2"].forEach(bookId=>{
+    const book = TALK_BOOKS.adults.find(b=>b.id===bookId);
+    if(!book) return;
+    const lessons = tsData[bookId] || [];
+    html += `<div style="margin-top:12px"><b style="color:var(--text)">${esc(book.title)} — ${esc(book.sub)}</b> <span class="muted">(${lessons.length} درس)</span></div>`;
+    html += `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">`;
+    lessons.forEach((ls, i)=>{
+      const key = `${bookId}-${i}`;
+      const isFree = i === 0;
+      const isUnlocked = isFree || !!currentUnlocks[key];
+      const bgColor = isUnlocked ? "#22c55e" : "#ef4444";
+      const icon = isUnlocked ? "✅" : "🔒";
+      html += `<button style="background:${bgColor};color:#fff;border:0;border-radius:10px;padding:6px 12px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.2)" onclick="toggleUnlock(${studentId},'talk','${bookId}',${i})">${icon} درس ${i+1}</button>`;
+    });
+    html += `</div>`;
+  });
+  
   content.innerHTML = html;
   panel.scrollIntoView({behavior:"smooth"});
 }
