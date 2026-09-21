@@ -17,7 +17,7 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:linear-gradient(
 button,input,select,textarea{font-family:inherit}
 button{cursor:pointer;transition:all .2s ease}
 button:active{transform:scale(.97)}
-.splash{position:fixed;inset:0;background:linear-gradient(135deg,#2e1065 0%,#6d28d9 50%,#a855f7 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:10000;animation:splashOut .6s ease 1.6s forwards}
+.splash{position:fixed;inset:0;background:linear-gradient(135deg,#2e1065 0%,#6d28d9 50%,#a855f7 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:10000;animation:splashOut .4s ease 0.8s forwards}
 .splash .logo3d{width:260px;height:280px;animation:logoFloat 2.4s ease-in-out infinite,logoIn .9s cubic-bezier(.2,.8,.2,1)}
 .splash .brand{margin-top:20px;font-size:24px;font-weight:800;color:#fff;letter-spacing:1px;text-shadow:0 4px 20px rgba(0,0,0,.3);animation:fadeInUp .6s ease .3s both}
 .splash .sub{font-size:11px;color:rgba(255,255,255,.75);letter-spacing:5px;margin-top:6px;animation:fadeInUp .6s ease .5s both}
@@ -4036,21 +4036,17 @@ async function loadStudentStats(){
   if(!S.student)return; 
   S.xp=0;S.level=1;S.progress={};S.achievements=[];S.exams=[]; 
   try{
-    const r=await db.from("student_xp").select("xp,level").eq("student_id",S.student.id).maybeSingle();
-    if(r.data){S.xp=Number(r.data.xp||0);S.level=Number(r.data.level||calculateLevel(S.xp))}
-  }catch(e){} 
-  try{
-    const r=await db.from("student_progress").select("lesson_id,progress,completed").eq("student_id",S.student.id);
-    (r.data||[]).forEach(x=>S.progress[x.lesson_id]={progress:Number(x.progress||0),completed:Boolean(x.completed)})
-  }catch(e){} 
-  try{
-    const r=await db.from("student_achievements").select("achievement_key,title").eq("student_id",S.student.id);
-    S.achievements=r.data||[]
-  }catch(e){} 
-  try{
-    const r=await db.from("exam_results").select("*").eq("user_id",S.student.auth_user_id).order("created_at",{ascending:false});
-    S.exams=r.data||[]
-  }catch(e){} 
+    const [r1, r2, r3, r4] = await Promise.all([
+      db.from("student_xp").select("xp,level").eq("student_id",S.student.id).maybeSingle(),
+      db.from("student_progress").select("lesson_id,progress,completed").eq("student_id",S.student.id),
+      db.from("student_achievements").select("achievement_key,title").eq("student_id",S.student.id),
+      db.from("exam_results").select("*").eq("user_id",S.student.auth_user_id).order("created_at",{ascending:false})
+    ]);
+    if(r1.data){S.xp=Number(r1.data.xp||0);S.level=Number(r1.data.level||calculateLevel(S.xp))}
+    (r2.data||[]).forEach(x=>S.progress[x.lesson_id]={progress:Number(x.progress||0),completed:Boolean(x.completed)});
+    S.achievements=r3.data||[];
+    S.exams=r4.data||[];
+  }catch(e){ console.error("loadStudentStats error:", e); }
 }
 async function addXP(amount){ 
   if(!S.student)return; 
@@ -4090,10 +4086,6 @@ async function loadUnlocks(){
   try{ 
     const r=await db.from("lesson_unlocks").select("grade,lesson_index").eq("student_id", S.student.id); 
     (r.data||[]).forEach(x=>{ S.unlocks[`${x.grade}-${x.lesson_index}`]=true; }); 
-  }catch(e){} 
-  try{ 
-    const local=JSON.parse(localStorage.getItem("AN_UNLOCKS_"+S.student.id)||"{}"); 
-    Object.keys(local).forEach(k=>{ if(local[k]) S.unlocks[k]=true; }); 
   }catch(e){} 
 }
 async function unlockLesson(grade,lessonIndex,paymentRef,pkg){ 
@@ -4214,11 +4206,13 @@ async function studentLogin(){
     const auth=await db.auth.signInWithPassword({email:String(email).trim(),password}); 
     if(auth.error)throw new Error("رمز عبور صحیح نیست."); 
     S.student=student;S.admin=false; 
-    await loadStudentStats(); 
-    await loadUnlocks(); 
-    loadStreak();loadGameRecords(); 
-    await loadQAs(); 
-    await loadHomeworks(); 
+await Promise.all([
+  loadStudentStats(),
+  loadUnlocks(),
+  loadQAs(),
+  loadHomeworks()
+]);
+loadStreak();loadGameRecords();  
     toast("خوش آمدی "+student.first_name+" 👋","success"); 
     home(); 
   }catch(e){toast(e?.message||"ورود ناموفق بود.","error")} 
@@ -5913,9 +5907,9 @@ async function startup(){
     const session=r.data?.session; 
     const sp=document.getElementById("splash"); 
     const hideSplash=()=>{if(sp)sp.style.display="none"}; 
-    if(!session){setTimeout(()=>{hideSplash();landing()},1500);return} 
+    if(!session){setTimeout(()=>{hideSplash();landing()},600);return} 
     const user=session.user; 
-    if((user.email||"").toLowerCase()===ADMIN_EMAIL.toLowerCase()){S.admin=true;setTimeout(()=>{hideSplash();admin()},1500);return} 
+    if((user.email||"").toLowerCase()===ADMIN_EMAIL.toLowerCase()){S.admin=true;setTimeout(()=>{hideSplash();admin()},600);return} 
     const st=await db.from("students").select("*").eq("auth_user_id",user.id).maybeSingle(); 
     if(st.data && st.data.status !== "rejected"){ 
       S.student=st.data; 
@@ -5924,11 +5918,11 @@ async function startup(){
       loadStreak();loadGameRecords(); 
       await loadQAs(); 
       await loadHomeworks(); 
-      setTimeout(()=>{hideSplash();home()},1500); 
+      setTimeout(()=>{hideSplash();landing()},600); 
       return; 
     } 
     await db.auth.signOut(); 
-    setTimeout(()=>{hideSplash();landing()},1500); 
+    setTimeout(()=>{hideSplash();home()},600); 
   }catch(e){ 
     try{await db.auth.signOut()}catch(_){} 
     setTimeout(()=>{ 
