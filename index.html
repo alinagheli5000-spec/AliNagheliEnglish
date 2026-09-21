@@ -7,7 +7,7 @@
 <title>AliNagheli English</title>
 <link rel="icon" type="image/svg+xml" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%23a855f7"/><stop offset="1" stop-color="%236d28d9"/></linearGradient></defs><rect x="15" y="25" width="70" height="55" rx="6" fill="url(%23g)"/><text x="50" y="62" font-size="28" font-weight="800" text-anchor="middle" fill="white" font-family="Arial">Ali</text></svg>'>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Lalezar&family=Amiri:wght@700&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://function openTalkBookcdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--bg-grad-1:#f5f3ff;--bg-grad-2:#ede9fe;--text:#171717;--text-muted:#6b7280;--card-bg:#fff;--card-border:rgba(221,214,254,.5);--card-shadow:0 4px 24px rgba(109,40,217,.06);--primary:#6d28d9;--primary-dark:#4c1d95;--primary-light:#a855f7;--accent-pink:#ec4899;--neon-purple:#a855f7;--neon-pink:#ec4899;--neon-blue:#3b82f6;--success:#22c55e;--danger:#ef4444;--warning:#f59e0b;--info:#3b82f6;--input-bg:#faf9ff;--input-border:#ede9fe}
 [data-theme="dark"]{--bg-grad-1:#0f172a;--bg-grad-2:#1e1b4b;--text:#f1f5f9;--text-muted:#94a3b8;--card-bg:#1e293b;--card-border:rgba(109,40,217,.4);--card-shadow:0 4px 24px rgba(0,0,0,.3);--input-bg:#0f172a;--input-border:#334155}
@@ -4278,7 +4278,7 @@ function talkTeachers(){
     </div>
   `);
 } 
-  /* ==================== باز کردن کتاب Talk ==================== */
+/* ==================== باز کردن کتاب Talk ==================== */
 function openTalkBook(bookId){
   if(bookId==="ts1" || bookId==="ts2" || bookId==="ts3" || bookId==="ts4" || bookId==="vp1" || bookId==="vp2"){
     const info = {
@@ -4291,6 +4291,306 @@ function openTalkBook(bookId){
     }[bookId];
     return tsBookHome(bookId, info.title, info.icon, info.c1, info.c2, info.sub, info.desc);
   }
+  const allBooks = [...TALK_BOOKS.adults, ...TALK_BOOKS.kids];
+  const book = allBooks.find(b=>b.id===bookId);
+  if(!book){toast("کتاب پیدا نشد","error");return}
+  render(book.title,`
+    <div class="card">
+      <button class="btn secondary" onclick="backToTalkBook('${bookId}')">← بازگشت</button>
+      <h2 style="margin-top:14px">${esc(book.title)}</h2>
+      <p class="muted">${esc(book.sub)}</p>
+      <div style="text-align:center;padding:50px 20px;background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));border-radius:20px;margin-top:20px">
+        <div style="font-size:70px;margin-bottom:16px">${book.icon}</div>
+        <h3 style="color:var(--primary);margin:0 0 10px">محتوای این کتاب به‌زودی اضافه می‌شود</h3>
+        <p class="muted" style="max-width:420px;margin:auto">در حال حاضر محتوای Touchstone 1 تا 4 و Viewpoint 1 و 2 در دسترس است.</p>
+        <a class="btn call" href="tel:09141892768" style="max-width:300px;margin:20px auto 0;display:inline-block">📞 تماس با استاد</a>
+      </div>
+    </div>
+  `);
+}
+
+function backToTalkBook(bookId){
+  if(bookId.startsWith("ts")||bookId.startsWith("vp")) return talkAdults();
+  if(bookId.startsWith("ff")||bookId.startsWith("bp")||bookId.startsWith("cn")) return talkKids();
+  return talkCoursePage();
+}
+
+/* ==================== صفحه آزمون‌های بین‌المللی ==================== */
+function openIntlCourse(id, title){
+  const details = {
+    ielts:{color:"#ec4899",icon:"🎯",desc:"آزمون بین‌المللی سنجش زبان انگلیسی برای تحصیل و مهاجرت",features:["Listening · Reading · Writing · Speaking","نمره‌دهی ۰ تا ۹","دوره‌های آمادگی فشرده و ترمیک","آزمون آزمایشی و بازخورد"],sections:["Listening: 4 بخش، 40 سؤال، 30 دقیقه","Reading: 3 متن، 40 سؤال، 60 دقیقه","Writing: 2 تسک، 60 دقیقه","Speaking: 3 بخش، 11-14 دقیقه"],tips:["تمرین روزانه با نمونه سؤالات واقعی","تقویت دایره لغات آکادمیک","تمرین اسپیکینگ با یک پارتنر","مدیریت زمان در ریدینگ و رایتینگ"],duration:"۲.۵ ساعت + Speaking"},
+    toefl:{color:"#0ea5e9",icon:"🎓",desc:"آزمون تافل برای ورود به دانشگاه‌های آمریکای شمالی",features:["iBT — اینترنتی","نمره‌دهی ۰ تا ۱۲۰","دوره‌های آمادگی تخصصی","بانک سؤالات و آزمون‌های شبیه‌سازی"],sections:["Reading: 3-4 متن، 54-72 دقیقه","Listening: 4-6 لکچر، 41-57 دقیقه","Speaking: 4 تسک، 17 دقیقه","Writing: 2 تسک، 50 دقیقه"],tips:["تمرین نت‌برداری در لکچرها","تقویت مهارت تایپ سریع","تمرین اسپیکینگ با تایمر","آشنایی با فرمت سؤالات"],duration:"حدود ۳ ساعت"},
+    ket:{color:"#22c55e",icon:"📘",desc:"آزمون KET کمبریج — سطح A2",features:["آزمون زبان عمومی","برای نوجوانان و بزرگسالان","توسعه چهار مهارت","آمادگی برای سطوح بالاتر"],sections:["Reading and Writing: 70 دقیقه","Listening: 30 دقیقه","Speaking: 8-10 دقیقه"],tips:["تمرین مکالمه روزمره","یادگیری لغات پایه","تمرین نوشتن ایمیل‌های کوتاه","گوش دادن به پادکست‌های ساده"],duration:"حدود ۲ ساعت"},
+    pet:{color:"#a855f7",icon:"📗",desc:"آزمون PET کمبریج — سطح B1",features:["مهارت‌های چهارگانه","معادل سطح متوسط","مدرک بین‌المللی","پیش‌نیاز FCE"],sections:["Reading and Writing: 90 دقیقه","Listening: 30 دقیقه","Speaking: 10-12 دقیقه"],tips:["تمرین رایتینگ با موضوعات متنوع","تقویت اسپیکینگ با بحث گروهی","گسترش دایره لغات موضوعی","تمرین تست‌های زمان‌دار"],duration:"حدود ۲.۵ ساعت"},
+    ept:{color:"#f59e0b",icon:"📝",desc:"آزمون زبان انگلیسی EPT دانشگاه‌ها",features:["آزمون زبان عمومی","برای دانشجویان تحصیلات تکمیلی","مشابه MSRT","آمادگی سریع"],sections:["Listening: 30 سؤال","Reading: 40 سؤال","Vocabulary: 30 سؤال","Grammar: 30 سؤال"],tips:["تمرین تست‌های سال‌های گذشته","تقویت گرامر پایه","تمرین لیسنینگ با فایل‌های صوتی","مدیریت زمان در تست‌زنی"],duration:"حدود ۱۰۰ دقیقه"},
+    msrt:{color:"#14b8a6",icon:"🏛️",desc:"آزمون MSRT وزارت علوم، تحقیقات و فناوری",features:["Listening · Reading · Vocabulary · Grammar","برای دانشجویان دکتری","نمره‌دهی ۰ تا ۱۰۰","دوره آمادگی فشرده"],sections:["Listening: 30 سؤال، 20 دقیقه","Reading: 40 سؤال، 40 دقیقه","Vocabulary: 30 سؤال، 20 دقیقه","Grammar: 30 سؤال، 20 دقیقه"],tips:["تمرین تست‌های ۱۰ سال اخیر","یادگیری لغات ۵۰۴ و ضروری","تمرین لیسنینگ با لهجه آمریکایی","تقویت گرامر سطح متوسط"],duration:"حدود ۱۰۰ دقیقه"},
+    mche:{color:"#6366f1",icon:"🎓",desc:"آزمون زبان انگلیسی MCHE",features:["سنجش مهارت‌های زبانی","برای دانشجویان دانشگاه‌ها","مشابه MSRT","آمادگی و آزمون آزمایشی"],sections:["Listening: 30 سؤال","Reading: 40 سؤال","Vocabulary: 30 سؤال","Grammar: 30 سؤال"],tips:["تمرین تست‌های مشابه","تقویت مهارت شنیداری","مرور گرامر متوسط","تمرین مدیریت زمان"],duration:"حدود ۱۰۰ دقیقه"}
+  };
+  const d = details[id] || {color:"#6d28d9",icon:"🎓",desc:"آزمون بین‌المللی",features:[],sections:[],tips:[],duration:""};
+  render(title,`
+    <div class="card">
+      <button class="btn secondary" onclick="talkIntl()">← بازگشت</button>
+      <div style="text-align:center;margin:20px 0">
+        <div style="width:100px;height:100px;margin:auto;border-radius:50%;background:linear-gradient(135deg,${d.color},${d.color}cc);display:flex;align-items:center;justify-content:center;font-size:48px;box-shadow:0 12px 32px ${d.color}66">${d.icon}</div>
+        <h2 style="margin:16px 0 6px">${esc(title)}</h2>
+        <p class="muted" style="max-width:500px;margin:auto">${esc(d.desc)}</p>
+        ${d.duration?`<div style="margin-top:10px"><span class="badge">⏱ مدت آزمون: ${esc(d.duration)}</span></div>`:""}
+      </div>
+      <h3 style="margin-top:24px">📋 ویژگی‌های دوره</h3>
+      <ul style="line-height:2.2;padding-right:20px;font-weight:600">
+        ${d.features.map(f=>`<li>${esc(f)}</li>`).join("")}
+      </ul>
+      ${d.sections&&d.sections.length?`<h3 style="margin-top:24px">📝 بخش‌های آزمون</h3><ul style="line-height:2.2;padding-right:20px;font-weight:600">${d.sections.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>`:""}
+      ${d.tips&&d.tips.length?`<h3 style="margin-top:24px">💡 نکات کلیدی موفقیت</h3><ul style="line-height:2.2;padding-right:20px;font-weight:600">${d.tips.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>`:""}
+      <div style="background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));border-radius:20px;padding:20px;margin-top:20px">
+        <h3 style="margin-top:0">📞 برای ثبت‌نام تماس بگیرید</h3>
+        <a class="btn call full" href="tel:09141892768">📞 علی ناقلی — ۰۹۱۴۱۸۹۲۷۶۸</a>
+        <a class="btn call full" href="tel:09914312534">📞 الهه باغبانی — ۰۹۹۱۴۳۱۲۵۳۴</a>
+        <a class="btn success full" style="margin-top:8px" href="https://wa.me/989141892768?text=${encodeURIComponent('سلام، می‌خواهم در دوره '+title+' ثبت‌نام کنم.')}" target="_blank">💬 واتساپ</a>
+      </div>
+    </div>
+  `);
+}
+
+/* ==================== Book Viewer (Touchstone + Viewpoint) ==================== */
+let currentTSBook = "ts1";
+let currentTSLesson = 0;
+let currentTSTab = "grammar";
+let tsQuizAnswered = {};   /* ← فقط یک بار تعریف میشه */
+
+function isTSLessonUnlocked(bookId, lessonIndex){
+  if(lessonIndex === 0) return true;
+  if(S.admin) return true;
+  return !!S.unlocks[`${bookId}-${lessonIndex}`];
+}
+
+function tsBookHome(bookId, title, icon, color1, color2, subtitle, description){
+  currentTSBook = bookId;
+  currentTSLesson = 0;
+  const lessons = tsData[bookId] || [];
+  const pricing = PRICING.talkBooks[bookId] || { single: 299000, full: 799000 };
+  const singleLabel = Number(pricing.single).toLocaleString("fa-IR");
+  const fullLabel = Number(pricing.full).toLocaleString("fa-IR");
+  render(title,`
+    <div class="card" style="background:linear-gradient(135deg,${color1},${color2});color:#fff;border:0">
+      <button class="btn secondary" onclick="talkAdults()" style="background:rgba(255,255,255,.2);color:#fff">← بازگشت</button>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:14px">
+        <div style="width:70px;height:70px;border-radius:18px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:38px;box-shadow:0 8px 20px rgba(0,0,0,.2)">${icon}</div>
+        <div>
+          <h2 style="margin:0;color:#fff">${esc(title)}</h2>
+          <p style="margin:4px 0 0;opacity:.9;font-weight:600">${esc(subtitle)}</p>
+        </div>
+      </div>
+      <p style="margin-top:14px;opacity:.95;font-weight:600;line-height:1.9">${esc(description)}</p>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0;display:flex;align-items:center;gap:8px">💰 قیمت‌ها</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="background:linear-gradient(135deg,var(--bg-grad-1),var(--card-bg));border:1px solid var(--card-border);border-radius:16px;padding:16px;text-align:center">
+          <div style="font-size:13px;font-weight:700;color:var(--text-muted)">تک‌درس</div>
+          <div style="font-size:22px;font-weight:900;color:var(--primary);margin:8px 0">${singleLabel} <small style="font-size:12px">تومان</small></div>
+        </div>
+        <div style="background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #f59e0b;border-radius:16px;padding:16px;text-align:center">
+          <div style="font-size:13px;font-weight:700;color:#92400e">کل کتاب</div>
+          <div style="font-size:22px;font-weight:900;color:#92400e;margin:8px 0">${fullLabel} <small style="font-size:12px">تومان</small></div>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:12px;text-align:center">🔒 درس اول رایگان — برای دسترسی به دروس دیگر، هزینه را واریز کنید.</p>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0;display:flex;align-items:center;gap:8px">📚 فهرست دروس</h3>
+      <div class="tsLessonGrid">
+        ${lessons.map((ls,i)=>{
+          const unlocked = isTSLessonUnlocked(bookId, i);
+          return `
+          <div class="tsLesson ${unlocked?'':'locked'}" onclick="${unlocked?`openTSLesson(${i})`:`showTSLockedMessage('${bookId}',${i})`}">
+            <div class="tsNo">${i+1}</div>
+            <div class="tsTitle">${esc(ls.title)}</div>
+            <div class="tsSub">${esc(ls.subtitle)}</div>
+            ${unlocked?'':'<div style="margin-top:8px;font-size:11px;color:#ef4444;font-weight:800">🔒 قفل</div>'}
+          </div>
+        `}).join("")}
+      </div>
+    </div>
+  `);
+}
+
+function showTSLockedMessage(bookId, lessonIndex){
+  const pricing = PRICING.talkBooks[bookId] || { single: 299000, full: 799000 };
+  const bookInfo = TALK_BOOKS.adults.find(b=>b.id===bookId) || {title: bookId};
+  showPaymentModal({
+    title: `باز کردن درس ${lessonIndex+1} از ${bookInfo.title}`,
+    amount: pricing.single,
+    packageType: "single",
+    bookId: bookId,
+    lessonIndex: lessonIndex
+  });
+}
+
+function openTSLesson(i){
+  if(!isTSLessonUnlocked(currentTSBook, i)){
+    showTSLockedMessage(currentTSBook, i);
+    return;
+  }
+  currentTSLesson = i;
+  currentTSTab = "grammar";
+  renderTSLesson();
+}
+
+function renderTSLesson(){
+  const ls = tsData[currentTSBook][currentTSLesson];
+  if(!ls){toast("درس پیدا نشد","error");return}
+  const bookInfo = TALK_BOOKS.adults.find(b=>b.id===currentTSBook) || {title: currentTSBook, icon:"📘"};
+  const bookTitle = bookInfo.title;
+  const totalLessons = tsData[currentTSBook].length;
+  const colors = currentTSBook==='ts1'?'#ef4444,#b91c1c':currentTSBook==='ts2'?'#3b82f6,#1d4ed8':currentTSBook==='ts3'?'#22c55e,#15803d':currentTSBook==='ts4'?'#a855f7,#6d28d9':currentTSBook==='vp1'?'#d97706,#92400e':currentTSBook==='vp2'?'#78350f,#451a03':'#6d28d9,#4c1d95';
+  render(`${bookTitle} — ${ls.title}`,`
+    <div class="card" style="background:linear-gradient(135deg,${colors});color:#fff;border:0">
+      <button class="btn secondary" onclick="openTalkBook('${currentTSBook}')" style="background:rgba(255,255,255,.2);color:#fff">← فهرست دروس</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:12px;opacity:.9;font-weight:700">LESSON ${currentTSLesson+1} / ${totalLessons}</div>
+          <h2 style="margin:6px 0 0;color:#fff">${esc(ls.title)}</h2>
+          <p style="margin:4px 0 0;opacity:.9;font-weight:600">${esc(ls.subtitle)}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="tsTabs">
+        <button class="tsTab ${currentTSTab==="grammar"?"active":""}" onclick="setTSTab('grammar',event)">📘 گرامر</button>
+        <button class="tsTab ${currentTSTab==="vocab"?"active":""}" onclick="setTSTab('vocab',event)">🔊 لغات</button>
+        <button class="tsTab ${currentTSTab==="dialog"?"active":""}" onclick="setTSTab('dialog',event)">💬 مکالمه</button>
+        <button class="tsTab ${currentTSTab==="summary"?"active":""}" onclick="setTSTab('summary',event)">📝 خلاصه درس</button>
+        <button class="tsTab ${currentTSTab==="quiz"?"active":""}" onclick="setTSTab('quiz',event)">🎯 آزمون درس</button>
+      </div>
+      <div id="tsContent">${renderTSTabContent(ls)}</div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:16px">
+      ${currentTSLesson>0?`<button class="btn secondary full" onclick="openTSLesson(${currentTSLesson-1})">← درس قبلی</button>`:""}
+      ${currentTSLesson<totalLessons-1?`<button class="btn full" onclick="openTSLesson(${currentTSLesson+1})">درس بعدی →</button>`:""}
+    </div>
+  `);
+}
+
+function setTSTab(tab,ev){
+  currentTSTab = tab;
+  const ls = tsData[currentTSBook][currentTSLesson];
+  document.querySelectorAll(".tsTab").forEach(b=>b.classList.remove("active"));
+  if(ev&&ev.target) ev.target.classList.add("active");
+  const content = document.getElementById("tsContent");
+  if(content) content.innerHTML = renderTSTabContent(ls);
+  if(tab==="quiz") renderTSQuizState(ls);
+}
+
+function renderTSTabContent(ls){
+  if(currentTSTab==="grammar"){
+    if(!ls.grammar||!ls.grammar.length) return '<p class="muted">گرامری برای این درس ثبت نشده.</p>';
+    return ls.grammar.map(g=>`
+      <div class="tsGrammar">
+        <h4>📘 ${esc(g.h)}</h4>
+        <div class="exBox">${esc(g.ex)}</div>
+        <p style="margin:8px 0 4px"><b>ترجمه/توضیح:</b> ${esc(g.fa)}</p>
+        ${g.note?`<p class="muted" style="margin:6px 0 0"><b>📌 نکته:</b> ${esc(g.note)}</p>`:""}
+      </div>
+    `).join("");
+  }
+  if(currentTSTab==="vocab"){
+    if(!ls.vocab||!ls.vocab.length) return '<p class="muted">لغتی برای این درس ثبت نشده.</p>';
+    return `<p class="muted" style="margin-bottom:12px">🔊 برای شنیدن تلفظ، روی هر کلمه کلیک کن</p>
+      <div class="tsWordGrid">
+        ${ls.vocab.map(v=>`<div class="tsWord" onclick='speak(${JSON.stringify(v[0])})'><div class="en">🔊 ${esc(v[0])}</div><div class="fa">${esc(v[1])}</div></div>`).join("")}
+      </div>`;
+  }
+  if(currentTSTab==="dialog"){
+    if(!ls.dialog||!ls.dialog.length) return '<p class="muted">مکالمه‌ای برای این درس ثبت نشده.</p>';
+    return ls.dialog.map(d=>`
+      <div class="tsDialog">
+        <div class="dlgTitle">💬 ${esc(d.title)}</div>
+        ${d.lines.map((l,idx)=>`
+          <div class="dlgLine ${idx%2===0?"dlgA":"dlgB"}">
+            <span class="spk">${esc(l.who)}:</span>${esc(l.text)}
+          </div>
+        `).join("")}
+        ${d.fa?`<div class="dlgFa">📝 ${esc(d.fa)}</div>`:""}
+      </div>
+    `).join("");
+  }
+  if(currentTSTab==="summary"){
+    if(!ls.summary||!ls.summary.length) return '<p class="muted">خلاصه‌ای برای این درس ثبت نشده.</p>';
+    return `<div class="tsSummary">
+      <h4>📝 خلاصه درس ${currentTSLesson+1}: ${esc(ls.title)}</h4>
+      <ul>${ls.summary.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+    </div>`;
+  }
+  if(currentTSTab==="quiz"){
+    if(!ls.quiz||!ls.quiz.length) return '<p class="muted">آزمونی برای این درس ثبت نشده.</p>';
+    const shuffledQuiz = shuffleQuestionOptions(ls.quiz);
+    return `<div class="tsQuizBox" id="tsQuizContainer">
+      <h4>🎯 آزمون درس ${currentTSLesson+1}: ${esc(ls.title)}</h4>
+      <div id="tsQuizQuestions">
+        ${shuffledQuiz.map((q,qi)=>`
+          <div class="tsQuizQ" data-q="${qi}">
+            <div class="qText">${qi+1}. ${esc(q.q)}</div>
+            ${q.options.map((opt,oi)=>`<button class="tsQuizOpt" onclick="answerTSQuiz(${qi},${oi},${q.answer},this)">${esc(opt)}</button>`).join("")}
+          </div>
+        `).join("")}
+      </div>
+      <div id="tsQuizResult" style="margin-top:14px;text-align:center;font-weight:800;font-size:16px;color:var(--primary)"></div>
+      <button class="btn full" style="margin-top:12px" onclick="resetTSQuiz()">🔄 شروع مجدد آزمون</button>
+    </div>`;
+  }
+  return "";
+}
+
+function answerTSQuiz(qi, oi, correct, btn){
+  if(tsQuizAnswered[qi]) return;
+  tsQuizAnswered[qi] = true;
+  const parent = btn.parentElement;
+  const buttons = parent.querySelectorAll(".tsQuizOpt");
+  buttons.forEach(b=>b.disabled=true);
+  if(oi===correct){ 
+    btn.classList.add("correct"); 
+    btn.textContent = "✅ " + btn.textContent;
+  } else { 
+    btn.classList.add("wrong"); 
+    btn.textContent = "❌ " + btn.textContent;
+    buttons[correct].classList.add("correct");
+    buttons[correct].textContent = "✅ " + buttons[correct].textContent;
+  }
+  const ls = tsData[currentTSBook][currentTSLesson];
+  const total = ls.quiz.length;
+  const answered = Object.keys(tsQuizAnswered).length;
+  if(answered >= total){
+    const rEl = document.getElementById("tsQuizResult");
+    if(rEl){
+      let totalCorrect = 0;
+      ls.quiz.forEach((q,idx)=>{ 
+        if(tsQuizAnswered[idx]){ 
+          const p = document.querySelector(`.tsQuizQ[data-q="${idx}"]`); 
+          if(p && p.querySelector(".tsQuizOpt.correct") && !p.querySelector(".tsQuizOpt.wrong")) totalCorrect++; 
+        } 
+      });
+      const percent = Math.round((totalCorrect/total)*100);
+      rEl.textContent = `🎉 نتیجه: ${totalCorrect} از ${total} (${percent}%)`;
+      if(S.student && percent>=50){ addXP(Math.max(5, Math.round(percent/5))); }
+    }
+  }
+}
+
+function resetTSQuiz(){
+  tsQuizAnswered = {};
+  const ls = tsData[currentTSBook][currentTSLesson];
+  const content = document.getElementById("tsContent");
+  if(content) content.innerHTML = renderTSTabContent(ls);
+}
+
+function renderTSQuizState(ls){
+  tsQuizAnswered = {};
+}
   const allBooks = [...TALK_BOOKS.adults, ...TALK_BOOKS.kids];
   const book = allBooks.find(b=>b.id===bookId);
   if(!book){toast("کتاب پیدا نشد","error");return}
@@ -5319,7 +5619,7 @@ function renderTSTabContent(ls){
 
 let tsQuizAnswered = {};
 
-let tsQuizAnswered = {};
+
 let tsCurrentQuiz = [];
 
 function answerTSQuiz(qi, oi, correct, btn){
