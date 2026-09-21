@@ -4735,15 +4735,16 @@ function renderTSTabContent(ls){
       <ul>${ls.summary.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
     </div>`;
   }
-  if(currentTSTab==="quiz"){
+   if(currentTSTab==="quiz"){
     if(!ls.quiz||!ls.quiz.length) return '<p class="muted">آزمونی برای این درس ثبت نشده.</p>';
+    const shuffledQuiz = shuffleQuestionOptions(ls.quiz);
     return `<div class="tsQuizBox" id="tsQuizContainer">
       <h4>🎯 آزمون درس ${currentTSLesson+1}: ${esc(ls.title)}</h4>
       <div id="tsQuizQuestions">
-        ${ls.quiz.map((q,qi)=>`
+        ${shuffledQuiz.map((q,qi)=>`
           <div class="tsQuizQ" data-q="${qi}">
             <div class="qText">${qi+1}. ${esc(q.q)}</div>
-            ${q.o.map((opt,oi)=>`<button class="tsQuizOpt" onclick="answerTSQuiz(${qi},${oi},${q.a},this)">${esc(opt)}</button>`).join("")}
+            ${q.options.map((opt,oi)=>`<button class="tsQuizOpt" onclick="answerTSQuiz(${qi},${oi},${q.answer},this)">${esc(opt)}</button>`).join("")}
           </div>
         `).join("")}
       </div>
@@ -4755,6 +4756,9 @@ function renderTSTabContent(ls){
 }
 
 let tsQuizAnswered = {};
+
+let tsQuizAnswered = {};
+let tsCurrentQuiz = [];
 
 function answerTSQuiz(qi, oi, correct, btn){
   if(tsQuizAnswered[qi]) return;
@@ -4778,7 +4782,12 @@ function answerTSQuiz(qi, oi, correct, btn){
     const rEl = document.getElementById("tsQuizResult");
     if(rEl){
       let totalCorrect = 0;
-      ls.quiz.forEach((q,idx)=>{ if(tsQuizAnswered[idx]){ const p = document.querySelector(`.tsQuizQ[data-q="${idx}"]`); if(p && p.querySelector(".tsQuizOpt.correct") && !p.querySelector(".tsQuizOpt.wrong")) totalCorrect++; } });
+      ls.quiz.forEach((q,idx)=>{ 
+        if(tsQuizAnswered[idx]){ 
+          const p = document.querySelector(`.tsQuizQ[data-q="${idx}"]`); 
+          if(p && p.querySelector(".tsQuizOpt.correct") && !p.querySelector(".tsQuizOpt.wrong")) totalCorrect++; 
+        } 
+      });
       const percent = Math.round((totalCorrect/total)*100);
       rEl.textContent = `🎉 نتیجه: ${totalCorrect} از ${total} (${percent}%)`;
       if(S.student && percent>=50){ addXP(Math.max(5, Math.round(percent/5))); }
@@ -5133,7 +5142,17 @@ const vocabPlacementQ=[
 function startPlacementTest(kind){ 
   const source = kind==="grammar"? grammarPlacementQ : vocabPlacementQ; 
   const title = kind==="grammar"? "تعیین سطح گرامر" : "تعیین سطح واژگان"; 
-  S.quiz={ type:"placement-"+kind,title,kind, questions: source.map(x=>{ const options=shuffle(x.o.slice()); return {q:x.q,options,answer:options.indexOf(x.o[x.a]),level:x.level}; }), i:0, correct:0, wrong:0, levelScores:{A1:0,A2:0,B1:0,B2:0,C1:0,C2:0} }; 
+  const shuffledQuestions = shuffleQuestionOptions(source);
+  S.quiz={ 
+    type:"placement-"+kind,
+    title,
+    kind, 
+    questions: shuffledQuestions, 
+    i:0, 
+    correct:0, 
+    wrong:0, 
+    levelScores:{A1:0,A2:0,B1:0,B2:0,C1:0,C2:0} 
+  }; 
   render(title,`<div id="placementQuiz"></div>`); 
   placementQuizRender("placementQuiz"); 
 }
@@ -5261,6 +5280,25 @@ function lessonTab(n){
   document.querySelectorAll(".tab2").forEach((x,i)=>x.classList.toggle("active",i===n)); 
   if(n===2)startLessonQuiz(); 
 }
+  /* ==================== شافل کردن گزینه‌های آزمون ==================== */
+function shuffleQuestionOptions(questions){
+  return questions.map(q => {
+    const originalOptions = q.o || q.options || [];
+    const originalAnswerText = originalOptions[q.a !== undefined ? q.a : q.answer];
+    const shuffled = shuffle([...originalOptions]);
+    const newAnswerIndex = shuffled.indexOf(originalAnswerText);
+    return {
+      q: q.q,
+      options: shuffled,
+      answer: newAnswerIndex,
+      o: shuffled,
+      a: newAnswerIndex,
+      level: q.level,
+      date: q.date
+    };
+  });
+}
+
 function makeLessonQuestions(){ 
   const gradeNum=S.grade; 
   const no=S.lesson+1; 
@@ -5270,9 +5308,10 @@ function makeLessonQuestions(){
     const pool=shuffle(wl.filter(function(_,j){return j!==i}).map(function(x){return x[1]})).slice(0,3); 
     if(pool.length<3)return; 
     const opts=shuffle([w[1]].concat(pool)); 
-    arr.push({q:'معنی «'+w[0]+'» چیست؟',options:opts,answer:opts.indexOf(w[1])}); 
+    arr.push({q:'معنی «'+w[0]+'» چیست؟',o:opts,a:opts.indexOf(w[1])}); 
   }); 
-  return shuffle(arr).slice(0,10); 
+  const shuffledQuestions = shuffle(arr).slice(0,10);
+  return shuffleQuestionOptions(shuffledQuestions);
 }
 function startLessonQuiz(){ 
   S.quiz={type:"lesson",title:`پایه ${S.grade} - ${books[S.grade].lessons[S.lesson]}`,questions:makeLessonQuestions(),i:0,correct:0,wrong:0}; 
@@ -5347,8 +5386,16 @@ function startFinalExam(g){
     });
     return;
   }
-  const qs=finalExamBank[g].map(x=>{ const options=shuffle(x.o.slice()); return {q:x.q,options,answer:options.indexOf(x.o[x.a]),date:x.date||""}; }); 
-  S.quiz={type:"final",title:"آزمون نهایی پایه "+g,grade:g,questions:qs,i:0,correct:0,wrong:0}; 
+  const shuffledQuestions = shuffleQuestionOptions(finalExamBank[g]);
+  S.quiz={
+    type:"final",
+    title:"آزمون نهایی پایه "+g,
+    grade:g,
+    questions:shuffledQuestions,
+    i:0,
+    correct:0,
+    wrong:0
+  }; 
   render("آزمون",`<div id="finalQuiz"></div>`); 
   finalQuizRender("finalQuiz"); 
 }
