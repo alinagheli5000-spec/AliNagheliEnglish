@@ -5297,6 +5297,24 @@ function shuffleQuestionOptions(questions){
     };
   });
 }
+/* ==================== شافل کردن گزینه‌های آزمون ==================== */
+function shuffleQuestionOptions(questions){
+  return questions.map(q => {
+    const originalOptions = q.o || q.options || [];
+    const originalAnswerText = originalOptions[q.a !== undefined ? q.a : q.answer];
+    const shuffled = shuffle([...originalOptions]);
+    const newAnswerIndex = shuffled.indexOf(originalAnswerText);
+    return {
+      q: q.q,
+      options: shuffled,
+      answer: newAnswerIndex,
+      o: shuffled,
+      a: newAnswerIndex,
+      level: q.level,
+      date: q.date
+    };
+  });
+}
 
 function makeLessonQuestions(){ 
   const gradeNum=S.grade; 
