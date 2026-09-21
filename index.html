@@ -4138,6 +4138,145 @@ function nav(){
 function render(title,content){ 
   document.body.innerHTML=header(title)+`<main class="container">${content}</main>`+nav()+`<a class="floatWhats" href="https://wa.me/989141892768" target="_blank" title="واتساپ پشتیبانی">💬</a>`; 
 }
+  /* ==================== دوره مکالمه (Talk Course) ==================== */
+function talkCoursePage(){
+  render("دوره مکالمه",`
+    <div class="card" style="background:linear-gradient(135deg,#6d28d9 0%,#a855f7 50%,#ec4899 100%);color:#fff;border:0">
+      <button class="btn secondary" onclick="home()" style="background:rgba(255,255,255,.2);color:#fff">← بازگشت</button>
+      <h2 style="margin-top:14px;color:#fff">🎤 دوره‌های مکالمه</h2>
+      <p style="opacity:.92;font-weight:600;margin:8px 0 0">آموزش مکالمه حرفه‌ای برای همه سنین — درس اول هر کتاب رایگان</p>
+    </div>
+
+    <div class="talkMenuGrid">
+      <div class="talkMenuCard adults" onclick="talkAdults()">
+        <span class="tmIcon">👨‍💼</span>
+        <div class="tmTitle">بزرگسالان</div>
+        <div class="tmSub">Touchstone & Viewpoint</div>
+      </div>
+      <div class="talkMenuCard kids" onclick="talkKids()">
+        <span class="tmIcon">🧒</span>
+        <div class="tmTitle">کودکان و نوجوانان</div>
+        <div class="tmSub">Family and Friends · Backpack · Connect</div>
+      </div>
+      <div class="talkMenuCard intl" onclick="talkIntl()">
+        <span class="tmIcon">🌍</span>
+        <div class="tmTitle">آزمون‌های بین‌المللی</div>
+        <div class="tmSub">IELTS · TOEFL · KET · PET · EPT · MSRT · MCHE</div>
+      </div>
+      <div class="talkMenuCard teachers" onclick="talkTeachers()">
+        <span class="tmIcon">🎓</span>
+        <div class="tmTitle">دوره آموزش مدرسان</div>
+        <div class="tmSub">TTC — به‌زودی</div>
+      </div>
+    </div>
+  `);
+}
+
+function talkAdults(){
+  render("بزرگسالان — دوره مکالمه",`
+    <div class="card">
+      <button class="btn secondary" onclick="talkCoursePage()">← بازگشت</button>
+      <h2 style="margin-top:14px">👨‍💼 دوره مکالمه بزرگسالان</h2>
+      <p class="muted">سری کتاب‌های Touchstone و Viewpoint — از سطح مبتدی تا پیشرفته</p>
+      <p class="muted" style="background:linear-gradient(135deg,#fef3c7,#fde68a);padding:12px;border-radius:12px;font-weight:700;color:#92400e">💡 درس اول هر کتاب رایگان است. برای دسترسی به دروس دیگر، هزینه را واریز کنید.</p>
+      <div class="bookGrid">
+        ${TALK_BOOKS.adults.map(b=>`
+          <div class="bookCard ${b.cls}">
+            <span class="bcIcon">${b.icon}</span>
+            <div class="bcTitle">${esc(b.title)}</div>
+            <div class="bcSub">${esc(b.sub)}</div>
+            <button class="bcBtn" onclick="openTalkBook('${b.id}')">📖 ورود به کتاب</button>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `);
+}
+
+function talkKids(){
+  const ff = TALK_BOOKS.kids.filter(b=>b.id.startsWith("ff"));
+  const bp = TALK_BOOKS.kids.filter(b=>b.id.startsWith("bp"));
+  const cn = TALK_BOOKS.kids.filter(b=>b.id.startsWith("cn"));
+  render("کودکان و نوجوانان",`
+    <div class="card">
+      <button class="btn secondary" onclick="talkCoursePage()">← بازگشت</button>
+      <h2 style="margin-top:14px">🧒 دوره کودکان و نوجوانان</h2>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">🧸 Family and Friends</h3>
+      <div class="bookGrid">
+        ${ff.map(b=>`
+          <div class="bookCard ${b.cls}">
+            <span class="bcIcon">${b.icon}</span>
+            <div class="bcTitle">${esc(b.title)}</div>
+            <div class="bcSub">${esc(b.sub)}</div>
+            <button class="bcBtn" onclick="openTalkBook('${b.id}')">📖 ورود به کتاب</button>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">🎒 Backpack</h3>
+      <div class="bookGrid">
+        ${bp.map(b=>`
+          <div class="bookCard ${b.cls}">
+            <span class="bcIcon">${b.icon}</span>
+            <div class="bcTitle">${esc(b.title)}</div>
+            <div class="bcSub">${esc(b.sub)}</div>
+            <button class="bcBtn" onclick="openTalkBook('${b.id}')">📖 ورود به کتاب</button>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">🔗 Connect</h3>
+      <div class="bookGrid">
+        ${cn.map(b=>`
+          <div class="bookCard ${b.cls}">
+            <span class="bcIcon">${b.icon}</span>
+            <div class="bcTitle">${esc(b.title)}</div>
+            <div class="bcSub">${esc(b.sub)}</div>
+            <button class="bcBtn" onclick="openTalkBook('${b.id}')">📖 ورود به کتاب</button>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `);
+}
+
+function talkIntl(){
+  render("آزمون‌های بین‌المللی",`
+    <div class="card">
+      <button class="btn secondary" onclick="talkCoursePage()">← بازگشت</button>
+      <h2 style="margin-top:14px">🌍 دوره‌های آمادگی آزمون‌های بین‌المللی</h2>
+      <div class="bookGrid">
+        ${TALK_BOOKS.intl.map(b=>`
+          <div class="bookCard ${b.cls}">
+            <span class="bcIcon">${b.icon}</span>
+            <div class="bcTitle">${esc(b.title)}</div>
+            <div class="bcSub">${esc(b.sub)}</div>
+            <button class="bcBtn" onclick="openIntlCourse('${b.id}','${esc(b.title)}')">📖 ورود به دوره</button>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `);
+}
+
+function talkTeachers(){
+  render("دوره آموزش مدرسان",`
+    <div class="card">
+      <button class="btn secondary" onclick="talkCoursePage()">← بازگشت</button>
+      <h2 style="margin-top:14px">🎓 دوره آموزش مدرسان (TTC)</h2>
+      <div style="text-align:center;padding:60px 20px;background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));border-radius:20px;margin-top:20px">
+        <div style="font-size:80px;margin-bottom:16px">🎓</div>
+        <h3 style="color:var(--primary);margin:0 0 10px">به‌زودی...</h3>
+        <p class="muted" style="max-width:400px;margin:auto">دوره‌های حرفه‌ای آموزش مدرسان زبان انگلیسی در حال آماده‌سازی است.</p>
+        <a class="btn call" href="tel:09141892768" style="max-width:300px;margin:20px auto 0;display:inline-block">📞 تماس با پشتیبانی</a>
+      </div>
+    </div>
+  `);
+}
 </script><script>
 /* ==================== Home ==================== */
 function home(){
