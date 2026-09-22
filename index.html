@@ -479,7 +479,30 @@ function getLogo3D(){
     </g>
   </svg>`;
 }
-
+/* ===== Notifications & Messages ===== */
+.notifBadge{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;border-radius:10px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0 5px;box-shadow:0 2px 8px rgba(239,68,68,.6);animation:notifPulse 1.5s ease-in-out infinite}
+@keyframes notifPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.msgCard{background:linear-gradient(135deg,var(--card-bg),var(--bg-grad-1));border:1px solid var(--card-border);border-radius:18px;padding:16px;margin-bottom:12px;cursor:pointer;transition:all .3s;position:relative}
+.msgCard:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(109,40,217,.15)}
+.msgCard.unread{border-right:4px solid var(--primary);background:linear-gradient(135deg,rgba(168,85,247,.08),rgba(109,40,217,.04))}
+.msgCard.read{opacity:0.75}
+.msgCard .msgHeader{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.msgCard .msgTitle{font-weight:800;font-size:14px;color:var(--primary)}
+.msgCard .msgDate{font-size:10px;color:var(--text-muted);font-weight:600;white-space:nowrap}
+.msgCard .msgBody{font-size:13px;color:var(--text);line-height:1.8;max-height:60px;overflow:hidden;text-overflow:ellipsis}
+.msgCard .msgTeacher{font-size:11px;color:var(--text-muted);margin-top:8px;font-weight:700}
+.notifToast{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:10000;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border-radius:20px;padding:16px 20px;max-width:min(400px,92vw);width:100%;box-shadow:0 20px 60px rgba(109,40,217,.5);animation:notifSlide .4s cubic-bezier(.2,.8,.2,1);display:flex;gap:14px;align-items:flex-start;border:2px solid rgba(255,255,255,.2)}
+@keyframes notifSlide{from{opacity:0;transform:translate(-50%,-30px)}to{opacity:1;transform:translate(-50%,0)}}
+.notifToast .notifIcon{font-size:32px;flex-shrink:0}
+.notifToast .notifContent{flex:1}
+.notifToast .notifTitle{font-weight:900;font-size:14px;margin-bottom:4px}
+.notifToast .notifBody{font-size:12px;opacity:.95;line-height:1.7}
+.notifToast .notifClose{background:transparent;border:0;color:#fff;font-size:18px;opacity:.7;padding:0;line-height:1}
+.notifPermissionBox{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px dashed #f59e0b;border-radius:18px;padding:16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.notifPermissionBox .npbText{flex:1;font-size:13px;font-weight:700;color:#92400e;line-height:1.7}
+[data-theme="dark"] .notifPermissionBox{background:linear-gradient(135deg,#78350f,#451a03);border-color:#d97706}
+[data-theme="dark"] .notifPermissionBox .npbText{color:#fde68a}
+.nav .notifBadge{position:absolute;top:2px;right:50%;transform:translateX(20px)}
 /* ==================== آیکون‌های SVG ==================== */
 const ICONS={
   home:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
@@ -3872,7 +3895,8 @@ let S={
   xp:0,level:1,progress:{},achievements:[],exams:[],unlocks:{},
   streak:0,lastVisit:null,qas:[],homeworks:[],gameRecords:{},currentGame:null
 };
-let examRecords=JSON.parse(localStorage.getItem("AN_EXAMS")||"[]");
+let examRecords=JSON.parse var S_messages = [];
+var notifPermission = false;(localStorage.getItem("AN_EXAMS")||"[]");
 </script><script>
 /* ==================== توابع عمومی ==================== */
 function toast(msg,type="info",duration=3500){ 
@@ -4214,7 +4238,11 @@ await Promise.all([
 ]);
 loadStreak();loadGameRecords();  
     toast("خوش آمدی "+student.first_name+" 👋","success"); 
-    home(); 
+        await loadMessages(); 
+    home();
+        if('Notification' in window && Notification.permission === 'default'){
+      setTimeout(()=>{ requestNotificationPermission(); }, 2000);
+    }
   }catch(e){toast(e?.message||"ورود ناموفق بود.","error")} 
 }
 async function adminLogin(){ 
@@ -4280,7 +4308,7 @@ function header(title){
   return `<header class="header"><div class="headerIn"><div class="brandBox"><div class="logo3d logo3d-sm">${getLogo3D()}</div><div class="brandTextBox"><div class="logo">${esc(title)}</div><div class="logoNagheli">Nagheli</div></div></div><div class="headerBtns"><button class="iconBtn themeBtn ${isDark?'moonly':'sunny'}" onclick="toggleTheme()" title="${isDark?'روز':'شب'}">${isDark?ICONS.moon3d:ICONS.sun3d}</button><button class="iconBtn logoutBtn" onclick="logout()" title="خروج">${ICONS.logout}</button></div></div></header>`; 
 }
 function nav(){ 
-  return `<div class="bottom"><div class="bottomIn"><button class="nav" onclick="home()">${ICONS.home}<span>خانه</span></button><button class="nav" onclick="courses()">${ICONS.books}<span>دروس</span></button><button class="nav" onclick="dictionaryPage()">${ICONS.dictionary}<span>دیکشنری</span></button><button class="nav" onclick="talkCoursePage()">${ICONS.mic}<span>مکالمه</span></button><button class="nav" onclick="homeworkPage()">${ICONS.homework}<span>تکالیف</span></button><button class="nav" onclick="profile()">${ICONS.user}<span>پروفایل</span></button></div></div>`; 
+  return `<div class="bottom"><div class="bottomIn"><button class="nav" onclick="home()">${ICONS.home}<span>خانه</span></button><button class="nav" onclick="courses()">${ICONS.books}<span>دروس</span></button><button class="nav" onclick="dictionaryPage()">${ICONS.dictionary}<span>دیکشنری</span></button><button class="nav" onclick="talkCoursePage()">${ICONS.mic}<span>مکالمه</span></button><button class="nav messagesNavBtn" onclick="messagesPage()">${ICONS.chat}<span>پیام‌ها</span></button><button class="nav" onclick="homeworkPage()">${ICONS.homework}<span>تکالیف</span></button><button class="nav" onclick="profile()">${ICONS.user}<span>پروفایل</span></button></div></div>`; 
 }
 function render(title,content){ 
   document.body.innerHTML=header(title)+`<main class="container">${content}</main>`+nav()+`<a class="floatWhats" href="https://wa.me/989141892768" target="_blank" title="واتساپ پشتیبانی">💬</a>`; 
@@ -4403,6 +4431,327 @@ async function loadQAs(){
     S.qas=r.data||[]; 
   }catch(e){S.qas=[]} 
 }
+  /* ==================== Messages & Notifications ==================== */
+async function loadMessages(){
+  if(!S.student) return;
+  try{
+    const r = await db.from("student_messages").select("*").eq("student_id", S.student.id).order("created_at",{ascending:false});
+    S_messages = r.data || [];
+  }catch(e){ S_messages = []; }
+  updateMessagesBadge();
+}
+
+function updateMessagesBadge(){
+  const unread = S_messages.filter(m=>!m.is_read).length;
+  const nav = document.querySelector('.nav.messagesNavBtn');
+  if(nav){
+    const oldBadge = nav.querySelector('.notifBadge');
+    if(oldBadge) oldBadge.remove();
+    if(unread > 0){
+      const badge = document.createElement('span');
+      badge.className = 'notifBadge';
+      badge.textContent = unread > 99 ? '99+' : unread;
+      nav.appendChild(badge);
+    }
+  }
+}
+
+async function requestNotificationPermission(){
+  if(!('Notification' in window)){ 
+    toast("مرورگر شما از نوتیفیکیشن پشتیبانی نمی‌کند","warning"); 
+    return false;
+  }
+  if(Notification.permission === 'granted'){ 
+    notifPermission = true; 
+    return true;
+  }
+  if(Notification.permission === 'denied'){ 
+    toast("شما نوتیفیکیشن را رد کرده‌اید. از تنظیمات مرورگر فعال کنید","warning"); 
+    return false;
+  }
+  try{
+    const perm = await Notification.requestPermission();
+    notifPermission = (perm === 'granted');
+    if(notifPermission){ 
+      toast("نوتیفیکیشن فعال شد ✅","success"); 
+    } else { 
+      toast("نوتیفیکیشن غیرفعال ماند","warning"); 
+    }
+    return notifPermission;
+  }catch(e){ return false; }
+}
+
+function showNotification(title, body, msgId){
+  // نوتیفیکیشن مرورگر
+  if('Notification' in window && Notification.permission === 'granted'){
+    try{
+      const n = new Notification(title, {
+        body: body,
+        icon: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%236d28d9"/><text x="50" y="65" font-size="50" text-anchor="middle" fill="white" font-family="Arial">A</text></svg>',
+        tag: 'msg-' + (msgId||Date.now()),
+        badge: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%236d28d9"/></svg>'
+      });
+      n.onclick = function(){
+        window.focus();
+        messagesPage();
+        n.close();
+      };
+      setTimeout(()=>n.close(), 8000);
+    }catch(e){}
+  }
+  // نوتیفیکیشن داخل اپ
+  showInAppNotification(title, body);
+}
+
+function showInAppNotification(title, body){
+  const old = document.getElementById('notifToast');
+  if(old) old.remove();
+  const toast = document.createElement('div');
+  toast.className = 'notifToast';
+  toast.id = 'notifToast';
+  toast.innerHTML = `
+    <div class="notifIcon">📩</div>
+    <div class="notifContent">
+      <div class="notifTitle">${esc(title)}</div>
+      <div class="notifBody">${esc(body).substring(0,100)}${body.length>100?'...':''}</div>
+    </div>
+    <button class="notifClose" onclick="document.getElementById('notifToast').remove()">✕</button>
+  `;
+  document.body.appendChild(toast);
+  setTimeout(()=>{ if(toast.parentElement) toast.remove(); }, 6000);
+}
+
+async function messagesPage(){
+  if(!S.student){ toast("ابتدا وارد شوید","error"); return; }
+  await loadMessages();
+  
+  const unread = S_messages.filter(m=>!m.is_read).length;
+  const permissionGranted = ('Notification' in window) && Notification.permission === 'granted';
+  
+  render("پیام‌های من", `
+    <div class="card">
+      <button class="btn secondary" onclick="home()">← بازگشت</button>
+      <h2 style="margin-top:14px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:28px">📬</span>
+        <span>پیام‌های من</span>
+        ${unread > 0 ? `<span style="background:#ef4444;color:#fff;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:900">${unread} جدید</span>` : ''}
+      </h2>
+    </div>
+
+    ${!permissionGranted ? `
+      <div class="notifPermissionBox">
+        <span style="font-size:32px">🔔</span>
+        <div class="npbText">
+          <b>نوتیفیکیشن رو فعال کن!</b><br>
+          تا وقتی استاد پیام می‌فرسته، روی گوشیت ببینی.
+        </div>
+        <button class="btn" onclick="enableNotifications()">🔔 فعال کردن</button>
+      </div>
+    ` : `
+      <div class="card" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);border-color:#22c55e;padding:12px 16px">
+        <div style="display:flex;align-items:center;gap:10px;font-weight:800;font-size:13px;color:#166534">
+          <span style="font-size:22px">✅</span>
+          <span>نوتیفیکیشن فعال است — پیام‌های جدید را روی گوشی می‌بینی</span>
+        </div>
+      </div>
+    `}
+
+    ${S_messages.length ? `
+      <div class="card">
+        <h3 style="margin-top:0">📩 پیام‌های دریافتی</h3>
+        ${S_messages.map(m => {
+          const teacher = getTeacher(m.teacher_id);
+          const date = new Date(m.created_at);
+          const dateStr = date.toLocaleDateString('fa-IR') + ' - ' + date.toLocaleTimeString('fa-IR', {hour:'2-digit', minute:'2-digit'});
+          return `
+            <div class="msgCard ${m.is_read?'read':'unread'}" onclick="openMessage('${m.id}')">
+              <div class="msgHeader">
+                <div class="msgTitle">${esc(m.title)}</div>
+                <div class="msgDate">${dateStr}</div>
+              </div>
+              <div class="msgBody">${esc(m.message)}</div>
+              <div class="msgTeacher">👨‍🏫 ${esc(teacher.name)} ${!m.is_read?'<span style="color:#ef4444;font-weight:900">• جدید</span>':''}</div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    ` : `
+      <div class="card" style="text-align:center;padding:50px 20px">
+        <div style="font-size:70px;margin-bottom:16px;opacity:.4">📭</div>
+        <h3 style="color:var(--text-muted);margin:0">هنوز پیامی نداری</h3>
+        <p class="muted" style="margin-top:10px">وقتی استاد پیامی بفرسته، اینجا نمایش داده می‌شه</p>
+      </div>
+    `}
+  `);
+  
+  setTimeout(updateMessagesBadge, 100);
+}
+
+async function enableNotifications(){
+  const ok = await requestNotificationPermission();
+  if(ok){
+    // یه نوتیفیکیشن تست بفرست
+    setTimeout(()=>{
+      showNotification("AliNagheli English", "نوتیفیکیشن با موفقیت فعال شد 🎉");
+    }, 500);
+    messagesPage();
+  }
+}
+
+async function openMessage(id){
+  const m = S_messages.find(x=>x.id===id);
+  if(!m) return;
+  
+  // علامت‌گذاری به عنوان خوانده شده
+  if(!m.is_read){
+    try{
+      await db.from("student_messages").update({is_read: true}).eq("id", id);
+      m.is_read = true;
+      updateMessagesBadge();
+    }catch(e){}
+  }
+  
+  const teacher = getTeacher(m.teacher_id);
+  const date = new Date(m.created_at);
+  const dateStr = date.toLocaleDateString('fa-IR') + ' - ' + date.toLocaleTimeString('fa-IR', {hour:'2-digit', minute:'2-digit'});
+  
+  render("پیام", `
+    <div class="card">
+      <button class="btn secondary" onclick="messagesPage()">← بازگشت به پیام‌ها</button>
+      <div style="margin-top:20px;text-align:center">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#a855f7);display:flex;align-items:center;justify-content:center;font-size:38px;margin:auto;box-shadow:0 8px 24px rgba(109,40,217,.35)">${teacher.icon||'👨‍🏫'}</div>
+        <h3 style="margin:14px 0 6px">${esc(teacher.name)}</h3>
+        <p class="muted" style="margin:0;font-size:11px">${dateStr}</p>
+      </div>
+      <div style="margin-top:24px;padding:20px;background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));border-radius:20px;border-right:4px solid var(--primary)">
+        <h3 style="margin:0 0 14px;color:var(--primary);display:flex;align-items:center;gap:8px">
+          <span>📌</span>
+          <span>${esc(m.title)}</span>
+        </h3>
+        <div style="font-size:15px;line-height:2;white-space:pre-wrap;color:var(--text)">${esc(m.message)}</div>
+      </div>
+      <button class="btn secondary full" style="margin-top:20px" onclick="messagesPage()">← بازگشت به پیام‌ها</button>
+    </div>
+  `);
+}
+
+/* -------- Admin: Send message -------- */
+function sendMessageForm(studentId, studentName){
+  const teachersOpts = teachersData.map(t=>`<option value="${t.id}">${t.icon} ${esc(t.name)}</option>`).join("");
+  render("ارسال پیام", `
+    <div class="card">
+      <button class="btn secondary" onclick="admin()">← بازگشت به پنل</button>
+      <h2 style="margin-top:14px">📨 ارسال پیام به زبان‌آموز</h2>
+      <div style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);padding:14px;border-radius:14px;margin-bottom:16px;font-weight:700;color:#1e3a8a">
+        👤 دریافت‌کننده: <b>${esc(studentName)}</b> (شناسه: ${studentId})
+      </div>
+      <label>از طرف استاد:</label>
+      <select id="msgTeacher">${teachersOpts}</select>
+      <label>عنوان پیام:</label>
+      <input id="msgTitle" placeholder="مثال: یادآوری آزمون">
+      <label>متن پیام:</label>
+      <textarea id="msgBody" placeholder="متن پیام خود را بنویسید..." style="min-height:140px"></textarea>
+      <button class="btn full" style="margin-top:16px" onclick="submitMessage(${studentId})">📤 ارسال پیام</button>
+      <button class="btn secondary full" style="margin-top:8px" onclick="admin()">انصراف</button>
+    </div>
+  `);
+}
+
+async function submitMessage(studentId){
+  const teacher_id = document.getElementById("msgTeacher").value;
+  const title = document.getElementById("msgTitle").value.trim();
+  const message = document.getElementById("msgBody").value.trim();
+  
+  if(!title || !message){
+    toast("عنوان و متن پیام را وارد کنید","error");
+    return;
+  }
+  
+  try{
+    const r = await db.from("student_messages").insert({
+      student_id: studentId,
+      teacher_id: teacher_id,
+      title: title,
+      message: message,
+      is_read: false,
+      created_at: new Date().toISOString()
+    });
+    if(r.error) throw r.error;
+    toast("✅ پیام با موفقیت ارسال شد","success");
+    setTimeout(()=>admin(), 800);
+  }catch(e){
+    toast("خطا: " + e.message,"error");
+  }
+}
+
+function sendBulkMessageForm(){
+  const studentsOpts = (window.__adminStudents || []).map(s=>`<option value="${s.id}">${esc(s.first_name)} ${esc(s.last_name)} (${esc(s.phone||"")})</option>`).join("");
+  render("ارسال پیام گروهی", `
+    <div class="card">
+      <button class="btn secondary" onclick="admin()">← بازگشت به پنل</button>
+      <h2 style="margin-top:14px">📢 ارسال پیام گروهی</h2>
+      <label>انتخاب زبان‌آموزان:</label>
+      <div style="max-height:300px;overflow-y:auto;border:2px solid var(--input-border);border-radius:14px;padding:10px;background:var(--input-bg)">
+        <label style="display:flex;align-items:center;gap:10px;margin:8px 0;font-weight:700;cursor:pointer">
+          <input type="checkbox" id="selectAll" onchange="toggleSelectAllStudents(this.checked)" style="width:auto">
+          <span>انتخاب همه</span>
+        </label>
+        <div id="studentsList">
+          ${(window.__adminStudents||[]).map(s=>`
+            <label style="display:flex;align-items:center;gap:10px;margin:8px 0;font-weight:600;cursor:pointer;padding:6px;border-radius:10px">
+              <input type="checkbox" class="studentCheck" value="${s.id}" style="width:auto">
+              <span>${esc(s.first_name)} ${esc(s.last_name)} — ${esc(s.phone||"")}</span>
+            </label>
+          `).join("")}
+        </div>
+      </div>
+      <label>از طرف استاد:</label>
+      <select id="bulkTeacher">${teachersData.map(t=>`<option value="${t.id}">${t.icon} ${esc(t.name)}</option>`).join("")}</select>
+      <label>عنوان پیام:</label>
+      <input id="bulkTitle" placeholder="مثال: تعطیلی کلاس">
+      <label>متن پیام:</label>
+      <textarea id="bulkBody" placeholder="متن پیام..." style="min-height:120px"></textarea>
+      <button class="btn full" style="margin-top:16px" onclick="submitBulkMessage()">📢 ارسال به همه</button>
+    </div>
+  `);
+}
+
+function toggleSelectAllStudents(checked){
+  document.querySelectorAll(".studentCheck").forEach(c=>c.checked = checked);
+}
+
+async function submitBulkMessage(){
+  const teacher_id = document.getElementById("bulkTeacher").value;
+  const title = document.getElementById("bulkTitle").value.trim();
+  const message = document.getElementById("bulkBody").value.trim();
+  const selected = Array.from(document.querySelectorAll(".studentCheck:checked")).map(c=>Number(c.value));
+  
+  if(!title || !message){
+    toast("عنوان و متن پیام را وارد کنید","error");
+    return;
+  }
+  if(selected.length === 0){
+    toast("حداقل یک زبان‌آموز انتخاب کنید","error");
+    return;
+  }
+  
+  try{
+    const rows = selected.map(sid=>({
+      student_id: sid,
+      teacher_id: teacher_id,
+      title: title,
+      message: message,
+      is_read: false,
+      created_at: new Date().toISOString()
+    }));
+    const r = await db.from("student_messages").insert(rows);
+    if(r.error) throw r.error;
+    toast(`✅ پیام به ${selected.length} زبان‌آموز ارسال شد`,"success");
+    setTimeout(()=>admin(), 1000);
+  }catch(e){
+    toast("خطا: " + e.message,"error");
+  }
+}
 async function loadHomeworks(){ 
   if(!S.student)return; 
   try{ 
@@ -4428,6 +4777,7 @@ async function submitQuestion(){
     if(r.error)throw r.error; 
     toast("ارسال شد ✅","success"); 
     await loadQAs(); 
+          await loadMessages(); 
     qaPage(); 
   }catch(e){toast("خطا: "+e.message,"error")} 
 }
@@ -5594,6 +5944,7 @@ async function admin(){
 }
 
 function renderAdmin(students,requests,questions,homeworks,unlocks){ 
+  window.__adminStudents = students;
   const pendingStudents = students.filter(s=>s.status==="waiting");
   const unansweredQs = questions.filter(q=>!q.teacher_reply);
   const ungradedHw = homeworks.filter(h=>h.grade==null);
@@ -5645,6 +5996,7 @@ function renderAdmin(students,requests,questions,homeworks,unlocks){
           <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
             <button class="btn info" style="padding:8px 14px;font-size:12px" onclick="resetStudentPassword(${x.id},'${esc(x.first_name)} ${esc(x.last_name)}','${esc(x.phone||"")}')">🔑 ریست پسورد</button>
             <button class="btn warning" style="padding:8px 14px;font-size:12px" onclick="openUnlockPanel(${x.id},'${esc(x.first_name)} ${esc(x.last_name)}')">🔓 مدیریت قفل دروس</button>
+            <button class="btn success" style="padding:8px 14px;font-size:12px" onclick="sendMessageForm(${x.id},'${esc(x.first_name)} ${esc(x.last_name)}')">📨 ارسال پیام</button>
             <button class="btn danger" style="padding:8px 14px;font-size:12px" onclick="deleteStudent(${x.id},'${esc(x.first_name)} ${esc(x.last_name)}')">🗑️ حذف کامل</button>
           </div>
         </div>
@@ -5652,6 +6004,12 @@ function renderAdmin(students,requests,questions,homeworks,unlocks){
     </div>
 
     <!-- ==================== پنل باز کردن قفل ==================== -->
+    <div class="card">
+      <h3 style="margin-top:0">📢 ارسال پیام گروهی</h3>
+      <p class="muted">می‌تونی به همه زبان‌آموزها پیام بفرستی</p>
+      <button class="btn success full" onclick="sendBulkMessageForm()">📢 ارسال پیام گروهی</button>
+    </div>
+
     <div class="card" id="unlockPanel" style="display:none">
       <h3 style="margin-top:0">🔓 مدیریت قفل دروس</h3>
       <div id="unlockPanelContent"></div>
