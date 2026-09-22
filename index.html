@@ -410,6 +410,30 @@ input:focus,select:focus,textarea:focus{border-color:#7c3aed;background:var(--ca
 .payCard .ownerName{text-align:center;font-size:13px;color:var(--text-muted);font-weight:700;margin-bottom:16px}
 .payCard .copyBtn{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:0;border-radius:12px;padding:10px 16px;font-weight:800;width:100%;margin-bottom:10px;font-size:13px}
 .payCard .closeBtn{background:var(--bg-grad-2);color:var(--text);border:0;border-radius:12px;padding:12px;font-weight:800;width:100%;margin-top:10px;font-size:14px}
+/* ===== Notifications & Messages ===== */
+.notifBadge{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;border-radius:10px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0 5px;box-shadow:0 2px 8px rgba(239,68,68,.6);animation:notifPulse 1.5s ease-in-out infinite}
+@keyframes notifPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.msgCard{background:linear-gradient(135deg,var(--card-bg),var(--bg-grad-1));border:1px solid var(--card-border);border-radius:18px;padding:16px;margin-bottom:12px;cursor:pointer;transition:all .3s;position:relative}
+.msgCard:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(109,40,217,.15)}
+.msgCard.unread{border-right:4px solid var(--primary);background:linear-gradient(135deg,rgba(168,85,247,.08),rgba(109,40,217,.04))}
+.msgCard.read{opacity:0.75}
+.msgCard .msgHeader{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.msgCard .msgTitle{font-weight:800;font-size:14px;color:var(--primary)}
+.msgCard .msgDate{font-size:10px;color:var(--text-muted);font-weight:600;white-space:nowrap}
+.msgCard .msgBody{font-size:13px;color:var(--text);line-height:1.8;max-height:60px;overflow:hidden;text-overflow:ellipsis}
+.msgCard .msgTeacher{font-size:11px;color:var(--text-muted);margin-top:8px;font-weight:700}
+.notifToast{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:10000;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border-radius:20px;padding:16px 20px;max-width:min(400px,92vw);width:100%;box-shadow:0 20px 60px rgba(109,40,217,.5);animation:notifSlide .4s cubic-bezier(.2,.8,.2,1);display:flex;gap:14px;align-items:flex-start;border:2px solid rgba(255,255,255,.2)}
+@keyframes notifSlide{from{opacity:0;transform:translate(-50%,-30px)}to{opacity:1;transform:translate(-50%,0)}}
+.notifToast .notifIcon{font-size:32px;flex-shrink:0}
+.notifToast .notifContent{flex:1}
+.notifToast .notifTitle{font-weight:900;font-size:14px;margin-bottom:4px}
+.notifToast .notifBody{font-size:12px;opacity:.95;line-height:1.7}
+.notifToast .notifClose{background:transparent;border:0;color:#fff;font-size:18px;opacity:.7;padding:0;line-height:1}
+.notifPermissionBox{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px dashed #f59e0b;border-radius:18px;padding:16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.notifPermissionBox .npbText{flex:1;font-size:13px;font-weight:700;color:#92400e;line-height:1.7}
+[data-theme="dark"] .notifPermissionBox{background:linear-gradient(135deg,#78350f,#451a03);border-color:#d97706}
+[data-theme="dark"] .notifPermissionBox .npbText{color:#fde68a}
+.nav .notifBadge{position:absolute;top:2px;right:50%;transform:translateX(20px)}
 </style>
 </head>
 <body>
@@ -479,30 +503,7 @@ function getLogo3D(){
     </g>
   </svg>`;
 }
-/* ===== Notifications & Messages ===== */
-.notifBadge{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;border-radius:10px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0 5px;box-shadow:0 2px 8px rgba(239,68,68,.6);animation:notifPulse 1.5s ease-in-out infinite}
-@keyframes notifPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
-.msgCard{background:linear-gradient(135deg,var(--card-bg),var(--bg-grad-1));border:1px solid var(--card-border);border-radius:18px;padding:16px;margin-bottom:12px;cursor:pointer;transition:all .3s;position:relative}
-.msgCard:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(109,40,217,.15)}
-.msgCard.unread{border-right:4px solid var(--primary);background:linear-gradient(135deg,rgba(168,85,247,.08),rgba(109,40,217,.04))}
-.msgCard.read{opacity:0.75}
-.msgCard .msgHeader{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
-.msgCard .msgTitle{font-weight:800;font-size:14px;color:var(--primary)}
-.msgCard .msgDate{font-size:10px;color:var(--text-muted);font-weight:600;white-space:nowrap}
-.msgCard .msgBody{font-size:13px;color:var(--text);line-height:1.8;max-height:60px;overflow:hidden;text-overflow:ellipsis}
-.msgCard .msgTeacher{font-size:11px;color:var(--text-muted);margin-top:8px;font-weight:700}
-.notifToast{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:10000;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border-radius:20px;padding:16px 20px;max-width:min(400px,92vw);width:100%;box-shadow:0 20px 60px rgba(109,40,217,.5);animation:notifSlide .4s cubic-bezier(.2,.8,.2,1);display:flex;gap:14px;align-items:flex-start;border:2px solid rgba(255,255,255,.2)}
-@keyframes notifSlide{from{opacity:0;transform:translate(-50%,-30px)}to{opacity:1;transform:translate(-50%,0)}}
-.notifToast .notifIcon{font-size:32px;flex-shrink:0}
-.notifToast .notifContent{flex:1}
-.notifToast .notifTitle{font-weight:900;font-size:14px;margin-bottom:4px}
-.notifToast .notifBody{font-size:12px;opacity:.95;line-height:1.7}
-.notifToast .notifClose{background:transparent;border:0;color:#fff;font-size:18px;opacity:.7;padding:0;line-height:1}
-.notifPermissionBox{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px dashed #f59e0b;border-radius:18px;padding:16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.notifPermissionBox .npbText{flex:1;font-size:13px;font-weight:700;color:#92400e;line-height:1.7}
-[data-theme="dark"] .notifPermissionBox{background:linear-gradient(135deg,#78350f,#451a03);border-color:#d97706}
-[data-theme="dark"] .notifPermissionBox .npbText{color:#fde68a}
-.nav .notifBadge{position:absolute;top:2px;right:50%;transform:translateX(20px)}
+
 /* ==================== آیکون‌های SVG ==================== */
 const ICONS={
   home:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
