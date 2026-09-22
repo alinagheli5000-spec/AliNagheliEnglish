@@ -5385,6 +5385,59 @@ function aiShowHintOnce(){
     setTimeout(()=>{ hint.classList.remove("show"); localStorage.setItem("AN_AI_HINT_SEEN","1"); }, 8000);
   }
 }
+function aiBuildWidget(){
+  const old = document.getElementById("aiWidgetRoot");
+  if(old) old.remove();
+  
+  const wrap = document.createElement("div");
+  wrap.id = "aiWidgetRoot";
+  wrap.innerHTML = `
+    <div class="aiBubbleHint" id="aiBubbleHint">
+      سلام! من علی ناقلی هستم 👋<br>سوال انگلیسی داری؟ بپرس!
+    </div>
+    <div class="aiAvatarBtn" id="aiAvatarBtn" onclick="aiToggleChat()" title="دستیار هوشمند علی ناقلی">
+      <span class="pulse"></span>
+      ${getAIAvatarSVG(70)}
+      <span class="onlineDot"></span>
+    </div>
+    <div class="aiChatBox" id="aiChatBox">
+      <div class="aiChatHeader">
+        <div class="aiAvatarSmall">${getAIAvatarSVG(44)}</div>
+        <div class="aiInfo">
+          <div class="aiName">
+            <span class="status"></span>
+            Ali Nagheli
+          </div>
+          <div class="aiStatus">دستیار هوشمند زبان انگلیسی</div>
+        </div>
+        <button class="closeChat" onclick="aiToggleChat()">✕</button>
+      </div>
+      <div class="aiChatMessages" id="aiChatMessages"></div>
+      <div class="aiQuickChips">
+        ${AI_QUICK_CHIPS.map(c => `<div class="aiQuickChip" onclick="aiQuickAsk('${c.replace(/'/g,"\\'")}')">${c}</div>`).join("")}
+      </div>
+      <div class="aiChatInputWrap">
+        <textarea class="aiChatInput" id="aiChatInput" placeholder="سؤالت رو بنویس..." rows="1" onkeydown="aiHandleKey(event)"></textarea>
+        <button class="aiSendBtn" id="aiSendBtn" onclick="aiSendMessage()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(wrap);
+  
+  setTimeout(()=>{
+    aiAddMessage("ai", "سلام " + (S.student ? S.student.first_name + " جان" : "دوست من") + "! 👋\n\nمن **Ali Nagheli** هستم، دستیار هوشمند زبان انگلیسی.\n\nهر سوالی داری بپرس! می‌تونم گرامر توضیح بدم، لغت ترجمه کنم، جمله‌ت رو تصحیح کنم یا تمرین مکالمه کنم. 😊");
+  }, 500);
+  
+  setTimeout(()=>{
+    const hint = document.getElementById("aiBubbleHint");
+    if(hint){
+      hint.classList.add("show");
+      setTimeout(()=>hint.classList.remove("show"), 6000);
+    }
+  }, 3000);
+}
 
 async function loadMessages(){
   if(!S.student) return;
