@@ -5467,118 +5467,68 @@ async function loadQAs(){
 }
   /* ==================== Messages & Notifications ==================== */
   /* ==================== Ali Nagheli AI Assistant ==================== */
-const AI_KB = {
-  greetings: ["سلام","درود","hi","hello","hey","خوبی","چطوری","حالت چطوره"],
-  farewells: ["خداحافظ","بای","bye","goodbye","فعلا","تا بعد"]
-};
-
-const AI_RESPONSES = {
-  // گرامر
-  "present simple": "📘 **Present Simple (حال ساده)**\n\nبرای کارهای روزمره، عادت‌ها و حقایق کلی استفاده می‌شه.\n\n**ساختار:**\nفاعل + فعل ساده (برای سوم شخص s می‌گیره)\n\n**مثال:**\n`I go to school every day.`\n`She watches TV every night.`\n\n**منفی:**\n`I don't go...` / `She doesn't go...`\n\n**سوالی:**\n`Do you go...?` / `Does she go...?`",
-  "present continuous": "📘 **Present Continuous (حال استمراری)**\n\nبرای کاری که همین الآن در حال انجامه.\n\n**ساختار:**\nفاعل + am/is/are + فعل + ing\n\n**مثال:**\n`I am reading a book now.`\n`She is cooking dinner.`\n\n**منفی:**\n`I'm not reading...`\n\n**سوالی:**\n`Are you reading...?`",
-  "present perfect": "📘 **Present Perfect (حال کامل)**\n\nبرای کاری که در گذشته شروع شده و اثرش تا حالا باقیه.\n\n**ساختار:**\nفاعل + have/has + قسمت سوم فعل\n\n**مثال:**\n`I have finished my homework.`\n`She has lived here for 5 years.`\n\n**کلمات کلیدی:**\njust, already, yet, ever, never, since, for",
-  "past simple": "📘 **Past Simple (گذشته ساده)**\n\nبرای کاری که در گذشته تمام شده.\n\n**ساختار:**\nفاعل + فعل گذشته (ed یا شکل دوم)\n\n**مثال:**\n`I played football yesterday.`\n`She went to school last week.`\n\n**منفی:**\n`I didn't play...`\n\n**سوالی:**\n`Did you play...?`",
-  "past continuous": "📘 **Past Continuous (گذشته استمراری)**\n\nبرای کاری که در گذشته در حال انجام بوده.\n\n**ساختار:**\nفاعل + was/were + فعل + ing\n\n**مثال:**\n`I was studying when he called.`\n`They were playing football.`",
-  "past perfect": "📘 **Past Perfect (ماضی بعید)**\n\nبرای کاری که قبل از عمل دیگه‌ای در گذشته انجام شده بود.\n\n**ساختار:**\nفاعل + had + قسمت سوم فعل\n\n**مثال:**\n`She had left before I arrived.`\n`They had finished when we got there.`",
-  "future": "📘 **Future (آینده)**\n\n**will:** برای تصمیم لحظه‌ای و پیش‌بینی\n`I will call you tomorrow.`\n\n**going to:** برای قصد و برنامه\n`I'm going to travel next week.`\n\n**حال استمراری:** برای قرار قطعی\n`I'm meeting him tomorrow.`",
-  "modal": "📘 **Modal Verbs (افعال کمکی ناقص)**\n\n**can:** توانایی، اجازه\n`I can swim.`\n\n**must:** اجبار قوی\n`You must stop.`\n\n**should:** توصیه\n`You should rest.`\n\n**may/might:** احتمال\n`It may rain.`\n\n**نکته:** بعد از modal، فعل ساده میاد.",
-  "passive": "📘 **Passive Voice (جملات مجهول)**\n\nوقتی فاعل مهم نیست یا نمی‌دونیم کیه.\n\n**ساختار:**\nمفعول + be + قسمت سوم فعل\n\n**مثال:**\n`The letter was written.`\n`The house is being built.`\n\n**حال:** am/is/are + pp\n**گذشته:** was/were + pp",
-  "conditional": "📘 **Conditional (شرطی)**\n\n**نوع ۱ (ممکن):**\n`If it rains, I will stay home.`\n\n**نوع ۲ (فرضی):**\n`If I had money, I would buy a car.`\n\n**نوع ۳ (غیرممکن):**\n`If I had studied, I would have passed.`",
-  "adjective": "📘 **Adjective (صفت)**\n\nصفت کلمه‌ایه که اسم رو توصیف می‌کنه.\n\n**مقایسه‌ای:**\n`big → bigger → the biggest`\n\n**بلند:**\n`beautiful → more beautiful → the most beautiful`\n\n**بی‌قاعده:**\n`good → better → the best`\n`bad → worse → the worst`",
-  "gerund": "📘 **Gerund (اسم مصدر)**\n\nفعل + ing که نقش اسم داره.\n\n**به عنوان فاعل:**\n`Reading is fun.`\n\n**بعد از افعال:**\n`I enjoy reading.`\n`I avoid talking to him.`\n\n**بعد از حرف اضافه:**\n`I'm good at drawing.`",
-  "to infinitive": "📘 **To + Infinitive**\n\n**برای هدف:**\n`I went to buy a book.`\n\n**بعد از افعال:**\n`I want to go.`\n`I decided to stay.`\n\n**بعد از صفات:**\n`I'm happy to help.`",
-  "relative": "📘 **Relative Pronouns (ضمایر موصولی)**\n\n**who:** برای انسان\n`The man who called is my father.`\n\n**which:** برای غیرانسان\n`The book which I bought is good.`\n\n**that:** برای همه\n`The car that he drives is new.`",
-  "tag question": "📘 **Tag Questions (سوالات ضمیمه)**\n\nقسمت کوتاهی که آخر جمله میاد.\n\n**قانون:**\n- جمله مثبت → tag منفی\n- جمله منفی → tag مثبت\n\n**مثال:**\n`You are a student, aren't you?`\n`She isn't here, is she?`"
-};
-
-const AI_GREETINGS = [
-  "سلام! من Ali Nagheli هستم، دستیار زبان انگلیسی تو 🎓\n\nهر سوالی راجع به انگلیسی داری بپرس. من می‌تونم:\n\n📘 گرامر رو توضیح بدم\n🔤 لغات رو ترجمه کنم\n✍️ جمله‌هات رو تصحیح کنم\n💬 تمرین مکالمه کنم",
-  "درود! من علی ناقلی هستم 👋\n\nآماده‌ام کمکت کنم انگلیسی یاد بگیری! چی می‌خوای بدونی؟",
-  "سلام دوست من! 🌟\n\nمن اینجام تا توی یادگیری زبان کمکت کنم. سؤالت رو بپرس!",
-  "Hi there! 👋\n\nمن دستیار هوشمند زبان انگلیسی هستم. سؤالت رو به فارسی یا انگلیسی بپرس."
-];
 
 const AI_QUICK_CHIPS = [
-  "Present Simple چیست؟",
+  "Present Simple چیه؟",
   "گرامر Past Perfect",
   "معنی beautiful چیه؟",
-  "یک جمله تصحیح کن",
+  "یه جمله تصحیح کن",
   "چطوری انگلیسی یاد بگیرم؟",
-  "تفاوت will و going to"
+  "10*5 چند میشه؟"
 ];
 
 function getAIAvatarSVG(size){
   size = size || 60;
   return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:${size}px;height:${size}px">
     <defs>
-      <radialGradient id="aiSkin" cx="40%" cy="35%" r="70%">
+      <radialGradient id="aiSkin_${size}" cx="40%" cy="35%" r="70%">
         <stop offset="0" stop-color="#ffe4cc"/>
         <stop offset="0.7" stop-color="#f5c9a8"/>
         <stop offset="1" stop-color="#d9a678"/>
       </radialGradient>
-      <radialGradient id="aiHair" cx="40%" cy="30%" r="70%">
+      <radialGradient id="aiHair_${size}" cx="40%" cy="30%" r="70%">
         <stop offset="0" stop-color="#4a3728"/>
         <stop offset="1" stop-color="#1a1310"/>
       </radialGradient>
-      <linearGradient id="aiShirt" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#6d28d9"/>
-        <stop offset="1" stop-color="#4c1d95"/>
+      <linearGradient id="aiShirt_${size}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#8b5cf6"/>
+        <stop offset="1" stop-color="#6d28d9"/>
       </linearGradient>
-      <radialGradient id="aiCheek" cx="50%" cy="50%" r="50%">
+      <radialGradient id="aiCheek_${size}" cx="50%" cy="50%" r="50%">
         <stop offset="0" stop-color="#f87171" stop-opacity="0.5"/>
         <stop offset="1" stop-color="#f87171" stop-opacity="0"/>
       </radialGradient>
     </defs>
-    <!-- Body / Shirt -->
-    <path d="M 18 100 Q 18 78 35 72 L 65 72 Q 82 78 82 100 Z" fill="url(#aiShirt)"/>
-    <!-- Neck -->
-    <rect x="42" y="62" width="16" height="14" fill="url(#aiSkin)" rx="3"/>
-    <!-- Head -->
-    <ellipse cx="50" cy="42" rx="22" ry="26" fill="url(#aiSkin)"/>
-    <!-- Hair -->
-    <path d="M 28 38 Q 26 20 50 18 Q 74 20 72 38 Q 72 30 68 28 Q 60 22 50 22 Q 40 22 32 28 Q 28 30 28 38 Z" fill="url(#aiHair)"/>
-    <path d="M 28 38 Q 26 30 30 26 Q 32 34 32 40 Q 30 40 28 38 Z" fill="url(#aiHair)"/>
-    <path d="M 72 38 Q 74 30 70 26 Q 68 34 68 40 Q 70 40 72 38 Z" fill="url(#aiHair)"/>
-    <!-- Eyes (animated blink) -->
-    <g>
-      <ellipse cx="41" cy="42" rx="3" ry="2.8" fill="#fff"/>
-      <ellipse cx="59" cy="42" rx="3" ry="2.8" fill="#fff"/>
-      <circle cx="41.5" cy="42.5" r="1.8" fill="#1a1a1a"/>
-      <circle cx="59.5" cy="42.5" r="1.8" fill="#1a1a1a"/>
-      <circle cx="42.2" cy="41.8" r="0.6" fill="#fff"/>
-      <circle cx="60.2" cy="41.8" r="0.6" fill="#fff"/>
-      <animate attributeName="visibility" values="visible;visible;hidden;visible;visible" dur="4s" repeatCount="indefinite"/>
-    </g>
-    <!-- Eyebrows -->
+    <path d="M 18 100 Q 18 78 35 72 L 65 72 Q 82 78 82 100 Z" fill="url(#aiShirt_${size})"/>
+    <rect x="42" y="62" width="16" height="14" fill="url(#aiSkin_${size})" rx="3"/>
+    <ellipse cx="50" cy="42" rx="22" ry="26" fill="url(#aiSkin_${size})"/>
+    <path d="M 28 38 Q 26 20 50 18 Q 74 20 72 38 Q 72 30 68 28 Q 60 22 50 22 Q 40 22 32 28 Q 28 30 28 38 Z" fill="url(#aiHair_${size})"/>
+    <path d="M 28 38 Q 26 30 30 26 Q 32 34 32 40 Q 30 40 28 38 Z" fill="url(#aiHair_${size})"/>
+    <path d="M 72 38 Q 74 30 70 26 Q 68 34 68 40 Q 70 40 72 38 Z" fill="url(#aiHair_${size})"/>
+    <ellipse cx="41" cy="42" rx="3" ry="2.8" fill="#fff"/>
+    <ellipse cx="59" cy="42" rx="3" ry="2.8" fill="#fff"/>
+    <circle cx="41.5" cy="42.5" r="1.8" fill="#1a1a1a"/>
+    <circle cx="59.5" cy="42.5" r="1.8" fill="#1a1a1a"/>
+    <circle cx="42.2" cy="41.8" r="0.6" fill="#fff"/>
+    <circle cx="60.2" cy="41.8" r="0.6" fill="#fff"/>
     <path d="M 37 37 Q 41 35 45 37" stroke="#1a1310" stroke-width="1.8" fill="none" stroke-linecap="round"/>
     <path d="M 55 37 Q 59 35 63 37" stroke="#1a1310" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-    <!-- Glasses (metal frame) -->
     <ellipse cx="41" cy="42" rx="7" ry="6" fill="none" stroke="#c0c0c0" stroke-width="1.3"/>
     <ellipse cx="59" cy="42" rx="7" ry="6" fill="none" stroke="#c0c0c0" stroke-width="1.3"/>
     <line x1="48" y1="42" x2="52" y2="42" stroke="#c0c0c0" stroke-width="1.3"/>
-    <line x1="34" y1="40" x2="30" y2="39" stroke="#c0c0c0" stroke-width="1.3"/>
-    <line x1="66" y1="40" x2="70" y2="39" stroke="#c0c0c0" stroke-width="1.3"/>
-    <circle cx="41" cy="42" r="7" fill="#a5f3fc" opacity="0.15"/>
-    <circle cx="59" cy="42" r="7" fill="#a5f3fc" opacity="0.15"/>
-    <!-- Nose -->
     <path d="M 50 45 Q 48 50 50 51 Q 52 50 50 45 Z" fill="#d9a678" opacity="0.6"/>
-    <!-- Beard -->
-    <path d="M 30 52 Q 32 60 40 64 Q 50 66 60 64 Q 68 60 70 52 Q 68 56 60 58 Q 50 60 40 58 Q 32 56 30 52 Z" fill="url(#aiHair)" opacity="0.85"/>
-    <!-- Mouth -->
+    <path d="M 30 52 Q 32 60 40 64 Q 50 66 60 64 Q 68 60 70 52 Q 68 56 60 58 Q 50 60 40 58 Q 32 56 30 52 Z" fill="url(#aiHair_${size})" opacity="0.85"/>
     <path d="M 44 55 Q 50 58 56 55" stroke="#8b4513" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <!-- Cheeks -->
-    <circle cx="34" cy="50" r="3" fill="url(#aiCheek)"/>
-    <circle cx="66" cy="50" r="3" fill="url(#aiCheek)"/>
+    <circle cx="34" cy="50" r="3" fill="url(#aiCheek_${size})"/>
+    <circle cx="66" cy="50" r="3" fill="url(#aiCheek_${size})"/>
   </svg>`;
 }
 
 function aiToggleChat(){
   const box = document.getElementById("aiChatBox");
   if(!box) return;
+  box.classList.toggle("open");
   if(box.classList.contains("open")){
-    box.classList.remove("open");
-  } else {
-    box.classList.add("open");
     setTimeout(()=>{
       const inp = document.getElementById("aiChatInput");
       if(inp) inp.focus();
@@ -5590,7 +5540,9 @@ function aiAddMessage(role, text){
   const container = document.getElementById("aiChatMessages");
   if(!container) return;
   const now = new Date().toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
-  const avatarSvg = role === "user" ? `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#3b82f6"/><text x="50" y="65" font-size="50" text-anchor="middle" fill="white" font-family="Arial" font-weight="900">?</text></svg>` : getAIAvatarSVG(32);
+  const avatarSvg = role === "user"
+    ? `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#3b82f6"/><text x="50" y="68" font-size="52" text-anchor="middle" fill="white" font-family="Arial" font-weight="900">?</text></svg>`
+    : getAIAvatarSVG(38);
   const formatted = text
     .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
     .replace(/`(.+?)`/g, '<code>$1</code>')
@@ -5612,7 +5564,7 @@ function aiShowTyping(){
   typing.className = "aiMsg ai";
   typing.id = "aiTypingIndicator";
   typing.innerHTML = `
-    <div class="aiMsgAvatar">${getAIAvatarSVG(32)}</div>
+    <div class="aiMsgAvatar">${getAIAvatarSVG(38)}</div>
     <div class="aiMsgBubble aiTyping"><span></span><span></span><span></span></div>
   `;
   container.appendChild(typing);
@@ -5624,98 +5576,169 @@ function aiHideTyping(){
   if(t) t.remove();
 }
 
+/* ==================== مغز پاسخگو ==================== */
+function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
 function aiFindAnswer(question){
   const q = question.toLowerCase().trim();
-  
+  const name = S.student?.first_name || "دوست من";
+
   // سلام
-  if(AI_KB.greetings.some(g => q.includes(g) || q === g)){
-    return AI_GREETINGS[Math.floor(Math.random()*AI_GREETINGS.length)];
+  if(/^(سلام|درود|hi|hello|hey|خوبی|چطوری|حالت چطوره|صبح بخیر|عصر بخیر)/i.test(q)){
+    return pickRandom([
+      `سلام ${name}! 👋\n\nمن **علی ناقلی** هستم، معلم انگلیسی تو.\n\nهر سوالی داری ازم بپرس — گرامر، لغت، ریاضی، تاریخ، هر چیزی که بخوای!`,
+      `درود ${name}! 🌟\n\nمن **علی ناقلی**، معلم انگلیسی‌ت.\n\nچی می‌خوای بپرسی امروز؟`,
+      `سلاااام! 🙌\n\nمن علی ناقلی هستم، معلم انگلیسی تو.\n\nهر سوالی داری ازم بپرس، در خدمتم!`
+    ]);
   }
-  
+
   // خداحافظی
-  if(AI_KB.farewells.some(g => q.includes(g))){
-    return "خداحافظ! 👋\n\nهر وقت سوال داشتی، برگرد پیش من. موفق باشی! 🌟";
+  if(/(خداحافظ|بای|bye|goodbye|فعلا|می‌رم|میرم)/i.test(q)){
+    return `خداحافظ ${name}! 👋\n\nهر وقت سوال داشتی برگرد پیشم. موفق باشی! 🌟`;
   }
-  
-  // سوالات درباره خودت / کمک
-  if(q.includes("کی هستی") || q.includes("تو کی") || q.includes("who are you")){
-    return "من **Ali Nagheli** هستم، دستیار هوشمند زبان انگلیسی تو 🎓\n\nمن توسط استاد علی ناقلی ساخته شدم تا هر وقت سوال انگلیسی داشتی، کمکت کنم.";
-  }
-  
-  if(q.includes("چیکار") && q.includes("کن")){
-    return "من می‌تونم توی این موارد کمکت کنم:\n\n📘 **گرامر:** توضیح Present Simple، Past، Future و...\n🔤 **لغات:** ترجمه کلمات انگلیسی ↔ فارسی\n✍️ **تصحیح جمله:** جمله‌ات رو تصحیح می‌کنم\n💬 **مکالمه:** با من انگلیسی تمرین کن\n📝 **سوالات درسی:** جواب سوالای مدرسه\n\nفقط سؤالت رو بپرس! 😊";
-  }
-  
+
   // تشکر
-  if(q.includes("ممنون") || q.includes("مرسی") || q.includes("thank")){
-    const thanks = ["خواهش می‌کنم! 😊","قابلی نداشت! 🌟","خوشحالم که کمکت کردم 💜","هر وقت سوال داشتی، بپرس!"];
-    return thanks[Math.floor(Math.random()*thanks.length)];
+  if(/(ممنون|مرسی|thank|تشکر|دستت درد نکنه|لطف کردی)/i.test(q)){
+    return pickRandom([
+      "خواهش می‌کنم! 😊",
+      "قابلی نداشت! 🌹",
+      "خوشحالم که کمک کردم 💜",
+      "هر وقت سوال داشتی، بپرس!"
+    ]);
   }
-  
-  // گرامر
-  const grammarKeys = Object.keys(AI_RESPONSES);
-  for(const key of grammarKeys){
-    if(q.includes(key)){
-      return AI_RESPONSES[key];
+
+  // معرفی
+  if(/(کی هستی|تو کی|who are you|اسمت چیه|اسمت چ|خودت رو معرفی)/i.test(q)){
+    return `من **علی ناقلی** هستم، معلم انگلیسی تو 🎓\n\nبا بیش از ۲۰ سال سابقه تدریس مکالمه زبان انگلیسی و مدرس دوره‌های TOEFL, IELTS, KET, PET, MCHE, MSRT و برگزارکننده دوره‌های حرفه‌ای TTC.\n\n💡 هر سوالی داری ازم بپرس — گرامر، لغت، ریاضی، تاریخ، هر چی!`;
+  }
+
+  // چیکار می‌تونی بکنی
+  if(/(چیکار|چی کار|کمکت|چکار می‌تونی|چی بلدی|چیا می‌تونی)/i.test(q)){
+    return `من می‌تونم بهت تو این موارد کمک کنم ${name}:\n\n📘 **گرامر انگلیسی:** توضیح Present Simple، Past، Future، Passive، Conditional و...\n🔤 **لغات:** ترجمه انگلیسی ↔ فارسی\n✍️ **تصحیح جمله:** جمله انگلیسیت رو بنویس، تصحیحش می‌کنم\n💬 **تمرین مکالمه:** با من انگلیسی حرف بزن\n🧮 **ریاضی:** محاسبات ساده (مثلاً بنویس "10*5")\n📚 **هر سوال عمومی:** تاریخ، جغرافیا، علوم و هر چیز دیگه\n\nفقط سوالت رو بنویس! 😊`;
+  }
+
+  // ===== ریاضی =====
+  const mathMatch = question.match(/^[\d\s\(\)\+\-\*\/\.]+$/);
+  if(mathMatch && /[\+\-\*\/]/.test(question)){
+    try{
+      const expr = question.replace(/×/g,'*').replace(/÷/g,'/');
+      const result = Function('"use strict";return ('+expr+')')();
+      if(typeof result === 'number' && !isNaN(result)){
+        return `🧮 **محاسبه:**\n\n\`${question} = ${result}\`\n\nاگه سوال ریاضی دیگه‌ای داری، بپرس! 😊`;
+      }
+    }catch(e){}
+  }
+
+  // ضرب به فارسی
+  const faMath = question.match(/(\d+)\s*(ضربدر|ضرب|در|تقسیم بر|تقسیم|به علاوه|بعلاوه|جمع|منهای|منها)\s*(\d+)/);
+  if(faMath){
+    const a = Number(faMath[1]);
+    const op = faMath[2];
+    const b = Number(faMath[3]);
+    let result, opName, symbol;
+    if(/ضرب/.test(op)){ result=a*b; opName="ضرب"; symbol="×"; }
+    else if(/تقسیم/.test(op)){ result=a/b; opName="تقسیم"; symbol="÷"; }
+    else if(/جمع|به علاوه|بعلاوه/.test(op)){ result=a+b; opName="جمع"; symbol="+"; }
+    else if(/منهای|منها/.test(op)){ result=a-b; opName="تفریق"; symbol="-"; }
+    if(result !== undefined){
+      return `🧮 **${opName}:**\n\n\`${a} ${symbol} ${b} = ${result}\`\n\nسوال دیگه‌ای داری؟ 😊`;
     }
   }
-  
-  // مترادف‌های گرامر
-  if(q.includes("حال ساده")) return AI_RESPONSES["present simple"];
-  if(q.includes("حال استمراری")) return AI_RESPONSES["present continuous"];
-  if(q.includes("حال کامل")) return AI_RESPONSES["present perfect"];
-  if(q.includes("گذشته ساده")) return AI_RESPONSES["past simple"];
-  if(q.includes("گذشته استمراری")) return AI_RESPONSES["past continuous"];
-  if(q.includes("ماضی بعید")) return AI_RESPONSES["past perfect"];
-  if(q.includes("آینده")) return AI_RESPONSES["future"];
-  if(q.includes("مدال") || q.includes("modal")) return AI_RESPONSES["modal"];
-  if(q.includes("مجهول")) return AI_RESPONSES["passive"];
-  if(q.includes("شرطی")) return AI_RESPONSES["conditional"];
-  if(q.includes("صفت")) return AI_RESPONSES["adjective"];
-  
-  // ترجمه لغت - جستجو در دیکشنری
-  const cleanQ = q.replace(/معنی|چیست|چیه|چی هست|ترجمه|یعنی|what is|what's|mean|meaning|of/g,'').trim().replace(/['"؟?]/g,'');
-  if(cleanQ.length >= 2){
-    // جستجو در همه لغات
-    if(typeof words === "object"){
-      for(const key in words){
-        for(const w of words[key]){
-          if(w[0] && w[0].toLowerCase() === cleanQ){
-            return `🔤 **${w[0]}**\n\n📖 معنی: **${w[1]}**\n\n💡 این کلمه رو توی دروس برنامه هم می‌تونی پیدا کنی.`;
-          }
+
+  // ===== گرامر =====
+  const grammarAnswers = {
+    "present simple|حال ساده": `📘 **Present Simple (حال ساده)**\n\nبرای کارهای روزمره، عادت‌ها و حقایق کلی.\n\n**ساختار:**\nفاعل + فعل ساده (برای سوم شخص s می‌گیره)\n\n**مثال:**\n\`I go to school every day.\`\n\`She watches TV every night.\`\n\n**منفی:** don't / doesn't\n**سوالی:** Do / Does + فاعل + فعل`,
+    "present continuous|حال استمراری": `📘 **Present Continuous (حال استمراری)**\n\nبرای کاری که همین الان در حال انجامه.\n\n**ساختار:**\nفاعل + am/is/are + فعل + ing\n\n**مثال:**\n\`I am reading a book now.\`\n\`She is cooking dinner.\`\n\n**کلمات کلیدی:** now, at the moment, currently`,
+    "present perfect|حال کامل": `📘 **Present Perfect (حال کامل)**\n\nبرای کاری که در گذشته شروع شده و اثرش تا حالا باقیه.\n\n**ساختار:**\nفاعل + have/has + قسمت سوم فعل\n\n**مثال:**\n\`I have finished my homework.\`\n\`She has lived here for 5 years.\`\n\n**کلمات کلیدی:** just, already, yet, ever, never, since, for`,
+    "past simple|گذشته ساده": `📘 **Past Simple (گذشته ساده)**\n\nبرای کاری که در گذشته تمام شده.\n\n**ساختار:**\nفاعل + فعل گذشته (ed یا شکل دوم)\n\n**مثال:**\n\`I played football yesterday.\`\n\`She went to school last week.\`\n\n**منفی:** didn't + فعل ساده\n**سوالی:** Did + فاعل + فعل ساده`,
+    "past continuous|گذشته استمراری": `📘 **Past Continuous (گذشته استمراری)**\n\nبرای کاری که در گذشته در حال انجام بوده.\n\n**ساختار:**\nفاعل + was/were + فعل + ing\n\n**مثال:**\n\`I was studying when he called.\`\n\`They were playing football.\``,
+    "past perfect|ماضی بعید": `📘 **Past Perfect (ماضی بعید)**\n\nبرای کاری که قبل از عمل دیگه‌ای در گذشته انجام شده بود.\n\n**ساختار:**\nفاعل + had + قسمت سوم فعل\n\n**مثال:**\n\`She had left before I arrived.\`\n\`They had finished when we got there.\``,
+    "future|آینده": `📘 **آینده در انگلیسی**\n\n**will:** برای تصمیم لحظه‌ای و پیش‌بینی\n\`I will call you tomorrow.\`\n\n**going to:** برای قصد و برنامه\n\`I'm going to travel next week.\`\n\n**حال استمراری:** برای قرار قطعی\n\`I'm meeting him tomorrow.\``,
+    "modal|افعال کمکی": `📘 **Modal Verbs**\n\n**can:** توانایی، اجازه — \`I can swim.\`\n**must:** اجبار قوی — \`You must stop.\`\n**should:** توصیه — \`You should rest.\`\n**may/might:** احتمال — \`It may rain.\`\n\n⚠️ بعد از modal، فعل ساده میاد (بدون to).`,
+    "passive|مجهول": `📘 **Passive Voice (مجهول)**\n\nوقتی فاعل مهم نیست یا نمی‌دونیم کیه.\n\n**ساختار:**\nمفعول + be + قسمت سوم فعل\n\n**مثال:**\n\`The letter was written.\`\n\`The house is being built.\`\n\n**حال:** am/is/are + p.p.\n**گذشته:** was/were + p.p.`,
+    "conditional|شرطی": `📘 **Conditional (شرطی)**\n\n**نوع ۱ (ممکن):**\n\`If it rains, I will stay home.\`\n\n**نوع ۲ (فرضی):**\n\`If I had money, I would buy a car.\`\n\n**نوع ۳ (غیرممکن):**\n\`If I had studied, I would have passed.\``,
+    "adjective|صفت": `📘 **Adjective (صفت)**\n\nکلمه‌ای که اسم رو توصیف می‌کنه.\n\n**مقایسه‌ای:** \`big → bigger → the biggest\`\n**بلند:** \`beautiful → more beautiful → the most beautiful\`\n**بی‌قاعده:** \`good → better → the best\``,
+    "gerund|اسم مصدر": `📘 **Gerund (اسم مصدر)**\n\nفعل + ing که نقش اسم داره.\n\n**به عنوان فاعل:** \`Reading is fun.\`\n**بعد از افعال:** \`I enjoy reading.\`\n**بعد از حرف اضافه:** \`I'm good at drawing.\``,
+    "relative|موصولی": `📘 **Relative Pronouns (ضمایر موصولی)**\n\n**who:** برای انسان — \`The man who called is my father.\`\n**which:** برای غیرانسان — \`The book which I bought is good.\`\n**that:** برای همه — \`The car that he drives is new.\``,
+    "tag question|سوال ضمیمه": `📘 **Tag Questions**\n\n- جمله مثبت → tag منفی\n- جمله منفی → tag مثبت\n\n**مثال:**\n\`You are a student, aren't you?\`\n\`She isn't here, is she?\``
+  };
+
+  for(const key in grammarAnswers){
+    const patterns = key.split("|");
+    for(const pattern of patterns){
+      if(q.includes(pattern.toLowerCase())){
+        return grammarAnswers[key];
+      }
+    }
+  }
+
+  // ===== جستجو در دیکشنری =====
+  const cleanQ = original
+    .replace(/معنی|چیست|چیه|چی هست|ترجمه|یعنی|what is|what's|mean|meaning|of/gi,'')
+    .replace(/['"؟?.,!]/g,'')
+    .trim();
+
+  if(cleanQ.length >= 2 && typeof words === "object"){
+    // جستجوی دقیق
+    for(const key in words){
+      for(const w of words[key]){
+        if(w[0] && w[0].toLowerCase() === cleanQ.toLowerCase()){
+          return `🔤 **${w[0]}**\n\n📖 معنی: **${w[1]}**\n\n💡 این کلمه رو تو درس‌های برنامه هم می‌تونی پیدا کنی.`;
         }
       }
-      // جستجوی جزئی
-      for(const key in words){
-        for(const w of words[key]){
-          if(w[0] && (w[0].toLowerCase().includes(cleanQ) || cleanQ.includes(w[0].toLowerCase())) && w[0].length > 2){
-            return `🔤 **${w[0]}**\n\n📖 معنی: **${w[1]}**\n\n(اگر دنبال کلمه دیگه‌ای هستی، دقیق‌تر بنویس)`;
-          }
+    }
+    // جستجوی جزئی
+    for(const key in words){
+      for(const w of words[key]){
+        if(w[0] && w[0].length > 2 && (w[0].toLowerCase().includes(cleanQ.toLowerCase()) || cleanQ.toLowerCase().includes(w[0].toLowerCase()))){
+          return `🔤 **${w[0]}**\n\n📖 معنی: **${w[1]}**\n\n(اگه دنبال کلمه دقیق‌تری هستی، واضح‌تر بنویس)`;
         }
       }
     }
   }
-  
-  // سوالات متداول
-  if(q.includes("چطوری") && (q.includes("یاد") || q.includes("learn"))){
-    return "🌟 **راه‌های یادگیری بهتر انگلیسی:**\n\n1️⃣ **هر روز ۱۵ دقیقه** تمرین کن (نصف ساعت بهتر از ۵ ساعت یک‌بار در هفته!)\n\n2️⃣ **لغات جدید** رو توی جمله یاد بگیر، نه تنهایی\n\n3️⃣ **فیلم و سریال** با زیرنویس انگلیسی ببین\n\n4️⃣ **با خودت انگلیسی حرف بزن** (توی آینه!)\n\n5️⃣ **اشتباه کن!** اشتباه بهترین معلمه\n\n6️⃣ **تمرین کن، تمرین، تمرین!** 💪";
+
+  // ===== یادگیری زبان =====
+  if(/(چطوری|چگونه).*(یاد|learn)/i.test(q) || /یادگیری انگلیسی/i.test(q)){
+    return `🌟 **راه‌های یادگیری بهتر انگلیسی:**\n\n1️⃣ **هر روز ۱۵ دقیقه** تمرین کن (نصف ساعت بهتر از ۵ ساعت یک‌بار در هفته!)\n\n2️⃣ **لغات جدید** رو تو جمله یاد بگیر، نه تنهایی\n\n3️⃣ **فیلم و سریال** با زیرنویس انگلیسی ببین\n\n4️⃣ **با خودت انگلیسی حرف بزن** (توی آینه!)\n\n5️⃣ **اشتباه کن!** اشتباه بهترین معلمه\n\n6️⃣ **تمرین کن، تمرین، تمرین!** 💪`;
   }
-  
-  if(q.includes("لغت") || q.includes("vocabulary") || q.includes("کلمه یاد")){
-    return "📚 **روش یادگیری لغات:**\n\n1️⃣ کلمه رو توی **جمله** یاد بگیر\n2️⃣ **فلش‌کارت** بساز (کاغذی یا اپلیکیشن)\n3️⃣ کلمه رو **۵ بار** توی روزهای مختلف مرور کن\n4️⃣ **مترادف و متضاد** کلمه رو هم یاد بگیر\n5️⃣ کلمه رو **بلند بگو** و تلفظش رو تمرین کن\n\n💡 توی دیکشنری همین برنامه هم می‌تونی همه لغات رو ببینی!";
+
+  if(/(چطوری|چگونه).*(لغت|کلمه|vocab)/i.test(q)){
+    return `📚 **روش یادگیری لغات:**\n\n1️⃣ کلمه رو تو **جمله** یاد بگیر\n2️⃣ **فلش‌کارت** بساز\n3️⃣ کلمه رو **۵ بار** تو روزهای مختلف مرور کن\n4️⃣ **مترادف و متضاد** کلمه رو هم یاد بگیر\n5️⃣ کلمه رو **بلند بگو** و تلفظش رو تمرین کن\n\n💡 تو دیکشنری همین برنامه هم می‌تونی همه لغات رو ببینی!`;
   }
-  
-  if(q.includes("مکالمه") || q.includes("conversation") || q.includes("صحبت")){
-    return "💬 **تمرین مکالمه:**\n\nبرای تقویت مکالمه:\n\n1️⃣ با **خودت** بلند انگلیسی حرف بزن\n2️⃣ **سایه‌بازی** (shadowing) کن - همزمان با یه فایل صوتی تکرار کن\n3️⃣ توی **کلاس‌های مکالمه** شرکت کن\n4️⃣ با **دوستان** انگلیسی حرف بزن\n5️⃣ از **اپلیکیشن‌های زبان** استفاده کن\n\n📞 می‌تونی با استاد **علی ناقلی** کلاس مکالمه بگیری!";
+
+  if(/(مکالمه|conversation|صحبت)/i.test(q)){
+    return `💬 **تمرین مکالمه:**\n\nبرای تقویت مکالمه:\n\n1️⃣ با **خودت** بلند انگلیسی حرف بزن\n2️⃣ **سایه‌بازی** (shadowing) کن — همزمان با یه فایل صوتی تکرار کن\n3️⃣ تو **کلاس‌های مکالمه** شرکت کن\n4️⃣ با **دوستان** انگلیسی حرف بزن\n5️⃣ از **اپلیکیشن‌های زبان** استفاده کن\n\n📞 می‌تونی با استاد **علی ناقلی** کلاس مکالمه بگیری!`;
   }
-  
-  // پیش‌فرض
-  const defaults = [
-    "🤔 متأسفم، سؤالت رو دقیق متوجه نشدم.\n\nمی‌تونی یه کم واضح‌تر بپرسی؟ مثلاً:\n\n📘 «Present Simple چیه؟»\n🔤 «معنی beautiful چیه؟»\n✍️ «این جمله رو تصحیح کن: I go to school yesterday»",
-    "😊 سؤالت رو نفهمیدم.\n\nسعی کن دقیق‌تر بپرسی:\n\n• «گرامر Past Perfect رو توضیح بده»\n• «لغت happiness یعنی چی؟»\n• «چطوری انگلیسی یاد بگیرم؟»",
-    "🤷‍♂️ نمی‌دونم چطور جوابت رو بدم.\n\nممکنه این سوالات کمکت کنه:\n\n📘 سوال گرامری بپرس\n🔤 اسم یه لغت رو بنویس\n✍️ یه جمله انگلیسی بنویس تا تصحیحش کنم"
-  ];
-  return defaults[Math.floor(Math.random()*defaults.length)];
+
+  // ===== پاسخ‌های عمومی هوشمند =====
+  if(/ساعت چنده|چه ساعتی/i.test(q)){
+    const now = new Date();
+    return `🕐 ساعت الان: **${now.toLocaleTimeString('fa-IR')}**`;
+  }
+
+  if(/امروز چندمه|تاریخ امروز|چه روزیه/i.test(q)){
+    const now = new Date();
+    return `📅 امروز: **${now.toLocaleDateString('fa-IR', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}**`;
+  }
+
+  if(/هوا چطوره|وضعیت هوا/i.test(q)){
+    return `🌤️ من به اینترنت متصل نیستم که وضعیت هوا رو بگم، ولی می‌تونی از اپ‌های هواشناسی استفاده کنی!\n\n💡 می‌تونی به انگلیسی بگی:\n\`What's the weather like today?\``;
+  }
+
+  if(/خسته‌ام|حوصله|بی‌حال|ناراحتم/i.test(q)){
+    return `💙 می‌فهمم ${name}.\n\nیه استراحت کوتاه به خودت بده، یه چای بخور، بعد با انگیزه برگرد.\n\n🌸 یادت باشه: **هیچ موفقیتی یه‌شبه به دست نمیاد.**\n\n💪 ادامه بده، تو می‌تونی!`;
+  }
+
+  if(/انگیزه|بی انگیزه|دلسرد|ناامید/i.test(q)){
+    return `🔥 گوش کن ${name}:\n\n**"موفقیت نتیجه‌ی تلاش‌های کوچک روزانه‌ست که هر روز تکرار میشن."**\n\n💎 هیچ‌کس از روز اول حرفه‌ای نبوده.\n\n✨ هر روز یه قدم کوچیک بردار — بعد یه سال، خودت شگفت‌زده میشی!\n\n🚀 پاشو، ادامه بده!`;
+  }
+
+  // ===== پاسخ پیش‌فرض =====
+  return pickRandom([
+    `🤔 سوال خوبی پرسیدی ${name}، ولی من الان مطمئن نیستم چه جوابی بدم.\n\n💡 می‌تونی واضح‌تر بپرسی؟ مثلاً:\n\n📘 «Present Simple چیه؟»\n🔤 «معنی beautiful چیه؟»\n✍️ «این جمله رو تصحیح کن: I go to school yesterday»\n🧮 «10*5»\n\nیا هر سوال دیگه‌ای که داری!`,
+    `🤔 این سوال یه کم برام گیج‌کننده‌ست.\n\nمی‌تونی یه جور دیگه بپرسی؟ من به این موضوعات جواب می‌دم:\n\n📘 گرامر انگلیسی\n🔤 ترجمه لغات\n✍️ تصحیح جمله\n🧮 ریاضی ساده\n💬 تمرین مکالمه\n📚 سوالات عمومی`,
+    `متأسفم ${name}، این یکی رو نفهمیدم.\n\n🔄 سعی کن واضح‌تر بپرسی، یا یکی از این موضوعات رو امتحان کن:\n\n• گرامر: Present Simple، Past، Future، Passive\n• لغت: بنویس "معنی [کلمه] چیه؟"\n• جمله: بنویس "این جمله رو تصحیح کن: [جمله]"\n• ریاضی: بنویس "10+5"`
+  ]);
 }
 
 function aiSendMessage(){
@@ -5723,17 +5746,14 @@ function aiSendMessage(){
   if(!input) return;
   const text = input.value.trim();
   if(!text) return;
-  
   aiAddMessage("user", text);
   input.value = "";
-  
   aiShowTyping();
-  
   setTimeout(()=>{
     aiHideTyping();
     const answer = aiFindAnswer(text);
     aiAddMessage("ai", answer);
-  }, 800 + Math.random()*700);
+  }, 700 + Math.random()*500);
 }
 
 function aiQuickAsk(text){
@@ -5750,466 +5770,62 @@ function aiHandleKey(e){
     aiSendMessage();
   }
 }
-/* ==================== Word Teaching ==================== */
-var AI_WORD_INDEX = 0;
-var AI_ALL_WORDS = null;
 
-function aiGetAllWords(){
-  if(AI_ALL_WORDS) return AI_ALL_WORDS;
-  AI_ALL_WORDS = [];
-  if(typeof words === "object"){
-    for(var k in words){
-      if(words[k] && words[k].length){
-        for(var w of words[k]){
-          if(w && w[0] && w[1] && w[0].length > 2){
-            AI_ALL_WORDS.push({en: w[0], fa: w[1]});
-          }
-        }
-      }
-    }
-  }
-  return AI_ALL_WORDS;
-}
+function aiBuildWidget(){
+  const old = document.getElementById("aiWidgetRoot");
+  if(old) old.remove();
 
-function aiTeachWord(){
-  const allWords = aiGetAllWords();
-  if(!allWords.length){
-    aiAddMessage("ai", "متأسفم، لیست لغات در دسترس نیست.");
-    return;
-  }
-  
-  // انتخاب تصادفی
-  const pick = allWords[Math.floor(Math.random() * allWords.length)];
-  
-  // مثال جعلی بساز
-  const examples = [
-    `I use the word "${pick.en}" every day.`,
-    `Do you know what "${pick.en}" means?`,
-    `"${pick.en}" is a useful word in English.`,
-    `Can you make a sentence with "${pick.en}"?`,
-    `The word "${pick.en}" is very common.`
-  ];
-  const example = examples[Math.floor(Math.random() * examples.length)];
-  
-  const container = document.getElementById("aiChatMessages");
-  if(!container) return;
-  
-  const now = new Date().toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
-  
-  // پیام مقدمه
-  aiAddMessage("ai", "📚 **لغت جدید برای یادگیری:**");
-  
-  // کارت لغت
-  const msg = document.createElement("div");
-  msg.className = "aiMsg ai";
-  msg.innerHTML = `
-    <div class="aiMsgAvatar">${getAIAvatarSVG(32)}</div>
-    <div class="aiMsgBubble" style="max-width:100%;padding:6px">
-      <div class="aiWordCard">
-        <div class="wEn">🔊 ${esc(pick.en)}</div>
-        <div class="wFa">📖 ${esc(pick.fa)}</div>
-        <div class="wExample">📝 ${esc(example)}</div>
-        <div class="wPronounce">
-          <button onclick='speak(${JSON.stringify(pick.en)})'>🔊 تلفظ</button>
-          <button onclick='aiTeachWord()'>🔄 لغت بعدی</button>
-          <button onclick='aiQuickAsk("معنی ${pick.en.replace(/"/g,'')} چیه؟")'>💬 توضیح بده</button>
+  const wrap = document.createElement("div");
+  wrap.id = "aiWidgetRoot";
+  wrap.innerHTML = `
+    <div class="aiBubbleHint" id="aiBubbleHint">
+      سلام ${S.student?.first_name || "دوست من"}! 👋<br>
+      من علی ناقلی هستم، معلم انگلیسی تو.<br>
+      <b>هر سوالی داری ازم بپرس!</b>
+    </div>
+    <button class="aiAvatarBtn" id="aiAvatarBtn" onclick="aiToggleChat()" title="علی ناقلی - معلم انگلیسی">
+      <span class="pulse"></span>
+      ${getAIAvatarSVG(76)}
+      <span class="onlineDot"></span>
+    </button>
+    <div class="aiChatBox" id="aiChatBox">
+      <div class="aiChatHeader">
+        <div class="aiAvatarSmall">${getAIAvatarSVG(50)}</div>
+        <div class="aiInfo">
+          <div class="aiName">
+            <span class="status"></span>
+            علی ناقلی
+          </div>
+          <div class="aiStatus">معلم انگلیسی تو · آنلاین</div>
         </div>
-        <span class="aiTime">${now}</span>
+        <button class="closeChat" onclick="aiToggleChat()">✕</button>
+      </div>
+      <div class="aiChatMessages" id="aiChatMessages"></div>
+      <div class="aiQuickChips">
+        ${AI_QUICK_CHIPS.map(c => `<div class="aiQuickChip" onclick="aiQuickAsk('${c.replace(/'/g,"\\'")}')">${c}</div>`).join("")}
+      </div>
+      <div class="aiChatInputWrap">
+        <textarea class="aiChatInput" id="aiChatInput" placeholder="سوالت رو بنویس..." rows="1" onkeydown="aiHandleKey(event)"></textarea>
+        <button class="aiSendBtn" onclick="aiSendMessage()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
       </div>
     </div>
   `;
-  container.appendChild(msg);
-  container.scrollTop = container.scrollHeight;
-  
-  // تلفظ خودکار
+  document.body.appendChild(wrap);
+
   setTimeout(()=>{
-    try{ speak(pick.en); }catch(e){}
+    aiAddMessage("ai", `سلام ${S.student?.first_name || "دوست من"}! 👋\n\nمن **علی ناقلی** هستم، معلم انگلیسی تو.\n\nهر سوالی داری ازم بپرس — گرامر، لغت، ریاضی، تاریخ، هر چیزی که بخوای! 😊`);
   }, 400);
-}
 
-/* ==================== Interactive Games ==================== */
-var AI_GAME = { type: null, score: 0, round: 0, current: null };
-
-function aiStartGame(type){
-  AI_GAME = { type: type, score: 0, round: 0, current: null };
-  
-  if(type === "guess"){
-    aiAddMessage("ai", "🎮 **بازی حدس لغت شروع شد!**\n\nمن معنی فارسی یه لغت رو می‌گم، تو باید کلمه انگلیسی‌ش رو انتخاب کنی.\n\n5 سوال داری. بزن بریم! 🚀");
-    setTimeout(()=>aiNextGuessRound(), 900);
-  } else if(type === "match"){
-    aiAddMessage("ai", "🔗 **بازی تطبیق شروع شد!**\n\nمن یه کلمه انگلیسی می‌گم، تو معنی فارسی‌ش رو بنویس.\n\n5 سوال داری. موفق باشی! 🍀");
-    setTimeout(()=>aiNextMatchRound(), 900);
-  } else if(type === "story"){
-    aiAddMessage("ai", "📖 **داستان کوتاه با لغات جدید**\n\nیه داستان کوتاه برات می‌خونم و بعد ازت سوال می‌پرسم. آماده‌ای؟ 🌟");
-    setTimeout(()=>aiShowStory(), 900);
-  }
-}
-
-function aiNextGuessRound(){
-  if(AI_GAME.round >= 5){
-    aiAddMessage("ai", `🎉 **بازی تمام شد!**\n\n🏆 امتیاز نهایی: **${AI_GAME.score} از 5**\n\n${AI_GAME.score >= 4 ? '🔥 عالی بودی! ادامه بده!' : AI_GAME.score >= 2 ? '👍 خوب بود! کمی تمرین بیشتر لازمه.' : '💪 اشکالی نداره! با تمرین بهتر می‌شی.'}\n\nبرای بازی مجدد دکمه رو بزن.`);
-    AI_GAME = { type: null, score: 0, round: 0, current: null };
-    return;
-  }
-  
-  const allWords = aiGetAllWords();
-  if(allWords.length < 4){
-    aiAddMessage("ai", "متأسفم، لغات کافی برای بازی نیست.");
-    return;
-  }
-  
-  const correct = allWords[Math.floor(Math.random() * allWords.length)];
-  const wrongs = [];
-  while(wrongs.length < 3){
-    const w = allWords[Math.floor(Math.random() * allWords.length)];
-    if(w.en !== correct.en && !wrongs.some(x=>x.en === w.en)) wrongs.push(w);
-  }
-  
-  const options = [correct, ...wrongs].sort(()=>Math.random() - 0.5);
-  AI_GAME.current = correct;
-  AI_GAME.round++;
-  
-  const container = document.getElementById("aiChatMessages");
-  if(!container) return;
-  const now = new Date().toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
-  
-  const msg = document.createElement("div");
-  msg.className = "aiMsg ai";
-  msg.id = "aiGameRound";
-  msg.innerHTML = `
-    <div class="aiMsgAvatar">${getAIAvatarSVG(32)}</div>
-    <div class="aiMsgBubble" style="max-width:100%;padding:6px">
-      <div class="aiGameQ">
-        <div class="gqText">سوال ${AI_GAME.round} از 5 — امتیاز: ${AI_GAME.score}<br><br>معنی: <b style="color:#f59e0b;font-size:20px">${esc(correct.fa)}</b></div>
-        <div class="aiGameOptions">
-          ${options.map((o,i)=>`<button class="aiGameOpt" onclick="aiGuessAnswer('${o.en.replace(/'/g,"\\'")}', ${i})">${esc(o.en)}</button>`).join("")}
-        </div>
-      </div>
-      <span class="aiTime">${now}</span>
-    </div>
-  `;
-  container.appendChild(msg);
-  container.scrollTop = container.scrollHeight;
-}
-
-function aiGuessAnswer(answer, idx){
-  const round = document.getElementById("aiGameRound");
-  if(!round) return;
-  const buttons = round.querySelectorAll(".aiGameOpt");
-  buttons.forEach(b=>b.disabled = true);
-  
-  const correct = AI_GAME.current.en;
-  const isCorrect = answer === correct;
-  
-  buttons.forEach(b => {
-    if(b.textContent === correct) b.classList.add("correct");
-    else if(b.textContent === answer && !isCorrect) b.classList.add("wrong");
-  });
-  
-  if(isCorrect){
-    AI_GAME.score++;
-    aiAddMessage("ai", `✅ **آفرین! درسته!**\n\n🎯 امتیازت شد: **${AI_GAME.score}**`);
-  } else {
-    aiAddMessage("ai", `❌ **متأسفانه اشتباه بود.**\n\nجواب درست: **${correct}**`);
-  }
-  
-  setTimeout(()=>{
-    const old = document.getElementById("aiGameRound");
-    if(old) old.removeAttribute("id");
-    aiNextGuessRound();
-  }, 1500);
-}
-
-function aiNextMatchRound(){
-  if(AI_GAME.round >= 5){
-    aiAddMessage("ai", `🎉 **بازی تطبیق تمام شد!**\n\n🏆 امتیاز نهایی: **${AI_GAME.score} از 5**\n\n${AI_GAME.score >= 4 ? '🔥 عالی بودی!' : '💪 تمرین بیشتر!'}`);
-    AI_GAME = { type: null, score: 0, round: 0, current: null };
-    return;
-  }
-  
-  const allWords = aiGetAllWords();
-  if(!allWords.length){
-    aiAddMessage("ai", "لغات کافی نیست.");
-    return;
-  }
-  
-  const pick = allWords[Math.floor(Math.random() * allWords.length)];
-  AI_GAME.current = pick;
-  AI_GAME.round++;
-  
-  aiAddMessage("ai", `🔗 **کلمه ${AI_GAME.round} از 5**\n\nامتیاز: ${AI_GAME.score}\n\nکلمه: **${pick.en}**\n\nمعنی فارسی‌ش رو بنویس و بفرست 👇`);
-}
-
-function aiNextStoryRound(){
-  aiAddMessage("ai", `🎉 **داستان تمام شد!**\n\n🏆 امتیاز: **${AI_GAME.score}**\n\nمی‌خوای یه داستان دیگه؟`);
-  AI_GAME = { type: null, score: 0, round: 0, current: null };
-}
-
-function aiShowStory(){
-  const allWords = aiGetAllWords();
-  if(allWords.length < 3){
-    aiAddMessage("ai", "لغات کافی برای ساخت داستان نیست.");
-    return;
-  }
-  
-  // انتخاب 3 لغت تصادفی
-  const shuffled = [...allWords].sort(()=>Math.random() - 0.5);
-  const w1 = shuffled[0];
-  const w2 = shuffled[1];
-  const w3 = shuffled[2];
-  
-  const stories = [
-    {
-      title: "The Magic " + w1.en,
-      text: `Once upon a time, there was a special ${w1.en}. It was a gift from a kind ${w2.en}. Every day, the ${w1.en} brought joy to the ${w3.en}. Everyone loved it.`,
-      trans: `یکی بود یکی نبود، یه ${w1.fa} خاص وجود داشت. اون یه هدیه از یه ${w2.fa} مهربون بود. هر روز، اون ${w1.fa} برای ${w3.fa} شادی می‌آورد. همه دوستش داشتن.`,
-      words: [w1, w2, w3]
-    },
-    {
-      title: "My Favorite " + w2.en,
-      text: `Yesterday, I saw a beautiful ${w1.en}. It was near the ${w3.en}. I told my friend about the ${w1.en}, and he said he loved ${w2.en} too.`,
-      trans: `دیروز، من یه ${w1.fa} زیبا دیدم. اون نزدیک ${w3.fa} بود. به دوستم درباره اون ${w1.fa} گفتم و اون گفت که ${w2.fa} رو هم دوست داره.`,
-      words: [w1, w2, w3]
-    }
-  ];
-  
-  const story = stories[Math.floor(Math.random() * stories.length)];
-  AI_GAME.current = story;
-  
-  let textWithHighlights = story.text;
-  story.words.forEach(w => {
-    textWithHighlights = textWithHighlights.replace(new RegExp(w.en, 'g'), `<mark>${w.en}</mark>`);
-  });
-  
-  const container = document.getElementById("aiChatMessages");
-  if(!container) return;
-  const now = new Date().toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
-  
-  const msg = document.createElement("div");
-  msg.className = "aiMsg ai";
-  msg.innerHTML = `
-    <div class="aiMsgAvatar">${getAIAvatarSVG(32)}</div>
-    <div class="aiMsgBubble" style="max-width:100%;padding:6px">
-      <div class="aiStoryBox">
-        <div class="storyTitle">📖 ${esc(story.title)}</div>
-        <div class="storyText">${textWithHighlights}</div>
-        <div class="storyTrans">${esc(story.trans)}</div>
-      </div>
-      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center">
-        <button class="aiActionBtn" onclick="aiStoryQuestion()">❓ سوال دارم</button>
-        <button class="aiActionBtn" onclick="aiShowStory()">📖 داستان جدید</button>
-      </div>
-      <span class="aiTime">${now}</span>
-    </div>
-  `;
-  container.appendChild(msg);
-  container.scrollTop = container.scrollHeight;
-}
-
-function aiStoryQuestion(){
-  const story = AI_GAME.current;
-  if(!story || !story.words) return;
-  const w = story.words[Math.floor(Math.random() * story.words.length)];
-  const questions = [
-    `توی داستان، **${w.en}** یعنی چی؟`,
-    `**${w.en}** به فارسی چی می‌شه؟`,
-    `معنی **${w.en}** رو می‌دونی؟`
-  ];
-  const q = questions[Math.floor(Math.random() * questions.length)];
-  aiAddMessage("ai", `❓ **سوال:**\n\n${q}\n\nپاسخ رو بنویس 👇`);
-}
-
-function aiBuildWidget(){
-  const old = document.getElementById("aiWidgetRoot");
-  if(old) old.remove();
-  
-  const wrap = document.createElement("div");
-  wrap.id = "aiWidgetRoot";
-  wrap.innerHTML = `
-    <div class="aiBubbleHint" id="aiBubbleHint">
-      سلام! من علی ناقلی هستم 👋<br>سوال انگلیسی داری؟ بپرس!
-    </div>
-    <div class="aiAvatarBtn" id="aiAvatarBtn" onclick="aiToggleChat()" title="دستیار هوشمند علی ناقلی">
-      <span class="pulse"></span>
-      ${getAIAvatarSVG(70)}
-      <span class="onlineDot"></span>
-    </div>
-    <div class="aiChatBox" id="aiChatBox">
-      <div class="aiChatHeader">
-        <div class="aiAvatarSmall">${getAIAvatarSVG(44)}</div>
-        <div class="aiInfo">
-          <div class="aiName">
-            <span class="status"></span>
-            Ali Nagheli
-          </div>
-          <div class="aiStatus">دستیار هوشمند زبان انگلیسی</div>
-        </div>
-        <button class="closeChat" onclick="aiToggleChat()">✕</button>
-      </div>
-      <div class="aiChatMessages" id="aiChatMessages"></div>
-            <div class="aiActionBtns">
-        <button class="aiActionBtn" onclick="aiTeachWord()">
-          <span class="aabIcon">📚</span>
-          <span>لغت جدید یادم بده</span>
-        </button>
-        <button class="aiActionBtn" onclick="aiStartGame('guess')">
-          <span class="aabIcon">🎮</span>
-          <span>بازی حدس لغت</span>
-        </button>
-        <button class="aiActionBtn" onclick="aiStartGame('match')">
-          <span class="aabIcon">🔗</span>
-          <span>بازی تطبیق</span>
-        </button>
-        <button class="aiActionBtn" onclick="aiStartGame('story')">
-          <span class="aabIcon">📖</span>
-          <span>داستان با لغات</span>
-        </button>
-      </div>
-
-      <div class="aiQuickChips">
-        ${AI_QUICK_CHIPS.map(c => `<div class="aiQuickChip" onclick="aiQuickAsk('${c.replace(/'/g,"\\'")}')">${c}</div>`).join("")}
-      </div>
-      <div class="aiChatInputWrap">
-        <textarea class="aiChatInput" id="aiChatInput" placeholder="سؤالت رو بنویس..." rows="1" onkeydown="aiHandleKey(event)"></textarea>
-        <button class="aiSendBtn" id="aiSendBtn" onclick="aiSendMessage()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        </button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(wrap);
-  
-  // پیام اول
-  setTimeout(()=>{
-    aiAddMessage("ai", "سلام " + (S.student ? S.student.first_name + " جان" : "دوست من") + "! 👋\n\nمن **Ali Nagheli** هستم، دستیار هوشمند زبان انگلیسی.\n\nهر سوالی داری بپرس! می‌تونم گرامر توضیح بدم، لغت ترجمه کنم، جمله‌ت رو تصحیح کنم یا تمرین مکالمه کنم. 😊");
-  }, 500);
-  
-  // نمایش حباب راهنما بعد از ۳ ثانیه
   setTimeout(()=>{
     const hint = document.getElementById("aiBubbleHint");
     if(hint){
       hint.classList.add("show");
-      setTimeout(()=>hint.classList.remove("show"), 6000);
+      setTimeout(()=>hint.classList.remove("show"), 7000);
     }
-  }, 3000);
+  }, 2500);
 }
-
-function aiShowHintOnce(){
-  const seen = localStorage.getItem("AN_AI_HINT_SEEN");
-  if(seen) return;
-  const hint = document.getElementById("aiBubbleHint");
-  if(hint){
-    hint.classList.add("show");
-    setTimeout(()=>{ hint.classList.remove("show"); localStorage.setItem("AN_AI_HINT_SEEN","1"); }, 8000);
-  }
-}
-function aiBuildWidget(){
-  const old = document.getElementById("aiWidgetRoot");
-  if(old) old.remove();
-  
-  const wrap = document.createElement("div");
-  wrap.id = "aiWidgetRoot";
-  wrap.innerHTML = `
-    <div class="aiBubbleHint" id="aiBubbleHint">
-      سلام! من علی ناقلی هستم 👋<br>سوال انگلیسی داری؟ بپرس!
-    </div>
-    <div class="aiAvatarBtn" id="aiAvatarBtn" onclick="aiToggleChat()" title="دستیار هوشمند علی ناقلی">
-      <span class="pulse"></span>
-      ${getAIAvatarSVG(70)}
-      <span class="onlineDot"></span>
-    </div>
-    <div class="aiChatBox" id="aiChatBox">
-      <div class="aiChatHeader">
-        <div class="aiAvatarSmall">${getAIAvatarSVG(44)}</div>
-        <div class="aiInfo">
-          <div class="aiName">
-            <span class="status"></span>
-            Ali Nagheli
-          </div>
-          <div class="aiStatus">دستیار هوشمند زبان انگلیسی</div>
-        </div>
-        <button class="closeChat" onclick="aiToggleChat()">✕</button>
-      </div>
-      <div class="aiChatMessages" id="aiChatMessages"></div>
-      <div class="aiQuickChips">
-        ${AI_QUICK_CHIPS.map(c => `<div class="aiQuickChip" onclick="aiQuickAsk('${c.replace(/'/g,"\\'")}')">${c}</div>`).join("")}
-      </div>
-      <div class="aiChatInputWrap">
-        <textarea class="aiChatInput" id="aiChatInput" placeholder="سؤالت رو بنویس..." rows="1" onkeydown="aiHandleKey(event)"></textarea>
-        <button class="aiSendBtn" id="aiSendBtn" onclick="aiSendMessage()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        </button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(wrap);
-  
-  setTimeout(()=>{
-    aiAddMessage("ai", "سلام " + (S.student ? S.student.first_name + " جان" : "دوست من") + "! 👋\n\nمن **Ali Nagheli** هستم، دستیار هوشمند زبان انگلیسی.\n\nهر سوالی داری بپرس! می‌تونم گرامر توضیح بدم، لغت ترجمه کنم، جمله‌ت رو تصحیح کنم یا تمرین مکالمه کنم. 😊");
-  }, 500);
-  
-  setTimeout(()=>{
-    const hint = document.getElementById("aiBubbleHint");
-    if(hint){
-      hint.classList.add("show");
-      setTimeout(()=>hint.classList.remove("show"), 6000);
-    }
-  }, 3000);
-}
-function aiBuildWidget(){
-  const old = document.getElementById("aiWidgetRoot");
-  if(old) old.remove();
-  
-  const wrap = document.createElement("div");
-  wrap.id = "aiWidgetRoot";
-  wrap.innerHTML = `
-    <div class="aiBubbleHint" id="aiBubbleHint">
-      سلام! من علی ناقلی هستم 👋<br>سوال انگلیسی داری؟ بپرس!
-    </div>
-    <div class="aiAvatarBtn" id="aiAvatarBtn" onclick="aiToggleChat()" title="دستیار هوشمند علی ناقلی">
-      <span class="pulse"></span>
-      ${getAIAvatarSVG(70)}
-      <span class="onlineDot"></span>
-    </div>
-    <div class="aiChatBox" id="aiChatBox">
-      <div class="aiChatHeader">
-        <div class="aiAvatarSmall">${getAIAvatarSVG(44)}</div>
-        <div class="aiInfo">
-          <div class="aiName">
-            <span class="status"></span>
-            Ali Nagheli
-          </div>
-          <div class="aiStatus">دستیار هوشمند زبان انگلیسی</div>
-        </div>
-        <button class="closeChat" onclick="aiToggleChat()">✕</button>
-      </div>
-      <div class="aiChatMessages" id="aiChatMessages"></div>
-      <div class="aiQuickChips">
-        ${AI_QUICK_CHIPS.map(c => `<div class="aiQuickChip" onclick="aiQuickAsk('${c.replace(/'/g,"\\'")}')">${c}</div>`).join("")}
-      </div>
-      <div class="aiChatInputWrap">
-        <textarea class="aiChatInput" id="aiChatInput" placeholder="سؤالت رو بنویس..." rows="1" onkeydown="aiHandleKey(event)"></textarea>
-        <button class="aiSendBtn" id="aiSendBtn" onclick="aiSendMessage()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        </button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(wrap);
-  
-  setTimeout(()=>{
-    aiAddMessage("ai", "سلام " + (S.student ? S.student.first_name + " جان" : "دوست من") + "! 👋\n\nمن **Ali Nagheli** هستم، دستیار هوشمند زبان انگلیسی.\n\nهر سوالی داری بپرس!");
-  }, 500);
-  
-  setTimeout(()=>{
-    const hint = document.getElementById("aiBubbleHint");
-    if(hint){
-      hint.classList.add("show");
-      setTimeout(()=>hint.classList.remove("show"), 6000);
-    }
-  }, 3000);
-}
-
 async function loadMessages(){
   if(!S.student) return;
   try{
