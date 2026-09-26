@@ -5308,106 +5308,50 @@ function gregorianToJalali(gy,gm,gd){
 }
 function getTodayJalali(){ const now=new Date(); return gregorianToJalali(now.getFullYear(),now.getMonth()+1,now.getDate()); }
 function JALI_wk(){ const d=(new Date().getDay()+1)%7; return JALI_wk; }
-/* ==================== تقویم شمسی برای رزرو کلاس ==================== */
+
+
+/* ==================== تقویم ساده شمسی ==================== */
+const JALALI_MONTH_NAMES = ["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"];
+
+let _cal = { year: 0, month: 0, day: 0 };
+
+function initCalendar(){
+  const [y, m, d] = getTodayJalali();
+  _cal = { year: y, month: m, day: d };
+}
+
 function getJalaliMonthDays(jy, jm){
   if(jm <= 6) return 31;
   if(jm <= 11) return 30;
-  // اسفند - بررسی سال کبیسه
   const isLeap = ((jy + 12) % 33) % 4 === 1;
   return isLeap ? 30 : 29;
 }
 
-function jalaliToGregorian(jy, jm, jd){
-  let gy = (jy <= 979) ? 621 : 1600;
-  let gm, gd;
-  let days;
-  if(jy <= 979){
-    days = (jy - 1) * 365 + Math.floor((jy - 1) / 33) * 8 + Math.floor(((jy - 1) % 33 + 3) / 4) + jd;
-    if(jm > 1) days += (jm - 1) * 31;
-    if(jm > 7) days -= (jm - 7) * 1;
-    // ساده‌سازی - استفاده از روش معکوس
-  }
-  // روش دقیق‌تر:
-  const g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
-  let jy2 = jy - 979;
-  let jm2 = jm - 1;
-  let jd2 = jd - 1;
-  let j_day_no = 365 * jy2 + Math.floor(jy2 / 33) * 8 + Math.floor(((jy2 % 33) + 3) / 4);
-  for(let i = 0; i < jm2; ++i) j_day_no += (i < 6) ? 31 : 30;
-  j_day_no += jd2;
-  let g_day_no = j_day_no + 79;
-  let gy2 = 1600 + 400 * Math.floor(g_day_no / 146097);
-  g_day_no = g_day_no % 146097;
-  let leap = true;
-  if(g_day_no >= 36525){
-    g_day_no--;
-    gy2 += 100 * Math.floor(g_day_no / 36524);
-    g_day_no = g_day_no % 36524;
-    if(g_day_no >= 365) g_day_no++;
-    else leap = false;
-  }
-  gy2 += 4 * Math.floor(g_day_no / 1461);
-  g_day_no %= 1461;
-  if(g_day_no >= 366){
-    leap = false;
-    g_day_no--;
-    gy2 += Math.floor(g_day_no / 365);
-    g_day_no = g_day_no % 365;
-  }
-  for(let i = 0; g_day_no >= g_d_m[i] + ((i === 1 && leap) ? 1 : 0); i++){
-    if(i === 1 && leap) g_day_no--;
-    g_day_no -= g_d_m[i] + ((i === 1 && leap) ? 1 : 0);
-  }
-  gm = g_day_no + 1;
-  gd = g_day_no - g_d_m[gm - 1] + 1;
-  return [gy2, gm, gd];
-}
-
-function getJalaliToday(){
-  const now = new Date();
-  return gregorianToJalali(now.getFullYear(), now.getMonth()+1, now.getDate());
-}
-
-// ساخت تقویم ماه شمسی
-function renderJalaliCalendar(year, month, selectedDay, onSelectFn){
-  const daysInMonth = getJalaliMonthDays(year, month);
-  const monthNames = ["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"];
-  
-  // پیدا کردن روز هفته اولین روز ماه
-  const [gy, gm, gd] = jalaliToGregorian(year, month, 1);
-  const firstDayDate = new Date(gy, gm - 1, gd);
-  const firstWeekday = (firstDayDate.getDay() + 1) % 7; // 0=شنبه
-  
-  // روزهای هفته
+function renderJalaliCalendar(){
+  const daysInMonth = getJalaliMonthDays(_cal.year, _cal.month);
   const weekDays = ["ش","ی","د","س","چ","پ","ج"];
+  // فرض می‌کنیم ماه شمسی از شنبه شروع میشه (برای سادگی)
+  const firstWeekday = 0;
   
   let html = `<div style="background:var(--card-bg);border-radius:16px;padding:14px;border:1px solid var(--card-border)">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <button type="button" class="btn secondary" style="padding:6px 12px;font-size:12px" onclick="calendarNav(-1)">‹</button>
-      <div style="font-weight:800;font-size:15px;color:var(--primary)">${monthNames[month-1]} ${year}</div>
-      <button type="button" class="btn secondary" style="padding:6px 12px;font-size:12px" onclick="calendarNav(1)">›</button>
+      <button type="button" class="btn secondary" style="padding:6px 14px;font-size:14px;font-weight:900" onclick="calendarNav(-1)">‹</button>
+      <div style="font-weight:800;font-size:15px;color:var(--primary)">${JALALI_MONTH_NAMES[_cal.month-1]} ${_cal.year}</div>
+      <button type="button" class="btn secondary" style="padding:6px 14px;font-size:14px;font-weight:900" onclick="calendarNav(1)">›</button>
     </div>
     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px">
-      ${weekDays.map(d => `<div style="text-align:center;font-size:11px;font-weight:800;color:var(--text-muted);padding:6px 0">${d}</div>`).join("")}
+      ${weekDays.map(d => `<div style="text-align:center;font-size:11px;font-weight:800;color:var(--text-muted);padding:4px 0">${d}</div>`).join("")}
     </div>
     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">
       ${Array(firstWeekday).fill('<div></div>').join("")}
       ${Array.from({length: daysInMonth}, (_,i) => {
         const d = i + 1;
-        const isSelected = selectedDay === d;
+        const isSelected = _cal.day === d;
         return `<button type="button" onclick="calendarSelectDay(${d})" style="padding:8px 0;border:0;border-radius:10px;background:${isSelected?'linear-gradient(135deg,#8b5cf6,#ec4899)':'var(--input-bg)'};color:${isSelected?'#fff':'var(--text)'};font-weight:${isSelected?'900':'700'};font-size:12px;cursor:pointer;transition:all .2s">${d}</button>`;
       }).join("")}
     </div>
   </div>`;
   return html;
-}
-
-// متغیرهای موقت تقویم
-let _cal = { year: 0, month: 0, day: 0 };
-
-function initCalendar(){
-  const [y, m, d] = getJalaliToday();
-  _cal = { year: y, month: m, day: d };
 }
 
 function calendarNav(dir){
@@ -5424,22 +5368,18 @@ function calendarSelectDay(d){
 
 function refreshCalendar(){
   const el = document.getElementById("jalaliCalendar");
-  if(el){
-    el.innerHTML = renderJalaliCalendar(_cal.year, _cal.month, _cal.day);
-  }
-  const dateLabel = document.getElementById("selectedDateLabel");
-  if(dateLabel){
-    const monthNames = ["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"];
-    dateLabel.textContent = `${_cal.day} ${monthNames[_cal.month-1]} ${_cal.year}`;
-  }
+  if(el) el.innerHTML = renderJalaliCalendar();
+  const label = document.getElementById("selectedDateLabel");
+  if(label) label.textContent = `${_cal.day} ${JALALI_MONTH_NAMES[_cal.month-1]} ${_cal.year}`;
 }
 
 function getSelectedJalaliDate(){
-  const monthNames = ["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"];
   return `${_cal.year}/${String(_cal.month).padStart(2,'0')}/${String(_cal.day).padStart(2,'0')}`;
 }
 
 function getSelectedJalaliDateFa(){
+  return `${_cal.day} ${JALALI_MONTH_NAMES[_cal.month-1]} ${_cal.year}`;
+}
   const monthNames = ["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"];
   return `${_cal.day} ${monthNames[_cal.month-1]} ${_cal.year}`;
 }
