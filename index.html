@@ -7578,115 +7578,98 @@ async function activityPanel(){
 }
 
 async function loadActivityData(){
+  const container = document.getElementById("activityContent");
+  if(!container) return;
+
   try{
-    // 1. همه زبان‌آموزان
+    // ========== مرحله ۱: زبان‌آموزان ==========
     const studentsRes = await db.from("students").select("*").order("id", {ascending:false});
     const students = studentsRes.data || [];
 
     if(!students.length){
-      document.getElementById("activityContent").innerHTML = `
-        <div class="card" style="text-align:center;padding:40px">
-          <div style="font-size:60px;margin-bottom:12px">👥</div>
-          <p class="muted">هنوز هیچ زبان‌آموزی ثبت‌نام نکرده</p>
-        </div>`;
+      container.innerHTML = `<div class="card" style="text-align:center;padding:40px">
+        <div style="font-size:60px">👥</div>
+        <p class="muted">هنوز هیچ زبان‌آموزی ثبت‌نام نکرده</p>
+      </div>`;
       return;
     }
 
-    // 2. XP و Level همه
-    const xpRes = await db.from("student_xp").select("student_id, xp, level");
+    // ========== مرحله ۲: XP ==========
+    const xpRes = await db.from("student_xp").select("*");
     const xpMap = {};
-    (xpRes.data || []).forEach(x => { xpMap[x.student_id] = { xp: Number(x.xp||0), level: Number(x.level||1) }; });
+    const xpRaw = xpRes.data || [];
+    xpRaw.forEach(x => {
+      xpMap[Number(x.student_id)] = {
+        xp: Number(x.xp || 0),
+        level: Number(x.level || 1)
+      };
+    });
 
-    // 3. دروس تکمیل‌شده
-    const progressRes = await db.from("student_progress").select("student_id, completed");
-    const progressMap = {};
-    (progressRes.data || []).forEach(p => {
-      if(p.completed){
-        progressMap[p.student_id] = (progressMap[p.student_id] || 0) + 1;
+    // ========== مرحله ۳: دروس تکمیل‌شده ==========
+    const progRes = await db.from("student_progress").select("student_id, completed");
+    const completedMap = {};
+    (progRes.data || []).forEach(p => {
+      if(p.completed === true || p.completed === "true"){
+        const sid = Number(p.student_id);
+        completedMap[sid] = (completedMap[sid] || 0) + 1;
       }
     });
 
-    // 4. رندر جدول
-    const rows = students.map(s => {
-      const xp = xpMap[s.id]?.xp || 0;
-      const level = xpMap[s.id]?.level || 1;
-      const completed = progressMap[s.id] || 0;
-      const lastSeen = s.updated_at ? new Date(s.updated_at).toLocaleDateString('fa-IR') : '—';
-      return `
-        <tr style="border-bottom:1px solid var(--card-border)">
-          <td style="padding:12px 8px">
-            <div style="font-weight:800">${esc(s.first_name)} ${esc(s.last_name)}</div>
-            <div class="muted" style="font-size:11px">📱 ${esc(s.phone||"—")}</div>
-          </td>
-          <td style="padding:12px 8px;text-align:center">
-            <span style="background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:800">${esc(s.level||"—")}</span>
-          </td>
-          <td style="padding:12px 8px;text-align:center;font-weight:800;color:#f59e0b">⭐ ${xp}</td>
-          <td style="padding:12px 8px;text-align:center">
-            <span style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:800">${level}</span>
-          </td>
-          <td style="padding:12px 8px;text-align:center;font-weight:700;color:#3b82f6">📚 ${completed}</td>
-          <td style="padding:12px 8px;text-align:center;font-size:12px;color:var(--text-muted)">${lastSeen}</td>
-        </tr>
-      `;
-    }).join("");
-
-    // 5. آمار کلی
-    const totalStudents = students.length;
-    const totalXP = Object.values(xpMap).reduce((s,x) => s + x.xp, 0);
-    const totalCompleted = Object.values(progressMap).reduce((s,x) => s + x, 0);
-    const activeStudents = Object.values(xpMap).filter(x => x.xp > 0).length;
-
-    document.getElementById("activityContent").innerHTML = `
-      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:16px">
-        <div class="profileStat" style="cursor:default">
-          <div class="muted" style="font-size:12px">👥 کل زبان‌آموزان</div>
-          <b>${totalStudents}</b>
-        </div>
-        <div class="profileStat" style="cursor:default">
-          <div class="muted" style="font-size:12px">🔥 فعال</div>
-          <b>${activeStudents}</b>
-        </div>
-        <div class="profileStat" style="cursor:default">
-          <div class="muted" style="font-size:12px">⭐ مجموع XP</div>
-          <b>${totalXP}</b>
-        </div>
-        <div class="profileStat" style="cursor:default">
-          <div class="muted" style="font-size:12px">📚 دروس تکمیل‌شده</div>
-          <b>${totalCompleted}</b>
-        </div>
+    // ========== مرحله ۴: ساخت جدول ==========
+    let html = `<div class="card" style="background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px dashed #f59e0b;margin-bottom:14px">
+      <div style="font-size:12px;font-weight:800;color:#92400e;line-height:2">
+        🔍 <b>دیباگ:</b><br>
+        زبان‌آموزان: <b>${students.length}</b><br>
+        رکورد XP: <b>${xpRaw.length}</b><br>
+        رکورد Progress: <b>${(progRes.data||[]).length}</b>
       </div>
+    </div>`;
 
-      <div class="card" style="padding:0;overflow:hidden">
-        <div style="padding:14px 16px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff">
-          <h3 style="margin:0;color:#fff">📋 جدول فعالیت</h3>
-        </div>
-        <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;font-size:13px">
-            <thead>
-              <tr style="background:var(--bg-grad-1);border-bottom:2px solid var(--card-border)">
-                <th style="padding:12px 8px;text-align:right;font-weight:800">زبان‌آموز</th>
-                <th style="padding:12px 8px;text-align:center;font-weight:800">پایه</th>
-                <th style="padding:12px 8px;text-align:center;font-weight:800">XP</th>
-                <th style="padding:12px 8px;text-align:center;font-weight:800">Level</th>
-                <th style="padding:12px 8px;text-align:center;font-weight:800">دروس</th>
-                <th style="padding:12px 8px;text-align:center;font-weight:800">آخرین فعالیت</th>
-              </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>
+    html += `<div class="card" style="padding:0;overflow:hidden">
+      <div style="padding:14px 16px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff">
+        <h3 style="margin:0;color:#fff">📋 جدول فعالیت</h3>
       </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:12px">
+          <thead>
+            <tr style="background:var(--bg-grad-1);border-bottom:2px solid var(--card-border)">
+              <th style="padding:10px 6px;text-align:right;font-weight:800">زبان‌آموز</th>
+              <th style="padding:10px 6px;text-align:center;font-weight:800">پایه</th>
+              <th style="padding:10px 6px;text-align:center;font-weight:800">XP</th>
+              <th style="padding:10px 6px;text-align:center;font-weight:800">Lvl</th>
+              <th style="padding:10px 6px;text-align:center;font-weight:800">دروس</th>
+            </tr>
+          </thead>
+          <tbody>`;
 
-      <button class="btn secondary full" style="margin-top:16px" onclick="activityPanel()">🔄 بروزرسانی</button>
-    `;
+    students.forEach(s => {
+      const sid = Number(s.id);
+      const xpData = xpMap[sid] || {xp:0, level:1};
+      const completed = completedMap[sid] || 0;
+      html += `<tr style="border-bottom:1px solid var(--card-border)">
+        <td style="padding:10px 6px">
+          <div style="font-weight:800">${esc(s.first_name||"")} ${esc(s.last_name||"")}</div>
+          <div class="muted" style="font-size:10px">📱 ${esc(s.phone||"—")}</div>
+        </td>
+        <td style="padding:10px 6px;text-align:center">
+          <span style="background:#8b5cf6;color:#fff;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:800">${esc(s.level||"—")}</span>
+        </td>
+        <td style="padding:10px 6px;text-align:center;font-weight:800;color:#f59e0b">⭐ ${xpData.xp}</td>
+        <td style="padding:10px 6px;text-align:center;font-weight:800;color:#22c55e">${xpData.level}</td>
+        <td style="padding:10px 6px;text-align:center;font-weight:800;color:#3b82f6">${completed}</td>
+      </tr>`;
+    });
+
+    html += `</tbody></table></div></div>`;
+    html += `<button class="btn secondary full" style="margin-top:14px" onclick="activityPanel()">🔄 بروزرسانی</button>`;
+
+    container.innerHTML = html;
+
   }catch(e){
-    document.getElementById("activityContent").innerHTML = `
-      <div class="card" style="text-align:center;padding:40px">
-        <div style="font-size:60px;margin-bottom:12px">❌</div>
-        <p style="color:var(--danger);font-weight:800">خطا در بارگذاری</p>
-        <p class="muted">${esc(e.message)}</p>
-      </div>`;
+    container.innerHTML = `<div class="card" style="text-align:center;padding:40px">
+      <div style="font-size:60px">❌</div>
+      <p style="color:var(--danger);font-weight:800">خطا: ${esc(e.message)}</p>
+    </div>`;
   }
 }
 
