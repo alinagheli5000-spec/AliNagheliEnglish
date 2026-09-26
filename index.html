@@ -5326,13 +5326,17 @@ async function loadStudentStats(){
   }catch(e){ console.error("loadStudentStats error:", e); }
 }
 async function addXP(amount){ 
-  if(!S.student)return; 
+  if(!S.student){ console.warn("addXP: no student"); return; } 
   const old=S.xp;
   S.xp+=Number(amount||0);
   S.level=calculateLevel(S.xp); 
   try{
-    await db.from("student_xp").upsert({student_id:S.student.id,xp:S.xp,level:S.level,updated_at:new Date().toISOString()},{onConflict:"student_id"})
-  }catch(e){} 
+    const r = await db.from("student_xp").upsert(
+      {student_id:S.student.id,xp:S.xp,level:S.level,updated_at:new Date().toISOString()},
+      {onConflict:"student_id"}
+    );
+    if(r.error){ console.error("addXP ERROR:", r.error); }
+  }catch(e){ console.error("addXP CATCH:", e); } 
   if(S.level>calculateLevel(old))await unlockAchievement("level_"+S.level,"رسیدن به Level "+S.level); 
 }
 async function unlockAchievement(key,title){ 
@@ -5343,11 +5347,15 @@ async function unlockAchievement(key,title){
   }catch(e){} 
 }
 async function saveProgress(lessonId,progress,completed){ 
-  if(!S.student)return; 
+  if(!S.student){ console.warn("saveProgress: no student"); return; } 
   S.progress[lessonId]={progress,completed}; 
   try{
-    await db.from("student_progress").upsert({student_id:S.student.id,lesson_id:lessonId,progress,completed,completed_at:completed?new Date().toISOString():null},{onConflict:"student_id,lesson_id"})
-  }catch(e){} 
+    const r = await db.from("student_progress").upsert(
+      {student_id:S.student.id,lesson_id:lessonId,progress,completed,completed_at:completed?new Date().toISOString():null},
+      {onConflict:"student_id,lesson_id"}
+    );
+    if(r.error){ console.error("saveProgress ERROR:", r.error); }
+  }catch(e){ console.error("saveProgress CATCH:", e); } 
 }
 
 /* ==================== Unlock System ==================== */
