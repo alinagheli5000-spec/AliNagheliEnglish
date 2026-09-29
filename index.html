@@ -5341,6 +5341,129 @@ function gregorianToJalali(gy,gm,gd){
 function getTodayJalali(){ const now=new Date(); return gregorianToJalali(now.getFullYear(),now.getMonth()+1,now.getDate()); }
 function JALI_wk(){ const d=(new Date().getDay()+1)%7; return JALI_wk; }
 
+  /* ==================== دیکشنری آنلاین (Free Dictionary API) ==================== */
+async function searchOnlineDictionary(word){
+  try{
+    const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
+    if(!res.ok) return null;
+    const data = await res.json();
+    if(!Array.isArray(data) || !data.length) return null;
+    return data;
+  }catch(e){
+    console.error("Dictionary API error:", e);
+    return null;
+  }
+}
+
+function renderOnlineDictionary(word, data){
+  if(!data || !data.length) return '';
+  
+  const entry = data[0];
+  const phonetic = entry.phonetic || (entry.phonetics && entry.phonetics.find(p => p.text)?.text) || '';
+  const audioUrl = entry.phonetics && entry.phonetics.find(p => p.audio && p.audio.length > 0)?.audio;
+  
+  let html = `<div class="card" style="background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;border:0">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <div>
+        <h2 style="margin:0;color:#fff;font-size:28px">${esc(word)}</h2>
+        ${phonetic ? `<div style="opacity:.9;margin-top:6px;font-size:16px">${esc(phonetic)}</div>` : ''}
+      </div>
+      ${audioUrl ? `<button class="btn" style="background:rgba(255,255,255,.25);color:#fff;border:2px solid rgba(255,255,255,.5);padding:10px 20px" onclick="playAudio('${audioUrl}')">🔊 تلفظ</button>` : ''}
+    </div>
+  </div>`;
+  
+  entry.meanings.forEach((meaning, mi) => {
+    html += `<div class="card" style="border-right:4px solid #8b5cf6">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <span style="background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:800">${esc(meaning.partOfSpeech || '—')}</span>
+      </div>`;
+    
+    meaning.definitions.slice(0, 5).forEach((def, di) => {
+      html += `<div style="margin-bottom:14px;padding-right:14px;border-right:3px solid var(--card-border)">
+        <div style="font-weight:800;color:var(--primary);margin-bottom:6px">${mi + 1}.${di + 1}</div>
+        <div style="font-size:14px;line-height:1.9;color:var(--text)">${esc(def.definition || '')}</div>
+        ${def.example ? `<div style="margin-top:8px;padding:10px;background:var(--bg-grad-1);border-radius:10px;font-size:13px;color:var(--text-muted);direction:ltr;text-align:left"><b>Example:</b> ${esc(def.example)}</div>` : ''}
+      </div>`;
+    });
+    
+    if(meaning.synonyms && meaning.synonyms.length){
+      html += `<div style="margin-top:12px;font-size:12px">
+        <b style="color:var(--primary)">مترادف‌ها:</b> 
+        ${meaning.synonyms.slice(0, 8).map(s => `<span style="background:var(--bg-grad-1);padding:3px 10px;border-radius:99px;margin:2px;display:inline-block;font-weight:700">${esc(s)}</span>`).join("")}
+      </div>`;
+    }
+    
+    html += `</div>`;
+  });
+  
+  return html;
+}
+
+function playAudio(url){
+  try{
+    const audio = new Audio(url);
+    audio.play();
+  }catch(e){
+    toast("خطا در پخش صدا","error");
+  }
+}
+
+async function searchDictionary(word){
+  const w = String(word||'').trim();
+  if(!w) return;
+  
+  const results = document.getElementById("dictResults");
+  if(!results) return;
+  
+  // مرحله ۱: جستجو در لغات برنامه
+  if(!dictCache) dictCache = getAllDictionaryWords();
+  const localResults = dictCache.filter(item => 
+    item.en.toLowerCase() === w.toLowerCase() || 
+    item.en.toLowerCase().includes(w.toLowerCase())
+  );
+  
+  if(localResults.length){
+    // نمایش نتایج محلی
+    results.innerHTML = `<div class="card"><b style="color:var(--primary);display:flex;align-items:center;gap:8px"><span style="font-size:20px">📚</span> نتایج از دیکشنری برنامه</b>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:6px">${localResults.length} نتیجه پیدا شد</div>
+      <div class="dictGrid" style="margin-top:14px">
+        ${localResults.slice(0, 100).map(item => `
+          <div class="dictCard" onclick='speak(${JSON.stringify(item.en)})'>
+            <div class="dictGrade">پایه ${item.grade} · درس ${item.lesson}</div>
+            <div class="dictEn">🔊 ${esc(item.en)}</div>
+            <div class="dictFa">${esc(item.fa)}</div>
+          </div>
+        `).join("")}
+      </div>
+    </div>`;
+  } else {
+    // مرحله ۲: جستجو در API آنلاین
+    results.innerHTML = `<div class="card" style="text-align:center;padding:40px">
+      <div style="font-size:48px;margin-bottom:12px">🌐</div>
+      <p class="muted">در حال جستجو در دیکشنری آنلاین...</p>
+    </div>`;
+    
+    const onlineData = await searchOnlineDictionary(w);
+    
+    if(onlineData){
+      results.innerHTML = `
+        <div class="demoBanner" style="margin-bottom:14px">
+          <span>🌐 نتیجه از دیکشنری آنلاین</span>
+        </div>
+        ${renderOnlineDictionary(w, onlineData)}
+        <button class="btn secondary full" style="margin-top:14px" onclick="dictionaryPage()">🔙 بازگشت</button>
+      `;
+    } else {
+      results.innerHTML = `<div class="card dictEmpty">
+        <span class="icon">🔍</span>
+        <b>لغت "${esc(w)}" پیدا نشد</b>
+        <p class="muted">نه در دیکشنری برنامه بود و نه در دیکشنری آنلاین</p>
+        <p class="muted">املای کلمه رو بررسی کن یا کلمه دیگه‌ای امتحان کن</p>
+      </div>`;
+    }
+  }
+}
+
 /* ==================== Supabase Functions ==================== */
 async function loadStudentStats(){ 
   if(!S.student)return; 
