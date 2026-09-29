@@ -5934,42 +5934,118 @@ function aiHideTyping(){
 /* ==================== مغز پاسخگو ==================== */
 function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
+/* ==================== مغز پاسخگو ==================== */
+function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+// وضعیت‌های ربات
+let AI_STATE = {
+  mode: "normal",     // normal | game | conversation
+  gameType: null,
+  gameScore: 0,
+  gameRound: 0,
+  conversationTopic: null,
+  conversationStep: 0,
+  waitingFor: null    // مثلاً: "game_choice", "topic_choice", "conversation_reply"
+};
+
+function aiResetState(){
+  AI_STATE = {
+    mode: "normal",
+    gameType: null,
+    gameScore: 0,
+    gameRound: 0,
+    conversationTopic: null,
+    conversationStep: 0,
+    waitingFor: null
+  };
+}
+
 function aiFindAnswer(question){
   const q = question.toLowerCase().trim();
-  const name = S.student?.first_name || "دوست من";
+  const original = question.trim();
+  const name = (typeof S !== 'undefined' && S.student?.first_name) ? S.student.first_name : "دوست من";
 
-  // سلام
-  if(/^(سلام|درود|hi|hello|hey|خوبی|چطوری|حالت چطوره|صبح بخیر|عصر بخیر)/i.test(q)){
+  // ===== حالت انتظار (بازی یا انتخاب) =====
+  if(AI_STATE.waitingFor === "game_choice"){
+    return handleGameChoice(question, name);
+  }
+  if(AI_STATE.waitingFor === "topic_choice"){
+    return handleTopicChoice(question, name);
+  }
+  if(AI_STATE.mode === "game" && AI_STATE.waitingFor === "game_answer"){
+    return handleGameAnswer(question);
+  }
+  if(AI_STATE.mode === "conversation" && AI_STATE.waitingFor === "conversation_reply"){
+    return handleConversationReply(question, name);
+  }
+
+  // ===== سلام و احوالپرسی =====
+  if(/^(سلام|درود|hi|hello|hey|هی)/i.test(q)){
     return pickRandom([
-      `سلام ${name}! 👋\n\nمن **علی ناقلی** هستم، معلم انگلیسی تو.\n\nهر سوالی داری ازم بپرس — گرامر، لغت، ریاضی، تاریخ، هر چیزی که بخوای!`,
-      `درود ${name}! 🌟\n\nمن **علی ناقلی**، معلم انگلیسی‌ت.\n\nچی می‌خوای بپرسی امروز؟`,
-      `سلاااام! 🙌\n\nمن علی ناقلی هستم، معلم انگلیسی تو.\n\nهر سوالی داری ازم بپرس، در خدمتم!`
+      `سلام ${name}! 😊\n\nچطوری امروز؟\n\nمن می‌تونم:\n\n📚 **گرامر** رو توضیح بدم\n🎮 **بازی** کنیم\n💬 **مکالمه** انگلیسی کنیم\n🔤 **لغت** ترجمه کنم\n\nچی دوست داری؟`,
+      `درود بر ${name}! 🌟\n\nخوبی؟ چه خبر؟\n\nچه کاری برات انجام بدم؟ بازی کنیم؟ مکالمه کنیم؟ یا سوال درسی داری؟`,
+      `سلام سلام! 🙌\n\n${name} جان، حالت چطوره؟\n\nآماده‌ای یه کار هیجان‌انگیز بکنیم؟ 🎮 بازی کنیم یا 💬 مکالمه انگلیسی؟`
     ]);
   }
 
-  // خداحافظی
-  if(/(خداحافظ|بای|bye|goodbye|فعلا|می‌رم|میرم)/i.test(q)){
-    return `خداحافظ ${name}! 👋\n\nهر وقت سوال داشتی برگرد پیشم. موفق باشی! 🌟`;
-  }
-
-  // تشکر
-  if(/(ممنون|مرسی|thank|تشکر|دستت درد نکنه|لطف کردی)/i.test(q)){
+  if(/(حالت چطوره|چطوری|خوبی|چه خبر|چخبر|خوبی شما|حال شما)/i.test(q)){
     return pickRandom([
-      "خواهش می‌کنم! 😊",
-      "قابلی نداشت! 🌹",
-      "خوشحالم که کمک کردم 💜",
-      "هر وقت سوال داشتی، بپرس!"
+      `ممنون که پرسیدی ${name}! 😊\n\nمن همیشه خوبم، چون دارم به تو کمک می‌کنم! 💜\n\nتو چطوری؟ چه خبر؟`,
+      `مرسی ${name} جان! 🙏\n\nمن عالی‌ام! اگه تو خوب باشی، منم خوبم 😄\n\nچی‌کار کنیم؟ بازی؟ مکالمه؟ گرامر؟`,
+      `خوبم ممنون! 🌹\n\nخودت چطوری؟ حالت خوبه؟\n\nچی دوست داری امروز یاد بگیری یا انجام بدیم؟`
     ]);
   }
 
-  // معرفی
-  if(/(کی هستی|تو کی|who are you|اسمت چیه|اسمت چ|خودت رو معرفی)/i.test(q)){
-    return `من **علی ناقلی** هستم، معلم انگلیسی تو 🎓\n\nبا بیش از ۲۰ سال سابقه تدریس مکالمه زبان انگلیسی و مدرس دوره‌های TOEFL, IELTS, KET, PET, MCHE, MSRT و برگزارکننده دوره‌های حرفه‌ای TTC.\n\n💡 هر سوالی داری ازم بپرس — گرامر، لغت، ریاضی، تاریخ، هر چی!`;
+  // ===== خداحافظی =====
+  if(/(خداحافظ|بای|bye|goodbye|فعلا|می‌رم|میرم|خدانگهدار)/i.test(q)){
+    aiResetState();
+    return `خداحافظ ${name}! 👋\n\nامیدوارم روز خوبی داشته باشی! 🌟\n\nهر وقت خواستی برگرد پیشم. موفق باشی! 💪`;
   }
 
-  // چیکار می‌تونی بکنی
-  if(/(چیکار|چی کار|کمکت|چکار می‌تونی|چی بلدی|چیا می‌تونی)/i.test(q)){
-    return `من می‌تونم بهت تو این موارد کمک کنم ${name}:\n\n📘 **گرامر انگلیسی:** توضیح Present Simple، Past، Future، Passive، Conditional و...\n🔤 **لغات:** ترجمه انگلیسی ↔ فارسی\n✍️ **تصحیح جمله:** جمله انگلیسیت رو بنویس، تصحیحش می‌کنم\n💬 **تمرین مکالمه:** با من انگلیسی حرف بزن\n🧮 **ریاضی:** محاسبات ساده (مثلاً بنویس "10*5")\n📚 **هر سوال عمومی:** تاریخ، جغرافیا، علوم و هر چیز دیگه\n\nفقط سوالت رو بنویس! 😊`;
+  // ===== تشکر =====
+  if(/(ممنون|مرسی|thank|تشکر|دستت درد نکنه|لطف کردی|مرسی ازت)/i.test(q)){
+    return pickRandom([
+      `خواهش می‌کنم ${name}! 😊\n\nهر وقت سوال داشتی، بپرس!`,
+      `قابلی نداشت! 🌹\n\nوظیفه‌ست!`,
+      `خوشحالم که کمک کردم 💜\n\nباز هم اگه چیزی خواستی، بگو!`
+    ]);
+  }
+
+  // ===== درخواست بازی =====
+  if(/(بازی|game|سرگرمی|یعنی چی بازی)/i.test(q) && !/بازیگر/i.test(q)){
+    AI_STATE.mode = "game";
+    AI_STATE.waitingFor = "game_choice";
+    return `🎮 **عالیه! بازی کنیم!**\n\nچه بازی‌ای دوست داری؟ (فقط شماره رو بنویس)\n\n1️⃣ **حدس کلمه انگلیسی** — کلمه فارسی رو می‌گم، تو انگلیسی بگو\n2️⃣ **ترجمه سریع** — کلمه انگلیسی می‌گم، تو فارسی بگو\n3️⃣ **تصحیح جمله** — جمله غلط می‌گم، تو درستش کن\n4️⃣ **تکمیل جمله** — یه جمله ناقص می‌گم، تو کاملش کن\n5️⃣ **ضرب‌المثل انگلیسی** — معنی ضرب‌المثل رو بگو\n\nشماره‌ش رو بنویس یا اسمش رو بگو! 😊`;
+  }
+
+  // ===== درخواست مکالمه =====
+  if(/(مکالمه|conversation|صحبت|چت|chat|گفتگو)/i.test(q)){
+    AI_STATE.mode = "conversation";
+    AI_STATE.waitingFor = "topic_choice";
+    return `💬 **چه عالی! مکالمه کنیم!**\n\nموضوع رو انتخاب کن (فقط شماره رو بنویس):\n\n1️⃣ 🛫 **مسافرت و فرودگاه**\n2️⃣ 🏨 **هتل و رزرو**\n3️⃣ 🍽️ **رستوران و سفارش غذا**\n4️⃣ 🛍️ **خرید از مغازه**\n5️⃣ 👋 **معرفی خود و آشنایی**\n6️⃣ 💼 **کار و مصاحبه**\n7️⃣ 🎬 **فیلم و سرگرمی**\n8️⃣ 🏥 **دکتر و بیمارستان**\n9️⃣ 🌤️ **آب و هوا**\n🔟 🎓 **مدرسه و دانشگاه**\n\nشماره یا اسم موضوع رو بنویس تا شروع کنیم! 😊`;
+  }
+
+  // ===== درخواست گرامر =====
+  const grammarAnswers = {
+    "present simple|حال ساده": `📘 **Present Simple (حال ساده)**\n\nبرای کارهای روزمره، عادت‌ها و حقایق کلی.\n\n**ساختار:** فاعل + فعل ساده (سوم شخص s می‌گیره)\n\n**مثال:**\n\`I go to school every day.\`\n\`She watches TV every night.\`\n\n**منفی:** don't / doesn't\n**سوالی:** Do / Does + فاعل + فعل`,
+    "present continuous|حال استمراری": `📘 **Present Continuous (حال استمراری)**\n\nبرای کاری که همین الان در حال انجامه.\n\n**ساختار:** فاعل + am/is/are + فعل + ing\n\n**مثال:**\n\`I am reading a book now.\`\n\`She is cooking dinner.\``,
+    "present perfect|حال کامل": `📘 **Present Perfect (حال کامل)**\n\nبرای کاری که در گذشته شروع شده و اثرش تا حالا باقیه.\n\n**ساختار:** فاعل + have/has + قسمت سوم فعل\n\n**مثال:**\n\`I have finished my homework.\`\n\`She has lived here for 5 years.\``,
+    "past simple|گذشته ساده": `📘 **Past Simple (گذشته ساده)**\n\nبرای کاری که در گذشته تمام شده.\n\n**ساختار:** فاعل + فعل گذشته\n\n**مثال:**\n\`I played football yesterday.\`\n\`She went to school last week.\``,
+    "past continuous|گذشته استمراری": `📘 **Past Continuous (گذشته استمراری)**\n\n**ساختار:** فاعل + was/were + فعل + ing\n\n**مثال:**\n\`I was studying when he called.\``,
+    "past perfect|ماضی بعید": `📘 **Past Perfect (ماضی بعید)**\n\n**ساختار:** فاعل + had + قسمت سوم فعل\n\n**مثال:**\n\`She had left before I arrived.\``,
+    "future|آینده": `📘 **آینده در انگلیسی**\n\n**will:** تصمیم لحظه‌ای — \`I will call you.\`\n**going to:** قصد و برنامه — \`I'm going to travel.\`\n**حال استمراری:** قرار قطعی — \`I'm meeting him.\``,
+    "modal|افعال کمکی|مودال": `📘 **Modal Verbs**\n\n**can:** توانایی — \`I can swim.\`\n**must:** اجبار — \`You must stop.\`\n**should:** توصیه — \`You should rest.\`\n**may/might:** احتمال — \`It may rain.\``,
+    "passive|مجهول": `📘 **Passive Voice (مجهول)**\n\n**ساختار:** مفعول + be + قسمت سوم فعل\n\n**مثال:**\n\`The letter was written.\`\n\`The house is being built.\``,
+    "conditional|شرطی": `📘 **Conditional (شرطی)**\n\n**نوع ۱:** \`If it rains, I will stay home.\`\n**نوع ۲:** \`If I had money, I would buy a car.\`\n**نوع ۳:** \`If I had studied, I would have passed.\``
+  };
+
+  for(const key in grammarAnswers){
+    const patterns = key.split("|");
+    for(const p of patterns){
+      if(q.includes(p.toLowerCase())){
+        return grammarAnswers[key];
+      }
+    }
   }
 
   // ===== ریاضی =====
@@ -5979,12 +6055,11 @@ function aiFindAnswer(question){
       const expr = question.replace(/×/g,'*').replace(/÷/g,'/');
       const result = Function('"use strict";return ('+expr+')')();
       if(typeof result === 'number' && !isNaN(result)){
-        return `🧮 **محاسبه:**\n\n\`${question} = ${result}\`\n\nاگه سوال ریاضی دیگه‌ای داری، بپرس! 😊`;
+        return `🧮 **محاسبه:**\n\n\`${question} = ${result}\``;
       }
     }catch(e){}
   }
 
-  // ضرب به فارسی
   const faMath = question.match(/(\d+)\s*(ضربدر|ضرب|در|تقسیم بر|تقسیم|به علاوه|بعلاوه|جمع|منهای|منها)\s*(\d+)/);
   if(faMath){
     const a = Number(faMath[1]);
@@ -5996,34 +6071,7 @@ function aiFindAnswer(question){
     else if(/جمع|به علاوه|بعلاوه/.test(op)){ result=a+b; opName="جمع"; symbol="+"; }
     else if(/منهای|منها/.test(op)){ result=a-b; opName="تفریق"; symbol="-"; }
     if(result !== undefined){
-      return `🧮 **${opName}:**\n\n\`${a} ${symbol} ${b} = ${result}\`\n\nسوال دیگه‌ای داری؟ 😊`;
-    }
-  }
-
-  // ===== گرامر =====
-  const grammarAnswers = {
-    "present simple|حال ساده": `📘 **Present Simple (حال ساده)**\n\nبرای کارهای روزمره، عادت‌ها و حقایق کلی.\n\n**ساختار:**\nفاعل + فعل ساده (برای سوم شخص s می‌گیره)\n\n**مثال:**\n\`I go to school every day.\`\n\`She watches TV every night.\`\n\n**منفی:** don't / doesn't\n**سوالی:** Do / Does + فاعل + فعل`,
-    "present continuous|حال استمراری": `📘 **Present Continuous (حال استمراری)**\n\nبرای کاری که همین الان در حال انجامه.\n\n**ساختار:**\nفاعل + am/is/are + فعل + ing\n\n**مثال:**\n\`I am reading a book now.\`\n\`She is cooking dinner.\`\n\n**کلمات کلیدی:** now, at the moment, currently`,
-    "present perfect|حال کامل": `📘 **Present Perfect (حال کامل)**\n\nبرای کاری که در گذشته شروع شده و اثرش تا حالا باقیه.\n\n**ساختار:**\nفاعل + have/has + قسمت سوم فعل\n\n**مثال:**\n\`I have finished my homework.\`\n\`She has lived here for 5 years.\`\n\n**کلمات کلیدی:** just, already, yet, ever, never, since, for`,
-    "past simple|گذشته ساده": `📘 **Past Simple (گذشته ساده)**\n\nبرای کاری که در گذشته تمام شده.\n\n**ساختار:**\nفاعل + فعل گذشته (ed یا شکل دوم)\n\n**مثال:**\n\`I played football yesterday.\`\n\`She went to school last week.\`\n\n**منفی:** didn't + فعل ساده\n**سوالی:** Did + فاعل + فعل ساده`,
-    "past continuous|گذشته استمراری": `📘 **Past Continuous (گذشته استمراری)**\n\nبرای کاری که در گذشته در حال انجام بوده.\n\n**ساختار:**\nفاعل + was/were + فعل + ing\n\n**مثال:**\n\`I was studying when he called.\`\n\`They were playing football.\``,
-    "past perfect|ماضی بعید": `📘 **Past Perfect (ماضی بعید)**\n\nبرای کاری که قبل از عمل دیگه‌ای در گذشته انجام شده بود.\n\n**ساختار:**\nفاعل + had + قسمت سوم فعل\n\n**مثال:**\n\`She had left before I arrived.\`\n\`They had finished when we got there.\``,
-    "future|آینده": `📘 **آینده در انگلیسی**\n\n**will:** برای تصمیم لحظه‌ای و پیش‌بینی\n\`I will call you tomorrow.\`\n\n**going to:** برای قصد و برنامه\n\`I'm going to travel next week.\`\n\n**حال استمراری:** برای قرار قطعی\n\`I'm meeting him tomorrow.\``,
-    "modal|افعال کمکی": `📘 **Modal Verbs**\n\n**can:** توانایی، اجازه — \`I can swim.\`\n**must:** اجبار قوی — \`You must stop.\`\n**should:** توصیه — \`You should rest.\`\n**may/might:** احتمال — \`It may rain.\`\n\n⚠️ بعد از modal، فعل ساده میاد (بدون to).`,
-    "passive|مجهول": `📘 **Passive Voice (مجهول)**\n\nوقتی فاعل مهم نیست یا نمی‌دونیم کیه.\n\n**ساختار:**\nمفعول + be + قسمت سوم فعل\n\n**مثال:**\n\`The letter was written.\`\n\`The house is being built.\`\n\n**حال:** am/is/are + p.p.\n**گذشته:** was/were + p.p.`,
-    "conditional|شرطی": `📘 **Conditional (شرطی)**\n\n**نوع ۱ (ممکن):**\n\`If it rains, I will stay home.\`\n\n**نوع ۲ (فرضی):**\n\`If I had money, I would buy a car.\`\n\n**نوع ۳ (غیرممکن):**\n\`If I had studied, I would have passed.\``,
-    "adjective|صفت": `📘 **Adjective (صفت)**\n\nکلمه‌ای که اسم رو توصیف می‌کنه.\n\n**مقایسه‌ای:** \`big → bigger → the biggest\`\n**بلند:** \`beautiful → more beautiful → the most beautiful\`\n**بی‌قاعده:** \`good → better → the best\``,
-    "gerund|اسم مصدر": `📘 **Gerund (اسم مصدر)**\n\nفعل + ing که نقش اسم داره.\n\n**به عنوان فاعل:** \`Reading is fun.\`\n**بعد از افعال:** \`I enjoy reading.\`\n**بعد از حرف اضافه:** \`I'm good at drawing.\``,
-    "relative|موصولی": `📘 **Relative Pronouns (ضمایر موصولی)**\n\n**who:** برای انسان — \`The man who called is my father.\`\n**which:** برای غیرانسان — \`The book which I bought is good.\`\n**that:** برای همه — \`The car that he drives is new.\``,
-    "tag question|سوال ضمیمه": `📘 **Tag Questions**\n\n- جمله مثبت → tag منفی\n- جمله منفی → tag مثبت\n\n**مثال:**\n\`You are a student, aren't you?\`\n\`She isn't here, is she?\``
-  };
-
-  for(const key in grammarAnswers){
-    const patterns = key.split("|");
-    for(const pattern of patterns){
-      if(q.includes(pattern.toLowerCase())){
-        return grammarAnswers[key];
-      }
+      return `🧮 **${opName}:**\n\n\`${a} ${symbol} ${b} = ${result}\``;
     }
   }
 
@@ -6034,68 +6082,410 @@ function aiFindAnswer(question){
     .trim();
 
   if(cleanQ.length >= 2 && typeof words === "object"){
-    // جستجوی دقیق
     for(const key in words){
       for(const w of words[key]){
         if(w[0] && w[0].toLowerCase() === cleanQ.toLowerCase()){
-          return `🔤 **${w[0]}**\n\n📖 معنی: **${w[1]}**\n\n💡 این کلمه رو تو درس‌های برنامه هم می‌تونی پیدا کنی.`;
+          return `🔤 **${w[0]}**\n\n📖 معنی: **${w[1]}**`;
         }
       }
     }
-    // جستجوی جزئی
     for(const key in words){
       for(const w of words[key]){
         if(w[0] && w[0].length > 2 && (w[0].toLowerCase().includes(cleanQ.toLowerCase()) || cleanQ.toLowerCase().includes(w[0].toLowerCase()))){
-          return `🔤 **${w[0]}**\n\n📖 معنی: **${w[1]}**\n\n(اگه دنبال کلمه دقیق‌تری هستی، واضح‌تر بنویس)`;
+          return `🔤 **${w[0]}**\n\n📖 معنی: **${w[1]}**`;
         }
       }
     }
   }
 
-  // ===== یادگیری زبان =====
-  if(/(چطوری|چگونه).*(یاد|learn)/i.test(q) || /یادگیری انگلیسی/i.test(q)){
-    return `🌟 **راه‌های یادگیری بهتر انگلیسی:**\n\n1️⃣ **هر روز ۱۵ دقیقه** تمرین کن (نصف ساعت بهتر از ۵ ساعت یک‌بار در هفته!)\n\n2️⃣ **لغات جدید** رو تو جمله یاد بگیر، نه تنهایی\n\n3️⃣ **فیلم و سریال** با زیرنویس انگلیسی ببین\n\n4️⃣ **با خودت انگلیسی حرف بزن** (توی آینه!)\n\n5️⃣ **اشتباه کن!** اشتباه بهترین معلمه\n\n6️⃣ **تمرین کن، تمرین، تمرین!** 💪`;
+  // ===== معرفی خود =====
+  if(/(کی هستی|تو کی|who are you|اسمت چیه|خودت رو معرفی|خودت معرفی)/i.test(q)){
+    return `من **علی ناقلی** هستم، معلم انگلیسی تو 🎓\n\nبا بیش از ۲۰ سال سابقه تدریس مکالمه زبان انگلیسی و مدرس دوره‌های TOEFL, IELTS, KET, PET, MCHE, MSRT و برگزارکننده دوره‌های حرفه‌ای TTC.\n\n💡 می‌تونم:\n📚 گرامر توضیح بدم\n🎮 باهات بازی کنم\n💬 مکالمه انگلیسی کنم\n🔤 لغت ترجمه کنم\n\nچی دوست داری؟`;
   }
 
-  if(/(چطوری|چگونه).*(لغت|کلمه|vocab)/i.test(q)){
-    return `📚 **روش یادگیری لغات:**\n\n1️⃣ کلمه رو تو **جمله** یاد بگیر\n2️⃣ **فلش‌کارت** بساز\n3️⃣ کلمه رو **۵ بار** تو روزهای مختلف مرور کن\n4️⃣ **مترادف و متضاد** کلمه رو هم یاد بگیر\n5️⃣ کلمه رو **بلند بگو** و تلفظش رو تمرین کن\n\n💡 تو دیکشنری همین برنامه هم می‌تونی همه لغات رو ببینی!`;
+  // ===== چیکار می‌تونی =====
+  if(/(چیکار|چی کار|کمکت|چکار می‌تونی|چی بلدی|چیا می‌تونی)/i.test(q)){
+    return `من می‌تونم بهت تو این موارد کمک کنم ${name}:\n\n📚 **گرامر انگلیسی:** Present Simple, Past, Future, Passive و...\n🔤 **لغات:** ترجمه انگلیسی ↔ فارسی\n✍️ **تصحیح جمله:** جمله بنویس، تصحیحش می‌کنم\n💬 **مکالمه انگلیسی:** باهام انگلیسی حرف بزن\n🎮 **بازی‌های تعاملی:** حدس کلمه، ترجمه، تصحیح جمله و...\n🧮 **ریاضی:** محاسبات ساده\n📖 **ضرب‌المثل‌ها:** معنی ضرب‌المثل‌های انگلیسی\n\nفقط بگو چی دوست داری! 😊`;
   }
 
-  if(/(مکالمه|conversation|صحبت)/i.test(q)){
-    return `💬 **تمرین مکالمه:**\n\nبرای تقویت مکالمه:\n\n1️⃣ با **خودت** بلند انگلیسی حرف بزن\n2️⃣ **سایه‌بازی** (shadowing) کن — همزمان با یه فایل صوتی تکرار کن\n3️⃣ تو **کلاس‌های مکالمه** شرکت کن\n4️⃣ با **دوستان** انگلیسی حرف بزن\n5️⃣ از **اپلیکیشن‌های زبان** استفاده کن\n\n📞 می‌تونی با استاد **علی ناقلی** کلاس مکالمه بگیری!`;
+  // ===== مکالمه انگلیسی =====
+  if(/^[a-zA-Z\s\.\!\?\'\,]+$/.test(original) && original.length > 3){
+    return aiEnglishPractice(original, name);
   }
 
-  // ===== پاسخ‌های عمومی هوشمند =====
-  if(/ساعت چنده|چه ساعتی/i.test(q)){
-    const now = new Date();
-    return `🕐 ساعت الان: **${now.toLocaleTimeString('fa-IR')}**`;
+  // ===== پیشنهاد کلی =====
+  if(/(چیکار کنیم|چی کار کنیم|حوصلم سر رفته|بیکارم|بored)/i.test(q)){
+    return `${name} جان، چه پیشنهادی! 🎯\n\nچند تا گزینه داریم:\n\n🎮 **بازی کنیم؟** بنویس «بازی»\n💬 **مکالمه انگلیسی؟** بنویس «مکالمه»\n📚 **گرامر یاد بگیری؟** بنویس «گرامر»\n🔤 **لغت ترجمه کنم؟** بنویس «معنی [کلمه] چیه»\n\nکدوم؟`;
   }
 
-  if(/امروز چندمه|تاریخ امروز|چه روزیه/i.test(q)){
-    const now = new Date();
-    return `📅 امروز: **${now.toLocaleDateString('fa-IR', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}**`;
-  }
-
-  if(/هوا چطوره|وضعیت هوا/i.test(q)){
-    return `🌤️ من به اینترنت متصل نیستم که وضعیت هوا رو بگم، ولی می‌تونی از اپ‌های هواشناسی استفاده کنی!\n\n💡 می‌تونی به انگلیسی بگی:\n\`What's the weather like today?\``;
-  }
-
-  if(/خسته‌ام|حوصله|بی‌حال|ناراحتم/i.test(q)){
-    return `💙 می‌فهمم ${name}.\n\nیه استراحت کوتاه به خودت بده، یه چای بخور، بعد با انگیزه برگرد.\n\n🌸 یادت باشه: **هیچ موفقیتی یه‌شبه به دست نمیاد.**\n\n💪 ادامه بده، تو می‌تونی!`;
-  }
-
-  if(/انگیزه|بی انگیزه|دلسرد|ناامید/i.test(q)){
-    return `🔥 گوش کن ${name}:\n\n**"موفقیت نتیجه‌ی تلاش‌های کوچک روزانه‌ست که هر روز تکرار میشن."**\n\n💎 هیچ‌کس از روز اول حرفه‌ای نبوده.\n\n✨ هر روز یه قدم کوچیک بردار — بعد یه سال، خودت شگفت‌زده میشی!\n\n🚀 پاشو، ادامه بده!`;
-  }
-
-  // ===== پاسخ پیش‌فرض =====
+  // ===== پیش‌فرض هوشمند =====
   return pickRandom([
-    `🤔 سوال خوبی پرسیدی ${name}، ولی من الان مطمئن نیستم چه جوابی بدم.\n\n💡 می‌تونی واضح‌تر بپرسی؟ مثلاً:\n\n📘 «Present Simple چیه؟»\n🔤 «معنی beautiful چیه؟»\n✍️ «این جمله رو تصحیح کن: I go to school yesterday»\n🧮 «10*5»\n\nیا هر سوال دیگه‌ای که داری!`,
-    `🤔 این سوال یه کم برام گیج‌کننده‌ست.\n\nمی‌تونی یه جور دیگه بپرسی؟ من به این موضوعات جواب می‌دم:\n\n📘 گرامر انگلیسی\n🔤 ترجمه لغات\n✍️ تصحیح جمله\n🧮 ریاضی ساده\n💬 تمرین مکالمه\n📚 سوالات عمومی`,
-    `متأسفم ${name}، این یکی رو نفهمیدم.\n\n🔄 سعی کن واضح‌تر بپرسی، یا یکی از این موضوعات رو امتحان کن:\n\n• گرامر: Present Simple، Past، Future، Passive\n• لغت: بنویس "معنی [کلمه] چیه؟"\n• جمله: بنویس "این جمله رو تصحیح کن: [جمله]"\n• ریاضی: بنویس "10+5"`
+    `${name} جان، این سوال رو کامل نفهمیدم 😅\n\nمی‌تونی یه جور دیگه بپرسی؟ یا یه چیزی از اینا امتحان کن:\n\n🎮 بنویس «بازی» — باهم بازی کنیم\n💬 بنویس «مکالمه» — انگلیسی حرف بزنیم\n📚 بنویس «Present Simple» — گرامر یاد بگیری\n🔤 بنویس «معنی beautiful» — ترجمه\n\nیا هر سوال دیگه‌ای داری، بپرس!`,
+    `${name} جان، متوجه نشدم 🤔\n\nولی نگران نباش! اینا رو می‌تونم:\n\n📚 گرامر | 🎮 بازی | 💬 مکالمه | 🔤 ترجمه\n\nفقط بنویس چی می‌خوای! 😊`,
+    `هوممم... 🧐\n\n${name} جان، سؤالت یه کم برام گیج‌کننده‌ست.\n\nمی‌تونی واضح‌تر بپرسی؟ یا از این موضوعات استفاده کن:\n\n• «بازی کنیم»\n• «مکالمه کنیم»\n• «Present Simple چیه؟»\n• «معنی book چیه؟»`
   ]);
 }
 
+/* ==================== بازی‌ها ==================== */
+const AI_GAMES = {
+  guess: {
+    name: "حدس کلمه انگلیسی",
+    emoji: "🎯",
+    rounds: [
+      {q: "کتاب", a: "book"},
+      {q: "درخت", a: "tree"},
+      {q: "ماه", a: "moon"},
+      {q: "خورشید", a: "sun"},
+      {q: "آب", a: "water"},
+      {q: "آتش", a: "fire"},
+      {q: "دوست", a: "friend"},
+      {q: "خانواده", a: "family"},
+      {q: "مدرسه", a: "school"},
+      {q: "معلم", a: "teacher"}
+    ]
+  },
+  translate: {
+    name: "ترجمه سریع",
+    emoji: "🔤",
+    rounds: [
+      {q: "beautiful", a: "زیبا"},
+      {q: "happy", a: "خوشحال"},
+      {q: "book", a: "کتاب"},
+      {q: "friend", a: "دوست"},
+      {q: "teacher", a: "معلم"},
+      {q: "water", a: "آب"},
+      {q: "sun", a: "خورشید"},
+      {q: "moon", a: "ماه"},
+      {q: "flower", a: "گل"},
+      {q: "family", a: "خانواده"}
+    ]
+  },
+  correct: {
+    name: "تصحیح جمله",
+    emoji: "✍️",
+    rounds: [
+      {q: "I go to school yesterday.", a: "I went to school yesterday."},
+      {q: "She have a cat.", a: "She has a cat."},
+      {q: "They is happy.", a: "They are happy."},
+      {q: "He don't like tea.", a: "He doesn't like tea."},
+      {q: "I am go home.", a: "I am going home."},
+      {q: "We was tired.", a: "We were tired."},
+      {q: "She can swims.", a: "She can swim."}
+    ]
+  },
+  complete: {
+    name: "تکمیل جمله",
+    emoji: "✨",
+    rounds: [
+      {q: "I ___ a student.", a: "am"},
+      {q: "She ___ to school every day.", a: "goes"},
+      {q: "They ___ playing football.", a: "are"},
+      {q: "He ___ finished his homework.", a: "has"},
+      {q: "We ___ going to travel.", a: "are"},
+      {q: "It ___ raining now.", a: "is"}
+    ]
+  },
+  idiom: {
+    name: "ضرب‌المثل انگلیسی",
+    emoji: "📖",
+    rounds: [
+      {q: "Break the ice", a: "شروع گفتگو"},
+      {q: "Piece of cake", a: "خیلی آسان"},
+      {q: "Hit the books", a: "درس خواندن"},
+      {q: "Once in a blue moon", a: "به ندرت"},
+      {q: "Under the weather", a: "ناخوش"},
+      {q: "Cost an arm and a leg", a: "خیلی گران"},
+      {q: "Let the cat out of the bag", a: "لو دادن راز"}
+    ]
+  }
+};
+
+function handleGameChoice(question, name){
+  const q = question.toLowerCase().trim();
+  const map = {
+    "1": "guess", "یک": "guess", "حدس": "guess", "حدس کلمه": "guess",
+    "2": "translate", "دو": "translate", "ترجمه": "translate",
+    "3": "correct", "سه": "correct", "تصحیح": "correct", "صحیح": "correct",
+    "4": "complete", "چهار": "complete", "تکمیل": "complete",
+    "5": "idiom", "پنج": "idiom", "ضرب": "idiom", "ضرب المثل": "idiom", "ضرب‌المثل": "idiom"
+  };
+  
+  let gameKey = null;
+  for(const k in map){
+    if(q.includes(k)){ gameKey = map[k]; break; }
+  }
+  
+  if(!gameKey){
+    return `منتظر انتخابتم ${name}! 😊\n\nفقط شماره بازی رو بنویس:\n1️⃣ حدس کلمه\n2️⃣ ترجمه سریع\n3️⃣ تصحیح جمله\n4️⃣ تکمیل جمله\n5️⃣ ضرب‌المثل`;
+  }
+  
+  const game = AI_GAMES[gameKey];
+  AI_STATE.mode = "game";
+  AI_STATE.gameType = gameKey;
+  AI_STATE.gameScore = 0;
+  AI_STATE.gameRound = 0;
+  AI_STATE.waitingFor = "game_answer";
+  
+  const first = game.rounds[0];
+  return `${game.emoji} **بازی ${game.name} شروع شد!**\n\n📊 امتیاز: 0 از ${game.rounds.length}\n\n─────────────────\n\n**سوال ۱:**\n${gameKey === "correct" ? `این جمله رو تصحیح کن:\n\n\`${first.q}\`` : `\n${first.q}`}\n\nجوابت رو بنویس 👇`;
+}
+
+function handleGameAnswer(answer){
+  const game = AI_GAMES[AI_STATE.gameType];
+  const round = game.rounds[AI_STATE.gameRound];
+  const userAns = answer.toLowerCase().trim().replace(/[.،!؟?]/g,'');
+  const correctAns = round.a.toLowerCase().trim().replace(/[.،!؟?]/g,'');
+  
+  let isCorrect = false;
+  
+  if(AI_STATE.gameType === "correct"){
+    // برای تصحیح جمله، فقط چک می‌کنیم که کلمات کلیدی درست باشن
+    isCorrect = userAns.includes(correctAns.substring(0, correctAns.length - 1)) || userAns === correctAns;
+  } else {
+    isCorrect = userAns === correctAns || userAns.includes(correctAns) || correctAns.includes(userAns);
+  }
+  
+  if(isCorrect){
+    AI_STATE.gameScore++;
+    AI_STATE.gameRound++;
+    if(AI_STATE.gameRound >= game.rounds.length){
+      return endGame(true);
+    }
+    const next = game.rounds[AI_STATE.gameRound];
+    return `✅ **آفرین! درسته!** 🎉\n\n📊 امتیاز: ${AI_STATE.gameScore} از ${game.rounds.length}\n\n─────────────────\n\n**سوال ${AI_STATE.gameRound + 1}:**\n${AI_STATE.gameType === "correct" ? `این جمله رو تصحیح کن:\n\n\`${next.q}\`` : `\n${next.q}`}\n\nجوابت رو بنویس 👇`;
+  } else {
+    AI_STATE.gameRound++;
+    if(AI_STATE.gameRound >= game.rounds.length){
+      return `❌ **جواب درست:** \`${round.a}\`\n\n${endGame(false)}`;
+    }
+    const next = game.rounds[AI_STATE.gameRound];
+    return `❌ **متأسفم، جواب درست این بود:** \`${round.a}\`\n\n📊 امتیاز: ${AI_STATE.gameScore} از ${game.rounds.length}\n\n─────────────────\n\n**سوال ${AI_STATE.gameRound + 1}:**\n${AI_STATE.gameType === "correct" ? `این جمله رو تصحیح کن:\n\n\`${next.q}\`` : `\n${next.q}`}\n\nجوابت رو بنویس 👇`;
+  }
+}
+
+function endGame(won){
+  const game = AI_GAMES[AI_STATE.gameType];
+  const score = AI_STATE.gameScore;
+  const total = game.rounds.length;
+  const percent = Math.round(score / total * 100);
+  
+  let msg = `🎮 **بازی تموم شد!**\n\n`;
+  msg += `📊 **امتیاز نهایی:** ${score} از ${total} (${percent}%)\n\n`;
+  
+  if(percent === 100){
+    msg += `🏆 **عالی! کامل بردی!** تو یه نابغه‌ای ${S.student?.first_name || ""}! 🌟\n\n`;
+  } else if(percent >= 70){
+    msg += `🎉 **عالی بود!** خیلی خوب بود! 💪\n\n`;
+  } else if(percent >= 50){
+    msg += `😊 **خوب بود!** یه کم تمرین بیشتر عالی می‌شی! 📚\n\n`;
+  } else {
+    msg += `💙 **اشکالی نداره!** تمرین کن، بهتر می‌شی! 🌱\n\n`;
+  }
+  
+  if(typeof S !== 'undefined' && S.student && score > 0){
+    try{ addXP(score * 3); msg += `⭐ ${score * 3} XP گرفتی!\n\n`; }catch(e){}
+  }
+  
+  msg += `بازی دیگه‌ای دوست داری؟ 🎮\n\n1️⃣ حدس کلمه\n2️⃣ ترجمه\n3️⃣ تصحیح جمله\n4️⃣ تکمیل جمله\n5️⃣ ضرب‌المثل\n\nیا بنویس «مکالمه» تا انگلیسی حرف بزنیم! 💬`;
+  
+  aiResetState();
+  AI_STATE.mode = "game";
+  AI_STATE.waitingFor = "game_choice";
+  
+  return msg;
+}
+
+/* ==================== مکالمه ==================== */
+const AI_CONVERSATIONS = {
+  travel: {
+    name: "مسافرت و فرودگاه",
+    emoji: "🛫",
+    steps: [
+      {q: `Hello! Welcome to the airport! 🛫\n\n**Let's start our conversation!**\n\nI'm the check-in agent. You're a passenger. I'll start:\n\n*\"Good morning! May I see your passport and ticket, please?\"*`, hint: "بگو: Good morning! Here is my passport."},
+      {q: `**At the security checkpoint:**\n\n*\"Please put your bag on the belt and take off your shoes. Do you have any liquids?\"*`, hint: "بگو: No, I don't. / Yes, I have a small bottle."},
+      {q: `**At the gate:**\n\n*\"Boarding for flight BA-123 to London is starting now. Are you ready to board?\"*`, hint: "بگو: Yes, I'm ready. / Where is my seat?"},
+      {q: `**On the plane:**\n\n*\"Welcome aboard! Would you like chicken or pasta for dinner?\"*`, hint: "بگو: I'd like chicken, please."},
+      {q: `**Arrival:**\n\n*\"Welcome to London! What's the purpose of your visit?\"*`, hint: "بگو: I'm here for tourism. / I'm visiting my family."}
+    ]
+  },
+  hotel: {
+    name: "هتل و رزرو",
+    emoji: "🏨",
+    steps: [
+      {q: `Welcome to the Grand Hotel! 🏨\n\nI'm the receptionist. Let's practice:\n\n*\"Good evening! Do you have a reservation?\"*`, hint: "بگو: Yes, I have a reservation. / No, do you have any rooms?"},
+      {q: `*\"May I have your name, please? And for how many nights?\"*`, hint: "بگو: My name is... I'll stay for 3 nights."},
+      {q: `*\"Great! Your room is 305, on the third floor. Would you like a wake-up call?\"*`, hint: "بگو: Yes, please. At 7 AM."},
+      {q: `*\"Is there anything else I can help you with? We have a swimming pool and a restaurant.\"*`, hint: "بگو: What time does the restaurant open?"},
+      {q: `*\"By the way, breakfast is included. Enjoy your stay!\"*`, hint: "بگو: Thank you so much! / Where is the elevator?"}
+    ]
+  },
+  restaurant: {
+    name: "رستوران و سفارش غذا",
+    emoji: "🍽️",
+    steps: [
+      {q: `Welcome to our restaurant! 🍽️\n\nI'm your waiter. Let's practice:\n\n*\"Good evening! Table for how many people?\"*`, hint: "بگو: Table for two, please."},
+      {q: `*\"Here's the menu. Would you like something to drink first?\"*`, hint: "بگو: Yes, I'd like orange juice, please."},
+      {q: `*\"Are you ready to order? What would you like to eat?\"*`, hint: "بگو: I'd like a steak, please. / I'll have the pasta."},
+      {q: `*\"How would you like your steak? Rare, medium, or well-done?\"*`, hint: "بگو: Medium, please."},
+      {q: `*\"Great choice! Would you like any dessert?\"*`, hint: "بگو: Yes, I'd like ice cream, please. / No, thank you."}
+    ]
+  },
+  shopping: {
+    name: "خرید از مغازه",
+    emoji: "🛍️",
+    steps: [
+      {q: `Welcome to our shop! 🛍️\n\nI'm the shop assistant. Let's practice:\n\n*\"Hello! How can I help you?\"*`, hint: "بگو: I'm just looking, thanks. / I'm looking for a shirt."},
+      {q: `*\"What color and size do you need?\"*`, hint: "بگو: I need a blue one, size medium."},
+      {q: `*\"Here you go. Would you like to try it on?\"*`, hint: "بگو: Yes, please. Where is the fitting room?"},
+      {q: `*\"How does it fit?\"*`, hint: "بگو: It fits perfectly! / It's a bit too small."},
+      {q: `*\"Great! That will be 45 dollars. How would you like to pay?\"*`, hint: "بگو: By card, please. / Cash, please."}
+    ]
+  },
+  intro: {
+    name: "معرفی خود و آشنایی",
+    emoji: "👋",
+    steps: [
+      {q: `Hi! Let's get to know each other! 👋\n\n*\"Hello! My name is Sarah. What's your name?\"*`, hint: "بگو: Hi Sarah! My name is [اسمت]."},
+      {q: `*\"Nice to meet you! Where are you from?\"*`, hint: "بگو: I'm from Iran. / I'm from Tehran."},
+      {q: `*\"That's cool! How old are you? What do you do?\"*`, hint: "بگو: I'm 15 years old. I'm a student."},
+      {q: `*\"What are your hobbies? What do you do in your free time?\"*`, hint: "بگو: I like reading books and playing football."},
+      {q: `*\"That sounds fun! Do you have any brothers or sisters?\"*`, hint: "بگو: Yes, I have one brother. / No, I'm an only child."}
+    ]
+  },
+  work: {
+    name: "کار و مصاحبه",
+    emoji: "💼",
+    steps: [
+      {q: `Welcome to the interview! 💼\n\nI'm the manager. Let's practice:\n\n*\"Good morning! Please have a seat. Tell me about yourself.\"*`, hint: "بگو: Good morning! My name is... I'm..."},
+      {q: `*\"Why do you want to work here?\"*`, hint: "بگو: I want to work here because... / I'm interested in..."},
+      {q: `*\"What are your strengths and weaknesses?\"*`, hint: "بگو: My strength is... My weakness is..."},
+      {q: `*\"Do you have any experience?\"*`, hint: "بگو: Yes, I have... / No, but I'm a fast learner."},
+      {q: `*\"Great! Do you have any questions for me?\"*`, hint: "بگو: What are the working hours? / When can I start?"}
+    ]
+  },
+  movie: {
+    name: "فیلم و سرگرمی",
+    emoji: "🎬",
+    steps: [
+      {q: `Let's talk about movies! 🎬\n\n*\"Hey! What kind of movies do you like?\"*`, hint: "بگو: I like action movies. / I like comedies."},
+      {q: `*\"Cool! What's your favorite movie?\"*`, hint: "بگو: My favorite movie is..."},
+      {q: `*\"Why do you like it?\"*`, hint: "بگو: I like it because it's exciting/interesting..."},
+      {q: `*\"Do you prefer watching movies at home or at the cinema?\"*`, hint: "بگو: I prefer... because..."},
+      {q: `*\"What about TV shows? Do you watch any?\"*`, hint: "بگو: Yes, I watch... / No, I don't watch TV much."}
+    ]
+  },
+  hospital: {
+    name: "دکتر و بیمارستان",
+    emoji: "🏥",
+    steps: [
+      {q: `Welcome to the hospital! 🏥\n\nI'm the doctor. Let's practice:\n\n*\"Hello! What brings you here today?\"*`, hint: "بگو: I have a headache. / I don't feel well."},
+      {q: `*\"I see. How long have you had this problem?\"*`, hint: "بگو: For two days. / Since yesterday."},
+      {q: `*\"Do you have a fever or any other symptoms?\"*`, hint: "بگو: Yes, I have a fever. / No, just a headache."},
+      {q: `*\"I'll prescribe some medicine. Are you allergic to anything?\"*`, hint: "بگو: No, I'm not. / Yes, I'm allergic to..."},
+      {q: `*\"Take this twice a day. Get some rest and drink lots of water. Any questions?\"*`, hint: "بگو: When should I come back? / Thank you, doctor."}
+    ]
+  },
+  weather: {
+    name: "آب و هوا",
+    emoji: "🌤️",
+    steps: [
+      {q: `Let's talk about weather! 🌤️\n\n*\"Hi! What's the weather like today?\"*`, hint: "بگو: It's sunny. / It's cold and rainy."},
+      {q: `*\"What's your favorite season?\"*`, hint: "بگو: My favorite season is... because..."},
+      {q: `*\"Do you prefer hot or cold weather?\"*`, hint: "بگو: I prefer... because..."},
+      {q: `*\"What do you do on rainy days?\"*`, hint: "بگو: On rainy days, I usually..."},
+      {q: `*\"Great! The weather forecast says it'll be sunny tomorrow. Any plans?\"*`, hint: "بگو: Yes, I'm going to... / I don't have plans yet."}
+    ]
+  },
+  school: {
+    name: "مدرسه و دانشگاه",
+    emoji: "🎓",
+    steps: [
+      {q: `Let's talk about school! 🎓\n\n*\"Hi! What grade are you in?\"*`, hint: "بگو: I'm in grade 8. / I'm a student at..."},
+      {q: `*\"What's your favorite subject?\"*`, hint: "بگو: My favorite subject is... because..."},
+      {q: `*\"What subjects are difficult for you?\"*`, hint: "بگو: Math is difficult for me. / I have trouble with..."},
+      {q: `*\"Do you like your teachers?\"*`, hint: "بگو: Yes, they're great! / My English teacher is..."},
+      {q: `*\"What do you want to study in the future?\"*`, hint: "بگو: I want to study... / I want to be a..."}
+    ]
+  }
+};
+
+function handleTopicChoice(question, name){
+  const q = question.toLowerCase().trim();
+  const map = {
+    "1": "travel", "مسافرت": "travel", "فرودگاه": "travel", "سفر": "travel",
+    "2": "hotel", "هتل": "hotel", "رزرو": "hotel",
+    "3": "restaurant", "رستوران": "restaurant", "غذا": "restaurant",
+    "4": "shopping", "خرید": "shopping", "مغازه": "shopping",
+    "5": "intro", "معرفی": "intro", "آشنایی": "intro",
+    "6": "work", "کار": "work", "مصاحبه": "work",
+    "7": "movie", "فیلم": "movie", "سرگرمی": "movie",
+    "8": "hospital", "دکتر": "hospital", "بیمارستان": "hospital", "پزشک": "hospital",
+    "9": "weather", "آب و هوا": "weather", "هوا": "weather",
+    "10": "school", "مدرسه": "school", "دانشگاه": "school"
+  };
+  
+  let topicKey = null;
+  for(const k in map){
+    if(q.includes(k)){ topicKey = map[k]; break; }
+  }
+  
+  if(!topicKey){
+    return `منتظر انتخابتم ${name}! 😊\n\nشماره موضوع رو بنویس:\n\n1️⃣ مسافرت\n2️⃣ هتل\n3️⃣ رستوران\n4️⃣ خرید\n5️⃣ معرفی خود\n6️⃣ کار\n7️⃣ فیلم\n8️⃣ دکتر\n9️⃣ آب و هوا\n🔟 مدرسه`;
+  }
+  
+  const conv = AI_CONVERSATIONS[topicKey];
+  AI_STATE.mode = "conversation";
+  AI_STATE.conversationTopic = topicKey;
+  AI_STATE.conversationStep = 0;
+  AI_STATE.waitingFor = "conversation_reply";
+  
+  const first = conv.steps[0];
+  return `${conv.emoji} **مکالمه: ${conv.name}**\n\n─────────────────\n\n${first.q}\n\n💡 **راهنما:** ${first.hint}\n\nجوابت رو به انگلیسی بنویس 👇`;
+}
+
+function handleConversationReply(question, name){
+  const conv = AI_CONVERSATIONS[AI_STATE.conversationTopic];
+  AI_STATE.conversationStep++;
+  
+  if(AI_STATE.conversationStep >= conv.steps.length){
+    const msg = `🎉 **آفرین ${name}! مکالمه تموم شد!**\n\n👏 خیلی خوب بود!\n\n💬 می‌خوای موضوع دیگه‌ای انتخاب کنی؟\n\nیا بنویس «مکالمه» تا لیست موضوعات رو ببینی!`;
+    aiResetState();
+    return msg;
+  }
+  
+  const next = conv.steps[AI_STATE.conversationStep];
+  const feedback = pickRandom([
+    "✅ خوب بود! ادامه بدیم!",
+    "👏 آفرین! بذار ادامه بدم:",
+    "😊 عالیه! بریم مرحله بعد:",
+    "💪 خیلی خوب! ببین:"
+  ]);
+  
+  return `${feedback}\n\n─────────────────\n\n${next.q}\n\n💡 **راهنما:** ${next.hint}\n\nجوابت رو به انگلیسی بنویس 👇`;
+}
+
+/* ==================== تمرین انگلیسی ==================== */
+function aiEnglishPractice(text, name){
+  const t = text.toLowerCase();
+  
+  if(/how are you|how do you do/i.test(t)){
+    return `I'm fine, thank you! 😊 And you?\n\n💡 می‌تونی جواب بدی:\n\`I'm good, thanks! / I'm fine, how about you?\``;
+  }
+  
+  if(/my name is|i am|i'm/i.test(t)){
+    return `Nice to meet you! 👋\n\n💡 ادامه بده:\n\`Where are you from? / How old are you?\`\n\nیا به من بگو: **Where are you from?**`;
+  }
+  
+  if(/hello|hi|hey/i.test(t)){
+    return `Hello! 👋 How are you today?\n\n💡 جواب بده:\n\`I'm fine, thanks! And you?\``;
+  }
+  
+  if(/thank you|thanks/i.test(t)){
+    return `You're welcome! 😊\n\n💡 می‌تونی بگی:\n\`No problem! / My pleasure!\``;
+  }
+  
+  return `Interesting! 🤔\n\n💡 می‌تونی بیشتر توضیح بدی؟ یا بگی:\n\n• \`Can you tell me more?\`\n• \`What do you think?\`\n• \`I don't understand.\`\n\nیا اگه می‌خوای **مکالمه ساختارمند** داشته باشیم، بنویس «مکالمه» تا موضوع انتخاب کنی! 💬`;
+}
 function aiSendMessage(){
   const input = document.getElementById("aiChatInput");
   if(!input) return;
