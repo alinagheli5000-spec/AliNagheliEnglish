@@ -8179,7 +8179,10 @@ function dictionaryPage(){
   `);
   dictRender();
 }
-function dictSearch(q){ dictCurrentQuery = String(q||"").trim().toLowerCase(); dictRender(); }
+function dictSearch(q){
+  dictCurrentQuery = String(q||"").trim();
+  dictRender();
+}
 function dictFilter(g){
   dictCurrentFilter = (g==="all")?"all":Number(g);
   document.querySelectorAll(".dictFilter").forEach(b=>{
@@ -8190,13 +8193,43 @@ function dictFilter(g){
   dictRender();
 }
 function dictRender(){
-  const el = document.getElementById("dictResults"); if(!el) return;
+  const el = document.getElementById("dictResults");
+  if(!el) return;
   if(!dictCache) dictCache = getAllDictionaryWords();
+
+  // حالت ۱: کاربر جستجوی فعال داره
+  if(dictCurrentQuery && dictCurrentQuery.length >= 2){
+    searchDictionary(dictCurrentQuery);
+    return;
+  }
+
+  // حالت ۲: فیلتر پایه
   let items = dictCache.slice();
-  if(dictCurrentFilter !== "all") items = items.filter(w=>w.grade===dictCurrentFilter);
-  if(dictCurrentQuery){ const q = dictCurrentQuery; items = items.filter(w=> w.en.toLowerCase().includes(q) || w.fa.includes(q) ); }
-  if(!items.length){ el.innerHTML = `<div class="card dictEmpty"><span class="icon">🔍</span><b>لغتی با این جستجو پیدا نشد</b><p class="muted">سعی کن عبارت دیگری جستجو کنی</p></div>`; return; }
-  el.innerHTML = `<div class="card"><b style="color:var(--primary)">${items.length} کلمه پیدا شد</b><div class="dictGrid" style="margin-top:14px">${items.slice(0,500).map(w=>`<div class="dictCard" onclick='speak(${JSON.stringify(w.en)})'><div class="dictGrade">پایه ${w.grade} · درس ${w.lesson}</div><div class="dictEn">🔊 ${esc(w.en)}</div><div class="dictFa">${esc(w.fa)}</div></div>`).join("")}</div></div>`;
+  if(dictCurrentFilter !== "all") items = items.filter(w => w.grade === dictCurrentFilter);
+
+  if(!items.length){
+    el.innerHTML = `<div class="card dictEmpty"><span class="icon">🔍</span><b>لغتی پیدا نشد</b><p class="muted">سعی کن عبارت دیگری جستجو کنی</p></div>`;
+    return;
+  }
+
+  el.innerHTML = `<div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+      <b style="color:var(--primary);display:flex;align-items:center;gap:8px">
+        <span style="font-size:20px">📚</span>
+        <span>${items.length} کلمه در دیکشنری</span>
+      </b>
+      <div style="font-size:11px;color:var(--text-muted)">💡 هر کلمه‌ای که تو دیکشنری نباشه، از دیکشنری آنلاین گرفته می‌شه</div>
+    </div>
+    <div class="dictGrid">
+      ${items.slice(0,500).map(w => `
+        <div class="dictCard" onclick='speak(${JSON.stringify(w.en)})'>
+          <div class="dictGrade">پایه ${w.grade} · درس ${w.lesson}</div>
+          <div class="dictEn">🔊 ${esc(w.en)}</div>
+          <div class="dictFa">${esc(w.fa)}</div>
+        </div>
+      `).join("")}
+    </div>
+  </div>`;
 }
 </script><script>
 /* ==================== Admin Panel - کامل ==================== */
