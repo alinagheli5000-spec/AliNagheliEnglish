@@ -5752,6 +5752,11 @@ const PRICING = {
     vp2: { single: 299000, full: 799000, label: "Viewpoint 2" }
   },
   finalExams: { single: 199000, label: "آزمون نهایی" }
+    words504: {
+    single: 20000,
+    full: 600000,
+    label: "504 واژه علی ناقلی"
+  },
 };
 
 function getPackages(grade){ 
@@ -6440,14 +6445,15 @@ function home(){
 function words504Page(){
   const lessons = Object.keys(WORDS_504).map(Number).sort((a,b) => a-b);
   const totalWords = lessons.reduce((sum, ln) => sum + WORDS_504[ln].length, 0);
+  const unlockedCount = lessons.filter(ln => is504Unlocked(ln)).length;
   
-  render("504 واژه", `
+  render("504 واژه علی ناقلی", `
     <div class="card" style="background:linear-gradient(135deg,#0891b2,#0e7490);color:#fff;border:0">
       <button class="btn secondary" onclick="home()" style="background:rgba(255,255,255,.2);color:#fff">← بازگشت</button>
       <div style="display:flex;align-items:center;gap:14px;margin-top:14px">
         <div style="width:70px;height:70px;border-radius:18px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:38px">📖</div>
         <div>
-          <h2 style="margin:0;color:#fff">504 واژه ضروری</h2>
+          <h2 style="margin:0;color:#fff">504 واژه مخصوص علی ناقلی</h2>
           <p style="margin:4px 0 0;opacity:.95;font-weight:600">504 Absolutely Essential Words</p>
         </div>
       </div>
@@ -6466,28 +6472,167 @@ function words504Page(){
         <b>${totalWords}</b>
       </div>
       <div class="profileStat" style="cursor:default">
-        <div class="muted" style="font-size:11px">⏱️ زمان</div>
-        <b>~7h</b>
+        <div class="muted" style="font-size:11px">✅ باز شده</div>
+        <b>${unlockedCount}</b>
       </div>
+    </div>
+
+    <div class="card" style="background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px dashed #f59e0b;margin-bottom:16px">
+      <div style="font-size:13px;font-weight:800;color:#92400e;line-height:2">
+        💡 <b>درس اول رایگان است!</b><br>
+        🔒 برای باز کردن درس‌های بعدی: <b>۲۰,۰۰۰ تومان</b> برای هر درس<br>
+        🎁 یا <b>۶۰۰,۰۰۰ تومان</b> برای کل کتاب (۴۲ درس)
+      </div>
+      <button class="btn" style="margin-top:12px;background:linear-gradient(135deg,#f59e0b,#d97706);width:100%" onclick="show504FullPayment()">
+        💳 خرید کل کتاب — ۶۰۰,۰۰۰ تومان
+      </button>
     </div>
 
     <div class="card">
       <h3 style="margin-top:0;display:flex;align-items:center;gap:8px">📚 درس‌های کتاب</h3>
       <div class="lessonGrid">
-        ${lessons.map(ln => `
-          <div class="lesson" onclick="open504Lesson(${ln})" style="cursor:pointer">
-            <div class="lessonNo">${ln}</div>
-            <h3>درس ${ln}</h3>
-            <p class="muted" style="font-size:12px">${WORDS_504[ln].length} کلمه</p>
-            <button class="btn full" style="margin-top:8px">📖 مشاهده</button>
-          </div>
-        `).join("")}
+        ${lessons.map(ln => {
+          const unlocked = is504Unlocked(ln);
+          const isFree = ln === 1;
+          return `
+            <div class="lesson ${unlocked ? '' : 'locked'}" onclick="open504Lesson(${ln})" style="cursor:pointer;position:relative">
+              ${!unlocked ? `<div class="lockBadge">${ICONS.lock}</div>` : ''}
+              <div class="lessonNo">${ln}</div>
+              <h3>درس ${ln}</h3>
+              <p class="muted" style="font-size:12px">${WORDS_504[ln].length} کلمه</p>
+              ${isFree ? `<p style="color:var(--success);font-weight:800;font-size:11px;margin-top:6px">✅ رایگان</p>` : ''}
+              <button class="btn ${unlocked ? '' : 'warning'} full" style="margin-top:8px">
+                ${unlocked ? '📖 مشاهده' : '🔒 باز کردن (۲۰ هزار)'}
+              </button>
+            </div>
+          `;
+        }).join("")}
       </div>
     </div>
   `);
 }
 
+function show504FullPayment(){
+  const pricing = PRICING.words504;
+  const fullStr = Number(pricing.full).toLocaleString("fa-IR");
+  
+  const modal = document.createElement("div");
+  modal.className = "payModal";
+  modal.id = "payModal504";
+  modal.innerHTML = `
+    <div class="payCard">
+      <h2 class="payTitle">💳 خرید کل کتاب 504</h2>
+      <p style="text-align:center;font-weight:700;color:var(--text);margin:8px 0">504 واژه مخصوص علی ناقلی — ۴۲ درس کامل</p>
+      
+      <div class="payAmount">${fullStr} <small>تومان</small></div>
+      
+      <p style="text-align:center;font-size:13px;color:var(--text-muted);font-weight:600">مبلغ را به شماره کارت زیر واریز کنید:</p>
+      <div class="cardNumber">${PAYMENT_CARD}</div>
+      <div class="ownerName">به نام: ${PAYMENT_OWNER}</div>
+      
+      <button class="copyBtn" onclick="copyCardNumber()">📋 کپی شماره کارت</button>
+      <button class="copyBtn" style="background:linear-gradient(135deg,#22c55e,#16a34a)" onclick="send504Receipt(0,'full')">📱 ارسال فیش واریزی</button>
+      
+      <p style="font-size:11px;color:var(--text-muted);text-align:center;line-height:1.9;margin-top:14px">
+        پس از واریز، فیش را به شماره <b style="color:var(--primary)">${SUPPORT_PHONE}</b> ارسال کنید.<br>
+        تمام قفل‌ها پس از تأیید مدیر باز خواهند شد.
+      </p>
+      <button class="closeBtn" onclick="close504PaymentModal()">بستن</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+/* ==================== بررسی قفل 504 ==================== */
+function is504Unlocked(lessonNum){
+  if(lessonNum === 1) return true; // درس اول رایگان
+  if(S.admin) return true;
+  return !!S.unlocks[`504-${lessonNum}`];
+}
+
+async function unlock504(lessonNum, paymentRef, pkg){
+  const key = `504-${lessonNum}`;
+  S.unlocks[key] = true;
+  if(S.student){
+    try{
+      const local = JSON.parse(localStorage.getItem("AN_UNLOCKS_504_" + S.student.id) || "{}");
+      local[key] = true;
+      localStorage.setItem("AN_UNLOCKS_504_" + S.student.id, JSON.stringify(local));
+    }catch(e){}
+    try{
+      await db.from("lesson_unlocks").upsert({
+        student_id: S.student.id,
+        grade: "504",
+        lesson_index: Number(lessonNum),
+        payment_ref: paymentRef || null,
+        package: pkg || "single",
+        unlocked_at: new Date().toISOString()
+      }, {onConflict: "student_id,grade,lesson_index"});
+    }catch(e){}
+  }
+  return true;
+}
+
+function show504PaymentModal(lessonNum){
+  const pricing = PRICING.words504;
+  const amountStr = Number(pricing.single).toLocaleString("fa-IR");
+  const fullStr = Number(pricing.full).toLocaleString("fa-IR");
+  
+  const modal = document.createElement("div");
+  modal.className = "payModal";
+  modal.id = "payModal504";
+  modal.innerHTML = `
+    <div class="payCard">
+      <h2 class="payTitle">💳 باز کردن درس ${lessonNum} از 504</h2>
+      <p style="text-align:center;font-weight:700;color:var(--text);margin:8px 0">کتاب 504 واژه مخصوص علی ناقلی</p>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0">
+        <div style="background:linear-gradient(135deg,var(--bg-grad-1),var(--card-bg));border:1px solid var(--card-border);border-radius:16px;padding:14px;text-align:center">
+          <div style="font-size:12px;font-weight:700;color:var(--text-muted)">تک درس</div>
+          <div style="font-size:20px;font-weight:900;color:var(--primary);margin:6px 0">${amountStr}</div>
+          <div style="font-size:10px;color:var(--text-muted)">تومان</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #f59e0b;border-radius:16px;padding:14px;text-align:center">
+          <div style="font-size:12px;font-weight:700;color:#92400e">کل کتاب</div>
+          <div style="font-size:20px;font-weight:900;color:#92400e;margin:6px 0">${fullStr}</div>
+          <div style="font-size:10px;color:#92400e">تومان</div>
+        </div>
+      </div>
+      
+      <p style="text-align:center;font-size:13px;color:var(--text-muted);font-weight:600">مبلغ را به شماره کارت زیر واریز کنید:</p>
+      <div class="cardNumber" id="payCardNum504">${PAYMENT_CARD}</div>
+      <div class="ownerName">به نام: ${PAYMENT_OWNER}</div>
+      
+      <button class="copyBtn" onclick="copyCardNumber()">📋 کپی شماره کارت</button>
+      <button class="copyBtn" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)" onclick="send504Receipt(${lessonNum},'single')">📱 ارسال فیش واریزی (تک درس)</button>
+      <button class="copyBtn" style="background:linear-gradient(135deg,#22c55e,#16a34a)" onclick="send504Receipt(${lessonNum},'full')">📱 ارسال فیش واریزی (کل کتاب)</button>
+      
+      <p style="font-size:11px;color:var(--text-muted);text-align:center;line-height:1.9;margin-top:14px">
+        پس از واریز، فیش را به شماره <b style="color:var(--primary)">${SUPPORT_PHONE}</b> ارسال کنید.<br>
+        قفل درس شما پس از تأیید مدیر باز خواهد شد.
+      </p>
+      <button class="closeBtn" onclick="close504PaymentModal()">بستن</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function close504PaymentModal(){
+  const m = document.getElementById("payModal504");
+  if(m) m.remove();
+}
+
+function send504Receipt(lessonNum, type){
+  const pricing = PRICING.words504;
+  const amount = type === "single" ? pricing.single : pricing.full;
+  const typeFa = type === "single" ? "تک درس " + lessonNum : "کل کتاب 504";
+  const msg = encodeURIComponent(`سلام استاد،\nمن فیش واریزی برای «504 واژه مخصوص علی ناقلی — ${typeFa}» را ارسال می‌کنم.\nمبلغ: ${Number(amount).toLocaleString("fa-IR")} تومان\n\nلطفاً قفل را برایم باز کنید.\n\nبا تشکر`);
+  window.open(`https://wa.me/98${SUPPORT_PHONE.substring(1)}?text=${msg}`, "_blank");
+}
 function open504Lesson(ln){
+    if(!is504Unlocked(ln)){
+    show504PaymentModal(ln);
+    return;
+  }
   const words = WORDS_504[ln];
   if(!words){ toast("درس پیدا نشد","error"); return; }
   
