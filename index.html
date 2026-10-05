@@ -6437,6 +6437,13 @@ function home(){
  `);
 }
   /* ==================== 504 واژه ضروری ==================== */
+  /* ==================== قفل 504 ==================== */
+function is504Unlocked(lessonNum){
+  if(lessonNum === 1) return true;
+  if(typeof S !== 'undefined' && S.admin) return true;
+  if(typeof S === 'undefined') return false;
+  return !!S.unlocks[`504-${lessonNum}`];
+}
 function words504Page(){
   const lessons = Object.keys(WORDS_504).map(Number).sort((a,b) => a-b);
   const totalWords = lessons.reduce((sum, ln) => sum + WORDS_504[ln].length, 0);
@@ -6484,7 +6491,20 @@ function words504Page(){
         `).join("")}
       </div>
     </div>
-  `);
+  `);  // بررسی قفل
+  const unlockedList = lessons.map(ln => is504Unlocked(ln));
+  document.querySelectorAll(".lessonGrid .lesson").forEach((el, i) => {
+    const ln = lessons[i];
+    if(!is504Unlocked(ln)){
+      el.classList.add("locked");
+      if(!el.querySelector(".lockBadge")){
+        const badge = document.createElement("div");
+        badge.className = "lockBadge";
+        badge.innerHTML = typeof ICONS !== 'undefined' ? ICONS.lock : "🔒";
+        el.appendChild(badge);
+      }
+    }
+  });
 }
 
 function open504Lesson(ln){
