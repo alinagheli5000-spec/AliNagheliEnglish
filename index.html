@@ -9374,6 +9374,20 @@ async function openUnlockPanel(studentId, studentName){
       html += `<button style="background:${bgColor};color:#fff;border:0;border-radius:10px;padding:6px 12px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.2)" onclick="toggleUnlock(${studentId},'grade',${g},${i})">${icon} درس ${i+1}</button>`;
     });
     html += `</div>`;
+      
+  // ========== بخش 504 ==========
+  html += `<h4 style="margin-top:24px;color:var(--primary)">📖 504 واژه علی ناقلی</h4>`;
+  html += `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">`;
+  for(let ln = 1; ln <= 42; ln++){
+    const key504 = `504-${ln}`;
+    const isFree = ln === 1;
+    const isUnlocked504 = isFree || !!currentUnlocks[key504];
+    const bgColor504 = isUnlocked504 ? "#22c55e" : "#ef4444";
+    const icon504 = isUnlocked504 ? "✅" : "🔒";
+    html += `<button style="background:${bgColor504};color:#fff;border:0;border-radius:10px;padding:6px 12px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.2)" onclick="toggleUnlock504(${studentId}, ${ln})">${icon504} درس ${ln}</button>`;
+  }
+  html += `</div>`;
+  html += `<button class="btn success" style="margin-top:14px;width:100%" onclick="unlockAll504(${studentId})">✅ باز کردن کل کتاب 504</button>`;
   }
   
   html += `<h4 style="margin-top:24px;color:var(--primary)">📄 آزمون‌های نهایی</h4>`;
@@ -9420,7 +9434,64 @@ async function toggleUnlock(studentId, type, gradeOrBook, lessonIndex){
     } else if(type === "talk"){
       gradeKey = gradeOrBook;
     }
+    async function toggleUnlock504(studentId, lessonNum){
+  try{
+    const existing = await db.from("lesson_unlocks")
+      .select("*")
+      .eq("student_id", studentId)
+      .eq("grade", "504")
+      .eq("lesson_index", lessonNum)
+      .maybeSingle();
     
+    if(existing.data){
+      await db.from("lesson_unlocks").delete().eq("id", existing.data.id);
+      toast("🔒 درس " + lessonNum + " قفل شد", "info");
+    } else {
+      await db.from("lesson_unlocks").insert({
+        student_id: studentId,
+        grade: "504",
+        lesson_index: lessonNum,
+        package: "admin",
+        unlocked_at: new Date().toISOString()
+      });
+      toast("✅ درس " + lessonNum + " باز شد", "success");
+    }
+    
+    // رفرش پنل
+    const nameEl = document.querySelector("#unlockPanelContent p b");
+    const name = nameEl ? nameEl.textContent : "";
+    openUnlockPanel(studentId, name);
+  }catch(e){
+    toast("خطا: " + e.message, "error");
+  }
+}
+
+async function unlockAll504(studentId){
+  if(!confirm("آیا مطمئنی می‌خوای تمام ۴۲ درس 504 رو باز کنی؟")) return;
+  try{
+    const rows = [];
+    for(let ln = 1; ln <= 42; ln++){
+      rows.push({
+        student_id: studentId,
+        grade: "504",
+        lesson_index: ln,
+        package: "admin-full",
+        unlocked_at: new Date().toISOString()
+      });
+    }
+    // پاک کردن قبلی‌ها
+    await db.from("lesson_unlocks").delete().eq("student_id", studentId).eq("grade", "504");
+    // اضافه کردن جدیدها
+    await db.from("lesson_unlocks").insert(rows);
+    toast("✅ کل کتاب 504 باز شد", "success");
+    
+    const nameEl = document.querySelector("#unlockPanelContent p b");
+    const name = nameEl ? nameEl.textContent : "";
+    openUnlockPanel(studentId, name);
+  }catch(e){
+    toast("خطا: " + e.message, "error");
+  }
+}
     const existing = await db.from("lesson_unlocks").select("*").eq("student_id",studentId).eq("grade",gradeKey).eq("lesson_index",lessonIndex).maybeSingle();
     
     if(existing.data){
