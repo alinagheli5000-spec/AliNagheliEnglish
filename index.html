@@ -5972,6 +5972,7 @@ function home(){
     <div class="item" onclick="finalExams()"><div class="neonIcon red">${ICONS.exam}</div><h3>آزمون نهایی</h3><p class="muted">با تاریخ</p><button class="btn full">ورود</button></div>
     <div class="item" onclick="leaderboard()"><div class="neonIcon green">${ICONS.trophy}</div><h3>لیدربورد</h3><p class="muted">رقابت هفتگی</p><button class="btn full">مشاهده</button></div>
     <div class="item" onclick="teachers()"><div class="neonIcon purple">${ICONS.teacher}</div><h3>اساتید</h3><p class="muted">رزرو کلاس</p><button class="btn full">مشاهده</button></div>
+    <div class="item" onclick="words504Page()"><div class="neonIcon cyan">📖</div><h3>504 واژه</h3><p class="muted">کتاب ضروری انگلیسی</p><button class="btn full">ورود</button></div>
     <div class="item" onclick="referralPage()"><div class="neonIcon pink">${ICONS.gift}</div><h3>دعوت دوستان</h3><p class="muted">۵۰٪ تخفیف</p><button class="btn full">مشاهده</button></div>
   </div>
 
@@ -5986,6 +5987,226 @@ function home(){
     </div>
   </div>
  `);
+}
+  /* ==================== 504 واژه ضروری ==================== */
+function words504Page(){
+  const lessons = Object.keys(WORDS_504).map(Number).sort((a,b) => a-b);
+  const totalWords = lessons.reduce((sum, ln) => sum + WORDS_504[ln].length, 0);
+  
+  render("504 واژه", `
+    <div class="card" style="background:linear-gradient(135deg,#0891b2,#0e7490);color:#fff;border:0">
+      <button class="btn secondary" onclick="home()" style="background:rgba(255,255,255,.2);color:#fff">← بازگشت</button>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:14px">
+        <div style="width:70px;height:70px;border-radius:18px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:38px">📖</div>
+        <div>
+          <h2 style="margin:0;color:#fff">504 واژه ضروری</h2>
+          <p style="margin:4px 0 0;opacity:.95;font-weight:600">504 Absolutely Essential Words</p>
+        </div>
+      </div>
+      <p style="margin-top:14px;opacity:.95;font-weight:600;line-height:1.9">
+        معروف‌ترین کتاب آموزش واژگان انگلیسی — مناسب برای TOEFL، IELTS و کنکور
+      </p>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:16px">
+      <div class="profileStat" style="cursor:default">
+        <div class="muted" style="font-size:11px">📚 درس‌ها</div>
+        <b>${lessons.length}</b>
+      </div>
+      <div class="profileStat" style="cursor:default">
+        <div class="muted" style="font-size:11px">📝 کلمات</div>
+        <b>${totalWords}</b>
+      </div>
+      <div class="profileStat" style="cursor:default">
+        <div class="muted" style="font-size:11px">⏱️ زمان</div>
+        <b>~7h</b>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0;display:flex;align-items:center;gap:8px">📚 درس‌های کتاب</h3>
+      <div class="lessonGrid">
+        ${lessons.map(ln => `
+          <div class="lesson" onclick="open504Lesson(${ln})" style="cursor:pointer">
+            <div class="lessonNo">${ln}</div>
+            <h3>درس ${ln}</h3>
+            <p class="muted" style="font-size:12px">${WORDS_504[ln].length} کلمه</p>
+            <button class="btn full" style="margin-top:8px">📖 مشاهده</button>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `);
+}
+
+function open504Lesson(ln){
+  const words = WORDS_504[ln];
+  if(!words){ toast("درس پیدا نشد","error"); return; }
+  
+  render(`504 — درس ${ln}`, `
+    <div class="card">
+      <button class="btn secondary" onclick="words504Page()">← بازگشت به لیست</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:10px">
+        <h2 style="margin:0">📖 درس ${ln}</h2>
+        <div style="display:flex;gap:8px">
+          <button class="btn" onclick="start504Quiz(${ln})">🎯 آزمون درس</button>
+          <button class="btn" style="background:linear-gradient(135deg,#f59e0b,#d97706)" onclick="speakAll504(${ln})">🔊 خواندن همه</button>
+        </div>
+      </div>
+    </div>
+
+    ${words.map((w, i) => `
+      <div class="card" style="position:relative">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+          <div style="flex:1;min-width:200px">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <span style="background:linear-gradient(135deg,#0891b2,#0e7490);color:#fff;padding:4px 12px;border-radius:99px;font-size:11px;font-weight:800">${i+1}</span>
+              <h3 style="margin:0;color:var(--primary);font-size:22px;direction:ltr">${esc(w.en)}</h3>
+              ${w.pr ? `<span style="color:var(--text-muted);font-size:13px;direction:ltr">/ ${esc(w.pr)} /</span>` : ''}
+            </div>
+            <div style="margin-top:12px;font-size:15px;font-weight:700;color:var(--text)">📖 ${esc(w.fa)}</div>
+          </div>
+          <button class="btn" style="padding:10px 16px;flex-shrink:0" onclick='speak(${JSON.stringify(w.en)})'>🔊 تلفظ</button>
+        </div>
+        ${w.ex ? `
+          <div style="margin-top:14px;padding:12px 14px;background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));border-radius:14px;border-right:4px solid var(--primary)">
+            <div style="direction:ltr;text-align:left;font-family:'Courier New',monospace;font-size:13px;color:var(--primary-dark);font-weight:700;line-height:1.8">${esc(w.ex)}</div>
+            ${w.exFa ? `<div style="margin-top:8px;font-size:12px;color:var(--text-muted);font-style:italic">📝 ${esc(w.exFa)}</div>` : ''}
+          </div>
+        ` : ''}
+      </div>
+    `).join("")}
+
+    <button class="btn full" style="margin-top:16px;padding:16px;font-size:16px;background:linear-gradient(135deg,#22c55e,#16a34a)" onclick="start504Quiz(${ln})">🎯 آزمون درس ${ln}</button>
+    <button class="btn secondary full" style="margin-top:8px" onclick="words504Page()">← بازگشت</button>
+  `);
+}
+
+function speakAll504(ln){
+  const words = WORDS_504[ln];
+  if(!words || !words.length) return;
+  if(!window.speechSynthesis){ toast("مرورگر پشتیبانی نمی‌کند","error"); return; }
+  speechSynthesis.cancel();
+  let idx = 0;
+  const speakNext = () => {
+    if(idx >= words.length) return;
+    const u = new SpeechSynthesisUtterance(words[idx].en);
+    u.lang = "en-US";
+    u.rate = 0.8;
+    u.onend = () => { idx++; setTimeout(speakNext, 400); };
+    speechSynthesis.speak(u);
+  };
+  speakNext();
+  toast("در حال خواندن کلمات...","info");
+}
+
+function start504Quiz(ln){
+  const words = WORDS_504[ln];
+  if(!words || words.length < 4){ toast("کلمات کافی نیست","error"); return; }
+  const questions = shuffle(words.slice()).slice(0, 10).map(w => {
+    const wrongs = shuffle(words.filter(x => x.en !== w.en)).slice(0, 3);
+    const options = shuffle([w, ...wrongs]);
+    return {
+      q: `معنی کلمه «${w.en}» چیست؟`,
+      options: options.map(o => o.fa),
+      answer: options.findIndex(o => o.fa === w.fa),
+      word: w
+    };
+  });
+  S.quiz = {
+    type: "words504",
+    title: `آزمون 504 — درس ${ln}`,
+    lesson: ln,
+    questions: questions,
+    i: 0,
+    correct: 0,
+    wrong: 0
+  };
+  render(`آزمون درس ${ln}`, `
+    <div class="card">
+      <button class="btn secondary" onclick="open504Lesson(${ln})">← بازگشت به درس</button>
+      <h2 style="margin-top:14px">🎯 آزمون درس ${ln}</h2>
+      <p class="muted">${questions.length} سؤال — بهترین تلاش خودت رو بکن!</p>
+    </div>
+    <div id="quiz504"></div>
+  `);
+  quiz504Render();
+}
+
+function quiz504Render(){
+  const el = document.getElementById("quiz504");
+  if(!el) return;
+  const q = S.quiz.questions[S.quiz.i];
+  if(!q){ quiz504Finish(); return; }
+  el.innerHTML = `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <b style="color:var(--primary)">سؤال ${S.quiz.i+1} از ${S.quiz.questions.length}</b>
+        <span style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:800">✅ ${S.quiz.correct} | ❌ ${S.quiz.wrong}</span>
+      </div>
+      <div class="progress"><i style="width:${(S.quiz.i / S.quiz.questions.length) * 100}%"></i></div>
+      <div style="font-size:18px;font-weight:700;line-height:2;margin:18px 0;color:var(--primary-dark);direction:rtl">${esc(q.q)}</div>
+      ${q.word && q.word.pr ? `<div style="text-align:center;color:var(--text-muted);font-size:13px;margin-bottom:12px;direction:ltr">/ ${esc(q.word.pr)} /</div>` : ''}
+      ${q.options.map((opt, i) => `
+        <button class="option" onclick="answer504Quiz(${i})">${esc(opt)}</button>
+      `).join("")}
+    </div>
+  `;
+}
+
+function answer504Quiz(i){
+  const q = S.quiz.questions[S.quiz.i];
+  const opts = document.querySelectorAll(".option");
+  opts.forEach(x => x.disabled = true);
+  if(i === q.answer){
+    S.quiz.correct++;
+    opts[i].classList.add("correct");
+  } else {
+    S.quiz.wrong++;
+    opts[i].classList.add("wrong");
+    opts[q.answer].classList.add("correct");
+  }
+  setTimeout(() => {
+    S.quiz.i++;
+    if(S.quiz.i >= S.quiz.questions.length) quiz504Finish();
+    else quiz504Render();
+  }, 900);
+}
+
+async function quiz504Finish(){
+  const total = S.quiz.questions.length;
+  const percent = Math.round((S.quiz.correct / total) * 100);
+  
+  if(S.student){
+    try{
+      await db.from("exam_results").insert({
+        user_id: S.student.auth_user_id,
+        student_name: `${S.student.first_name||""} ${S.student.last_name||""}`,
+        exam_type: "words504",
+        exam_title: `504 — درس ${S.quiz.lesson}`,
+        score: S.quiz.correct,
+        total: total,
+        percentage: percent
+      });
+    }catch(e){}
+    await addXP(Math.max(10, percent));
+  }
+  
+  const el = document.getElementById("quiz504");
+  if(!el) return;
+  const emoji = percent >= 90 ? "🏆" : percent >= 70 ? "🎉" : percent >= 50 ? "😊" : "💙";
+  el.innerHTML = `
+    <div class="card resultBox">
+      <div class="score">${percent}%</div>
+      <h2 style="text-align:center">${emoji} آزمون تمام شد!</h2>
+      <p style="text-align:center;font-size:16px">${S.quiz.correct} پاسخ درست از ${total}</p>
+      <p style="text-align:center;color:var(--primary);font-weight:800;font-size:14px;margin-top:8px">+${Math.max(10, percent)} XP</p>
+      <div style="display:flex;gap:8px;margin-top:20px;flex-wrap:wrap">
+        <button class="btn full" onclick="start504Quiz(${S.quiz.lesson})">🔄 آزمون مجدد</button>
+        <button class="btn secondary full" onclick="open504Lesson(${S.quiz.lesson})">📖 بازگشت به درس</button>
+      </div>
+    </div>
+  `;
 }
 
 /* ==================== Q&A و تکالیف ==================== */
