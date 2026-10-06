@@ -8818,14 +8818,109 @@ function loadGameRecords(){
   try{const r=JSON.parse(localStorage.getItem("AN_GAME_RECORDS")||"{}");S.gameRecords=r||{};}
   catch(e){S.gameRecords={}} 
 }
-function saveGameRecord(gameId,score){ 
-  const cur=S.gameRecords[gameId]||0; 
-  if(score>cur){ 
-    S.gameRecords[gameId]=score; 
-    try{localStorage.setItem("AN_GAME_RECORDS",JSON.stringify(S.gameRecords))}catch(e){} 
-    return true; 
-  } 
-  return false; 
+function saveGameRecord(gameId, score){
+  // ذخیره در localStorage (همیشه)
+  const cur = S.gameRecords[gameId] || 0;
+  let isNewRecord = false;
+  if(score > cur){
+    S.gameRecords[gameId] = score;
+    try{ localStorage.setItem("AN_GAME_RECORDS", JSON.stringify(S.gameRecords)); }catch(e){}
+    isNewRecord = true;
+  }
+  
+  // ذخیره در Supabase (اگر زبان‌آموز لاگین باشه)
+  if(typeof S !== 'undefined' && S.student && S.student.id){
+    (async () => {
+      try{
+        const name = `${S.student.first_name||""} ${S.student.last_name||""}`.trim() || "زبان‌آموز";
+        // چک کردن رکورد قبلی
+        const existing = await db.from("game_records")
+          .select("*")
+          .eq("student_id", S.student.id)
+          .eq("game_id", gameId)
+          .maybeSingle();
+        
+        if(existing.data){
+          // اگه رکورد جدید بالاتر بود، آپدیت کن
+          if(score > (existing.data.score || 0)){
+            await db.from("game_records")
+              .update({score, student_name: name, updated_at: new Date().toISOString()})
+              .eq("id", existing.data.id);
+          }
+        } else {
+          // رکورد جدید بساز
+          await db.from("game_records").insert({
+            student_id: S.student.id,
+            student_name: name,
+            game_id: gameId,
+            score: score,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          });
+        }
+      }catch(e){ console.error("saveGameRecord error:", e); }
+    })();
+  }
+  
+  return isNewRecord;
+}
+
+async function getGameLeaderboard(gameId, limit){
+  limit = limit || 20;
+  try{
+    const r = await db.from("game_records")
+      .select("student_id, student_name, score, updated_at")
+      .eq("game_id", gameId)
+      .order("score", {ascending: false})
+      .limit(limit);
+    return r.data || [];
+  }catch(e){
+    console.error("getGameLeaderboard error:", e);
+    return [];
+  }
+}
+
+async function getMyGameRank(gameId){
+  if(typeof S === 'undefined' || !S.student || !S.student.id) return null;
+  try{
+    const r = await db.from("game_records")
+      .select("score")
+      .eq("game_id", gameId)
+      .order("score", {ascending: false});
+    if(!r.data) return null;
+    const myScore = S.gameRecords[gameId] || 0;
+    const rank = r.data.findIndex(x => x.score <= myScore && x.student_id === S.student.id);
+    const better = r.data.filter(x => x.score > myScore).length;
+    return {rank: better + 1, total: r.data.length, score: myScore};
+  }catch(e){
+    return null;
+  }
+}
+
+async function getTopRecords(){
+  try{
+    const gameIds = (typeof GAMES_LIST !== 'undefined' ? GAMES_LIST : []).map(g => g.id)
+      .concat((typeof ADULT_GAMES_LIST !== 'undefined' ? ADULT_GAMES_LIST : []).map(g => g.id));
+    
+    const allRecords = await db.from("game_records")
+      .select("*")
+      .in("game_id", gameIds)
+      .order("score", {ascending: false});
+    
+    if(!allRecords.data) return {};
+    
+    // بهترین رکورد هر بازی
+    const topByGame = {};
+    for(const rec of allRecords.data){
+      if(!topByGame[rec.game_id] || rec.score > topByGame[rec.game_id].score){
+        topByGame[rec.game_id] = rec;
+      }
+    }
+    return topByGame;
+  }catch(e){
+    console.error("getTopRecords error:", e);
+    return {};
+  }
 }
 function startGame(gameId){ 
   S.currentGame={id:gameId,score:0,time:60,started:false,timer:null}; 
