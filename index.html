@@ -9434,6 +9434,35 @@ async function toggleUnlock(studentId, type, gradeOrBook, lessonIndex){
     } else if(type === "talk"){
       gradeKey = gradeOrBook;
     }
+        
+    const existing = await db.from("lesson_unlocks")
+      .select("*")
+      .eq("student_id", studentId)
+      .eq("grade", gradeKey)
+      .eq("lesson_index", lessonIndex)
+      .maybeSingle();
+    
+    if(existing.data){
+      await db.from("lesson_unlocks").delete().eq("id", existing.data.id);
+      toast("🔒 قفل بسته شد","info");
+    } else {
+      await db.from("lesson_unlocks").insert({
+        student_id: studentId,
+        grade: gradeKey,
+        lesson_index: lessonIndex,
+        package: "admin",
+        unlocked_at: new Date().toISOString()
+      });
+      toast("🔓 قفل باز شد","success");
+    }
+    
+    const nameEl = document.querySelector("#unlockPanelContent p b");
+    const name = nameEl ? nameEl.textContent : "";
+    openUnlockPanel(studentId, name);
+  }catch(e){
+    toast("خطا: " + e.message,"error");
+  }
+}
     async function toggleUnlock504(studentId, lessonNum){
   try{
     const existing = await db.from("lesson_unlocks")
@@ -9492,15 +9521,6 @@ async function unlockAll504(studentId){
     toast("خطا: " + e.message, "error");
   }
 }
-    const existing = await db.from("lesson_unlocks").select("*").eq("student_id",studentId).eq("grade",gradeKey).eq("lesson_index",lessonIndex).maybeSingle();
-    
-    if(existing.data){
-      await db.from("lesson_unlocks").delete().eq("id", existing.data.id);
-      toast("🔒 قفل بسته شد","info");
-    } else {
-      await db.from("lesson_unlocks").insert({student_id:studentId,grade:gradeKey,lesson_index:lessonIndex,package:"admin",unlocked_at:new Date().toISOString()});
-      toast("🔓 قفل باز شد","success");
-    }
     
     // رفرش پنل
     const name = document.querySelector("#unlockPanelContent p b")?.textContent || "";
