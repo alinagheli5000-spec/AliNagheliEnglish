@@ -6962,6 +6962,324 @@ function home(){
 function is504Unlocked(lessonNum){
   return true;
 }
+  /* ==================== صفحه گرامر علی ناقلی ==================== */
+  /* ==================== لیدربورد بازی‌ها ==================== */
+async function gameLeaderboardPage(){
+  render("🏆 رکورد بازی‌ها", `
+    <div class="card">
+      <button class="btn secondary" onclick="home()">← بازگشت</button>
+      <h2 style="margin-top:14px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:28px">🏆</span>
+        <span>رکورد بازی‌ها</span>
+      </h2>
+      <p class="muted">بهترین بازیکنان در هر بازی</p>
+    </div>
+    <div id="lbContent">
+      <div class="card" style="text-align:center;padding:40px">
+        <div style="font-size:48px;margin-bottom:12px">⏳</div>
+        <p class="muted">در حال بارگذاری...</p>
+      </div>
+    </div>
+  `);
+  loadLeaderboardData();
+}
+
+async function loadLeaderboardData(){
+  const container = document.getElementById("lbContent");
+  if(!container) return;
+  
+  try{
+    const allGames = [];
+    if(typeof GAMES_LIST !== 'undefined'){
+      GAMES_LIST.forEach(g => allGames.push({id: g.id, title: g.title, emoji: g.emoji, adult: false}));
+    }
+    if(typeof ADULT_GAMES_LIST !== 'undefined'){
+      ADULT_GAMES_LIST.forEach(g => allGames.push({id: g.id, title: g.title, emoji: g.emoji, adult: true}));
+    }
+    
+    let html = '';
+    
+    for(const game of allGames){
+      const leaders = await getGameLeaderboard(game.id, 3);
+      const myRecord = (typeof S !== 'undefined' && S.student && S.student.id) ? 
+        await getMyGameRank(game.id) : null;
+      
+      html += `<div class="card" style="margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--card-border)">
+          <span style="font-size:36px">${game.emoji}</span>
+          <div style="flex:1">
+            <div style="font-weight:900;font-size:16px">${esc(game.title)}</div>
+            <div class="muted" style="font-size:11px">${game.adult ? '🎓 ویژه بزرگسالان' : '🎮 بازی سرگرم‌کننده'}</div>
+          </div>
+        </div>`;
+      
+      if(!leaders || !leaders.length){
+        html += `<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px">
+          🤷 هنوز کسی این بازی رو انجام نداده — تو اولین باش!
+        </div>`;
+      } else {
+        html += `<div style="display:flex;flex-direction:column;gap:8px">`;
+        leaders.forEach((leader, idx) => {
+          const medals = ["🥇", "🥈", "🥉"];
+          const colors = [
+            "linear-gradient(135deg,#fbbf24,#f59e0b)",
+            "linear-gradient(135deg,#cbd5e1,#94a3b8)",
+            "linear-gradient(135deg,#fb923c,#ea580c)"
+          ];
+          html += `
+            <div class="leaderRow" style="background:${colors[idx]};color:#fff;font-weight:800">
+              <div class="leaderRank" style="font-size:22px">${medals[idx]}</div>
+              <div class="leaderName">${esc(leader.student_name || 'زبان‌آموز')}</div>
+              <div class="leaderXP">⭐ ${leader.score}</div>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      }
+      
+      if(myRecord && myRecord.score > 0){
+        html += `<div style="margin-top:12px;padding:10px 14px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;border-radius:14px;display:flex;justify-content:space-between;align-items:center;font-weight:800">
+          <span>👤 رتبه تو: <b>${myRecord.rank}</b> از ${myRecord.total}</span>
+          <span>⭐ ${myRecord.score}</span>
+        </div>`;
+      } else if(typeof S !== 'undefined' && S.student){
+        html += `<div style="margin-top:12px;padding:10px 14px;background:var(--bg-grad-1);color:var(--text-muted);border-radius:14px;text-align:center;font-size:12px;font-weight:700">
+          💡 هنوز این بازی رو انجام ندادی — رکورد بزن!
+        </div>`;
+      }
+      
+      html += `</div>`;
+    }
+    
+    container.innerHTML = html;
+  }catch(e){
+    console.error("loadLeaderboardData error:", e);
+    container.innerHTML = `<div class="card" style="text-align:center;padding:40px">
+      <div style="font-size:60px;margin-bottom:12px">❌</div>
+      <p style="color:var(--danger);font-weight:800">خطا در بارگذاری</p>
+      <p class="muted">${esc(e.message)}</p>
+    </div>`;
+  }
+}
+
+function grammarCoursePage(){
+  const lessons = Object.keys(GRAMMAR_COURSE).map(Number).sort((a,b) => a-b);
+  const totalLessons = lessons.length;
+  const totalQuiz = lessons.reduce((sum, ln) => sum + (GRAMMAR_COURSE[ln].quiz?.length || 0), 0);
+  
+  render("گرامر علی ناقلی", `
+    <div class="card" style="background:linear-gradient(135deg,#7c3aed,#4c1d95);color:#fff;border:0">
+      <button class="btn secondary" onclick="home()" style="background:rgba(255,255,255,.2);color:#fff">← بازگشت</button>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:14px">
+        <div style="width:70px;height:70px;border-radius:18px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:38px">📚</div>
+        <div>
+          <h2 style="margin:0;color:#fff">گرامر علی ناقلی</h2>
+          <p style="margin:4px 0 0;opacity:.95;font-weight:600">دوره صفر تا صد گرامر انگلیسی</p>
+        </div>
+      </div>
+      <p style="margin-top:14px;opacity:.95;font-weight:600;line-height:1.9">
+        دوره کامل گرامر از مبتدی تا پیشرفته با توضیحات، مثال‌ها و آزمون
+      </p>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:16px">
+      <div class="profileStat" style="cursor:default">
+        <div class="muted" style="font-size:11px">📚 درس‌ها</div>
+        <b>${totalLessons}</b>
+      </div>
+      <div class="profileStat" style="cursor:default">
+        <div class="muted" style="font-size:11px">📝 سؤالات</div>
+        <b>${totalQuiz}</b>
+      </div>
+      <div class="profileStat" style="cursor:default">
+        <div class="muted" style="font-size:11px">⭐ XP</div>
+        <b>${totalLessons * 20}</b>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0;display:flex;align-items:center;gap:8px">📚 درس‌های گرامر</h3>
+      <div class="lessonGrid">
+        ${lessons.map(ln => {
+          const g = GRAMMAR_COURSE[ln];
+          return `
+            <div class="lesson" onclick="openGrammarLesson(${ln})" style="cursor:pointer">
+              <div class="lessonNo">${ln}</div>
+              <h3>${esc(g.title)}</h3>
+              <p class="muted" style="font-size:12px">${esc(g.level)}</p>
+              <button class="btn full" style="margin-top:8px">📖 مشاهده</button>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </div>
+  `);
+}
+
+function openGrammarLesson(ln){
+  const g = GRAMMAR_COURSE[ln];
+  if(!g){ toast("درس پیدا نشد", "error"); return; }
+  
+  render(g.title, `
+    <div class="card">
+      <button class="btn secondary" onclick="grammarCoursePage()">← بازگشت به لیست</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:10px">
+        <div>
+          <div style="font-size:12px;font-weight:800;color:var(--text-muted)">درس ${ln} — ${esc(g.level)}</div>
+          <h2 style="margin:6px 0 0">${esc(g.title)}</h2>
+        </div>
+        <button class="btn" onclick="startGrammarQuiz(${ln})">🎯 آزمون درس</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0;color:var(--primary)">📝 توضیحات</h3>
+      <p style="line-height:2;font-size:14px">${esc(g.description)}</p>
+      
+      ${g.structure ? `
+        <div style="margin-top:14px;padding:14px;background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));border-radius:14px;border-right:4px solid var(--primary)">
+          <b style="color:var(--primary)">🔧 ساختار:</b>
+          <div style="margin-top:8px;font-family:'Courier New',monospace;font-size:14px;direction:ltr;text-align:left;color:var(--text)">${esc(g.structure)}</div>
+        </div>
+      ` : ''}
+      
+      ${g.notes ? `
+        <div style="margin-top:14px;padding:14px;background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:14px">
+          <b style="color:#92400e">💡 نکته:</b>
+          <div style="margin-top:6px;font-size:13px;color:#78350f;line-height:1.9">${esc(g.notes)}</div>
+        </div>
+      ` : ''}
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0;color:var(--primary)">✅ مثال‌ها</h3>
+      ${g.examples.map((ex, i) => `
+        <div style="margin-bottom:14px;padding:14px;background:linear-gradient(135deg,var(--bg-grad-1),var(--card-bg));border-radius:14px;border-right:4px solid var(--primary)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+            <div style="flex:1">
+              <div style="direction:ltr;text-align:left;font-family:'Courier New',monospace;font-size:14px;color:var(--primary-dark);font-weight:700;line-height:1.9">${esc(ex.en)}</div>
+              <div style="margin-top:6px;font-size:13px;color:var(--text-muted)">📝 ${esc(ex.fa)}</div>
+            </div>
+            <button class="btn" style="padding:8px 12px;font-size:12px;flex-shrink:0" onclick='speak(${JSON.stringify(ex.en)})'>🔊</button>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+
+    <button class="btn full" style="padding:16px;font-size:16px;background:linear-gradient(135deg,#22c55e,#16a34a)" onclick="startGrammarQuiz(${ln})">🎯 آزمون درس ${ln}</button>
+    <button class="btn secondary full" style="margin-top:8px" onclick="grammarCoursePage()">← بازگشت</button>
+  `);
+}
+
+function startGrammarQuiz(ln){
+  const g = GRAMMAR_COURSE[ln];
+  if(!g || !g.quiz || !g.quiz.length){ toast("آزمونی برای این درس نیست", "error"); return; }
+  
+  const questions = g.quiz.map(q => {
+    const options = shuffle(q.o.slice());
+    return {
+      q: q.q,
+      options: options,
+      answer: options.indexOf(q.o[q.a])
+    };
+  });
+  
+  S.quiz = {
+    type: "grammar",
+    title: `گرامر — درس ${ln}`,
+    lesson: ln,
+    questions: questions,
+    i: 0,
+    correct: 0,
+    wrong: 0
+  };
+  
+  render(`آزمون درس ${ln}`, `
+    <div class="card">
+      <button class="btn secondary" onclick="openGrammarLesson(${ln})">← بازگشت به درس</button>
+      <h2 style="margin-top:14px">🎯 آزمون: ${esc(g.title)}</h2>
+      <p class="muted">${questions.length} سؤال</p>
+    </div>
+    <div id="grammarQuiz"></div>
+  `);
+  grammarQuizRender();
+}
+
+function grammarQuizRender(){
+  const el = document.getElementById("grammarQuiz");
+  if(!el) return;
+  const q = S.quiz.questions[S.quiz.i];
+  if(!q){ grammarQuizFinish(); return; }
+  el.innerHTML = `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <b style="color:var(--primary)">سؤال ${S.quiz.i+1} از ${S.quiz.questions.length}</b>
+        <span style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:800">✅ ${S.quiz.correct} | ❌ ${S.quiz.wrong}</span>
+      </div>
+      <div class="progress"><i style="width:${(S.quiz.i / S.quiz.questions.length) * 100}%"></i></div>
+      <div style="font-size:18px;font-weight:700;line-height:2;margin:18px 0;color:var(--primary-dark);direction:ltr;text-align:center;font-family:'Courier New',monospace">${esc(q.q)}</div>
+      ${q.options.map((opt, i) => `
+        <button class="option" onclick="answerGrammarQuiz(${i})">${esc(opt)}</button>
+      `).join("")}
+    </div>
+  `;
+}
+
+function answerGrammarQuiz(i){
+  const q = S.quiz.questions[S.quiz.i];
+  const opts = document.querySelectorAll(".option");
+  opts.forEach(x => x.disabled = true);
+  if(i === q.answer){
+    S.quiz.correct++;
+    opts[i].classList.add("correct");
+  } else {
+    S.quiz.wrong++;
+    opts[i].classList.add("wrong");
+    opts[q.answer].classList.add("correct");
+  }
+  setTimeout(() => {
+    S.quiz.i++;
+    if(S.quiz.i >= S.quiz.questions.length) grammarQuizFinish();
+    else grammarQuizRender();
+  }, 900);
+}
+
+async function grammarQuizFinish(){
+  const total = S.quiz.questions.length;
+  const percent = Math.round((S.quiz.correct / total) * 100);
+  
+  if(typeof S !== 'undefined' && S.student){
+    try{
+      await db.from("exam_results").insert({
+        user_id: S.student.auth_user_id,
+        student_name: `${S.student.first_name||""} ${S.student.last_name||""}`,
+        exam_type: "grammar",
+        exam_title: `گرامر علی ناقلی — درس ${S.quiz.lesson}`,
+        score: S.quiz.correct,
+        total: total,
+        percentage: percent
+      });
+    }catch(e){}
+    await addXP(Math.max(10, percent));
+  }
+  
+  const el = document.getElementById("grammarQuiz");
+  if(!el) return;
+  const emoji = percent >= 90 ? "🏆" : percent >= 70 ? "🎉" : percent >= 50 ? "😊" : "💙";
+  el.innerHTML = `
+    <div class="card resultBox">
+      <div class="score">${percent}%</div>
+      <h2 style="text-align:center">${emoji} آزمون تمام شد!</h2>
+      <p style="text-align:center;font-size:16px">${S.quiz.correct} پاسخ درست از ${total}</p>
+      <p style="text-align:center;color:var(--primary);font-weight:800;font-size:14px;margin-top:8px">+${Math.max(10, percent)} XP</p>
+      <div style="display:flex;gap:8px;margin-top:20px;flex-wrap:wrap">
+        <button class="btn full" onclick="startGrammarQuiz(${S.quiz.lesson})">🔄 آزمون مجدد</button>
+        <button class="btn secondary full" onclick="openGrammarLesson(${S.quiz.lesson})">📖 بازگشت به درس</button>
+      </div>
+    </div>
+  `;
+}
+
 function words504Page(){
   const lessons = Object.keys(WORDS_504).map(Number).sort((a,b) => a-b);
   const totalWords = lessons.reduce((sum, ln) => sum + WORDS_504[ln].length, 0);
