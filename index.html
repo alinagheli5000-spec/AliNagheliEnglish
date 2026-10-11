@@ -6858,6 +6858,50 @@ function header(title){
 function nav(){ 
   return `<div class="bottom"><div class="bottomIn"><button class="nav" onclick="home()">${ICONS.home}<span>خانه</span></button><button class="nav" onclick="courses()">${ICONS.books}<span>دروس</span></button><button class="nav" onclick="dictionaryPage()">${ICONS.dictionary}<span>دیکشنری</span></button><button class="nav" onclick="talkCoursePage()">${ICONS.mic}<span>مکالمه</span></button><button class="nav messagesNavBtn" onclick="messagesPage()">${ICONS.chat}<span>پیام‌ها</span></button><button class="nav" onclick="homeworkPage()">${ICONS.homework}<span>تکالیف</span></button><button class="nav" onclick="profile()">${ICONS.user}<span>پروفایل</span></button></div></div>`; 
 }
+  /* ==================== لود نفر اول در صفحه اصلی ==================== */
+async function loadHomeLeaderboard(){
+  const container = document.getElementById("homeTopPlayer");
+  if(!container) return;
+  
+  try{
+    const r = await db.from("student_xp")
+      .select("student_id, xp, level")
+      .order("xp", {ascending: false})
+      .limit(1);
+    
+    if(!r.data || !r.data.length){
+      container.innerHTML = `<div style="text-align:center;padding:16px;color:rgba(255,255,255,.85);font-size:13px;font-weight:700">🏆 هنوز کسی XP نگرفته — تو اولین باش!</div>`;
+      return;
+    }
+    
+    const top = r.data[0];
+    // گرفتن اسم زبان‌آموز
+    const sr = await db.from("students").select("first_name, last_name").eq("id", top.student_id).maybeSingle();
+    const name = sr.data ? `${sr.data.first_name||""} ${sr.data.last_name||""}`.trim() : "زبان‌آموز";
+    
+    // بررسی اینکه خودم هستم یا نه
+    const isMe = (typeof S !== 'undefined' && S.student && S.student.id === top.student_id);
+    
+    container.innerHTML = `
+      <div class="topPlayerCard ${isMe ? 'isMe' : ''}">
+        <div class="topPlayerCrown">👑</div>
+        <div class="topPlayerIcon">🏆</div>
+        <div class="topPlayerInfo">
+          <div class="topPlayerLabel">${isMe ? '🎉 تو نفر اولی!' : '🥇 نفر اول هفته'}</div>
+          <div class="topPlayerName">${esc(name)}</div>
+          <div class="topPlayerStats">
+            <span>⭐ ${top.xp} XP</span>
+            <span>🏅 Level ${top.level}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }catch(e){
+    console.error("loadHomeLeaderboard error:", e);
+    container.innerHTML = "";
+  }
+}
+
 function render(title,content){ 
   document.body.innerHTML=header(title)+`<main class="container">${content}</main>`+nav()+`<a class="floatWhats" href="https://wa.me/989141892768" target="_blank" title="واتساپ پشتیبانی">💬</a>`; 
   if(typeof aiBuildWidget === 'function'){ aiBuildWidget(); }
