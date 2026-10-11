@@ -6557,14 +6557,40 @@ async function loadStudentStats(){
   }catch(e){ console.error("loadStudentStats error:", e); }
 }
 async function addXP(amount){ 
-  if(!S.student)return; 
-  const old=S.xp;
-  S.xp+=Number(amount||0);
-  S.level=calculateLevel(S.xp); 
+  if(!S.student){
+    console.warn("addXP: no student");
+    return;
+  }
+  const old = S.xp;
+  S.xp += Number(amount||0);
+  S.level = calculateLevel(S.xp);
+  
+  console.log("addXP called:", {student_id: S.student.id, xp: S.xp, level: S.level});
+  
   try{
-    await db.from("student_xp").upsert({student_id:S.student.id,xp:S.xp,level:S.level,updated_at:new Date().toISOString()},{onConflict:"student_id"})
-  }catch(e){} 
-  if(S.level>calculateLevel(old))await unlockAchievement("level_"+S.level,"رسیدن به Level "+S.level); 
+    const r = await db.from("student_xp").upsert(
+      {
+        student_id: S.student.id,
+        xp: S.xp,
+        level: S.level,
+        updated_at: new Date().toISOString()
+      },
+      {onConflict: "student_id"}
+    );
+    if(r.error){
+      console.error("addXP ERROR:", r.error);
+      toast("خطا در ذخیره XP: " + r.error.message, "error", 5000);
+    } else {
+      console.log("addXP SUCCESS:", r);
+    }
+  }catch(e){
+    console.error("addXP CATCH:", e);
+    toast("خطای شبکه در ذخیره XP", "error", 5000);
+  }
+  
+  if(S.level > calculateLevel(old)){
+    await unlockAchievement("level_" + S.level, "رسیدن به Level " + S.level);
+  }
 }
 async function unlockAchievement(key,title){ 
   if(!S.student||S.achievements.some(x=>x.achievement_key===key))return; 
