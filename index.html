@@ -7128,20 +7128,13 @@ async function studentLogin(){
     const auth=await db.auth.signInWithPassword({email:String(email).trim(),password}); 
     if(auth.error)throw new Error("رمز عبور صحیح نیست."); 
     S.student=student;S.admin=false; 
-await Promise.all([
-  loadStudentStats(),
-  loadUnlocks(),
-  loadQAs(),
-  loadHomeworks()
-]);
-loadStreak();loadGameRecords();  
-   await loadMessages();
-toast("خوش آمدی "+student.first_name+" 👋","success"); 
-home();
-            aiBuildWidget();
-        if('Notification' in window && Notification.permission === 'default'){
-      setTimeout(()=>{ requestNotificationPermission(); }, 2000);
-    }
+    await loadStudentStats();
+    loadStreak();
+    loadGameRecords();
+    
+    toast("خوش آمدی " + student.first_name + " 👋", "success"); 
+    home();
+    aiBuildWidget();
   }catch(e){toast(e?.message||"ورود ناموفق بود.","error")} 
 }
 async function adminLogin(){ 
