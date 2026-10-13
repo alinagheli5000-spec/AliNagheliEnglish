@@ -7128,19 +7128,27 @@ async function studentLogin(){
     const auth=await db.auth.signInWithPassword({email:String(email).trim(),password}); 
     if(auth.error)throw new Error("رمز عبور صحیح نیست."); 
     S.student=student;S.admin=false; 
-await Promise.all([
-  loadStudentStats(),
-  loadUnlocks(),
-  loadQAs(),
-  loadHomeworks()
-]);
-loadStreak();loadGameRecords();  
-   await loadMessages();
-toast("خوش آمدی "+student.first_name+" 👋","success"); 
-home();
-            aiBuildWidget();
-        if('Notification' in window && Notification.permission === 'default'){
-      setTimeout(()=>{ requestNotificationPermission(); }, 2000);
+    // فقط اطلاعات ضروری رو سریع لود کن
+    await loadStudentStats();
+    loadStreak();
+    loadGameRecords();
+    
+    toast("خوش آمدی " + student.first_name + " 👋", "success"); 
+    home();
+    aiBuildWidget();
+    
+    // بقیه اطلاعات رو در پس‌زمینه لود کن
+    setTimeout(() => {
+      Promise.allSettled([
+        loadUnlocks(),
+        loadQAs(),
+        loadHomeworks(),
+        loadMessages()
+      ]).catch(() => {});
+    }, 800);
+    
+    if('Notification' in window && Notification.permission === 'default'){
+      setTimeout(()=>{ requestNotificationPermission(); }, 3000);
     }
   }catch(e){toast(e?.message||"ورود ناموفق بود.","error")} 
 }
