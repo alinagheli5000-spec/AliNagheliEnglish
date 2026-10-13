@@ -7128,14 +7128,23 @@ async function studentLogin(){
     const auth=await db.auth.signInWithPassword({email:String(email).trim(),password}); 
     if(auth.error)throw new Error("رمز عبور صحیح نیست."); 
     S.student=student;S.admin=false; 
-await Promise.all([
-  loadStudentStats(),
-  loadUnlocks(),
-  loadQAs(),
-  loadHomeworks()
-]);
-loadStreak();loadGameRecords();  
-   await loadMessages();
+    // فقط اطلاعات ضروری رو لود کن
+    await loadStudentStats();
+    loadStreak();
+    loadGameRecords();
+    
+    toast("خوش آمدی " + student.first_name + " 👋", "success"); 
+    home();
+    
+    // بقیه اطلاعات رو بعد از نمایش صفحه لود کن (پس‌زمینه)
+    setTimeout(() => {
+      Promise.all([
+        loadUnlocks(),
+        loadQAs(),
+        loadHomeworks(),
+        loadMessages()
+      ]).catch(e => console.warn("Background load error:", e));
+    }, 500);
 toast("خوش آمدی "+student.first_name+" 👋","success"); 
 home();
             aiBuildWidget();
