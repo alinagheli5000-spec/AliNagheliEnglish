@@ -9657,12 +9657,19 @@ const GAMES_LIST=[
   {id:"memory",title:"حافظه کلمات",desc:"معنی کلمه رو انتخاب کن",emoji:"🧠"},
   {id:"incomplete",title:"کلمه ناقص",desc:"حروف جا افتاده",emoji:"🔤"},
   {id:"numbers",title:"عدد به انگلیسی",desc:"عدد رو تشخیص بده",emoji:"🔢"},
-  {id:"colors",title:"تشخیص رنگ",desc:"اسم رنگ رو بگو",emoji:"🎨"}
+  {id:"colors",title:"تشخیص رنگ",desc:"اسم رنگ رو بگو",emoji:"🎨"},
+  {id:"hangman",title:"کلمه مخفی",desc:"حروف رو حدس بزن",emoji:"🔤"},
+  {id:"antonyms",title:"متضادها",desc:"متضاد کلمه رو پیدا کن",emoji:"🔗"},
+  {id:"categories",title:"دسته‌بندی",desc:"کلمه به کدوم دسته تعلق داره؟",emoji:"📚"},
+  {id:"mathEn",title:"محاسبه انگلیسی",desc:"عدد رو به انگلیسی بگو",emoji:"🔢"},
+  {id:"clock",title:"چه ساعتیه؟",desc:"ساعت رو به انگلیسی بگو",emoji:"🕐"}
 ];
 const ADULT_GAMES_LIST=[
   {id:"idioms",title:"اصطلاحات",desc:"اصطلاحات رایج",emoji:"🎭"},
   {id:"proverbs",title:"ضرب‌المثل‌ها",desc:"ضرب‌المثل‌های معروف",emoji:"📖"},
-  {id:"adultVocab",title:"واژگان پیشرفته",desc:"کلمات سطح بالا",emoji:"💎"}
+  {id:"adultVocab",title:"واژگان پیشرفته",desc:"کلمات سطح بالا",emoji:"💎"},
+  {id:"synonyms",title:"مترادف‌ها",desc:"مترادف کلمه رو پیدا کن",emoji:"🎨"},
+  {id:"pictorial",title:"اصطلاح تصویری",desc:"از روی ایموجی حدس بزن",emoji:"💬"}
 ];
 function getAnimalGameData(){ 
   return [
@@ -9759,6 +9766,243 @@ function getAdultVocabGameData(){
     ["genuine","اصیل"],["meticulous","دقیق"],["procrastinate","به تعویق انداختن"],["ubiquitous","همه‌جا حاضر"],["unprecedented","بی‌سابقه"],
     ["resilient","انعطاف‌پذیر"],["empathy","همدلی"],["integrity","درستکاری"],["innovation","نوآوری"],["sustainable","پایدار"],["transparent","شفاف"]
   ]; 
+  /* ==================== داده‌های بازی‌های جدید ==================== */
+
+function getHangmanGameData(){
+  return [
+    {word:"BOOK",fa:"کتاب",hint:"چیزی که می‌خونی"},
+    {word:"TREE",fa:"درخت",hint:"توی باغ سبز می‌شه"},
+    {word:"FISH",fa:"ماهی",hint:"توی آب شنا می‌کنه"},
+    {word:"MOON",fa:"ماه",hint:"شب‌ها توی آسمونه"},
+    {word:"STAR",fa:"ستاره",hint:"شب‌ها می‌درخشه"},
+    {word:"DOOR",fa:"در",hint:"وارد شدن از اینجا"},
+    {word:"BIRD",fa:"پرنده",hint:"توی آسمون پرواز می‌کنه"},
+    {word:"CAKE",fa:"کیک",hint:"توی تولد می‌خورن"},
+    {word:"MILK",fa:"شیر",hint:"سفید و مقوی"},
+    {word:"WATER",fa:"آب",hint:"مایه حیات"},
+    {word:"FIRE",fa:"آتش",hint:"داغ و سوزان"},
+    {word:"ROSE",fa:"گل رز",hint:"قشنگ و خوشبو"},
+    {word:"LEAF",fa:"برگ",hint:"روی درخت می‌شه"},
+    {word:"RAIN",fa:"باران",hint:"از آسمون میاد"},
+    {word:"SNOW",fa:"برف",hint:"سفید و سرد"},
+    {word:"WIND",fa:"باد",hint:"هوا رو حرکت می‌ده"},
+    {word:"HOME",fa:"خانه",hint:"جایی که زندگی می‌کنی"},
+    {word:"NAME",fa:"نام",hint:"اسمت"},
+    {word:"LOVE",fa:"عشق",hint:"احساس قشنگ"},
+    {word:"HAND",fa:"دست",hint:"باهاش کار می‌کنی"},
+    {word:"EYE",fa:"چشم",hint:"باهاش می‌بینی"},
+    {word:"FACE",fa:"صورت",hint:"توی آینه می‌بینی"},
+    {word:"WARM",fa:"گرم",hint:"حس خوب"},
+    {word:"COLD",fa:"سرد",hint:"یخ"},
+    {word:"HAPPY",fa:"خوشحال",hint:"😊"},
+    {word:"FAST",fa:"سریع",hint:"مثل برق"},
+    {word:"SLOW",fa:"آرام",hint:"مثل لاک‌پشت"},
+    {word:"GOOD",fa:"خوب",hint:"👍"}
+  ];
+}
+
+function getAntonymGameData(){
+  return [
+    {word:"Big",antonym:"Small",fa:"بزرگ ↔ کوچک"},
+    {word:"Hot",antonym:"Cold",fa:"گرم ↔ سرد"},
+    {word:"Fast",antonym:"Slow",fa:"سریع ↔ آرام"},
+    {word:"Happy",antonym:"Sad",fa:"خوشحال ↔ غمگین"},
+    {word:"Day",antonym:"Night",fa:"روز ↔ شب"},
+    {word:"Old",antonym:"New",fa:"قدیمی ↔ جدید"},
+    {word:"Open",antonym:"Close",fa:"باز ↔ بسته"},
+    {word:"Up",antonym:"Down",fa:"بالا ↔ پایین"},
+    {word:"Long",antonym:"Short",fa:"بلند ↔ کوتاه"},
+    {word:"Tall",antonym:"Short",fa:"بلندقد ↔ کوتاه"},
+    {word:"Rich",antonym:"Poor",fa:"ثروتمند ↔ فقیر"},
+    {word:"Easy",antonym:"Hard",fa:"آسان ↔ سخت"},
+    {word:"Young",antonym:"Old",fa:"جوان ↔ پیر"},
+    {word:"Strong",antonym:"Weak",fa:"قوی ↔ ضعیف"},
+    {word:"Clean",antonym:"Dirty",fa:"تمیز ↔ کثیف"},
+    {word:"Full",antonym:"Empty",fa:"پر ↔ خالی"},
+    {word:"Wet",antonym:"Dry",fa:"خیس ↔ خشک"},
+    {word:"Heavy",antonym:"Light",fa:"سنگین ↔ سبک"},
+    {word:"White",antonym:"Black",fa:"سفید ↔ سیاه"},
+    {word:"Right",antonym:"Wrong",fa:"درست ↔ غلط"},
+    {word:"True",antonym:"False",fa:"درست ↔ نادرست"},
+    {word:"Begin",antonym:"End",fa:"شروع ↔ پایان"},
+    {word:"Laugh",antonym:"Cry",fa:"خندیدن ↔ گریه کردن"},
+    {word:"Give",antonym:"Take",fa:"دادن ↔ گرفتن"},
+    {word:"Buy",antonym:"Sell",fa:"خریدن ↔ فروختن"},
+    {word:"Love",antonym:"Hate",fa:"عشق ↔ نفرت"},
+    {word:"Win",antonym:"Lose",fa:"بردن ↔ باختن"},
+    {word:"Push",antonym:"Pull",fa:"هل دادن ↔ کشیدن"},
+    {word:"Safe",antonym:"Dangerous",fa:"امن ↔ خطرناک"},
+    {word:"Friendly",antonym:"Unfriendly",fa:"خوش‌برخورد ↔ بدبرخورد"}
+  ];
+}
+
+function getSynonymGameData(){
+  return [
+    {word:"Happy",synonym:"Glad",fa:"خوشحال"},
+    {word:"Big",synonym:"Large",fa:"بزرگ"},
+    {word:"Small",synonym:"Tiny",fa:"کوچک"},
+    {word:"Fast",synonym:"Quick",fa:"سریع"},
+    {word:"Beautiful",synonym:"Gorgeous",fa:"زیبا"},
+    {word:"Smart",synonym:"Clever",fa:"باهوش"},
+    {word:"Angry",synonym:"Furious",fa:"عصبانی"},
+    {word:"Begin",synonym:"Start",fa:"شروع کردن"},
+    {word:"End",synonym:"Finish",fa:"تمام کردن"},
+    {word:"Buy",synonym:"Purchase",fa:"خریدن"},
+    {word:"Help",synonym:"Assist",fa:"کمک کردن"},
+    {word:"Show",synonym:"Display",fa:"نشان دادن"},
+    {word:"Hide",synonym:"Conceal",fa:"پنهان کردن"},
+    {word:"Difficult",synonym:"Hard",fa:"سخت"},
+    {word:"Easy",synonym:"Simple",fa:"آسان"},
+    {word:"Rich",synonym:"Wealthy",fa:"ثروتمند"},
+    {word:"Cold",synonym:"Chilly",fa:"سرد"},
+    {word:"Hot",synonym:"Warm",fa:"گرم"},
+    {word:"Important",synonym:"Significant",fa:"مهم"},
+    {word:"Quiet",synonym:"Silent",fa:"ساکت"},
+    {word:"Brave",synonym:"Courageous",fa:"شجاع"},
+    {word:"Famous",synonym:"Well-known",fa:"مشهور"},
+    {word:"Funny",synonym:"Amusing",fa:"خنده‌دار"},
+    {word:"Sad",synonym:"Unhappy",fa:"غمگین"},
+    {word:"Tired",synonym:"Exhausted",fa:"خسته"},
+    {word:"Old",synonym:"Ancient",fa:"قدیمی"},
+    {word:"New",synonym:"Modern",fa:"جدید"},
+    {word:"Correct",synonym:"Right",fa:"درست"},
+    {word:"Wrong",synonym:"Incorrect",fa:"غلط"},
+    {word:"Amazing",synonym:"Wonderful",fa:"شگفت‌انگیز"}
+  ];
+}
+
+function getCategoryGameData(){
+  return [
+    {word:"Apple",category:"Fruit",fa:"سیب"},
+    {word:"Banana",category:"Fruit",fa:"موز"},
+    {word:"Orange",category:"Fruit",fa:"پرتقال"},
+    {word:"Grapes",category:"Fruit",fa:"انگور"},
+    {word:"Lion",category:"Animal",fa:"شیر"},
+    {word:"Tiger",category:"Animal",fa:"ببر"},
+    {word:"Elephant",category:"Animal",fa:"فیل"},
+    {word:"Cat",category:"Animal",fa:"گربه"},
+    {word:"Red",category:"Color",fa:"قرمز"},
+    {word:"Blue",category:"Color",fa:"آبی"},
+    {word:"Green",category:"Color",fa:"سبز"},
+    {word:"Yellow",category:"Color",fa:"زرد"},
+    {word:"Car",category:"Vehicle",fa:"ماشین"},
+    {word:"Bus",category:"Vehicle",fa:"اتوبوس"},
+    {word:"Bicycle",category:"Vehicle",fa:"دوچرخه"},
+    {word:"Airplane",category:"Vehicle",fa:"هواپیما"},
+    {word:"Doctor",category:"Job",fa:"دکتر"},
+    {word:"Teacher",category:"Job",fa:"معلم"},
+    {word:"Engineer",category:"Job",fa:"مهندس"},
+    {word:"Pilot",category:"Job",fa:"خلبان"},
+    {word:"Bread",category:"Food",fa:"نان"},
+    {word:"Rice",category:"Food",fa:"برنج"},
+    {word:"Cheese",category:"Food",fa:"پنیر"},
+    {word:"Meat",category:"Food",fa:"گوشت"},
+    {word:"Summer",category:"Season",fa:"تابستان"},
+    {word:"Winter",category:"Season",fa:"زمستان"},
+    {word:"Spring",category:"Season",fa:"بهار"},
+    {word:"Autumn",category:"Season",fa:"پاییز"},
+    {word:"Tehran",category:"City",fa:"تهران"},
+    {word:"London",category:"City",fa:"لندن"},
+    {word:"Paris",category:"City",fa:"پاریس"},
+    {word:"Tokyo",category:"City",fa:"توکیو"}
+  ];
+}
+
+function getMathEnGameData(){
+  return [
+    {a:1,b:1,op:"+",answer:"Two",fa:"یک + یک = دو"},
+    {a:2,b:3,op:"+",answer:"Five",fa:"دو + سه = پنج"},
+    {a:5,b:5,op:"+",answer:"Ten",fa:"پنج + پنج = ده"},
+    {a:10,b:5,op:"-",answer:"Five",fa:"ده - پنج = پنج"},
+    {a:8,b:3,op:"-",answer:"Five",fa:"هشت - سه = پنج"},
+    {a:20,b:10,op:"-",answer:"Ten",fa:"بیست - ده = ده"},
+    {a:2,b:3,op:"×",answer:"Six",fa:"دو × سه = شش"},
+    {a:3,b:3,op:"×",answer:"Nine",fa:"سه × سه = نه"},
+    {a:4,b:5,op:"×",answer:"Twenty",fa:"چهار × پنج = بیست"},
+    {a:10,b:2,op:"÷",answer:"Five",fa:"ده ÷ دو = پنج"},
+    {a:20,b:4,op:"÷",answer:"Five",fa:"بیست ÷ چهار = پنج"},
+    {a:12,b:3,op:"÷",answer:"Four",fa:"دوازده ÷ سه = چهار"},
+    {a:7,b:3,op:"+",answer:"Ten",fa:"هفت + سه = ده"},
+    {a:15,b:5,op:"-",answer:"Ten",fa:"پانزده - پنج = ده"},
+    {a:6,b:4,op:"+",answer:"Ten",fa:"شش + چهار = ده"},
+    {a:100,b:50,op:"-",answer:"Fifty",fa:"صد - پنجاه = پنجاه"},
+    {a:25,b:25,op:"+",answer:"Fifty",fa:"بیست‌وپنج + بیست‌وپنج = پنجاه"},
+    {a:2,b:10,op:"×",answer:"Twenty",fa:"دو × ده = بیست"},
+    {a:9,b:1,op:"+",answer:"Ten",fa:"نه + یک = ده"},
+    {a:30,b:10,op:"-",answer:"Twenty",fa:"سی - ده = بیست"},
+    {a:5,b:4,op:"×",answer:"Twenty",fa:"پنج × چهار = بیست"},
+    {a:100,b:10,op:"÷",answer:"Ten",fa:"صد ÷ ده = ده"},
+    {a:3,b:7,op:"+",answer:"Ten",fa:"سه + هفت = ده"},
+    {a:50,b:30,op:"-",answer:"Twenty",fa:"پنجاه - سی = بیست"},
+    {a:11,b:9,op:"+",answer:"Twenty",fa:"یازده + نه = بیست"},
+    {a:6,b:2,op:"÷",answer:"Three",fa:"شش ÷ دو = سه"},
+    {a:8,b:2,op:"÷",answer:"Four",fa:"هشت ÷ دو = چهار"},
+    {a:9,b:3,op:"÷",answer:"Three",fa:"نه ÷ سه = سه"},
+    {a:7,b:7,op:"+",answer:"Fourteen",fa:"هفت + هفت = چهارده"},
+    {a:10,b:10,op:"+",answer:"Twenty",fa:"ده + ده = بیست"}
+  ];
+}
+
+function getClockGameData(){
+  return [
+    {hour:1,minute:0,answer:"One o'clock",fa:"ساعت یک"},
+    {hour:2,minute:0,answer:"Two o'clock",fa:"ساعت دو"},
+    {hour:3,minute:0,answer:"Three o'clock",fa:"ساعت سه"},
+    {hour:4,minute:0,answer:"Four o'clock",fa:"ساعت چهار"},
+    {hour:5,minute:0,answer:"Five o'clock",fa:"ساعت پنج"},
+    {hour:6,minute:0,answer:"Six o'clock",fa:"ساعت شش"},
+    {hour:7,minute:0,answer:"Seven o'clock",fa:"ساعت هفت"},
+    {hour:8,minute:0,answer:"Eight o'clock",fa:"ساعت هشت"},
+    {hour:9,minute:0,answer:"Nine o'clock",fa:"ساعت نه"},
+    {hour:10,minute:0,answer:"Ten o'clock",fa:"ساعت ده"},
+    {hour:11,minute:0,answer:"Eleven o'clock",fa:"ساعت یازده"},
+    {hour:12,minute:0,answer:"Twelve o'clock",fa:"ساعت دوازده"},
+    {hour:1,minute:15,answer:"A quarter past one",fa:"یک و ربع"},
+    {hour:2,minute:30,answer:"Half past two",fa:"دو و نیم"},
+    {hour:3,minute:45,answer:"A quarter to four",fa:"یک ربع به چهار"},
+    {hour:5,minute:15,answer:"A quarter past five",fa:"پنج و ربع"},
+    {hour:6,minute:30,answer:"Half past six",fa:"شش و نیم"},
+    {hour:7,minute:45,answer:"A quarter to eight",fa:"یک ربع به هشت"},
+    {hour:10,minute:15,answer:"A quarter past ten",fa:"ده و ربع"},
+    {hour:11,minute:30,answer:"Half past eleven",fa:"یازده و نیم"},
+    {hour:12,minute:45,answer:"A quarter to one",fa:"یک ربع به یک"},
+    {hour:8,minute:30,answer:"Half past eight",fa:"هشت و نیم"},
+    {hour:4,minute:15,answer:"A quarter past four",fa:"چهار و ربع"},
+    {hour:9,minute:45,answer:"A quarter to ten",fa:"یک ربع به ده"},
+    {hour:2,minute:15,answer:"A quarter past two",fa:"دو و ربع"},
+    {hour:7,minute:30,answer:"Half past seven",fa:"هفت و نیم"},
+    {hour:11,minute:45,answer:"A quarter to twelve",fa:"یک ربع به دوازده"},
+    {hour:3,minute:30,answer:"Half past three",fa:"سه و نیم"},
+    {hour:6,minute:45,answer:"A quarter to seven",fa:"یک ربع به هفت"},
+    {hour:5,minute:30,answer:"Half past five",fa:"پنج و نیم"}
+  ];
+}
+
+function getPictorialGameData(){
+  return [
+    {emoji:"🌧️🐱🐶",idiom:"Raining cats and dogs",fa:"باران شدید",meaning:"باران خیلی شدید باریدن"},
+    {emoji:"🍰",idiom:"Piece of cake",fa:"خیلی آسان",meaning:"کار بسیار آسان"},
+    {emoji:"📚👊",idiom:"Hit the books",fa:"درس خواندن",meaning:"مطالعه کردن جدی"},
+    {emoji:"❄️🧊",idiom:"Break the ice",fa:"شروع گفتگو",meaning:"شروع کردن یک گفتگو"},
+    {emoji:"🐈🎒",idiom:"Let the cat out of the bag",fa:"لو دادن راز",meaning:"فاش کردن یک راز"},
+    {emoji:"💎🪨",idiom:"A diamond in the rough",fa:"گنج پنهان",meaning:"کسی با استعداد پنهان"},
+    {emoji:"🎯🔨",idiom:"Hit the nail on the head",fa:"درست گفتن",meaning:"دقیقاً درست گفتن"},
+    {emoji:"🌙🔵",idiom:"Once in a blue moon",fa:"به ندرت",meaning:"به ندرت اتفاق افتادن"},
+    {emoji:"🐦🐛",idiom:"The early bird catches the worm",fa:"سحرخیز",meaning:"سحرخیز موفق می‌شود"},
+    {emoji:"💰🦵💪",idiom:"Cost an arm and a leg",fa:"خیلی گران",meaning:"بسیار گران بودن"},
+    {emoji:"🛏️🤔",idiom:"Sleep on it",fa:"فکر کردن به",meaning:"شب روی موضوعی فکر کردن"},
+    {emoji:"🕊️🕊️🕊️",idiom:"Birds of a feather flock together",fa:"کبوتر با کبوتر",meaning:"افراد مشابه با هم دوست می‌شوند"},
+    {emoji:"👀❤️",idiom:"Out of sight, out of mind",fa:"از دل برود",meaning:"دور از چشم دور از دل"},
+    {emoji:"🌏🌟",idiom:"The best of both worlds",fa:"دو سر برد",meaning:"داشتن بهترین از هر دو"},
+    {emoji:"🏆💪",idiom:"Practice makes perfect",fa:"کار نیکو کردن",meaning:"تمرین باعث کمال می‌شود"},
+    {emoji:"💪🧠",idiom:"Where there's a will, there's a way",fa:"خواستن توانستن است",meaning:"با اراده هر کاری ممکن است"},
+    {emoji:"🌅☁️",idiom:"Every cloud has a silver lining",fa:"در هر سختی امیدی",meaning:"در هر بدی خوبی هست"},
+    {emoji:"⏰💰",idiom:"Time is money",fa:"وقت طلاست",meaning:"زمان ارزشمند است"},
+    {emoji:"🔨🔥",idiom:"Strike while the iron is hot",fa:"تا تنور گرم است",meaning:"از فرصت استفاده کن"},
+    {emoji:"🏠❤️",idiom:"There's no place like home",fa:"هیچ جا خانه آدم نمی‌شود",meaning:"خانه بهترین جاست"}
+  ];
+}
+
 }
 function loadGameRecords(){ 
   try{const r=JSON.parse(localStorage.getItem("AN_GAME_RECORDS")||"{}");S.gameRecords=r||{};}
