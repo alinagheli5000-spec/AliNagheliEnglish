@@ -9766,39 +9766,38 @@ function getAdultVocabGameData(){
     ["genuine","اصیل"],["meticulous","دقیق"],["procrastinate","به تعویق انداختن"],["ubiquitous","همه‌جا حاضر"],["unprecedented","بی‌سابقه"],
     ["resilient","انعطاف‌پذیر"],["empathy","همدلی"],["integrity","درستکاری"],["innovation","نوآوری"],["sustainable","پایدار"],["transparent","شفاف"]
   ]; 
-  }
   /* ==================== داده‌های بازی‌های جدید ==================== */
 
 function getHangmanGameData(){
   return [
-    {word:"BOOK",fa:"کتاب",hint:"hint1"},
-    {word:"TREE",fa:"درخت",hint:"hint2"},
-    {word:"FISH",fa:"ماهی",hint:"hint3"},
-    {word:"MOON",fa:"ماه",hint:"hint4"},
-    {word:"STAR",fa:"ستاره",hint:"hint5"},
-    {word:"DOOR",fa:"در",hint:"hint6"},
-    {word:"BIRD",fa:"پرنده",hint:"hint7"},
-    {word:"CAKE",fa:"کیک",hint:"hint8"},
-    {word:"MILK",fa:"شیر",hint:"hint9"},
-    {word:"WATER",fa:"آب",hint:"hint10"},
-    {word:"FIRE",fa:"آتش",hint:"hint11"},
-    {word:"ROSE",fa:"گل رز",hint:"hint12"},
-    {word:"LEAF",fa:"برگ",hint:"hint13"},
-    {word:"RAIN",fa:"باران",hint:"hint14"},
-    {word:"SNOW",fa:"برف",hint:"hint15"},
-    {word:"WIND",fa:"باد",hint:"hint16"},
-    {word:"HOME",fa:"خانه",hint:"hint17"},
-    {word:"NAME",fa:"نام",hint:"hint18"},
-    {word:"LOVE",fa:"عشق",hint:"hint19"},
-    {word:"HAND",fa:"دست",hint:"hint20"},
-    {word:"EYE",fa:"چشم",hint:"hint21"},
-    {word:"FACE",fa:"صورت",hint:"hint22"},
-    {word:"WARM",fa:"گرم",hint:"hint23"},
-    {word:"COLD",fa:"سرد",hint:"hint24"},
-    {word:"HAPPY",fa:"خوشحال",hint:"hint25"},
-    {word:"FAST",fa:"سریع",hint:"hint26"},
-    {word:"SLOW",fa:"آرام",hint:"hint27"},
-    {word:"GOOD",fa:"خوب",hint:"hint28"}
+    {word:"BOOK",fa:"کتاب",hint:"چیزی که می‌خونی"},
+    {word:"TREE",fa:"درخت",hint:"توی باغ سبز می‌شه"},
+    {word:"FISH",fa:"ماهی",hint:"توی آب شنا می‌کنه"},
+    {word:"MOON",fa:"ماه",hint:"شب‌ها توی آسمونه"},
+    {word:"STAR",fa:"ستاره",hint:"شب‌ها می‌درخشه"},
+    {word:"DOOR",fa:"در",hint:"وارد شدن از اینجا"},
+    {word:"BIRD",fa:"پرنده",hint:"توی آسمون پرواز می‌کنه"},
+    {word:"CAKE",fa:"کیک",hint:"توی تولد می‌خورن"},
+    {word:"MILK",fa:"شیر",hint:"سفید و مقوی"},
+    {word:"WATER",fa:"آب",hint:"مایه حیات"},
+    {word:"FIRE",fa:"آتش",hint:"داغ و سوزان"},
+    {word:"ROSE",fa:"گل رز",hint:"قشنگ و خوشبو"},
+    {word:"LEAF",fa:"برگ",hint:"روی درخت می‌شه"},
+    {word:"RAIN",fa:"باران",hint:"از آسمون میاد"},
+    {word:"SNOW",fa:"برف",hint:"سفید و سرد"},
+    {word:"WIND",fa:"باد",hint:"هوا رو حرکت می‌ده"},
+    {word:"HOME",fa:"خانه",hint:"جایی که زندگی می‌کنی"},
+    {word:"NAME",fa:"نام",hint:"اسمت"},
+    {word:"LOVE",fa:"عشق",hint:"احساس قشنگ"},
+    {word:"HAND",fa:"دست",hint:"باهاش کار می‌کنی"},
+    {word:"EYE",fa:"چشم",hint:"باهاش می‌بینی"},
+    {word:"FACE",fa:"صورت",hint:"توی آینه می‌بینی"},
+    {word:"WARM",fa:"گرم",hint:"حس خوب"},
+    {word:"COLD",fa:"سرد",hint:"یخ"},
+    {word:"HAPPY",fa:"خوشحال",hint:"😊"},
+    {word:"FAST",fa:"سریع",hint:"مثل برق"},
+    {word:"SLOW",fa:"آرام",hint:"مثل لاک‌پشت"},
+    {word:"GOOD",fa:"خوب",hint:"👍"}
   ];
 }
 
@@ -10149,13 +10148,6 @@ function gameNext(){
   if(id==="idioms") return gameNextIdioms(el); 
   if(id==="proverbs") return gameNextProverbs(el); 
   if(id==="adultVocab") return gameNextAdultVocab(el); 
-  if(id==="hangman") return gameNextHangman(el);
-  if(id==="antonyms") return gameNextAntonym(el);
-  if(id==="synonyms") return gameNextSynonym(el);
-  if(id==="categories") return gameNextCategory(el);
-  if(id==="mathEn") return gameNextMathEn(el);
-  if(id==="clock") return gameNextClock(el);
-  if(id==="pictorial") return gameNextPictorial(el);
 }
 function gameAnswerHandler(isCorrect){ 
   if(!S.currentGame.started) return; 
@@ -10169,333 +10161,6 @@ function gameAnswerHandler(isCorrect){
     setTimeout(()=>{if(S.currentGame.started)gameNext();},800); 
   } 
 }
-  function gameNextAntonym(el){ 
-  const data=getAntonymGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.antonym!==pick.antonym)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  el.innerHTML=`
-    <div class="gameWord" style="font-size:32px">${esc(pick.word)}</div>
-    <p class="muted">متضاد این کلمه چیست؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.antonym)}','${esc(pick.antonym)}')">${esc(o.antonym)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextSynonym(el){ 
-  const data=getSynonymGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.synonym!==pick.synonym)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  el.innerHTML=`
-    <div class="gameWord" style="font-size:32px">${esc(pick.word)}</div>
-    <p class="muted">مترادف این کلمه چیست؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.synonym)}','${esc(pick.synonym)}')">${esc(o.synonym)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextCategory(el){ 
-  const data=getCategoryGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const categories=["Fruit","Animal","Color","Vehicle","Job","Food","Season","City"];
-  const wrongCats=shuffle(categories.filter(c=>c!==pick.category)).slice(0,3); 
-  const options=shuffle([pick.category,...wrongCats]); 
-  el.innerHTML=`
-    <div class="gameWord" style="font-size:32px">${esc(pick.word)}</div>
-    <p class="muted">این کلمه به کدوم دسته تعلق داره؟ (${esc(pick.fa)})</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o)}','${esc(pick.category)}')">${esc(o)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextMathEn(el){ 
-  const data=getMathEnGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.answer!==pick.answer)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  el.innerHTML=`
-    <div class="gameWord" style="font-size:48px">${pick.a} ${pick.op} ${pick.b}</div>
-    <p class="muted">جواب این محاسبه به انگلیسی چیست؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.answer)}','${esc(pick.answer)}')">${esc(o.answer)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextClock(el){ 
-  const data=getClockGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.answer!==pick.answer)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  const hourAngle=(pick.hour%12)*30 + pick.minute*0.5;
-  const minuteAngle=pick.minute*6;
-  el.innerHTML=`
-    <div style="position:relative;width:200px;height:200px;margin:20px auto;border-radius:50%;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:6px solid var(--primary);box-shadow:0 10px 30px rgba(109,40,217,.3)">
-      <div style="position:absolute;left:50%;top:8%;transform:translateX(-50%);font-weight:900;color:var(--primary);font-size:18px">12</div>
-      <div style="position:absolute;right:8%;top:50%;transform:translateY(-50%);font-weight:900;color:var(--primary);font-size:18px">3</div>
-      <div style="position:absolute;left:50%;bottom:8%;transform:translateX(-50%);font-weight:900;color:var(--primary);font-size:18px">6</div>
-      <div style="position:absolute;left:8%;top:50%;transform:translateY(-50%);font-weight:900;color:var(--primary);font-size:18px">9</div>
-      <div style="position:absolute;left:50%;top:50%;width:4px;height:55px;background:linear-gradient(180deg,var(--primary),var(--primary-dark));transform-origin:bottom center;transform:translate(-50%,-100%) rotate(${hourAngle}deg);border-radius:4px"></div>
-      <div style="position:absolute;left:50%;top:50%;width:3px;height:70px;background:linear-gradient(180deg,var(--accent-pink),#db2777);transform-origin:bottom center;transform:translate(-50%,-100%) rotate(${minuteAngle}deg);border-radius:4px"></div>
-      <div style="position:absolute;left:50%;top:50%;width:14px;height:14px;border-radius:50%;background:var(--primary);transform:translate(-50%,-50%);box-shadow:0 0 10px var(--primary)"></div>
-    </div>
-    <p class="muted" style="text-align:center">این ساعت به انگلیسی چه می‌شه؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.answer)}','${esc(pick.answer)}')">${esc(o.answer)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextPictorial(el){ 
-  const data=getPictorialGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.fa!==pick.fa)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  el.innerHTML=`
-    <div style="font-size:80px;text-align:center;margin:20px 0;line-height:1.4">${pick.emoji}</div>
-    <p class="muted" style="text-align:center">معنی این اصطلاح تصویری چیست؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.fa)}','${esc(pick.fa)}')">${esc(o.fa)}</button>`).join("")}
-    </div>
-    <p class="muted" style="text-align:center;margin-top:14px;font-size:12px;direction:ltr"><b>${esc(pick.idiom)}</b></p>
-  `; 
-}
-
-function gameAnswerSimple(i,chosen,correct){ 
-  const btns=document.querySelectorAll(".gameOptions .option"); 
-  if(btns.length){
-    btns.forEach(b=>b.disabled=true);
-    btns[i].classList.add(chosen===correct?"correct":"wrong");
-    if(chosen!==correct){
-      const ci=Array.from(btns).findIndex(b=>b.textContent.trim()===correct);
-      if(ci>=0)btns[ci].classList.add("correct");
-    }
-  } 
-  gameAnswerHandler(chosen===correct); 
-}
-
-  function gameNextAntonym(el){ 
-  const data=getAntonymGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.antonym!==pick.antonym)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  el.innerHTML=`
-    <div class="gameWord" style="font-size:32px">${esc(pick.word)}</div>
-    <p class="muted">متضاد این کلمه چیست؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.antonym)}','${esc(pick.antonym)}')">${esc(o.antonym)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextSynonym(el){ 
-  const data=getSynonymGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.synonym!==pick.synonym)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  el.innerHTML=`
-    <div class="gameWord" style="font-size:32px">${esc(pick.word)}</div>
-    <p class="muted">مترادف این کلمه چیست؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.synonym)}','${esc(pick.synonym)}')">${esc(o.synonym)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextCategory(el){ 
-  const data=getCategoryGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const categories=["Fruit","Animal","Color","Vehicle","Job","Food","Season","City"];
-  const wrongCats=shuffle(categories.filter(c=>c!==pick.category)).slice(0,3); 
-  const options=shuffle([pick.category,...wrongCats]); 
-  el.innerHTML=`
-    <div class="gameWord" style="font-size:32px">${esc(pick.word)}</div>
-    <p class="muted">این کلمه به کدوم دسته تعلق داره؟ (${esc(pick.fa)})</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o)}','${esc(pick.category)}')">${esc(o)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextMathEn(el){ 
-  const data=getMathEnGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.answer!==pick.answer)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  el.innerHTML=`
-    <div class="gameWord" style="font-size:48px">${pick.a} ${pick.op} ${pick.b}</div>
-    <p class="muted">جواب این محاسبه به انگلیسی چیست؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.answer)}','${esc(pick.answer)}')">${esc(o.answer)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextClock(el){ 
-  const data=getClockGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.answer!==pick.answer)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  const hourAngle=(pick.hour%12)*30 + pick.minute*0.5;
-  const minuteAngle=pick.minute*6;
-  el.innerHTML=`
-    <div style="position:relative;width:200px;height:200px;margin:20px auto;border-radius:50%;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:6px solid var(--primary);box-shadow:0 10px 30px rgba(109,40,217,.3)">
-      <div style="position:absolute;left:50%;top:8%;transform:translateX(-50%);font-weight:900;color:var(--primary);font-size:18px">12</div>
-      <div style="position:absolute;right:8%;top:50%;transform:translateY(-50%);font-weight:900;color:var(--primary);font-size:18px">3</div>
-      <div style="position:absolute;left:50%;bottom:8%;transform:translateX(-50%);font-weight:900;color:var(--primary);font-size:18px">6</div>
-      <div style="position:absolute;left:8%;top:50%;transform:translateY(-50%);font-weight:900;color:var(--primary);font-size:18px">9</div>
-      <div style="position:absolute;left:50%;top:50%;width:4px;height:55px;background:linear-gradient(180deg,var(--primary),var(--primary-dark));transform-origin:bottom center;transform:translate(-50%,-100%) rotate(${hourAngle}deg);border-radius:4px"></div>
-      <div style="position:absolute;left:50%;top:50%;width:3px;height:70px;background:linear-gradient(180deg,var(--accent-pink),#db2777);transform-origin:bottom center;transform:translate(-50%,-100%) rotate(${minuteAngle}deg);border-radius:4px"></div>
-      <div style="position:absolute;left:50%;top:50%;width:14px;height:14px;border-radius:50%;background:var(--primary);transform:translate(-50%,-50%);box-shadow:0 0 10px var(--primary)"></div>
-    </div>
-    <p class="muted" style="text-align:center">این ساعت به انگلیسی چه می‌شه؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.answer)}','${esc(pick.answer)}')">${esc(o.answer)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextPictorial(el){ 
-  const data=getPictorialGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.fa!==pick.fa)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  el.innerHTML=`
-    <div style="font-size:80px;text-align:center;margin:20px 0;line-height:1.4">${pick.emoji}</div>
-    <p class="muted" style="text-align:center">معنی این اصطلاح تصویری چیست؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.fa)}','${esc(pick.fa)}')">${esc(o.fa)}</button>`).join("")}
-    </div>
-    <p class="muted" style="text-align:center;margin-top:14px;font-size:12px;direction:ltr"><b>${esc(pick.idiom)}</b></p>
-  `; 
-}
-
-function gameAnswerSimple(i,chosen,correct){ 
-  const btns=document.querySelectorAll(".gameOptions .option"); 
-  if(btns.length){
-    btns.forEach(b=>b.disabled=true);
-    btns[i].classList.add(chosen===correct?"correct":"wrong");
-    if(chosen!==correct){
-      const ci=Array.from(btns).findIndex(b=>b.textContent.trim()===correct);
-      if(ci>=0)btns[ci].classList.add("correct");
-    }
-  } 
-  gameAnswerHandler(chosen===correct); 
-}
-
-  function gameNextAntonym(el){ 
-  const data=getAntonymGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.antonym!==pick.antonym)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  el.innerHTML=`
-    <div class="gameWord" style="font-size:32px">${esc(pick.word)}</div>
-    <p class="muted">متضاد این کلمه چیست؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.antonym)}','${esc(pick.antonym)}')">${esc(o.antonym)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextSynonym(el){ 
-  const data=getSynonymGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.synonym!==pick.synonym)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  el.innerHTML=`
-    <div class="gameWord" style="font-size:32px">${esc(pick.word)}</div>
-    <p class="muted">مترادف این کلمه چیست؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.synonym)}','${esc(pick.synonym)}')">${esc(o.synonym)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextCategory(el){ 
-  const data=getCategoryGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const categories=["Fruit","Animal","Color","Vehicle","Job","Food","Season","City"];
-  const wrongCats=shuffle(categories.filter(c=>c!==pick.category)).slice(0,3); 
-  const options=shuffle([pick.category,...wrongCats]); 
-  el.innerHTML=`
-    <div class="gameWord" style="font-size:32px">${esc(pick.word)}</div>
-    <p class="muted">این کلمه به کدوم دسته تعلق داره؟ (${esc(pick.fa)})</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o)}','${esc(pick.category)}')">${esc(o)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextMathEn(el){ 
-  const data=getMathEnGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.answer!==pick.answer)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  el.innerHTML=`
-    <div class="gameWord" style="font-size:48px">${pick.a} ${pick.op} ${pick.b}</div>
-    <p class="muted">جواب این محاسبه به انگلیسی چیست؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.answer)}','${esc(pick.answer)}')">${esc(o.answer)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextClock(el){ 
-  const data=getClockGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.answer!==pick.answer)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  const hourAngle=(pick.hour%12)*30 + pick.minute*0.5;
-  const minuteAngle=pick.minute*6;
-  el.innerHTML=`
-    <div style="position:relative;width:200px;height:200px;margin:20px auto;border-radius:50%;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:6px solid var(--primary);box-shadow:0 10px 30px rgba(109,40,217,.3)">
-      <div style="position:absolute;left:50%;top:8%;transform:translateX(-50%);font-weight:900;color:var(--primary);font-size:18px">12</div>
-      <div style="position:absolute;right:8%;top:50%;transform:translateY(-50%);font-weight:900;color:var(--primary);font-size:18px">3</div>
-      <div style="position:absolute;left:50%;bottom:8%;transform:translateX(-50%);font-weight:900;color:var(--primary);font-size:18px">6</div>
-      <div style="position:absolute;left:8%;top:50%;transform:translateY(-50%);font-weight:900;color:var(--primary);font-size:18px">9</div>
-      <div style="position:absolute;left:50%;top:50%;width:4px;height:55px;background:linear-gradient(180deg,var(--primary),var(--primary-dark));transform-origin:bottom center;transform:translate(-50%,-100%) rotate(${hourAngle}deg);border-radius:4px"></div>
-      <div style="position:absolute;left:50%;top:50%;width:3px;height:70px;background:linear-gradient(180deg,var(--accent-pink),#db2777);transform-origin:bottom center;transform:translate(-50%,-100%) rotate(${minuteAngle}deg);border-radius:4px"></div>
-      <div style="position:absolute;left:50%;top:50%;width:14px;height:14px;border-radius:50%;background:var(--primary);transform:translate(-50%,-50%);box-shadow:0 0 10px var(--primary)"></div>
-    </div>
-    <p class="muted" style="text-align:center">این ساعت به انگلیسی چه می‌شه؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.answer)}','${esc(pick.answer)}')">${esc(o.answer)}</button>`).join("")}
-    </div>
-  `; 
-}
-
-function gameNextPictorial(el){ 
-  const data=getPictorialGameData(); 
-  const pick=data[Math.floor(Math.random()*data.length)]; 
-  const wrongs=shuffle(data.filter(x=>x.fa!==pick.fa)).slice(0,3); 
-  const options=shuffle([pick,...wrongs]); 
-  el.innerHTML=`
-    <div style="font-size:80px;text-align:center;margin:20px 0;line-height:1.4">${pick.emoji}</div>
-    <p class="muted" style="text-align:center">معنی این اصطلاح تصویری چیست؟</p>
-    <div class="gameOptions">
-      ${options.map((o,i)=>`<button class="option" onclick="gameAnswerSimple(${i},'${esc(o.fa)}','${esc(pick.fa)}')">${esc(o.fa)}</button>`).join("")}
-    </div>
-    <p class="muted" style="text-align:center;margin-top:14px;font-size:12px;direction:ltr"><b>${esc(pick.idiom)}</b></p>
-  `; 
-}
-
-function gameAnswerSimple(i,chosen,correct){ 
-  const btns=document.querySelectorAll(".gameOptions .option"); 
-  if(btns.length){
-    btns.forEach(b=>b.disabled=true);
-    btns[i].classList.add(chosen===correct?"correct":"wrong");
-    if(chosen!==correct){
-      const ci=Array.from(btns).findIndex(b=>b.textContent.trim()===correct);
-      if(ci>=0)btns[ci].classList.add("correct");
-    }
-  } 
-  gameAnswerHandler(chosen===correct); 
-}
-
 function gameNextAnimals(el){ 
   const data=getAnimalGameData(); 
   const pick=data[Math.floor(Math.random()*data.length)]; 
