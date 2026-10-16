@@ -6654,23 +6654,13 @@ function login(){
   `; 
   loginTab("student"); 
 }
-async function studentLogin(){ 
-  const phone=document.getElementById("phone").value.trim(); 
-  const password=document.getElementById("pass").value; 
-  if(!phone||!password){toast("شماره تلفن و رمز عبور را وارد کنید.","error");return} 
-  
-  // ===== شروع حالت انتظار =====
-  const loginBtn = document.getElementById("studentLoginBtn");
-  const originalBtnText = loginBtn ? loginBtn.innerHTML : "";
-  if(loginBtn){
-    loginBtn.disabled = true;
-    loginBtn.style.opacity = "0.7";
-    loginBtn.style.cursor = "not-allowed";
-    loginBtn.innerHTML = '⏳ لطفاً منتظر بمانید...';
-  }
-  // ===== پایان حالت انتظار =====
-  
-  try{ 
+function loginTab(type){ 
+  document.getElementById("st").classList.toggle("active",type==="student"); 
+  document.getElementById("ad").classList.toggle("active",type==="admin"); 
+  document.getElementById("lf").innerHTML=type==="admin"
+    ?`<label>ایمیل مدیر</label><input id="email" type="email" value="alinagheli@gmail.com"><label>رمز عبور</label><input id="pass" type="password"><button class="btn full" onclick="adminLogin()">ورود مدیر</button>`
+    :`<label>شماره تلفن</label><input id="phone" inputmode="tel" placeholder="شماره تلفن"><label>رمز عبور</label><input id="pass" type="password"><button class="btn full" onclick="studentLogin()">ورود زبان‌آموز</button><button class="btn secondary full" style="margin-top:10px" onclick="registerForm()">ثبت‌نام زبان‌آموز جدید</button>`; 
+}
 async function studentLogin(){ 
   const phone=document.getElementById("phone").value.trim(); 
   const password=document.getElementById("pass").value; 
@@ -6698,16 +6688,7 @@ home();
         if('Notification' in window && Notification.permission === 'default'){
       setTimeout(()=>{ requestNotificationPermission(); }, 2000);
     }
-   }catch(e){
-    toast(e?.message||"ورود ناموفق بود.","error");
-    // ===== برگرداندن دکمه به حالت اول =====
-    if(loginBtn){
-      loginBtn.disabled = false;
-      loginBtn.style.opacity = "1";
-      loginBtn.style.cursor = "pointer";
-      loginBtn.innerHTML = originalBtnText;
-    }
-  } 
+  }catch(e){toast(e?.message||"ورود ناموفق بود.","error")} 
 }
 async function adminLogin(){ 
   const email=document.getElementById("email").value.trim(); 
