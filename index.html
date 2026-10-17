@@ -6689,7 +6689,10 @@ home();
         if('Notification' in window && Notification.permission === 'default'){
       setTimeout(()=>{ requestNotificationPermission(); }, 2000);
     }
-  }catch(e){toast(e?.message||"ورود ناموفق بود.","error")} 
+    }catch(e){
+    toast(e?.message||"ورود ناموفق بود.","error");
+    if(loginBtn){loginBtn.disabled=false;loginBtn.style.opacity="1";loginBtn.style.cursor="pointer";loginBtn.innerHTML=originalBtnText;}
+  } 
 }
 async function adminLogin(){ 
   const email=document.getElementById("email").value.trim(); 
