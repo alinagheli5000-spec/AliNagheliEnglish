@@ -6664,7 +6664,8 @@ function loginTab(type){
 async function studentLogin(){ 
   const phone=document.getElementById("phone").value.trim(); 
   const password=document.getElementById("pass").value; 
-  if(!phone||!password){toast("شماره تلفن و رمز عبور را وارد کنید.","error");return} 
+  if(!phone||!password){toast("شماره تلفن و رمز عبور را وارد کنید.","error");return}
+    const loginBtn=document.getElementById("studentLoginBtn");const originalBtnText=loginBtn?loginBtn.innerHTML:"";if(loginBtn){loginBtn.disabled=true;loginBtn.style.opacity="0.7";loginBtn.style.cursor="not-allowed";loginBtn.innerHTML="⏳ لطفاً منتظر بمانید...";}
   try{ 
     const result=await accessFunction({action:"find",phone}); 
     const student=result.student,email=result.email; 
